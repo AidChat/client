@@ -1,7 +1,7 @@
 export const en: any = {
     0: "aidchat",
     1: 'Why',
-    2: "Report a worker",
+    2: "Messages from users will appear here",
     3: 'Because a brain never rests, so it needs some extra care.',
     4: 'How it works?',
     5: 'Back to Home',
@@ -27,7 +27,7 @@ export const en: any = {
 export enum enString {
     app_name,
     why,
-    report_worker,
+    emptyMessage,
     auth_banner_text,
     btnHowitWork,
     backToSearch,

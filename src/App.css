@@ -7,18 +7,22 @@
   font-family: defaultfont, serif;
   font-weight: bold;
   font-size: 18px;
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  box-sizing: border-box;
+  height:100vh;
   -webkit-user-select: none;
   /* Safari */
   -ms-user-select: none;
   /* IE 10 and IE 11 */
   user-select: none;
-  background: #202124;
-  color: white;
+  background: black;
+  /*background-image: url('./assets/png/background.jpg');*/
+  /*background-position: center;*/
+  /*background-repeat: no-repeat;*/
+  /*background-size: cover;*/
 }
 
 div {
@@ -58,4 +62,11 @@ div::-webkit-scrollbar {
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+.font-primary{
+  color:lightgrey;
+}
+.font-secondary{
+  color:green;
 }

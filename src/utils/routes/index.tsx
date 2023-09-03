@@ -4,6 +4,6 @@ import { Main } from "../../pages/main.page";
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Main />,
+        element:<Main />,
     },
 ]);

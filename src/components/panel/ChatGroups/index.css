@@ -1,0 +1,21 @@
+.group-item-container{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    height:100%;
+    width: 100%;
+}
+.group-item-container .item-wrapper{
+    height:50px;
+    width: 50px;
+    border:1px solid lightgrey;
+    border-radius: 50%;
+    margin:10px 0;
+    cursor: pointer;
+}
+.item-wrapper img{
+    height:100%;
+    width:100%;
+    border-radius: 50%;
+    object-fit: cover;
+}

@@ -1,5 +1,4 @@
 import React, {ReactElement, useState} from 'react';
-import {Snackbar} from "../../components/snackbar";
 
 
 interface ShellInterface {
@@ -27,9 +26,6 @@ export function ShellContextProvider({children}: { children: ReactElement[] }) {
     return (
         <ShellContext.Provider value={{snackbarProps, showSnackbar}}>
             {children}
-            {snackbarProps.show && <Snackbar click={() => {
-                setShowSnackbarProps({message: '', show: false})
-            }}/>}
         </ShellContext.Provider>
     )
 }

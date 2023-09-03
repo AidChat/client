@@ -1,9 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Spinner} from "../../components/utility/loader.component";
-import {CenterBox} from "../../components/utility/alignment.components";
+import {Auth} from "../../components/auth";
 
-export let AuthContext = React.createContext<{isAuthenticated:boolean,checkAuth?:any,verifyAuthentication?:()=>void}>({isAuthenticated:false});
-
+export let AuthContext = React.createContext<{isAuthenticated?:boolean,verifyAuthentication:()=>void} | undefined>(undefined);
 export const AuthContextProvider = ({children}:{children:ReactElement[] | ReactElement })=>{
     let [isAuthenticated,setAuth] = useState(false)
     useEffect(()=>{
@@ -18,7 +16,8 @@ export const AuthContextProvider = ({children}:{children:ReactElement[] | ReactE
     function verifyAuthentication() :void{
         setAuth(true);
     }
+
     return (
-        <AuthContext.Provider value={{isAuthenticated,verifyAuthentication}} >{isAuthenticated ? children : <CenterBox>{Spinner()}</CenterBox>}</AuthContext.Provider>
+        <AuthContext.Provider value={{isAuthenticated,verifyAuthentication}} >{isAuthenticated ? children : <Auth />}</AuthContext.Provider>
     )
 }

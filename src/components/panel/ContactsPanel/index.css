@@ -1,0 +1,47 @@
+.container {
+    height: 100%;
+}
+
+.item-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.item-container .searchItem {
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    padding: 4px;
+}
+
+.item-container .contactsItem {
+    height: 100%;
+    flex: 10;
+    padding: 4px;
+}
+
+.searchBarContainer {
+    height: 2.5rem;
+    border: 1px solid lightgrey;
+    width: 100%;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.searchBarContainer :first-child{
+    width:20%;
+}
+.searchBarContainer :last-child{
+    width:85%;
+}
+.searchBarContainer :last-child input{
+    height:100%;
+    width: 100%;
+    border:none;
+    background: transparent;
+    color:white;
+}

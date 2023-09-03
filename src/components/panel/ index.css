@@ -1,0 +1,23 @@
+.chatWrapper{
+    background: transparent;
+    height:100%;
+}
+.chatContainer{
+    display: flex;
+    height:100%;
+    padding:4px;
+}
+.containerA {
+    flex:5;
+    height: 100%;
+}
+.containerB{
+    flex:8;
+    height: 100%;
+    padding:4px;
+}
+.containerC{
+    flex:1;
+    height: 100%;
+    padding:4px;
+}
