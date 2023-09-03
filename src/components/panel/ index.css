@@ -8,16 +8,16 @@
     padding:4px;
 }
 .containerA {
-    flex:5;
+    width:25%;
     height: 100%;
 }
 .containerB{
-    flex:8;
+    width:70%;
     height: 100%;
     padding:4px;
 }
 .containerC{
-    flex:1;
     height: 100%;
     padding:4px;
+    width: 5%;
 }

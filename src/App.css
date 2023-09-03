@@ -24,7 +24,9 @@ body {
   /*background-repeat: no-repeat;*/
   /*background-size: cover;*/
 }
-
+#root{
+  height: 100%;
+}
 div {
   -ms-overflow-style: none;
   /* Internet Explorer 10+ */

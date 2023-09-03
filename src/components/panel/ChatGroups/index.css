@@ -13,9 +13,9 @@
     margin:10px 0;
     cursor: pointer;
 }
-.item-wrapper img{
-    height:100%;
-    width:100%;
+.item-wrapper img {
+    height: 100%;
+    width: 100%;
     border-radius: 50%;
     object-fit: cover;
 }
