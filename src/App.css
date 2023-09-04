@@ -18,7 +18,7 @@ body {
   -ms-user-select: none;
   /* IE 10 and IE 11 */
   user-select: none;
-  background: #02150a;
+  background: #030303;
   /*background-image: url('./assets/png/background.jpg');*/
   /*background-position: center;*/
   /*background-repeat: no-repeat;*/
@@ -39,33 +39,6 @@ div::-webkit-scrollbar {
   /* Safari and Chrome */
 }
 
-.tooltip {
-  position: relative;
-  display: inline-block;
-  margin-left: 4px;
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 200px;
-  background-color: #202124;
-  color: whitesmoke;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 2px;
-  font-size: small;
-
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-
 .font-primary{
   color:lightgrey;
   font-weight: 500;
@@ -73,4 +46,28 @@ div::-webkit-scrollbar {
 .font-secondary{
   color:green;
   font-weight: 600;
+}
+
+.btn{
+  height:2.4rem;
+  width:3rem;
+  border:1px solid whitesmoke;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+}
+.btn-primary{
+  background: white;
+}
+.btn-round{
+  border-radius: 50%;
+}
+.flex{
+  display: flex;
+}
+.center{
+  justify-content: center;
+  align-items: center;
 }

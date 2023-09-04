@@ -24,6 +24,9 @@
     height: 100%;
     padding: 4px;
     width: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: start;
 }
 
 @media (max-width: 767px) {
