@@ -18,7 +18,7 @@ body {
   -ms-user-select: none;
   /* IE 10 and IE 11 */
   user-select: none;
-  background: black;
+  background: #02150a;
   /*background-image: url('./assets/png/background.jpg');*/
   /*background-position: center;*/
   /*background-repeat: no-repeat;*/
@@ -68,7 +68,9 @@ div::-webkit-scrollbar {
 
 .font-primary{
   color:lightgrey;
+  font-weight: 500;
 }
 .font-secondary{
   color:green;
+  font-weight: 600;
 }
