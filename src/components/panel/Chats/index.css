@@ -1,28 +1,75 @@
-.chatContainer{
-    padding:4px;
+.chatContainer {
+    padding: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border:1px solid rgba(211, 211, 211, 0.15);
+    border: 1px solid rgba(211, 211, 211, 0.15);
     border-radius: 8px;
+    height: 100%;
+    width: 100%;
 }
-.noChatContainer{
+.chatContainer .wrapper{
     height:100%;
-    width:100%;
-    padding:20px;
+    width: 100%;
+}
+
+.noChatContainer {
+    height: 100%;
+    width: 100%;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.emptyImage{
-    height:20rem;
+
+.emptyImage {
+    height: 20rem;
     display: flex;
     justify-content: center;
 
 }
-.emptyImage img{
-    height:100%;
-    width:100%;
+
+.emptyImage img {
+    height: 100%;
+    width: 100%;
 }
 
-
+.convoPanel {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.convoHistory{
+    height:100%;
+    width:100%;
+    flex:10;
+}
+.optionsPanel{
+    flex:1;
+    height: 100%;
+    justify-self: end;
+    display: flex;
+    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    padding:0 5rem;
+;
+}
+.sendInput{
+    width: 100%;
+    padding:6px;
+    background: transparent;
+    border:1px solid whitesmoke;
+    border-radius: 22px;
+    color:white;
+    height: 2.5rem;
+}
+.inputWrapper{
+    height: 100%;
+    width: 100%;
+    padding:0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
