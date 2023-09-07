@@ -11,7 +11,7 @@ export function GroupLists() {
     ];
     return (<>
         {items.map(item =>
-            <div className={'groupListContainer shadow'}>
+            <div className={'groupListContainer '}>
                 <div className={' groupLogo'}><GroupIcon/></div>
                 <div className={'info'}>
                     <div>{item.name}</div>

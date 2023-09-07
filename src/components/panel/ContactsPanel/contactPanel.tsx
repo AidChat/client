@@ -17,7 +17,7 @@ export function ContactPanel() {
 }
 
 function SearchContact() {
-    return (<div className={'searchBarContainer shadow'}>
+    return (<div className={'searchBarContainer'}>
         <div><RiSearchLine color={'green'} size={20}/></div>
         <div>
             <input className={'inputEle'} placeholder={'Search for groups'}/>
