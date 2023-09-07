@@ -1,0 +1,38 @@
+.groupListContainer {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 8px 8px;
+    margin: 6px 0;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.groupLogo {
+    height: 3rem;
+    width: 12%;
+    border: 1px solid whitesmoke;
+    border-radius: 50%;
+}
+
+.info {
+    width: 80%;
+    height: 100%;
+    padding:0px 8px;
+}
+
+.activity {
+    width: 8%;
+    font-weight: 700;
+}
+
+.keyword-tag {
+    font-size: 12px;
+    background: lightgrey;
+    color: black;
+    margin: 0 2px;
+    padding: 3px 8px;
+    border-radius: 10px;
+}

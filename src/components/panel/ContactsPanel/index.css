@@ -15,17 +15,19 @@
     width: 100%;
     flex: 1;
     padding: 4px;
+    display: flex;
 }
 
 .item-container .contactsItem {
     height: 100%;
     flex: 10;
     padding: 4px;
+    overflow-y: scroll;
 }
 
 .searchBarContainer {
-    height: 2.5rem;
-    border: 2px solid lightgrey;
+    height: 2.4rem;
+    border: 3px solid lightgrey;
     width: 100%;
     border-radius: 28px;
     display: flex;
@@ -33,7 +35,7 @@
     justify-content: center;
 }
 .searchBarContainer :first-child{
-    width:20%;
+    width:10%;
 }
 .searchBarContainer :last-child{
     width:85%;
@@ -44,4 +46,7 @@
     border:none;
     background: transparent;
     color:white;
+}
+.item{
+    width: 100%;
 }

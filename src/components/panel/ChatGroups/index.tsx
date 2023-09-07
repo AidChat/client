@@ -4,12 +4,20 @@ import './index.css'
 export function ChatGroups() {
     let groups = [1, 2, 4, 45, 3, 2, 1];
     return (
-        <div className={'group-item-container'}>
+        <div className={'group-item-container '}>
             {groups.map(item=>
-                <div className={'item-wrapper'}>
-                    <img src={groupsImg} alt={'profile icon'} />
+                <div className={'groupIcon-container-wrapper'}>
+                <GroupIcon/>
                 </div>
             )}
         </div>
    )
+}
+
+export function GroupIcon(){
+    return (
+        <div className={'item-wrapper'}>
+            <img src={groupsImg} alt={'profile icon'} />
+        </div>
+    )
 }

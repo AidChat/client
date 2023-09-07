@@ -5,17 +5,27 @@
     height:100%;
     width: 100%;
 }
-.group-item-container .item-wrapper{
-    height:50px;
-    width: 50px;
-    border:1px solid lightgrey;
+.item-wrapper{
+    height:100%;
+    width:100%;
+    border:1px solid white;
     border-radius: 50%;
-    margin:10px 0;
     cursor: pointer;
+}
+.group-item-container{
+    height: 60%;
+    width: 70%;
+
 }
 .item-wrapper img {
     height: 100%;
     width: 100%;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.groupIcon-container-wrapper{
+    margin:10px 0;
+    height: 100%;
+    width: 100%;
 }
