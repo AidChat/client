@@ -24,14 +24,6 @@ export function Chats() {
 }
 
 
-
-// components/MessageList.tsx
-
-
-
-
-
-
 function ConversationWrapper() {
     const ref = useRef<HTMLDivElement>(null);
     useEffect(() => {
