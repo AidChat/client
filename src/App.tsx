@@ -8,5 +8,4 @@ function App(): React.ReactElement {
             <RouterProvider router={router}></RouterProvider>
     );
 }
-
 export default App;

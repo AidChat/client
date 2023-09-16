@@ -1,0 +1,17 @@
+.dialogHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.dialog {
+    width: 500px;
+    border-radius: 4px;
+}
+.dialogWrapper{
+    padding:10px;
+}
+.dialogHeaderText{
+    font-size: 18px;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css'
-import {GroupIcon} from "../ChatGroups";
+import {GroupIcon} from "../GroupsPanel";
 
 export function GroupLists() {
     const items = [

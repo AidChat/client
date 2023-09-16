@@ -96,6 +96,7 @@
     max-width: 85%;
     line-break: anywhere;
     text-align: left;
+    font-size:16px;
 }
 .selfMessageBubble {
     height: auto;

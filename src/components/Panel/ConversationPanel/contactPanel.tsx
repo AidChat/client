@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './index.css'
 import {RiSearchLine} from "react-icons/ri";
 import {MdGroupAdd} from "react-icons/md";
-import {GroupLists} from "../GroupList";
+import {GroupLists} from "../Conversations";
+import {DialogPanel} from "../../DialogPanel";
 
 export function ContactPanel() {
 
@@ -11,7 +12,7 @@ export function ContactPanel() {
             <div className={' item searchItem'}><SearchContact/>
                 <CreateGroup/>
             </div>
-            <div className={'item contactsItem'}><GroupLists /></div>
+            <div className={'item contactsItem'}><GroupLists/></div>
         </div>
     </div>)
 }
@@ -25,10 +26,16 @@ function SearchContact() {
     </div>)
 }
 
-function CreateGroup() {
+export function CreateGroup() {
+    const [showDialog, setDialogVisibility] = useState(false);
     return (
-        <div className={'btn btn-primary btn-round'} style={{margin:'0 8px'}}>
-            <MdGroupAdd size={24}/>
+        <div className={'btn btn-primary btn-round'}  style={{margin: '0 8px'}} onClick={() => {
+            setDialogVisibility(true)
+        }}>
+            <MdGroupAdd id={'DialogOpenIcon'} size={24} >
+            </MdGroupAdd >
+            <DialogPanel open={showDialog} header={'Add Group'} onClose={()=>{setDialogVisibility(false)}} BodyEle={<></>}/>
+
         </div>
     )
 }

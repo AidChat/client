@@ -5,8 +5,8 @@ export function ChatGroups() {
     let groups = [1, 2, 4, 45, 3, 2, 1];
     return (
         <div className={'group-item-container '}>
-            {groups.map(item=>
-                <div className={'groupIcon-container-wrapper'}>
+            {groups.map((item,idx)=>
+                <div className={'groupIcon-container-wrapper'} key={idx}>
                 <GroupIcon/>
                 </div>
             )}

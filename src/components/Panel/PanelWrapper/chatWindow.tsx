@@ -1,7 +1,7 @@
 import React from 'react';
-import {ContactPanel} from "../ContactsPanel/contactPanel";
-import {Chats} from "../Chats/chats";
-import {ChatGroups} from "../ChatGroups";
+import {ContactPanel} from "../ConversationPanel/contactPanel";
+import {Chats} from "../ChatPanel/chats";
+import {ChatGroups} from "../GroupsPanel";
 
 
 export function ChatWindow() {

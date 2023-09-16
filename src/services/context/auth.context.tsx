@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {Auth} from "../../components/auth";
+import {Auth} from "../../components/AuthPanel";
 
 export let AuthContext = React.createContext<{isAuthenticated?:boolean,verifyAuthentication:()=>void} | undefined>(undefined);
 export const AuthContextProvider = ({children}:{children:ReactElement[] | ReactElement })=>{
