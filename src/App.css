@@ -6,7 +6,7 @@
 * {
   font-family: defaultfont, serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   box-sizing: border-box;
 }
 
@@ -70,4 +70,28 @@ div::-webkit-scrollbar {
 .center{
   justify-content: center;
   align-items: center;
+}
+.borderRadius-light{
+  border-radius: 4px;
+}
+.borderRadius-heavy{
+  border-radius: 8px;
+}
+.w100{
+  width: 100%;
+}
+.btn-round-secondary{
+  border:1px solid green;
+  background: white;
+  color:green;
+}
+.btn-round-primary:hover{
+  background:darkgreen !important;
+}
+.btn-round-primary{
+  background: green !important;
+  color:white !important;
+}
+.btn-round-secondary:hover{
+  background: lightgray;
 }

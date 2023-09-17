@@ -4,6 +4,7 @@ import {RiSearchLine} from "react-icons/ri";
 import {MdGroupAdd} from "react-icons/md";
 import {GroupLists} from "../Conversations";
 import {DialogPanel} from "../../DialogPanel";
+import {GroupForm} from "../GroupForm";
 
 export function ContactPanel() {
 
@@ -27,15 +28,16 @@ function SearchContact() {
 }
 
 export function CreateGroup() {
-    const [showDialog, setDialogVisibility] = useState(false);
+    const [showDialog, setDialogVisibility] = useState<boolean>(false);
     return (
-        <div className={'btn btn-primary btn-round'}  style={{margin: '0 8px'}} onClick={() => {
-            setDialogVisibility(true)
+        <div className={'btn btn-primary btn-round'} style={{margin: '0 8px'}} onClick={() => {
+            setDialogVisibility(!showDialog);
         }}>
-            <MdGroupAdd id={'DialogOpenIcon'} size={24} >
-            </MdGroupAdd >
-            <DialogPanel open={showDialog} header={'Add Group'} onClose={()=>{setDialogVisibility(false)}} BodyEle={<></>}/>
-
+            <MdGroupAdd id={'DialogOpenIcon'} size={24}>
+            </MdGroupAdd>
+            <DialogPanel open={showDialog} header={'Add Group'} onClose={(B) => {
+                setDialogVisibility(B);
+            }} BodyEle={<GroupForm/>}/>
         </div>
     )
 }

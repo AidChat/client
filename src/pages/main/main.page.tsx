@@ -5,7 +5,8 @@ export const Main = () => {
   return (
     <div className={'main-container-wrapper'}
     onContextMenu={(event)=>{
-        event.preventDefault();
+      // have to disable it in dev mode
+      // event.preventDefault();
     }}
     >
       <div className={'main-container'}>

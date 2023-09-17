@@ -1,0 +1,66 @@
+.groupFormContainer {
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.formEleWrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.formEleWrapper:last-child {
+    align-self: end;
+    justify-self: flex-end;
+}
+
+.custom-input {
+    height: 2.4rem;
+    border: none;
+    border: 1px solid lightgray;
+    padding: 4px 10px;
+}
+
+.custom-input-people {
+    border: none;
+    border: 1px solid lightgray;
+    padding: 18px 4px;
+}
+
+.sendInviteWrapper {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 10px 0px;
+}
+
+.sendInviteWrapper .btn {
+    width: 40%;
+}
+
+.block {
+    width: 100%;
+}
+
+.brick {
+    height: 2.4rem;
+    width: 100%;
+    margin-right: 14px;
+}
+
+.brick input {
+    height: 2.4rem;
+}
+
+.sendBtnWrapper {
+    justify-content: center;
+
+}
+
+.sendBtnWrapper .btn {
+    padding: 4px 8px;
+    width: 10rem;
+}

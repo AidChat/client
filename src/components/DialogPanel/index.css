@@ -3,15 +3,25 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    padding:14px;
+}
+.dialogBody{
+    padding:2px 16px;
+}
+.dialog {
+    width: calc(100vw - 60vw);
+    border-radius: 4px;
+    position: absolute;
+    top: 10%;
+    margin: 0 auto;
+    border:none;
 }
 
-.dialog {
-    width: 500px;
-    border-radius: 4px;
+.dialogWrapper {
+    height: 100%;
 }
-.dialogWrapper{
-    padding:10px;
-}
-.dialogHeaderText{
+
+.dialogHeaderText {
     font-size: 18px;
 }
+

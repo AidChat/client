@@ -31,8 +31,8 @@ export function ConversationWrapper() {
                 <div className={'infoPanel font-primary'}>{tags.map(item => (<div className={'itemTags'}>{item}</div>))}
                 </div>
                 <div className={'convoHistory'}>
-                    {messages.map(item => (
-                        <div
+                    {messages.map((item,index) => (
+                        <div key={index}
                             className={`messageWrapper ${item.message.from.user.name === 'Vipul Dev' && 'selfMessage'}`}>
                             <div className={'font-primary miscContainer'}>
                                 <div className={`imageWrapper ${item.message.from.user.name === 'Vipul Dev' && 'selfMessageBubble'}`}>

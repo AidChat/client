@@ -126,16 +126,16 @@
     text-align: center;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    overflow-x: auto;
 }
-.itemTags{
-    width: fit-content;
+.itemTags {
     height: fit-content;
-    padding:4px 8px;
-    margin:0 4px;
+    padding: 4px 2px;
+    margin: 0px 2px;
     background: whitesmoke;
-    color:green;
-    border-radius: 10px;
-
+    color: green;
+    border-radius: 4px;
 }
 .convoPanel{
     display: flex;
