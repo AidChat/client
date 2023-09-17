@@ -1,0 +1,27 @@
+.dialogHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding:14px;
+}
+.dialogBody{
+    padding:2px 16px;
+}
+.dialog {
+    width: calc(100vw - 60vw);
+    border-radius: 4px;
+    position: absolute;
+    top: 10%;
+    margin: 0 auto;
+    border:none;
+}
+
+.dialogWrapper {
+    height: 100%;
+}
+
+.dialogHeaderText {
+    font-size: 18px;
+}
+

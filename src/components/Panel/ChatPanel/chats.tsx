@@ -1,4 +1,4 @@
-import React, {FunctionComponent, JSXElementConstructor, ReactElement, ReactNode, useEffect, useRef} from 'react';
+import React, { useEffect, useRef} from 'react';
 import './index.css'
 import emptyChats from './../../../assets/svg/empty-chats.svg'
 import {getString} from "../../../utils/strings";
@@ -20,20 +20,10 @@ export function Chats() {
                 </div>}
         </div>
     </div>)
-
 }
 
 
-function ConversationWrapper() {
-    const ref = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        if (messages.length) {
-            ref.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "end",
-            });
-        }
-    }, [messages.length]);
+export function ConversationWrapper() {
     let tags = ['Mental Health', 'Breakup', 'Health', 'Sports','Literature']
     return (
         <div className={'convoPanel'}>
@@ -41,8 +31,8 @@ function ConversationWrapper() {
                 <div className={'infoPanel font-primary'}>{tags.map(item => (<div className={'itemTags'}>{item}</div>))}
                 </div>
                 <div className={'convoHistory'}>
-                    {messages.map(item => (
-                        <div ref={ref}
+                    {messages.map((item,index) => (
+                        <div key={index}
                             className={`messageWrapper ${item.message.from.user.name === 'Vipul Dev' && 'selfMessage'}`}>
                             <div className={'font-primary miscContainer'}>
                                 <div className={`imageWrapper ${item.message.from.user.name === 'Vipul Dev' && 'selfMessageBubble'}`}>
@@ -62,7 +52,7 @@ function ConversationWrapper() {
                         </div>
                     ))}
                 </div>
-                <div ref={ref}></div>
+                <div ></div>
                 <div className={'optionsPanel'}>
                     <div><FcAddImage size={'2rem'} color={'green'}/></div>
                     <div className={'inputWrapper'}><input type={'text'} className={'sendInput'}
