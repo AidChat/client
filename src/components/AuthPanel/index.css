@@ -4,6 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row-reverse;
 }
 .authBox{
     height:24rem;
@@ -27,4 +28,36 @@
 .authBoxText{
     font-size:2rem;
     color:white;
+}
+.loginFormWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:12px;
+}
+.loginFormWrapper .logincontainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin:10px 0;
+}
+.loginFormWrapper .logincontainer .inputEle{
+    width: 100%;
+    border-radius: 4px;
+    border:none;
+    height:36px;
+    background: transparent;
+    padding:0 20px;
+}
+.loginFormWrapper .logincontainer label{
+    color:lightgray;
+}
+.inputWrapper-icon{
+    border:1px solid lightgray;
+    border-radius: 40px;
+    background: lightgray;
+}
+.logincontainer:last-of-type{
+    /*margin-top:3rem;*/
 }

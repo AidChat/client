@@ -1,4 +1,3 @@
-import React, { useEffect, useRef} from 'react';
 import './index.css'
 import emptyChats from './../../../assets/svg/empty-chats.svg'
 import {getString} from "../../../utils/strings";

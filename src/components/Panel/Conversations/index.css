@@ -1,7 +1,7 @@
 .groupListContainer {
     width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 6px 9px;
+    padding: 4px 8px;
     margin: 6px 0;
     color: white;
     display: flex;
@@ -11,8 +11,8 @@
 }
 
 .groupLogo {
-    height: 3rem;
-    width: 15%;
+    height: 40px;
+    width: 40px;
     border: 1px solid whitesmoke;
     border-radius: 50%;
 }
@@ -33,7 +33,7 @@
     background: lightgrey;
     color: black;
     margin: 0 2px;
-    padding: 2px 4px;
+    padding: 0 4px;
     border-radius: 10px;
 }
 .conversationWrapper{
