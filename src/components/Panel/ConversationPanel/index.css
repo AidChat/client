@@ -13,14 +13,14 @@
 .item-container .searchItem {
     height: 100%;
     width: 100%;
-    flex: 1;
+    flex: 0;
     padding: 4px;
     display: flex;
 }
 
 .item-container .contactsItem {
     height: 100%;
-    flex: 10;
+    flex: 1;
     padding: 4px;
     overflow-y: scroll;
 }
@@ -34,19 +34,29 @@
     align-items: center;
     justify-content: center;
 }
-.searchBarContainer :first-child{
-    width:10%;
+
+.searchBarContainer :first-child {
+    width: 10%;
 }
-.searchBarContainer :last-child{
-    width:85%;
+
+.searchBarContainer :last-child {
+    width: 85%;
 }
-.searchBarContainer :last-child input{
-    height:100%;
+
+.searchBarContainer :last-child input {
+    height: 100%;
     width: 100%;
-    border:none;
+    border: none;
     background: transparent;
-    color:white;
+    color: white;
 }
-.item{
+
+.item {
     width: 100%;
+}
+.addGroupBtn {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
