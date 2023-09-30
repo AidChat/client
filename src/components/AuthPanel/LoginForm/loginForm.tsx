@@ -1,46 +1,42 @@
-import React, {useContext} from 'react';
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import React, {useContext, useState} from 'react';
 import {AuthContext} from "../../../services/context/auth.context";
+import {Spinner} from "../../utility/spinner/spinner";
 
-export function LoginForm(){
+export function LoginForm() {
     let context = useContext(AuthContext);
-    function handleLogin(){
+
+    function handleLogin() {
+        _setLoad(true)
         context?.verifyAuthentication()
     }
 
+    let [error, _seterror] = useState(null);
+    let [loading, _setLoad] = useState(false)
 
     return (
-        <Formik
-            initialValues={{ email: '', password: '' }}
-            validate={values => {
-                const errors :{email?:string} = {};
-                if (!values.email) {
-                    errors.email = 'Required';
-                } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                    errors.email = 'Invalid email address';
-                }
-                return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    handleLogin();
-                    setSubmitting(false);
-                }, 400);
-            }}
-        >
-            {({ isSubmitting }) => (
-                <Form>
-                    <Field type="email" name="email" />
-                    <ErrorMessage name="email" component="div" />
-                    <Field type="password" name="password" />
-                    <ErrorMessage name="password" component="div" />
-                    <button type="submit" disabled={isSubmitting}>
-                        Submit
-                    </button>
-                </Form>
-            )}
-        </Formik>
-)}
+        <div className={'loginFormWrapper'}>
+            <form style={{width:'75%'}}>
+                <div className={'logincontainer'}>{error}</div>
+                <div className={'logincontainer'}>
+                    <label style={{marginLeft:'4px'}}>Username</label>
+                    <div className={'inputWrapper-icon'}>
+                        <input type={'email'} className={'inputEle'}/>
+                    </div>
+                </div>
+                <div className={'logincontainer'}>
+                    <label>Password</label>
+                    <div className={'inputWrapper-icon'}>
+                        <input type={'password'} className={'inputEle'}/>
+                    </div>
+                </div>
+                <div className={'logincontainer flex-center'}>
+                    <div className={'btn btn-primary w50'} onClick={()=>{
+                        handleLogin()
+                    }}>{
+                        loading ? <Spinner/> : 'Login'
+                    }</div>
+                </div>
+            </form>
+        </div>
+    )
+}

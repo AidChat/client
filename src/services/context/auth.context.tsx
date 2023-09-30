@@ -11,7 +11,7 @@ export const AuthContextProvider = ({children}:{children:ReactElement[] | ReactE
        If no session then redirect to '/local'
         */
 
-        verifyAuthentication();
+        // verifyAuthentication();
     },[])
     function verifyAuthentication() :void{
         setAuth(true);

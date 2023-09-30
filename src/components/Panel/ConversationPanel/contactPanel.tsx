@@ -5,12 +5,15 @@ import {MdGroupAdd} from "react-icons/md";
 import {GroupLists} from "../Conversations";
 import {DialogPanel} from "../../DialogPanel";
 import {GroupForm} from "../GroupForm";
+import {Logo} from "../../utility/logo";
 
 export function ContactPanel() {
 
     return (<div className={'container'}>
         <div className={'item-container'}>
-            <div className={' item searchItem'}><SearchContact/>
+            <div className={' item searchItem'}>
+                <Logo />
+                <SearchContact/>
                 <CreateGroup/>
             </div>
             <div className={'item contactsItem'}><GroupLists/></div>
@@ -30,7 +33,7 @@ function SearchContact() {
 export function CreateGroup() {
     const [showDialog, setDialogVisibility] = useState<boolean>(false);
     return (
-        <div className={'btn btn-primary btn-round'} style={{margin: '0 8px'}} onClick={() => {
+        <div  className={'addGroupBtn'} style={{margin: '0 8px'}} onClick={() => {
             setDialogVisibility(!showDialog);
         }}>
             <MdGroupAdd id={'DialogOpenIcon'} size={24}>

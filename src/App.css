@@ -95,3 +95,16 @@ div::-webkit-scrollbar {
 .btn-round-secondary:hover{
   background: lightgray;
 }
+.flex-center{
+  justify-content: center;
+  align-items: center;
+}
+.w75{
+  width: 75%;
+}
+.m4{
+  margin:4px;
+}
+.w50{
+  width: 50%;
+}
