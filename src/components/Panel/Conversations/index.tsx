@@ -3,22 +3,17 @@ import './index.css'
 import {GroupIcon} from "../GroupsPanel";
 
 export function GroupLists() {
-    let items = [
-        {key:1,name: 'Alpha Group', pendingCount: 10, keywords: ['Comedy', 'Science', 'Fiction']},
-        {key:2,name: 'Alpha Group', pendingCount: 2, keywords: ['Comedy', 'Science', 'Fiction']},
-        {key:3,name: 'Alpha Group', pendingCount: 14, keywords: ['Comedy', 'Science', 'Fiction']},
-        {key:4,name: 'Alpha Group', pendingCount: null, keywords: ['Comedy', 'Science', 'Fiction']},
-    ];
+    let items : any = [];
     items = items.concat(items);
     items = items.concat(items);
     return (<>
-        {items.map(item =>
+        {items.map((item: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; keywords: (string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactPortal | Iterable<React.ReactNode> | null | undefined)[]; pendingCount: any; }) =>
             <div className={'groupListContainer '}>
                 <div className={' groupLogo'}><GroupIcon/></div>
                 <div className={'info'}>
                     <div>{item.name}</div>
                     <div className={'flex conversationWrapper'} >{
-                        item.keywords.map((item,key) =>
+                        item.keywords.map((item: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, key: React.Key | null | undefined) =>
                             <div key={key} className={'keyword-tag'}>{item}</div>
                         )
                     }</div>

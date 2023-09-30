@@ -2,10 +2,10 @@ import React from 'react';
 import groupsImg from './../../../assets/svg/groups.svg';
 import './index.css'
 export function ChatGroups() {
-    let groups = [1, 2, 4, 45, 3, 2, 1];
+    let groups : any[] = [];
     return (
         <div className={'group-item-container '}>
-            {groups.map((item,idx)=>
+            {groups.map((_item,idx)=>
                 <div className={'groupIcon-container-wrapper'} key={idx}>
                 <GroupIcon/>
                 </div>

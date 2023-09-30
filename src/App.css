@@ -99,6 +99,10 @@ div::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
 }
+.flex-right{
+  justify-content: right;
+  align-items: end;
+}
 .w75{
   width: 75%;
 }

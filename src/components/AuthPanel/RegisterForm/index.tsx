@@ -2,12 +2,13 @@ import React, {useContext, useState} from 'react';
 import {AuthContext} from "../../../services/context/auth.context";
 import {Spinner} from "../../utility/spinner/spinner";
 
-interface LoginFromProps {
-    toggleState: () => void
-}
 
-export function LoginForm({toggleState}: LoginFromProps) {
+interface RegisterFormProps{
+    toggleState : ()=> void
+}
+export function RegisterForm({toggleState}:RegisterFormProps) {
     let context = useContext(AuthContext);
+
     function handleLogin() {
         _setLoad(true)
         context?.verifyAuthentication()
@@ -18,10 +19,16 @@ export function LoginForm({toggleState}: LoginFromProps) {
 
     return (
         <div className={'loginFormWrapper'}>
-            <form style={{width: '80%'}}>
+            <form style={{width:'80%'}}>
                 <div className={'logincontainer'}>{error}</div>
                 <div className={'logincontainer'}>
-                    <label style={{marginLeft: '4px'}}>Username</label>
+                    <label style={{marginLeft:'4px'}}>Name</label>
+                    <div className={'inputWrapper-icon'}>
+                        <input type={'email'} className={'inputEle'}/>
+                    </div>
+                </div>
+                <div className={'logincontainer'}>
+                    <label style={{marginLeft:'4px'}}>Email</label>
                     <div className={'inputWrapper-icon'}>
                         <input type={'email'} className={'inputEle'}/>
                     </div>
@@ -32,24 +39,18 @@ export function LoginForm({toggleState}: LoginFromProps) {
                         <input type={'password'} className={'inputEle'}/>
                     </div>
                 </div>
-                <div style={{marginTop: 10, display: 'flex', alignContent: "center", alignItems: 'center'}}>
-                    <input type={'checkbox'} style={{height: 20, width: 20}}/>
-                    <div>
-                        <label className={'font-primary'}>Remember me</label>
-                    </div>
-                </div>
-                <div className={'logincontainer flex-center'} >
-                    <div className={'btn btn-primary w50'} onClick={() => {
+                <div className={'logincontainer flex-center'} style={{marginTop:'24px'}}>
+                    <div className={'btn btn-primary w50'} onClick={()=>{
                         handleLogin()
                     }}>{
-                        loading ? <Spinner/> : 'Login'
+                        loading ? <Spinner/> : 'Register'
                     }</div>
                 </div>
-                <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
-                    <div className={'font-primary'} onClick={() => {
+                <div className={'logincontainer flex-right'} style={{marginTop:'24px'}}>
+                    <div className={'font-primary'} onClick={()=>{
                         toggleState()
                     }}>{
-                        'New here? Register!'
+                        'Already part of our community? Login'
                     }</div>
                 </div>
             </form>
