@@ -23,7 +23,7 @@ export function ContactPanel() {
 
 function SearchContact() {
     return (<div className={'searchBarContainer'}>
-        <div><RiSearchLine color={'green'} size={20}/></div>
+        <div><RiSearchLine color={'#398378'} size={20}/></div>
         <div>
             <input className={'inputEle'} placeholder={'Search for groups'}/>
         </div>
@@ -36,7 +36,7 @@ export function CreateGroup() {
         <div  className={'addGroupBtn'} style={{margin: '0 8px'}} onClick={() => {
             setDialogVisibility(!showDialog);
         }}>
-            <MdGroupAdd id={'DialogOpenIcon'} size={24}>
+            <MdGroupAdd id={'DialogOpenIcon'} color={''} size={24}>
             </MdGroupAdd>
             <DialogPanel open={showDialog} header={'Add Group'} onClose={(B) => {
                 setDialogVisibility(B);

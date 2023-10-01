@@ -49,7 +49,7 @@ export function LoginForm({toggleState}: LoginFromProps) {
                     <div className={'font-primary'} onClick={() => {
                         toggleState()
                     }}>{
-                        'New here? Register!'
+                        <p>New here?  <span className = {'color-green'} > Register </span></p>
                     }</div>
                 </div>
             </form>

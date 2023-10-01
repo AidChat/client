@@ -54,11 +54,11 @@ export function ConversationWrapper() {
                 </div>
                 <div ></div>
                 <div className={'optionsPanel'}>
-                    <div><FcAddImage size={'2rem'} color={'green'}/></div>
+                    <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
                     <div className={'inputWrapper'}><input type={'text'} className={'sendInput'}
                                                            placeholder={'Type something here...'}/></div>
                     <div>
-                        <div><IoSend size={'2rem'} color={'green'}/></div>
+                        <div><IoSend size={'2rem'} color={'#398378'}/></div>
                     </div>
                 </div>
             </div>

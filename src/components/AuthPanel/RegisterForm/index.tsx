@@ -3,10 +3,11 @@ import {AuthContext} from "../../../services/context/auth.context";
 import {Spinner} from "../../utility/spinner/spinner";
 
 
-interface RegisterFormProps{
-    toggleState : ()=> void
+interface RegisterFormProps {
+    toggleState: () => void
 }
-export function RegisterForm({toggleState}:RegisterFormProps) {
+
+export function RegisterForm({toggleState}: RegisterFormProps) {
     let context = useContext(AuthContext);
 
     function handleLogin() {
@@ -19,16 +20,16 @@ export function RegisterForm({toggleState}:RegisterFormProps) {
 
     return (
         <div className={'loginFormWrapper'}>
-            <form style={{width:'80%'}}>
+            <form style={{width: '80%'}}>
                 <div className={'logincontainer'}>{error}</div>
                 <div className={'logincontainer'}>
-                    <label style={{marginLeft:'4px'}}>Name</label>
+                    <label style={{marginLeft: '4px'}}>Name</label>
                     <div className={'inputWrapper-icon'}>
                         <input type={'email'} className={'inputEle'}/>
                     </div>
                 </div>
                 <div className={'logincontainer'}>
-                    <label style={{marginLeft:'4px'}}>Email</label>
+                    <label style={{marginLeft: '4px'}}>Email</label>
                     <div className={'inputWrapper-icon'}>
                         <input type={'email'} className={'inputEle'}/>
                     </div>
@@ -39,21 +40,21 @@ export function RegisterForm({toggleState}:RegisterFormProps) {
                         <input type={'password'} className={'inputEle'}/>
                     </div>
                 </div>
-                <div className={'logincontainer flex-center'} style={{marginTop:'24px'}}>
-                    <div className={'btn btn-primary w50'} onClick={()=>{
+                <div className={'logincontainer flex-center'} style={{marginTop: '24px'}}>
+                    <div className={'btn btn-primary w50'} onClick={() => {
                         handleLogin()
                     }}>{
                         loading ? <Spinner/> : 'Register'
                     }</div>
                 </div>
-                <div className={'logincontainer flex-right'} style={{marginTop:'24px'}}>
-                    <div className={'font-primary'} onClick={()=>{
+                <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
+                    <div className={'font-primary'} onClick={() => {
                         toggleState()
-                    }}>{
-                        'Already part of our community? Login'
-                    }</div>
-                </div>
-            </form>
-        </div>
-    )
-}
+                    }}>
+                        <p>Already part of our community?  <span className = {'color-green'} > Login </span></p>
+                    </div>
+                        </div>
+                        </form>
+                        </div>
+                        )
+                    }

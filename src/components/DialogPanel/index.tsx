@@ -26,7 +26,7 @@ export function DialogPanel(props: DialogPanelProps) {
                     props.onClose(false);
                     setOpen(false)
                 }}>
-                    <IoMdClose color={'green'} size={18} />
+                    <IoMdClose color={'#398378'} size={18} />
                 </div>
             </div>
             <div className={'dialogBody'}>{props.BodyEle}</div>
