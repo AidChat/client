@@ -37,6 +37,7 @@
 
 .searchBarContainer :first-child {
     width: 10%;
+    display: flex;
 }
 
 .searchBarContainer :last-child {

@@ -1,8 +1,9 @@
 import {UserProps} from "../../utils/interface";
+import {_props, reqType, serviceRoute} from "../../properties";
 
 export function fetchSiteData(){}
 
-export function userLogin(data:UserProps){};
+
 
 export function userRegister(data:UserProps){}
 

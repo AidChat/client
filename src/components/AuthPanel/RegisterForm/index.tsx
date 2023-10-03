@@ -12,7 +12,7 @@ export function RegisterForm({toggleState}: RegisterFormProps) {
 
     function handleLogin() {
         _setLoad(true)
-        context?.verifyAuthentication()
+        // context?.verifyAuthentication(response.session.session_id)
     }
 
     let [error, _seterror] = useState(null);
