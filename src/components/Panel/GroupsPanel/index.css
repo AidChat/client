@@ -29,3 +29,9 @@
     height:50px;
     width: 50px;
 }
+.username{
+    width:70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

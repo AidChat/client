@@ -12,7 +12,6 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
     useEffect(() => {
         _props._user().validateSession().then((d) => {
             verifyAuthentication()
-
         })
             .catch((e) => {
                 console.error(e)

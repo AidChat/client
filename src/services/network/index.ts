@@ -26,7 +26,7 @@ export const _props = {
                             })
                             .catch((reason) => {
                                 console.error(reason);
-                                reject(reason);
+                                reject(reason?.response?.data);
                             });
                         break;
                     case reqType.put:
@@ -57,7 +57,7 @@ export const _props = {
         return {query};
     },
     _user: function () {
-        const   validateSession = () => {
+        const  validateSession = () => {
             if (window.localStorage.getItem('session')) {
                 this.session = window.localStorage.getItem('session');
             }
@@ -75,7 +75,17 @@ export const _props = {
                 }
             });
         };
-        return {validateSession};
+
+        const get = () =>{
+            return new Promise((resolve,reject)=>{
+                this._db(service.authentication).query(serviceRoute.user, {},reqType.get)
+                    .then(resolve)
+                    .catch(reject)
+            })
+        }
+
+
+        return {validateSession,get};
     },
 };
 
@@ -90,7 +100,8 @@ export enum serviceRoute {
     login = '/auth/login',
     register = '/auth/register',
     session = '/auth/session',
-    group= '/group'
+    group= '/group',
+    user='/user'
 }
 
 
