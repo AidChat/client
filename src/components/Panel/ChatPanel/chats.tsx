@@ -6,7 +6,7 @@ import {FcAddImage} from "react-icons/fc";
 import {formatTime} from "../../../utils/functions";
 
 export function Chats() {
-    let chats = {chats: []};
+    let chats = {};
     return (<div className={'chatContainer'}>
         <div className={'wrapper'}>
             {chats.hasOwnProperty('chats')
@@ -23,7 +23,8 @@ export function Chats() {
 
 
 export function ConversationWrapper() {
-    let tags = ['Mental Health', 'Breakup', 'Health', 'Sports','Literature']
+    let tags: string[] = []
+    let messages: any[] = [];
     return (
         <div className={'convoPanel'}>
             <div className={'wrapperContainer'}>
@@ -53,11 +54,11 @@ export function ConversationWrapper() {
                 </div>
                 <div ></div>
                 <div className={'optionsPanel'}>
-                    <div><FcAddImage size={'2rem'} color={'green'}/></div>
+                    <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
                     <div className={'inputWrapper'}><input type={'text'} className={'sendInput'}
                                                            placeholder={'Type something here...'}/></div>
                     <div>
-                        <div><IoSend size={'2rem'} color={'green'}/></div>
+                        <div><IoSend size={'2rem'} color={'#398378'}/></div>
                     </div>
                 </div>
             </div>
@@ -66,68 +67,6 @@ export function ConversationWrapper() {
 }
 
 
-let arc: string = 'https://media.licdn.com/dms/image/D4D03AQG0Bn4rlDsoyw/profile-displayphoto-shrink_200_200/0/1690100247810?e=1699488000&v=beta&t=TaSkoY1Fs_mHg5eW9IRxMxHlRmnCS7t7n4DhKKGDL8E';
-let messages =
-    [{
-        when: new Date(),
-        message: {type: 'TEXT', content: 'Hey how are you', from: {user: {name: 'Kilo Dev', image: {url: arc}}}}
-    },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey how are you',
-                from: {user: {name: 'Vipuwl Dev', image: {url: arc}}}
-            }
-        },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey how are you',
-                from: {user: {name: 'Vipuwl Dev', image: {url: arc}}}
-            }
-        },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey ',
-                from: {user: {name: 'Vipul Dev', image: {url: arc}}}
-            }
-        },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey how are you',
-                from: {user: {name: 'Saral Dev', image: {url: arc}}}
-            }
-        },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey how are you',
-                from: {user: {name: 'Vipul Dev', image: {url: arc}}}
-            }
-        },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey how are you',
-                from: {user: {name: 'David Dev', image: {url: arc}}}
-            }
-        },
-        {
-            when: new Date(),
-            message: {
-                type: 'TEXT',
-                content: 'Hey how are you',
-                from: {user: {name: 'Vipul Dev', image: {url: arc}}}
-            }
-        },
-    ]
+
 
 

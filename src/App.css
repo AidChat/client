@@ -44,7 +44,7 @@ div::-webkit-scrollbar {
   font-weight: 500;
 }
 .font-secondary{
-  color:green;
+  color:#398378;
   font-weight: 600;
 }
 
@@ -98,6 +98,10 @@ div::-webkit-scrollbar {
 .flex-center{
   justify-content: center;
   align-items: center;
+}
+.flex-right{
+  justify-content: right;
+  align-items: end;
 }
 .w75{
   width: 75%;

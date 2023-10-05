@@ -13,8 +13,8 @@
     cursor: pointer;
 }
 .group-item-container{
-    height: 60%;
-    width: 70%;
+    height: 100%;
+    width: 100%;
 
 }
 .item-wrapper img {
@@ -28,4 +28,21 @@
     margin:10px 0;
     height:50px;
     width: 50px;
+}
+.username{
+    width:60px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.usernameWrapper{
+    padding:4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer ;
+}
+.usernameWrapper:hover{
+    background: rgba(0, 0, 0, 0.24);
 }
