@@ -10,13 +10,12 @@ export function GroupLists() {
             setItem(response.data)
         })
     }, []);
-    console.log(items)
     return (<>
         {items.map((item : any) =>
             <div className={'groupListContainer '}>
                 <div className={' groupLogo'}><GroupIcon/></div>
                 <div className={'info'}>
-                    <div>{item.name}</div>
+                    <div style={{fontSize:'14px'}}>{item.name}</div>
                     <div className={'flex conversationWrapper'} >{
                         item.GroupDetail.tags.map((item: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, key: React.Key | null | undefined) =>
                             <div key={key} className={'keyword-tag'}>{item}</div>

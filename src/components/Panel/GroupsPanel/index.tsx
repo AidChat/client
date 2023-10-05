@@ -35,12 +35,12 @@ export function UserIcon() {
     }, []);
     return (
         user ?
-            <div style={{textAlign: 'center', width: '100%'}}>
+            <div style={{textAlign: 'center', width: '100%'}} className={'usernameWrapper'}>
                 <div style={{textAlign: 'center', height: '58px', width: 60}} className={'item-wrapper'}>
                     <img src={groupsImg} alt={'profile icon'}/>
 
                 </div>
-                <div><h1 className={'font-primary username'}>{user.name.toUpperCase()}</h1></div>
+                <div ><h1 className={'font-primary username'}>{user.name.toUpperCase()}</h1></div>
             </div>
             : <></>
 

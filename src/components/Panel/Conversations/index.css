@@ -1,6 +1,6 @@
 .groupListContainer {
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 2px solid #d3d3d32e;
     padding: 4px 8px;
     margin: 6px 0;
     color: white;
@@ -21,6 +21,7 @@
     width: 76%;
     height: 100%;
     padding:0px 8px;
+    font-size: 14px;
 }
 
 .activity {
