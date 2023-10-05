@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {Auth} from "../../components/AuthPanel";
-import {_props} from "../../properties";
 import {Spinner} from "../../components/utility/spinner/spinner";
+import {_props} from "../network";
 
 export let AuthContext = React.createContext<{
     isAuthenticated?: boolean,
@@ -15,7 +15,7 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
 
         })
             .catch((e) => {
-                console.error(e.data)
+                console.error(e)
                 setAuth(false)
                 stopload()
             })
@@ -25,7 +25,7 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
         setLoad(false)
      }
     function verifyAuthentication(sessionId?:string): void {
-        if(sessionId) window.sessionStorage.setItem('session',sessionId)
+        if(sessionId) window.localStorage.setItem('session',sessionId)
         _props._user().validateSession().then(() => {
             setAuth(true);
             stopload()

@@ -1,7 +1,6 @@
 import React, {ChangeEvent, FormEvent, useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../../services/context/auth.context";
-import {Spinner} from "../../utility/spinner/spinner";
-import {_props, reqType, service, serviceRoute} from "../../../properties";
+import {_props, reqType, service, serviceRoute} from "../../../services/network";
 
 interface LoginFromProps {
     toggleState: () => void
