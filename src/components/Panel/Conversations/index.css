@@ -1,6 +1,6 @@
 .groupListContainer {
     width: 100%;
-    border: 2px solid #d3d3d32e;
+    border: 1px solid rgba(92, 91, 91, 0.18);
     padding: 4px 8px;
     margin: 6px 0;
     color: white;
@@ -8,6 +8,7 @@
     flex-direction: row;
     align-items: center;
     border-radius: 28px;
+    cursor: pointer;
 }
 
 .groupLogo {

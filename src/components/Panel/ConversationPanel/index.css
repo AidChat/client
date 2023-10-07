@@ -27,7 +27,7 @@
 
 .searchBarContainer {
     height: 2.4rem;
-    border: 3px solid #d3d3d38f;
+    border: 2px solid rgba(92, 91, 91, 0.18);
     width: 100%;
     border-radius: 28px;
     display: flex;
@@ -60,4 +60,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor:pointer;
+    padding:0 8px;
+    border-radius: 50%;
+}
+.addGroupBtn:hover{
+    background:rgba(0, 0, 0, 0.24);
 }
