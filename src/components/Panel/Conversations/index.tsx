@@ -3,7 +3,7 @@ import './index.css'
 import {GroupIcon} from "../GroupsPanel";
 import {_props, reqType, service, serviceRoute} from "../../../services/network";
 
-export function GroupLists() {
+export function GroupList() {
     const [items,setItem] = useState([])
     useEffect(() => {
         _props._db(service.group).query(serviceRoute.group,undefined,reqType.get).then(response=>{
@@ -17,7 +17,7 @@ export function GroupLists() {
                 <div className={'info'}>
                     <div style={{fontSize:'14px'}}>{item.name}</div>
                     <div className={'flex conversationWrapper'} >{
-                        item.GroupDetail.tags.map((item: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, key: React.Key | null | undefined) =>
+                        item.GroupDetail.tags.map((item: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, key:number) =>
                             <div key={key} className={'keyword-tag'}>{item}</div>
                         )
                     }</div>
