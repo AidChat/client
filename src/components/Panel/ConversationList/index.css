@@ -1,6 +1,6 @@
 .groupListContainer {
     width: 100%;
-    border: 1px solid rgba(92, 91, 91, 0.18);
+    border: 1px solid rgba(133, 133, 133, 0.18);
     padding: 4px 8px;
     margin: 6px 0;
     color: white;
@@ -9,6 +9,10 @@
     align-items: center;
     border-radius: 28px;
     cursor: pointer;
+    transition: all 500ms linear;
+}
+.groupListContainer:hover{
+    transform: scale(1.01);
 }
 
 .groupLogo {

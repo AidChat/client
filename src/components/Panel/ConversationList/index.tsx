@@ -1,18 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './index.css'
 import {GroupIcon} from "../GroupsPanel";
 import {_props, reqType, service, serviceRoute} from "../../../services/network";
+import {ShellContext} from "../../../services/context/shell.context";
 
 export function GroupList() {
     const [items,setItem] = useState([])
+    const {_setGroupId} = useContext(ShellContext);
     useEffect(() => {
         _props._db(service.group).query(serviceRoute.group,undefined,reqType.get).then(response=>{
-            setItem(response.data)
+           setItem(response.data)
         })
     }, []);
+    const handleGroupSelection = (groupId:string) : void=>{
+      _setGroupId(groupId);
+    }
+
     return (<>
         {items.map((item : any) =>
-            <div className={'groupListContainer '}>
+            <div className={'groupListContainer shadow-box '} onClick={()=>handleGroupSelection(item.id)}>
                 <div className={' groupLogo'}><GroupIcon/></div>
                 <div className={'info'}>
                     <div style={{fontSize:'14px'}}>{item.name}</div>

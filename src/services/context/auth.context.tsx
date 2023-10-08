@@ -8,7 +8,8 @@ export let AuthContext = React.createContext<{
     verifyAuthentication: (session_id?: string) => void
 } | undefined>(undefined);
 export const AuthContextProvider = ({children}: { children: ReactElement[] | ReactElement }) => {
-    let [isAuthenticated, setAuth] = useState(false)
+    let [isAuthenticated, setAuth] = useState(false);
+
     useEffect(() => {
         _props._user().validateSession().then((d) => {
             verifyAuthentication()

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './index.css'
 import {RiSearchLine} from "react-icons/ri";
 import {MdGroupAdd} from "react-icons/md";
-import {GroupList} from "../Conversations";
+import {GroupList} from "../ConversationList";
 import {DialogPanel} from "../../DialogPanel";
 import {GroupForm} from "../GroupForm";
 import {Logo} from "../../utility/logo";
@@ -22,7 +22,7 @@ export function ContactPanel() {
 }
 
 function SearchContact() {
-    return (<div className={'searchBarContainer'}>
+    return (<div className={'searchBarContainer shadow-box'}>
         <div><RiSearchLine color={'#398378'} size={20}/></div>
         <div>
             <input className={'inputEle'} placeholder={'Search for groups'}/>

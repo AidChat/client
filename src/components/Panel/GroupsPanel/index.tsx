@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import groupsImg from './../../../assets/svg/groups.svg';
 import './index.css'
 import {_props} from "../../../services/network";
+import {ShellContext} from "../../../services/context/shell.context";
 
 export function ChatGroups() {
     let groups: any[] = [];
@@ -27,10 +28,12 @@ export function GroupIcon() {
 
 export function UserIcon() {
     const [user, setUser] = useState<{ id: string, email: string, name: string } | null>(null);
+    const {_setUserId} = useContext(ShellContext)
     useEffect(() => {
         _props._user().get().then((result: any) => {
             let data: { id: string, email: string, name: string } = result.data;
             setUser(data)
+            _setUserId(data.id);
         })
     }, []);
     return (
