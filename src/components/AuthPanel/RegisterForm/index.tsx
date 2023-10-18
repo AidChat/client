@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FormEvent, FormEventHandler, FormHTMLAttributes, useEffect, useState} from 'react';
-import {_props, reqType, service, serviceRoute} from "../../../services/network";
+import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 
 
 interface RegisterFormProps {

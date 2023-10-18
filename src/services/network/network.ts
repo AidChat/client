@@ -27,8 +27,7 @@ export const _props = {
                                 resolve(response.data.data.data);
                             })
                             .catch((reason) => {
-                                console.error(reason);
-                                reject(reason?.response?.data);
+                                reject(reason);
                             });
                         break;
                     case reqType.put:
@@ -111,5 +110,5 @@ export enum serviceRoute {
 export enum service {
     authentication = 'http://127.0.0.1:8999/v1',
     group = 'http://127.0.0.1:8901/v1',
-    messaging = 'http://127.0.0.1:8900/v1'
+    messaging = 'http://127.0.0.1:8900'
 }

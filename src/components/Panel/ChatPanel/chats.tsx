@@ -3,46 +3,101 @@ import emptyChats from './../../../assets/svg/empty-chats.svg'
 import {getString} from "../../../utils/strings";
 import {IoSend} from "react-icons/io5";
 import {FcAddImage} from "react-icons/fc";
-import {useContext, useEffect, useState} from "react";
-import {_props, reqType, service, serviceRoute} from "../../../services/network";
+import {
+    ChangeEvent,
+    useContext,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 import groupsImg from './../../../assets/svg/groups.svg';
 import {formatTime} from "../../../utils/functions";
 import {Spinner} from "../../utility/spinner/spinner";
+import {SocketEmitters, SocketListeners} from "../../../utils/interface";
+
 
 export function Chats() {
-    let [messages, _messages] = useState<MessageInterface[] | null>(null);
-    const [group, _group] = useState<{ tags: string[] }>();
-    const {groupId} = useContext(ShellContext);
-    const [loading,_loading] = useState<boolean>(false);
+    let [messages, _messages] = useState<any[] | null>(null);
+    const [group, _group] = useState<{ tags: string[], Socket: { id: number, socket_id: string },User:{name:string, email:string}[] } | null>(null);
+    const {groupId, socket, _socketId, socketId} = useContext(ShellContext);
+    const [loading, _loading] = useState<boolean>(false);
+    const [activity, _activity] = useState<string>('');
+
+    function handleSubmit(s: string) {
+        socket?.emit(SocketEmitters._MESSAGE, {text: s});
+    }
+
     useEffect(() => {
+        window.setTimeout(() => {
+            _activity('');
+        }, 5000)
+    }, [activity]);
+
+    useEffect(() => {
+        if (groupId && socketId) {
+            socket?.emit(SocketEmitters._DISCONNECT, {socketId: socketId})
+        }
         if (groupId) {
+            _activity('')
             _loading(true);
             _messages(null);
-            _group(undefined)
+            _group(null);
             _props._db(service.group).query(serviceRoute.group, {}, reqType.get, groupId)
                 .then(result => {
                     _loading(false)
                     _group(result.data);
+                    _socketId(result.data.Socket.socket_id);
+                    socket?.connect();
+                    socket?.emit('JOIN', {socketId: result.data.Socket.socket_id});
                 })
             _props._db(service.group).query(serviceRoute._groupMessages, {}, reqType.get, groupId)
                 .then(result => {
                     _loading(false);
                     _messages(result.data);
                 })
+
+
+            socket?.on(SocketListeners.MESSAGE, (data: any) => {
+                _messages((prevMessage) => {
+                    if (prevMessage === null) {
+                        return [data];
+                    } else {
+                        return [...prevMessage, data];
+                    }
+                });
+            })
+
+            socket?.on(SocketListeners.TYPING, ({name}: { name: string }) => {
+                if (group) {
+                    const username = group.User.filter((item: { email: string; }) => item.email == name).map((item: {
+                        name: any;
+                    }) => item.name)
+                    _activity(username.toString().toUpperCase() + ' is Typing')
+                }
+
+            })
+        }
+        return () => {
+            socket.off(SocketListeners.MESSAGE);
+            socket.off(SocketListeners.TYPING);
         }
     }, [groupId]);
+
     return (<div className={'chatContainer shadow-box'}>
         <div className={'wrapper'}>
             {messages
                 ?
-                <ConversationWrapper messages={messages} group={group}/>
+                <ConversationWrapper messages={messages} group={group} activity={activity} send={(s: string) => {
+                    handleSubmit(s)
+                }}/>
                 :
-                loading ? <Spinner />:
-                <div className={'noChatContainer'}>
-                    <div className={'emptyImage'}><img src={emptyChats} alt={'No Chats'}/></div>
-                    <div className={'font-primary'}>{getString(2)}</div>
-                </div>}
+                loading ? <Spinner/> :
+                    <div className={'noChatContainer'}>
+                        <div className={'emptyImage'}><img src={emptyChats} alt={'No Chats'}/></div>
+                        <div className={'font-primary'}>{getString(2)}</div>
+                    </div>}
         </div>
     </div>)
 }
@@ -63,13 +118,62 @@ interface MessageContent {
     content: string
 }
 
-export function ConversationWrapper({messages, group}: {
+export function ConversationWrapper({messages, group, activity, send}: {
     messages: MessageInterface[],
     group: any,
+    activity: string,
+    send: (s: string) => void
 }) {
     const [state, setState] = useState<{ tags?: string[], messages: MessageInterface[] }>({
         messages
-    })
+    });
+    const {socket} = useContext(ShellContext);
+    const [message, _message] = useState('');
+    const [typing, _typing] = useState<boolean>(false);
+
+    function handleChange(e: ChangeEvent<HTMLInputElement>) {
+        _message(e.target.value)
+        if (!typing) {
+            _typing(true);
+            socket.emit(SocketEmitters._TYPING)
+        }
+    }
+
+    useEffect(() => {
+        if (typing) {
+            window.setTimeout(() => {
+                _typing(false);
+            }, 10000)
+        }
+    }, [typing]);
+
+    useEffect(() => {
+        setState({messages: messages})
+    }, [messages]);
+
+    function handleSubmit(e: any) {
+        e.preventDefault();
+        send(message)
+        _message('')
+    }
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const scrollToBottom = () => {
+        if (containerRef.current) {
+            containerRef.current.scrollTo({
+                top: containerRef.current.scrollHeight,
+                behavior: 'smooth',
+            });
+        }
+    };
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+    }, []);
+    useEffect(() => {
+        scrollToBottom();
+    }, [state.messages]);
     const {userId} = useContext(ShellContext);
     return (
         <div className={'convoPanel'}>
@@ -99,8 +203,12 @@ export function ConversationWrapper({messages, group}: {
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <div className={'convoHistory'}>
+                <div style={{textAlign: 'center'}} className={
+                    'font-primary'
+                }>{activity}</div>
+                <div className={'convoHistory'} ref={containerRef}>
                     {state.messages?.map((item: MessageInterface, index: number) => (
                         <div key={index}
                              className={`messageWrapper ${item?.senderId === userId && 'selfMessage'}`}>
@@ -124,14 +232,20 @@ export function ConversationWrapper({messages, group}: {
                     ))}
                 </div>
                 <div></div>
-                <div className={'optionsPanel'}>
-                    <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
-                    <div className={'inputWrapper'}><input type={'text'} className={'sendInput'}
-                                                           placeholder={'Type something here...'}/></div>
-                    <div>
-                        <div><IoSend size={'2rem'} color={'#398378'}/></div>
+                <form onSubmit={handleSubmit}>
+                    <div className={'optionsPanel'}>
+
+                        <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
+                        <div className={'inputWrapper'}><input onChange={handleChange} name={'message'} type={'text'}
+                                                               className={'sendInput'}
+                                                               placeholder={'Type something here...'} value={message}/>
+                        </div>
+                        <div>
+                            <IoSend size={'2rem'} color={'#398378'} onClick={handleSubmit}/>
+                        </div>
+
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     )

@@ -47,7 +47,7 @@
     height: 100%;
     width: 100%;
     flex: 10;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .optionsPanel {
@@ -181,9 +181,11 @@
     position: relative;
 }
 .usernameImage{
-    height:30px;
-    width: 40px;
+    height:25px;
+    width: 25px;
     border-radius: 50%;
+    border:1px solid white;
+    margin:2px;
 }
 .username{
     font-size: 12px;

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FormEvent, useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../../services/context/auth.context";
-import {_props, reqType, service, serviceRoute} from "../../../services/network";
+import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
+import {Spinner} from "../../utility/spinner/spinner";
 
 interface LoginFromProps {
     toggleState: () => void
@@ -14,7 +15,7 @@ export function LoginForm({toggleState}: LoginFromProps) {
         extend: false
     })
     const [error, setError] = useState(null);
-
+    const [loading, _loading] = useState(false);
     useEffect(() => {
         window.setTimeout(() => {
             setError(null)
@@ -31,14 +32,19 @@ export function LoginForm({toggleState}: LoginFromProps) {
 
     function handleLogin(event: FormEvent) {
         event.preventDefault()
+        _loading(true)
         _props._db(service.authentication).query(serviceRoute.login, userdata, reqType.post).then(
-            response =>{
+            response => {
                 console.log(response)
                 context?.verifyAuthentication(response.session.session_id)
+                _loading(false);
             }
         )
             .catch((reason) => {
-                setError(reason.message)
+                console.log(reason)
+                setError(reason?.message)
+                _loading(false);
+
             })
     }
 
@@ -46,7 +52,7 @@ export function LoginForm({toggleState}: LoginFromProps) {
     return (
         <div className={'loginFormWrapper'}>
             <form style={{width: '80%'}} onSubmit={handleLogin}>
-                <div className={'logincontainer color-green'} style={{textAlign:'center'}}>{error}</div>
+                <div className={'logincontainer color-green'} style={{textAlign: 'center'}}>{error}</div>
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Email</label>
                     <div className={'inputWrapper-icon'}>
@@ -69,8 +75,9 @@ export function LoginForm({toggleState}: LoginFromProps) {
                     </div>
                 </div>
                 <div className={'logincontainer flex-center'}>
-                    <input type={'submit'} className={'btn btn-primary w50'} value={'Login'}></input>
-                </div>
+                    {loading ? <Spinner></Spinner> :
+                        <input type={'submit'} className={'btn btn-primary w50'} value={'Login'}></input>
+                    }</div>
                 <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
                     <div className={'font-primary'} onClick={() => {
                         toggleState()

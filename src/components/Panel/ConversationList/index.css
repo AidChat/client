@@ -9,10 +9,10 @@
     align-items: center;
     border-radius: 28px;
     cursor: pointer;
-    transition: all 500ms linear;
+    transition: all 100ms linear;
 }
 .groupListContainer:hover{
-    transform: scale(1.01);
+    transform: scale(1.005);
 }
 
 .groupLogo {
@@ -44,5 +44,5 @@
 }
 .conversationWrapper{
     width: 100%;
-    overflow-x:scroll;
+    overflow-x:auto;
 }

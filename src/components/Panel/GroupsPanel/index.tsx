@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import groupsImg from './../../../assets/svg/groups.svg';
 import './index.css'
-import {_props} from "../../../services/network";
+import {_props} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 
 export function ChatGroups() {

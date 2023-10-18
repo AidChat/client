@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {Auth} from "../../components/AuthPanel";
 import {Spinner} from "../../components/utility/spinner/spinner";
-import {_props} from "../network";
+import {_props} from "../network/network";
 
 export let AuthContext = React.createContext<{
     isAuthenticated?: boolean,
