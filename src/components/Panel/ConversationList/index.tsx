@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './index.css'
 import {GroupIcon} from "../GroupsPanel";
-import {_props, reqType, service, serviceRoute} from "../../../services/network";
 import {ShellContext} from "../../../services/context/shell.context";
+import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 
 export function GroupList() {
     const [items,setItem] = useState([])
