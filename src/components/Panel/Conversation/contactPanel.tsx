@@ -30,18 +30,27 @@ function SearchContact() {
     </div>)
 }
 
-export function CreateGroup() {
-    const [showDialog, setDialogVisibility] = useState<boolean>(false);
-    return (
-        <div  className={'addGroupBtn'} onClick={() => {
-            setDialogVisibility(!showDialog);
-        }}>
-            <MdGroupAdd id={'DialogOpenIcon'} color={''} size={24}>
-            </MdGroupAdd>
-            <DialogPanel open={showDialog} header={'Add Group'} onClose={(B) => {
-                setDialogVisibility(B);
-            }} BodyEle={<GroupForm/>}/>
-        </div>
-    )
-}
 
+function CreateGroup() {
+    const [showDialog, setDialogVisibility] = useState(false);
+
+    const handleDialogOpen = () => {
+        setDialogVisibility(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogVisibility(false);
+    };
+
+    return (
+        <div className="addGroupBtn">
+            <MdGroupAdd id="DialogOpenIcon" size={24} onClick={handleDialogOpen} />
+                <DialogPanel
+                    open={showDialog}
+                    header="Add Group"
+                    onClose={handleDialogClose}
+                    BodyEle={<GroupForm onSubmit={()=>{handleDialogClose()}}  />}
+                />
+        </div>
+    );
+}

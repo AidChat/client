@@ -33,6 +33,20 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
             'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : ''
         }
     }));
+    const [trigger,_trigger] = useState<boolean>(false);
+    // TODO
+    /*
+    Make a function that takes some args and trigger data refresh if its calles
+     */
+    function ping(s?:string){
+       _trigger(true);
+    }
+
+    useEffect(() => {
+        if(trigger){
+            _trigger(false)
+        }
+    }, [trigger]);
 
     useEffect(() => {
         if(socketId){
@@ -55,7 +69,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
 
     return (
         <ShellContext.Provider
-            value={{snackbarProps, showSnackbar, _setGroupId, groupId, _setUserId, userId, socket, _socketId,socketId}}>
+            value={{ping,trigger,snackbarProps, showSnackbar, _setGroupId, groupId, _setUserId, userId, socket, _socketId,socketId}}>
             {children}
         </ShellContext.Provider>
     )

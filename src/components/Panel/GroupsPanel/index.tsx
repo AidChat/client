@@ -39,7 +39,7 @@ export function UserIcon() {
     return (
         user ?
             <div style={{textAlign: 'center', width: '100%'}} className={'usernameWrapper'}>
-                <div style={{textAlign: 'center', height: 45, width: 45}} className={'item-wrapper'}>
+                <div style={{textAlign: 'center', height: 40, width: 40}} className={'item-wrapper'}>
                     <img src={groupsImg} alt={'profile icon'}/>
 
                 </div>

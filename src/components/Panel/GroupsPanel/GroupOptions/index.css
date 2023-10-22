@@ -1,0 +1,11 @@
+.item-option-active{
+    border-bottom: 2px solid lightgray;
+}
+.options-wrapper div{
+    width: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+.members-container{
+    position: relative;
+}

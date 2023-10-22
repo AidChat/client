@@ -9,7 +9,8 @@ export interface UserProps{
 export enum SocketEmitters {
     _MESSAGE = "_MESSAGE",
     _DISCONNECT = '_DISCONNECT',
-    _TYPING = '_TYPING'
+    _TYPING = '_TYPING',
+    _JOIN = '_JOIN'
 
 }
 

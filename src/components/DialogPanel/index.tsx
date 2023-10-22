@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {ReactElement} from 'react';
 import {IoMdClose} from "react-icons/io";
 import './index.css'
 
@@ -10,13 +10,9 @@ interface DialogPanelProps {
 }
 
 export function DialogPanel(props: DialogPanelProps) {
-    const [open,setOpen] = useState(false);
-    useEffect(() => {
-        setOpen(props.open);
-    }, [props.open]);
     return (
         <div className={'dialogContainer'}>
-        <dialog className={'dialog'} open={open}>
+        <dialog className={'dialog'} open={props.open}>
            <div className={'dialogWrapper'}>
             <div className={'dialogHeader'}>
                 <div className={'dialogHeaderText'}>

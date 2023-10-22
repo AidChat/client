@@ -7,6 +7,8 @@ import {_props, reqType, service, serviceRoute} from "../../../services/network/
 export function GroupList() {
     const [items,setItem] = useState([])
     const {_setGroupId} = useContext(ShellContext);
+    const {trigger} = useContext(ShellContext);
+
     useEffect(() => {
         _props._db(service.group).query(serviceRoute.group,undefined,reqType.get).then(response=>{
            setItem(response.data)
@@ -15,7 +17,13 @@ export function GroupList() {
     const handleGroupSelection = (groupId:string) : void=>{
       _setGroupId(groupId);
     }
-
+    useEffect(() => {
+        if(trigger){
+            _props._db(service.group).query(serviceRoute.group,undefined,reqType.get).then(response=>{
+                setItem(response.data)
+            })
+        }
+    }, [trigger]);
     return (<>
         {items.map((item : any) =>
             <div className={'groupListContainer shadow-box '} onClick={()=>handleGroupSelection(item.id)}>

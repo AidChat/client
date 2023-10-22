@@ -16,11 +16,17 @@ import groupsImg from './../../../assets/svg/groups.svg';
 import {formatTime} from "../../../utils/functions";
 import {Spinner} from "../../utility/spinner/spinner";
 import {SocketEmitters, SocketListeners} from "../../../utils/interface";
+import {GiHamburgerMenu} from "react-icons/gi";
+import {GroupOptions} from "../GroupsPanel/GroupOptions";
 
 
 export function Chats() {
     let [messages, _messages] = useState<any[] | null>(null);
-    const [group, _group] = useState<{ tags: string[], Socket: { id: number, socket_id: string },User:{name:string, email:string}[] } | null>(null);
+    const [group, _group] = useState<{
+        tags: string[],
+        Socket: { id: number, socket_id: string },
+        User: { name: string, email: string }[]
+    } | null>(null);
     const {groupId, socket, _socketId, socketId} = useContext(ShellContext);
     const [loading, _loading] = useState<boolean>(false);
     const [activity, _activity] = useState<string>('');
@@ -50,7 +56,7 @@ export function Chats() {
                     _group(result.data);
                     _socketId(result.data.Socket.socket_id);
                     socket?.connect();
-                    socket?.emit('JOIN', {socketId: result.data.Socket.socket_id});
+                    socket?.emit(SocketEmitters._JOIN, {socketId: result.data.Socket.socket_id});
                 })
             _props._db(service.group).query(serviceRoute._groupMessages, {}, reqType.get, groupId)
                 .then(result => {
@@ -110,6 +116,10 @@ interface MessageInterface {
     messageContentId: number,
     senderId: number,
     status: string,
+    User: {
+        name: string,
+        email: string
+    }
 }
 
 interface MessageContent {
@@ -130,6 +140,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
     const {socket} = useContext(ShellContext);
     const [message, _message] = useState('');
     const [typing, _typing] = useState<boolean>(false);
+    const [options, showOptions] = useState<boolean>(false)
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         _message(e.target.value)
@@ -157,6 +168,11 @@ export function ConversationWrapper({messages, group, activity, send}: {
         _message('')
     }
 
+    // TODO
+    /*
+    Add one more section to show Requests
+     */
+
     const containerRef = useRef<HTMLDivElement | null>(null);
     const scrollToBottom = () => {
         if (containerRef.current) {
@@ -174,79 +190,89 @@ export function ConversationWrapper({messages, group, activity, send}: {
     useEffect(() => {
         scrollToBottom();
     }, [state.messages]);
+
     const {userId} = useContext(ShellContext);
     return (
         <div className={'convoPanel'}>
-            <div className={'wrapperContainer'}>
-                <div className={'tagsWrapper'}>
-                    <div className={'tagsWrapperName'}>{group?.name}</div>
-                    <div style={{width: '100%', flex: 8, position: 'relative'}}>
-                        <div className={'infoPanel font-primary'}>{group?.User.map((item: {
-                            name: string,
-                            email: string
-                        }) => (
-                            <div className={'usernamewrapper'}>
-                                <div className={'usernameImage'}>
-                                    <img src={groupsImg} style={{height: '100%', width: '100%', borderRadius: "50%"}}
-                                         alt={'user-image'}/>
-                                </div>
-                                <div className={'username tooltip-selector'}>
-                                    {item.name.toUpperCase()}
-                                    <div id="tooltip" className="left">
-                                        <div className={"tooltip-arrow"}/>
-                                        <div className={"tooltip-label"}>{item.email}</div>
+            {!options ?
+                <div className={'wrapperContainer'}>
+                    <div className={'tagsWrapper'}>
+                        <div className={'tagsWrapperName'}>{group?.name}</div>
+                        <div style={{width: '100%', flex: 8, position: 'relative'}}>
+                            <div className={'infoPanel font-primary'}>{group?.User.map((item: {
+                                name: string,
+                                email: string
+                            }) => (
+                                <div className={'usernamewrapper'}>
+                                    <div className={'usernameImage'}>
+                                        <img src={groupsImg}
+                                             style={{height: '100%', width: '100%', borderRadius: "50%"}}
+                                             alt={'user-image'}/>
                                     </div>
+                                    <div className={'username tooltip-selector'}>
+                                        {item.name.toUpperCase()}
+                                        <div id="tooltip" className="left">
+                                            <div className={"tooltip-arrow"}/>
+                                            <div className={"tooltip-label"}>{item.email}</div>
+                                        </div>
+                                    </div>
+                                </div>))}
+                                <div className={'usernamewrapper addMoreBtn'}>
+                                    + Add More
                                 </div>
-                            </div>))}
-                            <div className={'usernamewrapper addMoreBtn'}>
-                                + Add More
                             </div>
+                        </div>
+                        <div style={{marginRight: ' 18px'}}>
+                            <GiHamburgerMenu size={24} color={'white'} onClick={()=>{showOptions(true)}} style={{cursor: 'pointer'}}/>
                         </div>
                     </div>
-
-                </div>
-                <div style={{textAlign: 'center'}} className={
-                    'font-primary'
-                }>{activity}</div>
-                <div className={'convoHistory'} ref={containerRef}>
-                    {state.messages?.map((item: MessageInterface, index: number) => (
-                        <div key={index}
-                             className={`messageWrapper ${item?.senderId === userId && 'selfMessage'}`}>
-                            <div className={'font-primary miscContainer'}>
-                                <div
-                                    className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
-                                    <img style={{height: '100%', width: '100%', borderRadius: '50%'}}
-                                         src={groupsImg}/>
+                    <div style={{textAlign: 'center'}} className={
+                        'font-primary'
+                    }>{activity}</div>
+                    <div className={'convoHistory'} ref={containerRef}>
+                        {state.messages?.map((item: MessageInterface, index: number) => (
+                            <div key={index}
+                                 className={`messageWrapper ${item?.senderId === userId && 'selfMessage'}`}>
+                                <div className={'font-primary miscContainer'}>
+                                    <div
+                                        className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
+                                        <img style={{height: '100%', width: '100%', borderRadius: '50%'}}
+                                             src={groupsImg}/>
+                                    </div>
+                                    {(item?.senderId != userId) && item?.User.name.toUpperCase()}
                                 </div>
-                                {(item?.senderId === userId) && item?.senderId}
-                            </div>
-                            <div className={'contentWrapper'}>
-                                <div
-                                    className={`messageBubble ${item?.senderId === userId && 'selfMessageBubble'}  `}>
-                                    {item?.MessageContent?.content}
+                                <div className={'contentWrapper'}>
+                                    <div
+                                        className={`messageBubble ${item?.senderId === userId && 'selfMessageBubble'}  `}>
+                                        {item?.MessageContent?.content}
+                                    </div>
+
                                 </div>
-
+                                <div className={'font-primary miscContainer '}>{formatTime(item.created_at)}</div>
                             </div>
-                            <div className={'font-primary miscContainer '}>{formatTime(item.created_at)}</div>
-                        </div>
-                    ))}
-                </div>
-                <div></div>
-                <form onSubmit={handleSubmit}>
-                    <div className={'optionsPanel'}>
-
-                        <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
-                        <div className={'inputWrapper'}><input onChange={handleChange} name={'message'} type={'text'}
-                                                               className={'sendInput'}
-                                                               placeholder={'Type something here...'} value={message}/>
-                        </div>
-                        <div>
-                            <IoSend size={'2rem'} color={'#398378'} onClick={handleSubmit}/>
-                        </div>
-
+                        ))}
                     </div>
-                </form>
-            </div>
+                    <div></div>
+                    <form onSubmit={handleSubmit}>
+                        <div className={'optionsPanel'}>
+
+                            <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
+                            <div className={'inputWrapper'}><input onChange={handleChange} name={'message'}
+                                                                   type={'text'}
+                                                                   className={'sendInput'}
+                                                                   placeholder={'Type something here...'}
+                                                                   value={message}/>
+                            </div>
+                            <div>
+                                <IoSend size={'2rem'} color={'#398378'} onClick={handleSubmit}/>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                : <>
+<GroupOptions groupId={group.id} showChat={()=>{showOptions(false)}} />
+                </>}
         </div>
     )
 }
