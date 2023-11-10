@@ -1,0 +1,39 @@
+.requestWrapper {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin:14px 8px;
+}
+
+.inputwrapper {
+    flex: 1;
+    width: 100%;
+}
+
+.sendInviteInput {
+    width: 100%;
+    background: transparent;
+    border: 2px solid lightgrey;
+    height: 40px;
+    border-radius: 50px;
+    color: white;
+    padding :0 12px;
+}
+
+.sendInviteBtn {
+    width: 10em;
+}
+
+.sendInviteBtn .btn-custom {
+    width: 100%;
+    margin: 4px 0;
+    color: black;
+    cursor: pointer;
+}
+.noRequestWrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

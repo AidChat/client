@@ -122,11 +122,14 @@ body {
 .w50 {
     width: 50%;
 }
+.w25 {
+    width: 25%;
+}
 
 #tooltip {
     position: absolute;
     left: 0px;
-    top: 32px;
+    top: 18px;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 400;

@@ -57,7 +57,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                     }
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 })
         }
     }

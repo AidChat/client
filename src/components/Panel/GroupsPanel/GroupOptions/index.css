@@ -8,4 +8,6 @@
 }
 .members-container{
     position: relative;
+    heighht:100%;
+    overflow-y: auto;
 }

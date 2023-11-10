@@ -168,10 +168,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
         _message('')
     }
 
-    // TODO
-    /*
-    Add one more section to show Requests
-     */
+
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const scrollToBottom = () => {

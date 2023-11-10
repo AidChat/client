@@ -33,6 +33,7 @@ export function UserIcon() {
         _props._user().get().then((result: any) => {
             let data: { id: string, email: string, name: string } = result.data;
             setUser(data)
+            window.localStorage.setItem('_user',JSON.stringify(data));
             _setUserId(data.id);
         })
     }, []);

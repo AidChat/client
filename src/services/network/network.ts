@@ -58,6 +58,7 @@ export const _props = {
         return {query};
     },
     _user: function () {
+
         const validateSession = () => {
             if (window.localStorage.getItem('session')) {
                 this.session = window.localStorage.getItem('session');
@@ -86,6 +87,7 @@ export const _props = {
         }
 
 
+
         return {validateSession, get};
     },
 };
@@ -103,7 +105,10 @@ export enum serviceRoute {
     session = '/auth/session',
     group = '/group',
     user = '/user',
-    _groupMessages = '/group/messages'
+    _groupMessages = '/group/messages',
+    groupUsers = '/group/users',
+    groupInvite = '/group/invite',
+
 }
 
 
