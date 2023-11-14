@@ -3,9 +3,10 @@ import './index.css'
 import {groupTokensArray} from "../../../assets/data";
 import {Search} from "../../utility/Select";
 import {AiOutlineCloseCircle} from "react-icons/ai";
-import {Snackbar} from "../../utility/Snackbar";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
+import Snackbar from "../../utility/Snackbar";
+import {Spinner} from "../../utility/spinner/spinner";
 
 interface _gfIterface {
     onSubmit?: () => void,
@@ -13,23 +14,27 @@ interface _gfIterface {
 }
 
 interface GroupFormStateInterface {
-    name: string | null,
-    description: string | null,
-    keywords: string[]
+    name: string ,
+    description: string,
+    keywords: string[],
+    requestee: string
 }
 
 export function GroupForm({onSubmit, onError}: _gfIterface) {
     const [state, _state] = useState<GroupFormStateInterface>({
-        name: null,
-        description: null,
+        name: '',
+        description: '',
         keywords: [],
+        requestee: '',
 
     })
     const {ping} = useContext(ShellContext)
     const [message, _message] = useState<string | null>(null);
+    const [loading, _loading] = useState<boolean>(false);
 
     function resetState() {
-        _state({name: null, description: null, keywords: []});
+        _state({name: '', description: '', keywords: [], requestee: ''});
+        _loading(false)
     }
 
     function handleKeywords(s: string) {
@@ -43,20 +48,26 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
 
     function handleSubmit(e?: { preventDefault: () => void; }) {
         e?.preventDefault();
+
         if (!state.name || !state.description || !state.keywords.length) {
             _message("Please be more descriptive. This would really have a great impact.")
             window.setTimeout(() => {
                 _message(null)
             }, 10000)
         } else {
+            _loading(true)
             _props._db(service.group).query(serviceRoute.group, state, reqType.post, undefined)
                 .then(result => {
                     if (onSubmit) {
+                        resetState();
                         ping();
                         onSubmit();
+
                     }
+                    _loading(false)
                 })
                 .catch(error => {
+                    _loading(false);
                     console.error(error);
                 })
         }
@@ -75,12 +86,15 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
         }
     }, []);
     return (<>
-            {message && <Snackbar message={message}/>}
+            {message && <Snackbar message={message} onClose={() => {
+                _message('')
+            }}/>}
+            {loading && <Spinner/>}
             <div className={'groupFormContainer'}>
                 <div className={'groupFormEleWrapper'}>
                     <form onSubmit={handleSubmit}>
                         <div className={'formEleWrapper'}>
-                            <input name={'name'} onChange={handleChange} required={true}
+                            <input name={'name'} onChange={handleChange} required={true} value={state.name}
                                    className={'borderRadius-light custom-input'} type={'text'}
                                    placeholder={'Choose a name that explains the purpose'}/>
                         </div>
@@ -100,15 +114,20 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                         </div>
                         <div className={'formEleWrapper'}>
                             <input required={true} name={'description'} onChange={handleChange}
+                                   value={state.description}
                                    className={'borderRadius-light custom-input-people borderRadius-heavy'} type={'text'}
                                    placeholder={'Write some description about your group'}/>
 
                             <div className={'sendInviteWrapper block'}>
                                 <div className={'brick'}>
-                                    <input type={'email'} required className={'borderRadius-light custom-input w100'}
+                                    <input type={'email'} name={'requestee'} onChange={handleChange}
+                                           value={state.requestee} required
+                                           className={'borderRadius-light custom-input w100'}
                                            placeholder={'Enter his/her email'}/>
                                 </div>
-                                <div className={'btn btn-round-primary'}>
+                                <div className={'btn btn-round-primary'} onClick={() => {
+                                    _message('Invitation will be sent post group creation.')
+                                }}>
                                     Send invite
                                 </div>
                             </div>
@@ -117,6 +136,9 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                             <div className={'btn btn-round-secondary'} onClick={(e) => handleSubmit()}>Create</div>
                         </div>
                     </form>
+                    {message && <Snackbar message={message} onClose={() => {
+                        _message(null)
+                    }}/>}
                 </div>
             </div>
         </>

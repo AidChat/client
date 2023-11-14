@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Spinner} from "../../../utility/spinner/spinner";
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
+import Snackbar from "../../../utility/Snackbar";
 
 export function Settings(props: { groupId: string }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
@@ -17,9 +18,7 @@ export function Settings(props: { groupId: string }) {
             {
                 data ?
                     <div className={'font-primary'}>
-
                         <GroupSettingContainer groupDetails={data}/>
-
                     </div>
                     : <Spinner/>
             }
@@ -29,24 +28,53 @@ export function Settings(props: { groupId: string }) {
 
 function GroupSettingContainer(props: { groupDetails: GroupDetailsInt }) {
     const [isOwner, _updateOwnership] = useState(false);
+    const [state, setState] = useState<{ name: string, description: string,id:number     }>({
+        name: props.groupDetails.name,
+        description:props.groupDetails.GroupDetail.description,
+        id:props.groupDetails.id
+    });
+    const [message,_message] = useState<string | null>(null);
+    const [loading, _loading] = useState<boolean>(false);
     useEffect(() => {
-        _props._user().get().then((response: any) => {
-            if (response.data) {
-                _updateOwnership(response.data.role === 'OWNER');
-            }
-        })
+        if (props.groupDetails.Role[0].type === 'OWNER') {
+            _updateOwnership(true);
+        }
     }, []);
+
+    function handleUpdate(e: any) {
+        console.log(e.target.value)
+        setState({...state, [e.target.name]: e.target.value})
+    }
+
+    function handleGroupUpdate() {
+        _loading(true);
+        _props._db(service.group).query(serviceRoute.group, state, reqType.put, props.groupDetails.id)
+            .then(result => {
+                console.log(result)
+                _loading(false);
+                _message('Group updated successfully')
+            })
+            .catch(error=>{
+                console.log(error);
+               _message("Failed to update group");
+            })
+    }
+
     return (
         <>
+            {message && <Snackbar message={message} onClose={()=>{_message(null)}} />}
+            {loading && <Spinner/>}
             <div className={'groupContainer'}>
                 <div className={'settings-item-container nameContainer'}>
                     <div className={'center w25'}>Name</div>
-                    <input className={'settingInput w50'} value={props.groupDetails.name} disabled={isOwner}/>
+                    <input className={'settingInput w50'} onChange={handleUpdate} name={'name'}
+                           value={state.name} disabled={!isOwner}/>
                 </div>
                 <div className={'settings-item-container descContainer'}>
                     <div className={'center w25'}>Description</div>
-                    <textarea className={'settingInput w100'} disabled={isOwner}
-                              value={props.groupDetails.GroupDetail.description}/>
+                    <textarea className={'settingInput w100'} onChange={handleUpdate} name={'description'}
+                              disabled={!isOwner}
+                              value={state.description}/>
 
                 </div>
                 <div className={'settings-item-container descContainer'}>
@@ -56,13 +84,13 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt }) {
                     <div className={'settings-item-container updateContainer'}>
                         <div className={'center w25'}></div>
                         <div>
-                            <div className={'btn btn-primary btn-custom'}> Update</div>
+                            <div className={'btn btn-primary btn-custom'} onClick={handleGroupUpdate}> Update</div>
                         </div>
                     </div>
                     <div className={'settings-item-container dangerContainer'}>
                         <div className={'center w25'}></div>
                         <div>
-                            <div className={'btn btn-primary btn-custom'}> Delete Group</div>
+                            <div className={'btn btn-primary btn-custom'}> Request group delete</div>
                         </div>
                     </div>
                 </>
@@ -83,4 +111,8 @@ interface GroupDetailsInt {
         description: string,
         tags: string[]
     }
+    Role: {
+        id: number,
+        type: "MEMBER" | 'OWNER' | 'ADMIN'
+    }[]
 }

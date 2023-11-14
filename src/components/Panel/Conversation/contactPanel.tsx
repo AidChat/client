@@ -3,7 +3,7 @@ import './index.css'
 import {RiSearchLine} from "react-icons/ri";
 import {MdGroupAdd} from "react-icons/md";
 import {GroupList} from "../ConversationList";
-import {DialogPanel} from "../../DialogPanel";
+import {DialogPanel} from "../../Dialog";
 import {GroupForm} from "../GroupForm";
 import {Logo} from "../../utility/logo";
 

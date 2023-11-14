@@ -154,7 +154,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
         if (typing) {
             window.setTimeout(() => {
                 _typing(false);
-            }, 10000)
+            }, 1000)
         }
     }, [typing]);
 
@@ -164,6 +164,9 @@ export function ConversationWrapper({messages, group, activity, send}: {
 
     function handleSubmit(e: any) {
         e.preventDefault();
+        if(message.split('').length == 0){
+            return
+        }
         send(message)
         _message('')
     }
@@ -261,7 +264,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                                                    value={message}/>
                             </div>
                             <div>
-                                <IoSend size={'2rem'} color={'#398378'} onClick={handleSubmit}/>
+                                <IoSend size={'2rem'} color={message.split('').length > 0 ? '#398378' : 'grey'} onClick={handleSubmit}/>
                             </div>
 
                         </div>

@@ -18,22 +18,24 @@ export const _props = {
                                 resolve(response.data.data);
                             })
                             .catch((reason) => {
+                                console.error(reason);
                                 reject(reason);
                             });
                         break;
                     case reqType.post:
                         axios.post(`${model}${service}/`+_params, _data, {headers: {session: this.session}})
                             .then((response) => {
-                                resolve(response.data.data.data);
+                                resolve(response.data.data);
                             })
                             .catch((reason) => {
+                                console.error(reason);
                                 reject(reason);
                             });
                         break;
                     case reqType.put:
                         axios.put(`${model}${service}/`+_params, _data, {headers: {session: this.session}})
                             .then((response) => {
-                                resolve(response.data.data.data);
+                                resolve(response.data.data);
                             })
                             .catch((reason) => {
                                 console.error(reason);
@@ -43,7 +45,7 @@ export const _props = {
                     case reqType.delete:
                         axios.delete(`${model}${service}/`+_params, {headers: {session: this.session}})
                             .then((response) => {
-                                resolve(response.data.data.data);
+                                resolve(response.data.data);
                             })
                             .catch((reason) => {
                                 console.error(reason);

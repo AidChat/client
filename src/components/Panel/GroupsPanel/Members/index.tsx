@@ -7,7 +7,10 @@ interface User {
     email: string,
     id: number,
     name: string,
-    role: "MEMBER" | "ADMIN" | "OWNER"
+    Role:{
+        id:number,
+        type:'OWNER' | "ADMIN" | 'MEMBER'
+    }[]
 }
 
 export function Members(props: { groupId: string }) {
@@ -19,7 +22,7 @@ export function Members(props: { groupId: string }) {
                 _users(result.data.User);
             })
     }, []);
-
+    console.log(users);
     return (
         <div className={'members-container'}>
             {
@@ -40,8 +43,14 @@ function UsersList({user}: { user: User }) {
         <div className={'shadow userlistWrapper'}>
             <div> {user.name}</div>
             <div>
-                {user.role}
+                {ClientRole[user?.Role[0]?.type]}
             </div>
         </div>
     )
+}
+
+enum ClientRole{
+    OWNER = 'GROUP OWNER',
+    ADMIN = 'ADMIN',
+    MEMBER = 'PARTICIPANT'
 }

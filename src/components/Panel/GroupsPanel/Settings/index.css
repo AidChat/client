@@ -47,8 +47,9 @@
     border:none;
 }
 .dangerContainer .btn-custom {
-    width: 100px;
+    width: 180px;
     background: red;
-    color: black;
+    color: white;
     border:none;
+
 }
