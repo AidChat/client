@@ -1,0 +1,18 @@
+.requestContainer{
+    padding:20px;
+    height: 100%;
+}
+.requestContainer-image{
+    height:90%;
+    widht :100%
+}
+.btn-wrapper{
+    width:100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-wrapper .btn-custom{
+    width:50%
+}

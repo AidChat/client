@@ -1,6 +1,6 @@
 .groupListContainer {
     width: 100%;
-    border: 1px solid rgba(92, 91, 91, 0.18);
+    border: 1px solid rgba(133, 133, 133, 0.18);
     padding: 4px 8px;
     margin: 6px 0;
     color: white;
@@ -9,6 +9,10 @@
     align-items: center;
     border-radius: 28px;
     cursor: pointer;
+    transition: all 100ms linear;
+}
+.groupListContainer:hover{
+    transform: scale(1.005);
 }
 
 .groupLogo {
@@ -19,7 +23,7 @@
 }
 
 .info {
-    width: 76%;
+    width: 84%;
     height: 100%;
     padding:0px 8px;
     font-size: 14px;
@@ -40,5 +44,5 @@
 }
 .conversationWrapper{
     width: 100%;
-    overflow-x:scroll;
+    overflow-x:auto;
 }

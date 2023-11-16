@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import './index.css'
 import {RiSearchLine} from "react-icons/ri";
 import {MdGroupAdd} from "react-icons/md";
-import {GroupList} from "../Conversations";
-import {DialogPanel} from "../../DialogPanel";
+import {GroupList} from "../ConversationList";
+import {DialogPanel} from "../../Dialog";
 import {GroupForm} from "../GroupForm";
 import {Logo} from "../../utility/logo";
 
@@ -22,7 +22,7 @@ export function ContactPanel() {
 }
 
 function SearchContact() {
-    return (<div className={'searchBarContainer'}>
+    return (<div className={'searchBarContainer shadow-box'}>
         <div><RiSearchLine color={'#398378'} size={20}/></div>
         <div>
             <input className={'inputEle'} placeholder={'Search for groups'}/>
@@ -30,18 +30,27 @@ function SearchContact() {
     </div>)
 }
 
-export function CreateGroup() {
-    const [showDialog, setDialogVisibility] = useState<boolean>(false);
-    return (
-        <div  className={'addGroupBtn'} onClick={() => {
-            setDialogVisibility(!showDialog);
-        }}>
-            <MdGroupAdd id={'DialogOpenIcon'} color={''} size={24}>
-            </MdGroupAdd>
-            <DialogPanel open={showDialog} header={'Add Group'} onClose={(B) => {
-                setDialogVisibility(B);
-            }} BodyEle={<GroupForm/>}/>
-        </div>
-    )
-}
 
+function CreateGroup() {
+    const [showDialog, setDialogVisibility] = useState(false);
+
+    const handleDialogOpen = () => {
+        setDialogVisibility(true);
+    };
+
+    const handleDialogClose = () => {
+        setDialogVisibility(false);
+    };
+
+    return (
+        <div className="addGroupBtn">
+            <MdGroupAdd id="DialogOpenIcon" size={24} onClick={handleDialogOpen} />
+                <DialogPanel
+                    open={showDialog}
+                    header="Add Group"
+                    onClose={handleDialogClose}
+                    BodyEle={<GroupForm onSubmit={()=>{handleDialogClose()}}  />}
+                />
+        </div>
+    );
+}

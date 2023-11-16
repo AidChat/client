@@ -1,0 +1,20 @@
+.searchComponent{
+    width:60px;
+    position: relative;
+}
+.result-list{
+    max-height:100px;
+    overflow-y: auto;
+    position: absolute;
+    background: white;
+}
+.list-item{
+    border:1px solid lightgrey;
+    padding:4px;
+}
+.input-wrapper input{
+    padding:2px 10px;
+    border:1px solid lightgray;
+    border-radius: 4px;
+    height:2.4rem;
+}

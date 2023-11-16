@@ -1,20 +1,25 @@
 import React, {ChangeEvent, FormEvent, useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../../services/context/auth.context";
-import {_props, reqType, service, serviceRoute} from "../../../services/network";
+import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
+import {Spinner} from "../../utility/spinner/spinner";
+import {useParams} from "react-router-dom";
 
 interface LoginFromProps {
-    toggleState: () => void
+    toggleState: () => void,
+    email?:string
 }
 
-export function LoginForm({toggleState}: LoginFromProps) {
+export function LoginForm({toggleState,email}: LoginFromProps) {
     let context = useContext(AuthContext);
-    const [userdata, setUserData] = useState<{ email: any, password: any, extend: boolean }>({
-        email: undefined,
+    const {requestCode} = useParams()
+    const [userdata, setUserData] = useState<{ email: any, password: any, extend: boolean,requestId:string | undefined }>({
+        email: email,
         password: undefined,
-        extend: false
+        extend: false,
+        requestId:requestCode
     })
     const [error, setError] = useState(null);
-
+    const [loading, _loading] = useState(false);
     useEffect(() => {
         window.setTimeout(() => {
             setError(null)
@@ -31,14 +36,18 @@ export function LoginForm({toggleState}: LoginFromProps) {
 
     function handleLogin(event: FormEvent) {
         event.preventDefault()
+        _loading(true)
         _props._db(service.authentication).query(serviceRoute.login, userdata, reqType.post).then(
-            response =>{
-                console.log(response)
-                context?.verifyAuthentication(response.session.session_id)
+            response => {
+                context?.verifyAuthentication(response.data.session.session_id,requestCode ? true:false)
+                _loading(false);
             }
         )
             .catch((reason) => {
-                setError(reason.message)
+                console.log(reason)
+                setError(reason?.response.data.data.message)
+                _loading(false);
+
             })
     }
 
@@ -46,7 +55,7 @@ export function LoginForm({toggleState}: LoginFromProps) {
     return (
         <div className={'loginFormWrapper'}>
             <form style={{width: '80%'}} onSubmit={handleLogin}>
-                <div className={'logincontainer color-green'} style={{textAlign:'center'}}>{error}</div>
+                <div className={'logincontainer color-green'} style={{textAlign: 'center'}}>{error}</div>
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Email</label>
                     <div className={'inputWrapper-icon'}>
@@ -62,20 +71,21 @@ export function LoginForm({toggleState}: LoginFromProps) {
                     </div>
                 </div>
                 <div style={{marginTop: 10, display: 'flex', alignContent: "center", alignItems: 'center'}}>
-                    <input type={'checkbox'} style={{height: 20, width: 20}} name={'extend'}
+                    <input type={'checkbox'} style={{height: 20, width: 20}} name={'extend'} checked={userdata.extend}
                            onClick={() => setUserData({...userdata, extend: !userdata.extend})}/>
                     <div>
-                        <label className={'font-primary'}>Remember me</label>
+                        <label className={'font-primary'} onClick={()=>{setUserData({...userdata, extend: !userdata.extend})}}>Remember me</label>
                     </div>
                 </div>
                 <div className={'logincontainer flex-center'}>
-                    <input type={'submit'} className={'btn btn-primary w50'} value={'Login'}></input>
-                </div>
+                    {loading ? <Spinner></Spinner> :
+                        <input type={'submit'} className={'btn btn-primary w50'} value={'Login'}></input>
+                    }</div>
                 <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
                     <div className={'font-primary'} onClick={() => {
                         toggleState()
                     }}>{
-                        <p>New here? <span className={'color-green'}> Register </span></p>
+                        <p>New here? <span className={'color-green'} style={{cursor:'pointer'}}> Register </span></p>
                     }</div>
                 </div>
             </form>

@@ -3,13 +3,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid rgba(92, 91, 91, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 8px;
     height: 100%;
     width: 100%;
 }
-.chatContainer .wrapper{
-    height:100%;
+
+.chatContainer .wrapper {
+    height: 100%;
     width: 100%;
 }
 
@@ -41,86 +42,96 @@
     display: flex;
     flex-direction: column;
 }
-.convoHistory{
-    height:100%;
-    width:100%;
-    flex:10;
-    overflow-y:scroll;
+
+.convoHistory {
+    height: 100%;
+    width: 100%;
+    flex: 10;
+    overflow-y: auto;
 }
-.optionsPanel{
+
+.optionsPanel {
     justify-self: end;
     display: flex;
     justify-content: space-between;
     justify-content: center;
     align-items: center;
-    padding:0.5rem 2rem;
-;
+    padding: 0.5rem 2rem;
+    margin-top: auto;
 }
-.sendInput{
+
+.sendInput {
     width: 100%;
-    padding:6px;
+    padding: 6px;
     background: transparent;
-    border:1px solid whitesmoke;
+    border: 1px solid whitesmoke;
     border-radius: 22px;
-    color:white;
+    color: white;
     height: 2.5rem;
 }
-.inputWrapper{
+
+.inputWrapper {
     height: 100%;
     width: 100%;
-    padding:0 2rem;
+    padding: 0 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.messageWrapper{
-    height:fit-content;
+
+.messageWrapper {
+    height: fit-content;
     width: 100%;
     display: flex;
     flex-direction: column;
 
 }
-.selfMessage{
+
+.selfMessage {
     justify-content: end;
     text-align: end;
 }
 
-.messageBubble{
-    padding:4px 10px;
-    color: #333;
+.messageBubble {
+    padding: 4px 10px;
+    color: black;
     margin: 4px;
     background: lightgrey;
-    border-radius:22px;
+    border-radius: 22px;
     width: fit-content;
     max-width: 85%;
     line-break: anywhere;
     text-align: left;
-    font-size:16px;
+    font-size: 16px;
 }
+
 .selfMessageBubble {
     height: auto;
     background: #077e0766;
     border-radius: 22px;
-    color:white;
+    color: white;
     margin-left: auto;
 }
-.contentWrapper{
+
+.contentWrapper {
     width: 100%;
 }
-.miscContainer{
-    padding:0 4px;
-    font-size: 14px;
+
+.miscContainer {
+    padding: 0 4px;
+    font-size: 10px;
 }
 
 
-
-.wrapperContainer{
+.wrapperContainer {
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
-.infoPanel{
-    height:4rem;
+
+.infoPanel {
+    height: 5rem;
     display: flex;
     text-align: center;
     align-items: center;
@@ -128,20 +139,67 @@
     width: 100%;
     overflow-x: auto;
 }
+
 .itemTags {
     height: fit-content;
-    padding: 4px 2px;
+    padding: 2px 2px;
     margin: 0px 2px;
     background: whitesmoke;
     color: #398378;
     border-radius: 4px;
 }
-.convoPanel{
+
+.convoPanel {
     display: flex;
     flex-direction: column;
 }
-.imageWrapper{
-    height:35px;
+
+.imageWrapper {
+    height: 35px;
     width: 35px;
     object-fit: cover;
+}
+
+.tagsWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    border-radius: 10px;
+}
+
+.tagsWrapperName {
+    color: white;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.usernamewrapper {
+    display: flex;
+    flex-direction: row;
+    border:1px solid lightgrey;
+    margin:0 10px;
+    border-radius: 40px;
+    position: relative;
+}
+.usernameImage{
+    height:25px;
+    width: 25px;
+    border-radius: 50%;
+    border:1px solid white;
+    margin:2px;
+}
+.username{
+    font-size: 12px;
+    margin-top:6px;
+    cursor: pointer;
+}
+.addMoreBtn{
+    padding:6px 8px;
+    cursor: pointer;
+    transition: background-color 100ms linear;
+}
+.addMoreBtn:hover{
+    background: rgb(57, 131, 120);
+
 }

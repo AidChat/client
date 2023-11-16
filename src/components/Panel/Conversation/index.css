@@ -22,7 +22,7 @@
     height: 100%;
     flex: 1;
     padding: 4px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .searchBarContainer {

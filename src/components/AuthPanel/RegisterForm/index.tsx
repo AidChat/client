@@ -1,16 +1,20 @@
 import React, {ChangeEvent, FormEvent, FormEventHandler, FormHTMLAttributes, useEffect, useState} from 'react';
-import {_props, reqType, service, serviceRoute} from "../../../services/network";
+import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
+import {useParams} from "react-router-dom";
 
 
 interface RegisterFormProps {
-    toggleState: () => void
+    toggleState: () => void,
+    email ?:string,
 }
 
-export function RegisterForm({toggleState}: RegisterFormProps) {
-    const [state,setState]= useState<{name?:string,email?:string,password?:string}>({
+export function RegisterForm({toggleState,email}: RegisterFormProps) {
+    const {requestCode} = useParams()
+    const [state,setState]= useState<{name?:string,email?:string,password?:string,requestId?:undefined| string}>({
         name:undefined,
-        email:undefined,
-        password:undefined
+        email:email,
+        password:undefined,
+        requestId:requestCode
     });
     let [error, _seterror] = useState(null);
     function handleLogin(e:FormEvent) {
@@ -19,8 +23,7 @@ export function RegisterForm({toggleState}: RegisterFormProps) {
             toggleState();
         })
             .catch((reason)=>{
-                console.log(reason)
-                _seterror(reason.data.message)
+                _seterror(reason.response.data.data.message)
             })
     }
     function handleUpdate(event:ChangeEvent<HTMLInputElement>){
@@ -47,13 +50,13 @@ export function RegisterForm({toggleState}: RegisterFormProps) {
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Name</label>
                     <div className={'inputWrapper-icon'}>
-                        <input type={'name'} name={'name'} onChange={handleUpdate} className={'inputEle'}/>
+                        <input type={'name'} value={state.name} name={'name'} onChange={handleUpdate} className={'inputEle'}/>
                     </div>
                 </div>
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Email</label>
                     <div className={'inputWrapper-icon'}>
-                        <input type={'email'} name={'email'} onChange={handleUpdate} className={'inputEle'}/>
+                        <input type={'email'} name={'email'} value={state.email} disabled={email?true:false} onChange={handleUpdate} className={'inputEle'}/>
                     </div>
                 </div>
                 <div className={'logincontainer'}>
@@ -69,7 +72,7 @@ export function RegisterForm({toggleState}: RegisterFormProps) {
                     <div className={'font-primary'} onClick={() => {
                         toggleState()
                     }}>
-                        <p>Already part of our community?  <span className = {'color-green'} > Login </span></p>
+                        <p>Already part of our community?  <span className = {'color-green'} style={{cursor:'pointer'}}> Login </span></p>
                     </div>
                         </div>
                         </form>

@@ -16,6 +16,7 @@
     align-items: center;
     justify-content: center;
     justify-content: space-evenly;
+    position: relative;
 }
 .qrImage{
     height:100%;
@@ -35,6 +36,7 @@
     justify-content: center;
     align-items: center;
     padding:12px;
+    height: 100%;
 }
 .loginFormWrapper .logincontainer{
     display: flex;

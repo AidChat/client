@@ -1,0 +1,73 @@
+.groupContainer {
+    margin: 10px;
+    height: 100%;
+}
+
+.settings-item-container {
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 30px 20px;
+    text-align: left;
+}
+
+.settingInput {
+    background: transparent;
+    border: 1px solid lightgrey;
+    padding: 4px 8px;
+    color: white;
+    border-radius: 4px;
+}
+
+.descContainer {
+    margin-top: 10px;
+    height: 80px;
+}
+
+.descContainer textarea {
+    height: 80px;
+}
+
+.dangerContainer {
+    justify-content: flex-start;
+    margin-top: 10px;
+    display: flex;
+    align-items: end;
+}
+
+.updateContainer {
+    justify-content: flex-start;
+    margin-top: 10px;
+    display: flex;
+    align-items: start;
+}
+
+.updateContainer .btn-custom {
+    width: 100px;
+    background: #0e490e;
+    color: white;
+    border: none;
+}
+
+.dangerContainer .btn-custom {
+    width: 180px;
+    background: red;
+    color: white;
+    border: none;
+
+}
+
+.tagWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.tagWrapper .tag {
+    margin-right: 4px;
+    background: whitesmoke;
+    color: black;
+    border-radius: 40px;
+    padding: 4px;
+}

@@ -3,8 +3,6 @@
     width: 100%;
 }
 
-
-
 .formEleWrapper {
     display: flex;
     flex-direction: column;
@@ -63,4 +61,37 @@
 .sendBtnWrapper .btn {
     padding: 4px 8px;
     width: 10rem;
+}
+
+.token-section {
+    display: flex;
+    flex-direction: row;
+}
+
+.selected-token {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 4.4rem;
+    overflow-y: auto;
+}
+
+.selected-token .tokens {
+    border: 1px solid lightgray;
+    width: fit-content;
+    padding: 2px 4px;
+    height: fit-content;
+    margin: 2px;
+    overflow-y: auto;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.tokens .close {
+    margin: 0 4px;
+    display: flex;
 }

@@ -1,114 +1,257 @@
 @font-face {
-  font-family: 'defaultfont';
-  src: local('defaultfont'), url(./YsabeauInfant-VariableFont_wght.ttf) format('truetype');
+    font-family: 'defaultfont';
+    src: local('defaultfont'), url(./YsabeauInfant-VariableFont_wght.ttf) format('truetype');
 }
 
 * {
-  font-family: defaultfont, serif;
-  font-weight: bold;
-  font-size: 14px;
-  box-sizing: border-box;
+    font-family: defaultfont, serif;
+    font-weight: bold;
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  height:100vh;
-  -webkit-user-select: none;
-  /* Safari */
-  -ms-user-select: none;
-  /* IE 10 and IE 11 */
-  user-select: none;
-  background: #030303;
-  /*background-image: url('./assets/png/background.jpg');*/
-  /*background-position: center;*/
-  /*background-repeat: no-repeat;*/
-  /*background-size: cover;*/
-}
-#root{
-  height: 100%;
-}
-div {
-  -ms-overflow-style: none;
-  /* Internet Explorer 10+ */
-  scrollbar-width: none;
-  /* Firefox */
+    margin: 0;
+    height: 100vh;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    background: #030303;
+    /*background-image: url('./assets/png/background.jpg');*/
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
 }
 
+#root {
+    height: 100%;
+}
+
+/* Hide the scrollbar */
 div::-webkit-scrollbar {
-  display: none;
-  /* Safari and Chrome */
+    width: 0; /* Hide scrollbar for Chrome, Safari, and Opera */
 }
 
-.font-primary{
-  color:lightgrey;
-  font-weight: 500;
-}
-.font-secondary{
-  color:#398378;
-  font-weight: 600;
+.body {
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 }
 
-.btn{
-  height:2.4rem;
-  width:3rem;
-  border:1px solid whitesmoke;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor:pointer;
+
+
+
+.font-primary {
+    color: lightgrey;
+    font-weight: 500;
 }
-.btn-primary{
-  background: white;
+
+.font-secondary {
+    color: #398378;
+    font-weight: 600;
 }
-.btn-round{
-  border-radius: 50%;
+
+.btn {
+    height: 2.4rem;
+    width: 3rem;
+    border: 1px solid whitesmoke;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
-.flex{
-  display: flex;
+
+.btn-primary {
+    background: white;
 }
-.center{
-  justify-content: center;
-  align-items: center;
+
+.btn-round {
+    border-radius: 50%;
 }
-.borderRadius-light{
-  border-radius: 4px;
+
+.flex {
+    display: flex;
 }
-.borderRadius-heavy{
-  border-radius: 8px;
+
+.center {
+    justify-content: center;
+    align-items: center;
 }
-.w100{
-  width: 100%;
+
+.borderRadius-light {
+    border-radius: 4px;
 }
-.btn-round-secondary{
-  border:1px solid green;
-  background: white;
-  color:green;
+
+.borderRadius-heavy {
+    border-radius: 8px;
 }
-.btn-round-primary:hover{
-  background:darkgreen !important;
+
+.w100 {
+    width: 100%;
 }
-.btn-round-primary{
-  background: green !important;
-  color:white !important;
+
+.btn-round-secondary {
+    border: 1px solid green;
+    background: white;
+    color: green;
 }
-.btn-round-secondary:hover{
-  background: lightgray;
+
+.btn-round-primary:hover {
+    background: darkgreen !important;
 }
-.flex-center{
-  justify-content: center;
-  align-items: center;
+
+.btn-round-primary {
+    background: green !important;
+    color: white !important;
 }
-.flex-right{
-  justify-content: right;
-  align-items: end;
+
+.btn-round-secondary:hover {
+    background: lightgray;
 }
-.w75{
-  width: 75%;
+
+.flex-center {
+    justify-content: center;
+    align-items: center;
 }
-.m4{
-  margin:4px;
+
+.flex-right {
+    justify-content: right;
+    align-items: end;
 }
-.w50{
-  width: 50%;
+
+.w75 {
+    width: 75%;
+}
+
+.m4 {
+    margin: 4px;
+}
+
+.w50 {
+    width: 50%;
+}
+.w25 {
+    width: 25%;
+}
+
+#tooltip {
+    position: absolute;
+    left: 0px;
+    top: 18px;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 1.42857143;
+    text-align: left;
+    text-align: start;
+    text-shadow: none;
+    text-transform: none;
+    white-space: normal;
+    word-break: normal;
+    word-spacing: normal;
+    word-wrap: normal;
+    font-size: 12px;
+    z-index: 9;
+    display: none;
+}
+
+#tooltip.right {
+    margin-left: 5px;
+}
+
+#tooltip.left {
+    margin-left: -5px;
+}
+
+#tooltip.top {
+    margin-top: -5px;
+}
+
+#tooltip.bottom {
+    margin-top: 5px;
+}
+
+#tooltip .tooltip-arrow {
+    top: 50%;
+    left: 0;
+    margin-top: -5px;
+    border-width: 5px 5px 5px 0;
+    border-right-color: #000;
+}
+
+#tooltip.right .tooltip-arrow {
+    top: 50%;
+    left: auto;
+    margin-left: -5px;
+    border-width: 5px 5px 5px 0;
+    border-right-color: #000;
+}
+
+
+#tooltip.top .tooltip-arrow {
+    top: auto;
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
+}
+
+#tooltip.left .tooltip-arrow {
+    top: 50%;
+    margin-top: -5px;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #000;
+    right: -5px;
+    left: auto;
+}
+
+#tooltip.bottom .tooltip-arrow {
+    top: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 0 5px 5px;
+    border-bottom-color: #000;
+}
+
+#tooltip .tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+}
+
+#tooltip .tooltip-label {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    background-color: #000;
+    border-radius: 30px;
+}
+
+.tooltip-selector:hover #tooltip {
+    display: block;
+}
+.shadow-box{
+    box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+            0 12.5px 10px rgba(0, 0, 0, 0.06),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+            0 100px 80px rgba(0, 0, 0, 0.12)
+;
+}
+
+.pointer{
+    cursor: pointer;
+}
+.borderNone{
+    border:none !important;
 }
