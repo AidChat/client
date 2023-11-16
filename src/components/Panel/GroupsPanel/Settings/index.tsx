@@ -51,7 +51,6 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt }) {
         _loading(true);
         _props._db(service.group).query(serviceRoute.group, state, reqType.put, props.groupDetails.id)
             .then(result => {
-                console.log(result)
                 _loading(false);
                 _message('Group updated successfully')
             })
@@ -68,18 +67,23 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt }) {
             <div className={'groupContainer'}>
                 <div className={'settings-item-container nameContainer'}>
                     <div className={'center w25'}>Name</div>
-                    <input className={'settingInput w50'} onChange={handleUpdate} name={'name'}
+                    <input className={`settingInput w50 ${!isOwner && 'borderNone' } `} onChange={handleUpdate} name={'name'}
                            value={state.name} disabled={!isOwner}/>
                 </div>
                 <div className={'settings-item-container descContainer'}>
                     <div className={'center w25'}>Description</div>
-                    <textarea className={'settingInput w100'} onChange={handleUpdate} name={'description'}
+                    <textarea className={`settingInput w100 ${!isOwner && 'borderNone'} `} onChange={handleUpdate} name={'description'}
                               disabled={!isOwner}
                               value={state.description}/>
 
                 </div>
-                <div className={'settings-item-container descContainer'}>
+                <div className={'settings-item-container tagContainer'}>
                     <div className={'center w25'}>Group Tags</div>
+                    <div className={'tagWrapper'}>{props.groupDetails.GroupDetail.tags.map((tag)=>{
+                        return <div className={'tag'}>
+                            {tag}
+                        </div>
+                    })}</div>
                 </div>
                 {isOwner && <>
                     <div className={'settings-item-container updateContainer'}>

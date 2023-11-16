@@ -18,14 +18,16 @@ import {Spinner} from "../../utility/spinner/spinner";
 import {SocketEmitters, SocketListeners} from "../../../utils/interface";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {GroupOptions} from "../GroupsPanel/GroupOptions";
-
+import sound from "./../../../assets/sound/notifications-sound.mp3";
+import useSound from "use-sound";
 
 export function Chats() {
     let [messages, _messages] = useState<any[] | null>(null);
+    const [play] = useSound(sound);
     const [group, _group] = useState<{
         tags: string[],
         Socket: { id: number, socket_id: string },
-        User: { name: string, email: string }[]
+        User: { name: string, email: string,profileImage:string }[]
     } | null>(null);
     const {groupId, socket, _socketId, socketId} = useContext(ShellContext);
     const [loading, _loading] = useState<boolean>(false);
@@ -66,6 +68,7 @@ export function Chats() {
 
 
             socket?.on(SocketListeners.MESSAGE, (data: any) => {
+                play({forceSoundEnabled:true});
                 _messages((prevMessage) => {
                     if (prevMessage === null) {
                         return [data];
@@ -118,7 +121,8 @@ interface MessageInterface {
     status: string,
     User: {
         name: string,
-        email: string
+        email: string,
+        profileImage:string
     }
 }
 
@@ -140,14 +144,20 @@ export function ConversationWrapper({messages, group, activity, send}: {
     const {socket} = useContext(ShellContext);
     const [message, _message] = useState('');
     const [typing, _typing] = useState<boolean>(false);
-    const [options, showOptions] = useState<boolean>(false)
-
+    const [options, showOptions] = useState<boolean>(false);
+    const [role, _] = useState<string | undefined>(group?.Role[0]?.type);
+    const [init,setInit] = useState('members')
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         _message(e.target.value)
         if (!typing) {
             _typing(true);
             socket.emit(SocketEmitters._TYPING)
         }
+    }
+
+    function handleAddMore(){
+        setInit('requests');
+        showOptions(true);
     }
 
     useEffect(() => {
@@ -164,13 +174,12 @@ export function ConversationWrapper({messages, group, activity, send}: {
 
     function handleSubmit(e: any) {
         e.preventDefault();
-        if(message.split('').length == 0){
+        if (message.split('').length == 0) {
             return
         }
         send(message)
         _message('')
     }
-
 
 
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -190,7 +199,6 @@ export function ConversationWrapper({messages, group, activity, send}: {
     useEffect(() => {
         scrollToBottom();
     }, [state.messages]);
-
     const {userId} = useContext(ShellContext);
     return (
         <div className={'convoPanel'}>
@@ -201,11 +209,12 @@ export function ConversationWrapper({messages, group, activity, send}: {
                         <div style={{width: '100%', flex: 8, position: 'relative'}}>
                             <div className={'infoPanel font-primary'}>{group?.User.map((item: {
                                 name: string,
-                                email: string
+                                email: string,
+                                profileImage:string
                             }) => (
                                 <div className={'usernamewrapper'}>
                                     <div className={'usernameImage'}>
-                                        <img src={groupsImg}
+                                        <img src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
                                              style={{height: '100%', width: '100%', borderRadius: "50%"}}
                                              alt={'user-image'}/>
                                     </div>
@@ -217,13 +226,17 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                         </div>
                                     </div>
                                 </div>))}
-                                <div className={'usernamewrapper addMoreBtn'}>
-                                    + Add More
-                                </div>
+                                {(role === 'OWNER') &&
+                                    <div className={'usernamewrapper addMoreBtn'} onClick={()=>{handleAddMore()}}>
+                                        + Add More
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div style={{marginRight: ' 18px'}}>
-                            <GiHamburgerMenu size={24} color={'white'} onClick={()=>{showOptions(true)}} style={{cursor: 'pointer'}}/>
+                            <GiHamburgerMenu size={24} color={'white'} onClick={() => {
+                                showOptions(true)
+                            }} style={{cursor: 'pointer'}}/>
                         </div>
                     </div>
                     <div style={{textAlign: 'center'}} className={
@@ -237,7 +250,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                     <div
                                         className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
                                         <img style={{height: '100%', width: '100%', borderRadius: '50%'}}
-                                             src={groupsImg}/>
+                                             src={item.User?.profileImage.split('').length > 0 ? item.User.profileImage : groupsImg  }/>
                                     </div>
                                     {(item?.senderId != userId) && item?.User.name.toUpperCase()}
                                 </div>
@@ -264,14 +277,17 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                                                    value={message}/>
                             </div>
                             <div>
-                                <IoSend size={'2rem'} color={message.split('').length > 0 ? '#398378' : 'grey'} onClick={handleSubmit}/>
+                                <IoSend size={'2rem'} color={message.split('').length > 0 ? '#398378' : 'grey'}
+                                        onClick={handleSubmit}/>
                             </div>
 
                         </div>
                     </form>
                 </div>
                 : <>
-<GroupOptions groupId={group.id} showChat={()=>{showOptions(false)}} />
+                    <GroupOptions groupId={group.id} role={role} init={init} showChat={() => {
+                        showOptions(false)
+                    }}/>
                 </>}
         </div>
     )

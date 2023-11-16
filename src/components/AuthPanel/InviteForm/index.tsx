@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import notfoundCat from './../../../assets/svg/notfound_cat.svg';
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
@@ -33,9 +33,9 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
     const [request, _request] = useState<requestInt | null>(null)
     const [validRequest, _valid] = useState(false);
     const [loading, _loading] = useState<boolean>(true);
-    const [validSession, _invalid] = useState<boolean>(false)
+    const [validSession, _invalid] = useState<boolean>(false);
+    const navigate = useNavigate()
     useEffect(() => {
-        debugger
         if (!requestCode) {
             _valid(false);
             _loading(false);
@@ -43,8 +43,6 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
             _loading(true);
             _props._db(service.group).query(serviceRoute.request, {}, reqType.get, requestCode)
                 .then(response => {
-                    console.log(response)
-
                     _request(response.data);
                     _valid(true)
                     if(!response.data){
@@ -78,15 +76,16 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
     }, []);
 
     function handleRequest() {
-        console.log(validSession)
         if (validSession) {
-
-            // make joining request
+            _loading(true)
+            _props._db(service.group).query(serviceRoute.request, {},reqType.put,request?.id)
+                .then(()=>{
+                    navigate('/');
+                    window.location.reload();
+                })
         } else {
-            // remove previous session;
             window.localStorage.removeItem('session');
             requestLogin(request?.invitee);
-            // show login register;
         }
     }
 

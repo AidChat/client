@@ -39,13 +39,13 @@ export function LoginForm({toggleState,email}: LoginFromProps) {
         _loading(true)
         _props._db(service.authentication).query(serviceRoute.login, userdata, reqType.post).then(
             response => {
-                context?.verifyAuthentication(response.data.session.session_id,true)
+                context?.verifyAuthentication(response.data.session.session_id,requestCode ? true:false)
                 _loading(false);
             }
         )
             .catch((reason) => {
                 console.log(reason)
-                setError(reason?.message)
+                setError(reason?.response.data.data.message)
                 _loading(false);
 
             })

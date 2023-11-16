@@ -8,18 +8,15 @@ import {Members} from "../Members";
 import {Settings} from "../Settings";
 
 
-
-
-
-
-
 interface _int {
     groupId: string
     showChat: () => void
+    role: string | undefined
+    init ?:string
 }
 
 export function GroupOptions(props: _int) {
-    const [activeMenuItem, setActiveMenuItem] = useState('members');
+    const [activeMenuItem, setActiveMenuItem] = useState(props.init ? props.init : 'members');
 
     const handleMenuItemClick = (menuItem: React.SetStateAction<string>) => {
         setActiveMenuItem(menuItem);
@@ -43,10 +40,11 @@ export function GroupOptions(props: _int) {
 
                     <div style={{flex: '1'}} className={activeMenuItem === 'members' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('members')}><BsPeople size={22} color={'white'}/></div>
-                    <div style={{flex: '1'}} className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
-                         onClick={() => handleMenuItemClick('requests')}><AiOutlineUsergroupAdd size={22}
-                                                                                                color={'white'}/>
-                    </div>
+                    {props.role == 'OWNER' &&
+                        <div style={{flex: '1'}} className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
+                             onClick={() => handleMenuItemClick('requests')}><AiOutlineUsergroupAdd size={22} color={'white'}/>
+                        </div>
+                    }
                     <div style={{flex: '1'}} className={activeMenuItem === 'settings' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('settings')}><AiFillSetting size={22} color={'white'}/>
                     </div>

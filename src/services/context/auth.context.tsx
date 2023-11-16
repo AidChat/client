@@ -1,11 +1,12 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {Validator} from "../../components/AuthPanel";
 import {Spinner} from "../../components/utility/spinner/spinner";
-import {_props} from "../network/network";
+import {_props, reqType, service, serviceRoute} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
 
 export let AuthContext = React.createContext<{
     isAuthenticated?: boolean,
+    removeUserSession: ()=>void,
     verifyAuthentication: (session_id?: string,forceReload?:boolean) => void
 } | undefined>(undefined);
 export const AuthContextProvider = ({children}: { children: ReactElement[] | ReactElement }) => {
@@ -55,11 +56,19 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
                 stopload()
             })
     }
-
+    function removeUserSession(){
+        setLoad(true)
+       _props._db(service.authentication).query(serviceRoute.session, {},reqType.delete)
+           .then(()=>{
+               localStorage.removeItem('session');
+               localStorage.removeItem('_user');
+               verifyAuthentication(undefined,true);
+           })
+    }
     const [loading, setLoad] = useState(true);
     return (
         <AuthContext.Provider
-            value={{isAuthenticated, verifyAuthentication}}>{!loading ? (isAuthenticated && !invitation) ? children :
+            value={{isAuthenticated, verifyAuthentication,removeUserSession}}>{!loading ? (isAuthenticated && !invitation) ? children :
             <Validator/> : <Spinner/>}</AuthContext.Provider>
     )
 }

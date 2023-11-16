@@ -36,7 +36,7 @@ export function GroupList() {
                         )
                     }</div>
                 </div>
-                <div className={' activity font-secondary'}>{item.pendingCount && `+${item.pendingCount}`}</div>
+                <div className={' activity font-secondary'}>{item.Message && `+${item.Message.filter((item:any)=>item.status === 'DELIVERED').length}`}</div>
             </div>
         )}
     </>)
