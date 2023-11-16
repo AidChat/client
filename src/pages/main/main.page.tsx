@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Panel} from "../../components/Panel";
 import './main.page.css'
+import {useParams} from "react-router-dom";
 export const Main = () => {
   return (
     <div className={'main-container-wrapper'}

@@ -1,6 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {io} from "socket.io-client";
 import {service} from "../network/network";
+import {useParams} from "react-router-dom";
 
 
 interface ShellInterface {
@@ -22,6 +23,7 @@ export const ShellContext = React.createContext<any>({snackbarProps: {show: fals
 
 
 export function ShellContextProvider({children}: { children: ReactElement }) {
+    const slug = useParams();
     const [snackbarProps, setShowSnackbarProps] = useState({show: false, message: ''});
     const [groupId, _setGroupId] = useState<null | string>(null);
     const [userId, _setUserId] = useState<string | null>(null)

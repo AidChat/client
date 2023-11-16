@@ -38,11 +38,12 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt }) {
     useEffect(() => {
         if (props.groupDetails.Role[0].type === 'OWNER') {
             _updateOwnership(true);
+        }else{
+            _updateOwnership(false)
         }
     }, []);
 
     function handleUpdate(e: any) {
-        console.log(e.target.value)
         setState({...state, [e.target.name]: e.target.value})
     }
 

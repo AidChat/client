@@ -99,7 +99,7 @@ function AllRequestsPanelContainer({requests,fetch}: {fetch:()=>void , requests:
     useEffect(() => {
         _requests(requests);
     }, [requests]);
-    function handleDelete(requestId:number){
+    function handleDelete(requestId:string){
    _props._db(service.group).query(serviceRoute.groupInvite, {},reqType.delete,requestId)
        .then((response)=>{
            _message(response.message);
@@ -132,7 +132,7 @@ function AllRequestsPanelContainer({requests,fetch}: {fetch:()=>void , requests:
 
 interface Request {
     groupId: number,
-    id: number,
+    id: string,
     invitee: string,
     type: string,
     userId: number

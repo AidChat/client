@@ -10,7 +10,6 @@ export const Panel = () => {
             <ShellContextProvider>
                 <ChatWindow/>
             </ShellContextProvider>
-
         </AuthContextProvider>
     );
 };
