@@ -4,7 +4,6 @@
 }
 
 .settings-item-container {
-    height: 40px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -70,4 +69,17 @@
     color: black;
     border-radius: 40px;
     padding: 4px;
+}
+.profileContainer{
+display: flex;
+    align-items: center;
+}
+.groupIconWrapper{
+    height:130px;
+    width: 130px;
+    border-radius: 50%;
+    border:1px solid whitesmoke;
+}
+.groupContainer img{
+    border-radius: 50%;
 }

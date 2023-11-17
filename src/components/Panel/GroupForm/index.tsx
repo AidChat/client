@@ -7,6 +7,8 @@ import {_props, reqType, service, serviceRoute} from "../../../services/network/
 import {ShellContext} from "../../../services/context/shell.context";
 import Snackbar from "../../utility/Snackbar";
 import {Spinner} from "../../utility/spinner/spinner";
+import ImageUploader from "react-images-upload";
+import group from './../../../assets/svg/groups.svg'
 
 interface _gfIterface {
     onSubmit?: () => void,
@@ -14,10 +16,11 @@ interface _gfIterface {
 }
 
 interface GroupFormStateInterface {
-    name: string ,
+    name: string,
     description: string,
     keywords: string[],
     requestee: string
+    icon?: string
 }
 
 export function GroupForm({onSubmit, onError}: _gfIterface) {
@@ -26,6 +29,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
         description: '',
         keywords: [],
         requestee: '',
+        icon: undefined
 
     })
     const {ping} = useContext(ShellContext)
@@ -85,6 +89,21 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
             resetState();
         }
     }, []);
+
+    function handleImageUpload(e: any) {
+        const file = e[0];
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            if (reader && reader.result) {
+                if (typeof reader.result === "string") {
+                    const base64String = reader.result;
+                    _state({...state, icon: base64String});
+                }
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
     return (<>
             {message && <Snackbar message={message} onClose={() => {
                 _message('')
@@ -93,6 +112,25 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
             <div className={'groupFormContainer'}>
                 <div className={'groupFormEleWrapper'}>
                     <form onSubmit={handleSubmit}>
+                        <div className={'formEleWrapper iconSection'}>
+                            <div style={{height: '120px', width: '120px'}}>
+                                <img src={state.icon ? state.icon : group} alt={'group icon'} style={{height: '100%', width: '100%',borderRadius:'50%'}}/>
+                            </div>
+                            <div>
+                                <ImageUploader
+                                    className={'imageUploader'}
+                                    withIcon={false}
+                                    singleImage={true}
+                                    buttonText='Update'
+                                    label={''}
+                                    onChange={(e) => {
+                                        handleImageUpload(e)
+                                    }}
+                                    imgExtension={['.jpeg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                />
+                            </div>
+                        </div>
                         <div className={'formEleWrapper'}>
                             <input name={'name'} onChange={handleChange} required={true} value={state.name}
                                    className={'borderRadius-light custom-input'} type={'text'}

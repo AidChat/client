@@ -27,7 +27,7 @@ export function Chats() {
     const [group, _group] = useState<{
         tags: string[],
         Socket: { id: number, socket_id: string },
-        User: { name: string, email: string,profileImage:string }[]
+        User: { name: string, email: string, profileImage: string }[]
     } | null>(null);
     const {groupId, socket, _socketId, socketId} = useContext(ShellContext);
     const [loading, _loading] = useState<boolean>(false);
@@ -68,7 +68,13 @@ export function Chats() {
 
 
             socket?.on(SocketListeners.MESSAGE, (data: any) => {
-                play({forceSoundEnabled:true});
+                let user: any = window.localStorage.getItem('_user');
+                if (user) {
+                    user = JSON.parse(user);
+                    if (user.id !== data.senderId) {
+                        play({forceSoundEnabled: true});
+                    }
+                }
                 _messages((prevMessage) => {
                     if (prevMessage === null) {
                         return [data];
@@ -79,14 +85,23 @@ export function Chats() {
             })
 
             socket?.on(SocketListeners.TYPING, ({name}: { name: string }) => {
-                if (group) {
-                    const username = group.User.filter((item: { email: string; }) => item.email == name).map((item: {
-                        name: any;
-                    }) => item.name)
-                    _activity(username.toString().toUpperCase() + ' is Typing')
+                let user = window.localStorage.getItem('_user');
+                if (user) {
+                    let u = JSON.parse(user);
+                    console.log(user)
+                    if (group) {
+                        const username = group.User.filter((item: {
+                            email: string;
+                            name: string
+                        }) => item.email === name).map((item: {
+                            name: any;
+                        }) => item.name).filter(item => item !== u.name);
+                        console.log(username)
+                        _activity(username.toString().toUpperCase() + ' is Typing')
+                    }
                 }
-
             })
+
         }
         return () => {
             socket.off(SocketListeners.MESSAGE);
@@ -122,7 +137,7 @@ interface MessageInterface {
     User: {
         name: string,
         email: string,
-        profileImage:string
+        profileImage: string
     }
 }
 
@@ -146,7 +161,8 @@ export function ConversationWrapper({messages, group, activity, send}: {
     const [typing, _typing] = useState<boolean>(false);
     const [options, showOptions] = useState<boolean>(false);
     const [role, _] = useState<string | undefined>(group?.Role[0]?.type);
-    const [init,setInit] = useState('members')
+    const [init, setInit] = useState('members')
+
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         _message(e.target.value)
         if (!typing) {
@@ -155,7 +171,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
         }
     }
 
-    function handleAddMore(){
+    function handleAddMore() {
         setInit('requests');
         showOptions(true);
     }
@@ -210,13 +226,14 @@ export function ConversationWrapper({messages, group, activity, send}: {
                             <div className={'infoPanel font-primary'}>{group?.User.map((item: {
                                 name: string,
                                 email: string,
-                                profileImage:string
+                                profileImage: string
                             }) => (
                                 <div className={'usernamewrapper'}>
                                     <div className={'usernameImage'}>
-                                        <img src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
-                                             style={{height: '100%', width: '100%', borderRadius: "50%"}}
-                                             alt={'user-image'}/>
+                                        <img
+                                            src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
+                                            style={{height: '100%', width: '100%', borderRadius: "50%"}}
+                                            alt={'user-image'}/>
                                     </div>
                                     <div className={'username tooltip-selector'}>
                                         {item.name.toUpperCase()}
@@ -227,7 +244,9 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                     </div>
                                 </div>))}
                                 {(role === 'OWNER') &&
-                                    <div className={'usernamewrapper addMoreBtn'} onClick={()=>{handleAddMore()}}>
+                                    <div className={'usernamewrapper addMoreBtn'} onClick={() => {
+                                        handleAddMore()
+                                    }}>
                                         + Add More
                                     </div>
                                 }
@@ -250,7 +269,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                     <div
                                         className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
                                         <img style={{height: '100%', width: '100%', borderRadius: '50%'}}
-                                             src={item.User?.profileImage.split('').length > 0 ? item.User.profileImage : groupsImg  }/>
+                                             src={item.User?.profileImage.split('').length > 0 ? item.User.profileImage : groupsImg}/>
                                     </div>
                                     {(item?.senderId != userId) && item?.User.name.toUpperCase()}
                                 </div>

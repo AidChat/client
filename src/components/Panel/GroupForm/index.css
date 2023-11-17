@@ -7,8 +7,12 @@
     display: flex;
     flex-direction: column;
     margin: 10px 0;
-}
 
+}
+.iconSection{
+    justify-content: center;
+    align-items: center;
+}
 .formEleWrapper:last-child {
     align-self: end;
     justify-self: flex-end;

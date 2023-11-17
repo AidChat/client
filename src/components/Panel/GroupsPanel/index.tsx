@@ -24,10 +24,10 @@ export function ChatGroups() {
     )
 }
 
-export function GroupIcon() {
+export function GroupIcon({url}:{url?:string}) {
     return (
         <div className={'item-wrapper'}>
-            <img src={groupsImg} alt={'profile icon'}/>
+            <img src={url ? url: groupsImg} alt={'profile icon'}/>
         </div>
     )
 }
@@ -70,7 +70,7 @@ export function UserIcon() {
     }
 
     return (<>
-            <DialogPanel open={showUserForm} header={"Profile"} BodyEle={<><ProfileForm onUpdate={() => {
+            <DialogPanel open={showUserForm} header={""} BodyEle={<><ProfileForm onUpdate={() => {
                 fetchProfile()
             }}/></>} onClose={() => {
                 setShowUserForm(false)
@@ -120,9 +120,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }, []);
 
     function handleImageUpload(e: any) {
-
         const file = e[0];
-
         const reader = new FileReader();
         reader.onloadend = function () {
             if (reader && reader.result) {
@@ -130,18 +128,14 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     const base64String = reader.result;
                     setUser({...user, profileImage: base64String});
                     _update({...update, profileImage: true})
-                } // Extracting the Base64 data
-                // Use base64String as needed (e.g., send it to the server, display it, etc.)
+                }
             }
         };
-
-        reader.readAsDataURL(file); // Read the file as Data URL
-
+        reader.readAsDataURL(file);
     }
 
     function handleUpdate() {
-        let data: { name?: string; profileImage?: string } = {...user}; // Create a new object based on `user`
-
+        let data: { name?: string; profileImage?: string } = {...user};
         if (!update.profileImage) {
             delete data.profileImage;
         }

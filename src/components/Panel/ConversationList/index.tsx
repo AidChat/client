@@ -27,7 +27,7 @@ export function GroupList() {
     return (<>
         {items.map((item : any) =>
             <div className={'groupListContainer shadow-box '} onClick={()=>handleGroupSelection(item.id)}>
-                <div className={' groupLogo'}><GroupIcon/></div>
+                <div className={' groupLogo'}><GroupIcon url={item.GroupDetail.icon} /></div>
                 <div className={'info'}>
                     <div style={{fontSize:'14px'}}>{item.name}</div>
                     <div className={'flex conversationWrapper'} >{
