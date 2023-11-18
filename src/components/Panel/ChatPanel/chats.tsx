@@ -97,7 +97,10 @@ export function Chats() {
                             name: any;
                         }) => item.name).filter(item => item !== u.name);
                         console.log(username)
-                        _activity(username.toString().toUpperCase() + ' is Typing')
+                        if(username.length > 0){
+                            _activity(username[0].toString().toUpperCase() + ' is Typing')
+                        }
+
                     }
                 }
             })
@@ -227,8 +230,8 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                 name: string,
                                 email: string,
                                 profileImage: string
-                            }) => (
-                                <div className={'usernamewrapper'}>
+                            },index:number) => (
+                                <div className={'usernamewrapper'} key={index}>
                                     <div className={'usernameImage'}>
                                         <img
                                             src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}

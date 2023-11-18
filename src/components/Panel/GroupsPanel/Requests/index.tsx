@@ -8,8 +8,9 @@ import Snackbar from "../../../utility/Snackbar";
 
 export function Requests(props: { groupId: string }) {
     const [data, setData] = useState(true);
-    const [requests,_requests]= useState<Request[] | null>(null);
-    function fetchData(){
+    const [requests, _requests] = useState<Request[] | null>(null);
+
+    function fetchData() {
         _props._db(service.group).query(serviceRoute.groupInvite, {}, reqType.get, props.groupId)
             .then((result) => {
                 if (result.data.length) {
@@ -26,8 +27,12 @@ export function Requests(props: { groupId: string }) {
             {
                 data ?
                     <div className={'font-primary'}>
-                        <SendRequestPanelContainer fetch={()=>{fetchData()}} groupId={props.groupId}/>
-                        <AllRequestsPanelContainer fetch={()=>{fetchData()}} requests={requests}/>
+                        <SendRequestPanelContainer fetch={() => {
+                            fetchData()
+                        }} groupId={props.groupId}/>
+                        <AllRequestsPanelContainer fetch={() => {
+                            fetchData()
+                        }} requests={requests}/>
                     </div>
                     : <Spinner/>
             }
@@ -36,34 +41,42 @@ export function Requests(props: { groupId: string }) {
 }
 
 
-function SendRequestPanelContainer({groupId,fetch}: { groupId: string,fetch:()=>void }) {
+function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: () => void }) {
     const [email, _email] = useState<string>('');
-    const [loading,_loading] = useState<boolean>(false);
-    const [message,_message] = useState<string | null>(null);
+    const [loading, _loading] = useState<boolean>(false);
+    const [message, _message] = useState<string | null>(null);
+    const [isAdmin, _setAdmin] = useState<boolean>(false)
 
     function handleSendInvite() {
-     if(!loading) {
-         if (validateEmail(email)) {
-             _loading(true);
-             _props._db(service.group).query(serviceRoute.groupInvite, {'requestee': email}, reqType.post, groupId)
-                 .then((result) => {
-                     _message(result.message);
-                     fetch();
-                     _email('');
-                     _loading(false);
-                 })
-                 .catch(error => {
-                     _loading(false);
-                     console.log(error)
-                 })
-         }
-     }
+        if (!loading) {
+            if (validateEmail(email)) {
+                _loading(true);
+                _props._db(service.group).query(serviceRoute.groupInvite, {
+                    'requestee': email,
+                    'role': isAdmin ? 'ADMIN' : 'MEMBER'
+                }, reqType.post, groupId)
+                    .then((result) => {
+                        _message(result.message);
+                        fetch();
+                        _email('');
+                        _loading(false);
+                    })
+                    .catch(error => {
+                        _loading(false);
+                        console.log(error)
+                    })
+            } else {
+                _message("Please enter a valid email");
+            }
+        }
     }
 
     return (
 
         <>
-            {message && <Snackbar message={message} onClose={()=>{_message(null)}} /> }
+            {message && <Snackbar message={message} onClose={() => {
+                _message(null)
+            }}/>}
             <form onSubmit={(e: React.FormEvent) => {
                 e.preventDefault();
                 handleSendInvite()
@@ -75,10 +88,19 @@ function SendRequestPanelContainer({groupId,fetch}: { groupId: string,fetch:()=>
                             if (e.key === 'Enter') {
                                 handleSendInvite()
                             }
-                        }} onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                        }} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             _email(e.target.value)
                         }} placeholder={'Please enter the email to send an invite'}
                                className={'sendInviteInput'}/>
+                    </div>
+                    <div className={'admin-panel'}>
+                        <label className="switch">
+                            <input type="checkbox" checked={isAdmin} onClick={() => {
+                                _setAdmin(!isAdmin)
+                            }}/>
+                            <span className="slider round"></span>
+                        </label>
+                        <div>Invite as admin</div>
                     </div>
                     <div className={'sendInviteBtn'}>
                         <div className={'btn btn-primary btn-custom'} onClick={() => {
@@ -86,36 +108,43 @@ function SendRequestPanelContainer({groupId,fetch}: { groupId: string,fetch:()=>
                         }}> {'Send Invite'}
                         </div>
                     </div>
-                    {loading && <Spinner />}
+                    {loading && <Spinner/>}
                 </div>
             </form>
         </>
     )
 }
 
-function AllRequestsPanelContainer({requests,fetch}: {fetch:()=>void , requests:Request[] | null }) {
+function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, requests: Request[] | null }) {
     const [allRequests, _requests] = useState<Request[] | null>(requests)
     const [message, _message] = useState<string | null>(null);
     useEffect(() => {
         _requests(requests);
     }, [requests]);
-    function handleDelete(requestId:string){
-   _props._db(service.group).query(serviceRoute.groupInvite, {},reqType.delete,requestId)
-       .then((response)=>{
-           _message(response.message);
-           fetch();
-       })
+
+    function handleDelete(requestId: string) {
+        _props._db(service.group).query(serviceRoute.groupInvite, {}, reqType.delete, requestId)
+            .then((response) => {
+                fetch();
+                _message(response.message);
+
+            })
     }
+
     return (
         <>
             {allRequests ? <>
-                    { message && <Snackbar message={message} onClose={()=>{_message(null)}} />}
+                    {message && <Snackbar message={message} onClose={() => {
+                        _message(null)
+                    }}/>}
                     {allRequests.map((item: Request, index: number) =>
                         <div className={'shadow userlistWrapper'} key={index}>
                             <div> {item.invitee}</div>
 
                             <div className={'flex'}>
-                                <div style={{marginRight:'8px'}}><MdDelete onClick={()=>{handleDelete(item.id)}} size={26}/> </div>
+                                <div style={{marginRight: '8px'}}><MdDelete onClick={() => {
+                                    handleDelete(item.id)
+                                }} size={26}/></div>
                                 <MdMarkEmailRead size={26}/>
                             </div>
                         </div>
