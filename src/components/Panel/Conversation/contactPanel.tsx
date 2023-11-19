@@ -6,8 +6,6 @@ import {GroupList} from "../ConversationList";
 import {DialogPanel} from "../../Dialog";
 import {GroupForm} from "../GroupForm";
 import {Logo} from "../../utility/logo";
-import {Simulate} from "react-dom/test-utils";
-import load = Simulate.load;
 import {Spinner} from "../../utility/spinner/spinner";
 
 export function ContactPanel() {
@@ -23,7 +21,7 @@ export function ContactPanel() {
                 <CreateGroup/>
             </div>
             {loading ? <Spinner /> :<>
-            <div className={'font-primary '} style={{fontWeight:800,display:"flex",alignSelf:'start',padding:'0 6px',marginTop:'8px'}}>My Groups</div>
+            <div className={'font-primary mygroup-label '} style={{fontWeight:'bolder',display:"flex",alignSelf:'start',padding:'4px 6px',marginTop:'8px'}}>MY GROUPS</div>
             <div className={'item contactsItem'}><GroupList/></div>
             </>
             }

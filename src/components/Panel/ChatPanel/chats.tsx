@@ -1,7 +1,7 @@
 import './index.css'
 import emptyChats from './../../../assets/svg/empty-chats.svg'
 import {getString} from "../../../utils/strings";
-import {IoSend} from "react-icons/io5";
+import {IoPersonAddSharp, IoSend} from "react-icons/io5";
 import {FcAddImage} from "react-icons/fc";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
@@ -234,7 +234,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                 <div className={'wrapperContainer'}>
                     <div className={'tagsWrapper'}>
                         <div className={'tagsWrapperName'}>{group?.name}</div>
-                        <div style={{width: '100%', flex: 8, position: 'relative'}}>
+                        <div style={{ flex: 8, position: 'relative',width:'80%'}}>
                             <div className={'infoPanel font-primary'}>{group?.User.map((item: {
                                 name: string,
                                 email: string,
@@ -259,12 +259,12 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                     <div className={'usernamewrapper addMoreBtn'} onClick={() => {
                                         handleAddMore()
                                     }}>
-                                        + Add More
+                                        <IoPersonAddSharp size={22} />
                                     </div>
                                 }
                             </div>
                         </div>
-                        <div style={{marginRight: ' 18px'}}>
+                        <div style={{padding:'4px 8px',width:'6%'}}>
                             <GiHamburgerMenu size={24} color={'white'} onClick={() => {
                                 showOptions(true)
                             }} style={{cursor: 'pointer'}}/>

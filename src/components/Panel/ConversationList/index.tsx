@@ -3,7 +3,7 @@ import './index.css'
 import {GroupIcon} from "../GroupsPanel";
 import {ShellContext} from "../../../services/context/shell.context";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
-import {formatDateToDDMMYYYY, formatTimeToHHMM} from "../../../utils/functions";
+import {formatDateToDDMMYYYY} from "../../../utils/functions";
 
 export function GroupList() {
     const [items, setItem] = useState([])
@@ -29,7 +29,7 @@ export function GroupList() {
     return (<>
         {items.map((item: any, key: number) =>
             <div key={key} className={'groupListContainer shadow-box '} onClick={() => handleGroupSelection(item.id)}>
-                <div className={' groupLogo'}><GroupIcon url={item.GroupDetail.icon}/></div>
+                <div className={'groupLogo'}><GroupIcon url={item.GroupDetail.icon}/></div>
                 <div className={'info'}>
                     <div style={{fontSize: '14px'}}>{item.name}</div>
                     <div className={'flex conversationWrapper'}>{
@@ -38,7 +38,7 @@ export function GroupList() {
                         )
                     }</div>
                 </div>
-                <div>
+                <div style={{width:'10%'}}>
                     <div
                         className={'font-primary'} style={{fontWeight:'bold',fontSize:'11px'}}>{item.Message.length > 0 && formatDateToDDMMYYYY(item.Message[item.Message.length - 1].created_at)}</div>
                     <div

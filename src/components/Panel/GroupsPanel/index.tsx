@@ -26,7 +26,7 @@ export function ChatGroups() {
         <div className={'group-item-container '}>
             <UserIcon/>
             {requests.length > 0 && <>
-                <div className={'font-primary '}>INVITES</div>
+                <div className={'font-primary '} style={{fontWeight:'bolder'}}>INVITES</div>
                 {requests.map((_item: any, idx: React.Key | null | undefined) =>
                     <div className={'groupIcon-container-wrapper'} key={idx}>
                         <GroupIcon url={_item?.group?.GroupDetail?.icon ? _item?.group?.GroupDetail?.icon : undefined}/>
