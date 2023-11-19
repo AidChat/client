@@ -3,19 +3,13 @@ import emptyChats from './../../../assets/svg/empty-chats.svg'
 import {getString} from "../../../utils/strings";
 import {IoSend} from "react-icons/io5";
 import {FcAddImage} from "react-icons/fc";
-import {
-    ChangeEvent,
-    useContext,
-    useEffect,
-    useRef,
-    useState
-} from "react";
+import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 import groupsImg from './../../../assets/svg/groups.svg';
-import {formatTime} from "../../../utils/functions";
+import {formatDateToDDMMYYYY, formatTime, formatTimeToHHMM} from "../../../utils/functions";
 import {Spinner} from "../../utility/spinner/spinner";
-import {SocketEmitters, SocketListeners} from "../../../utils/interface";
+import {Role, SocketEmitters, SocketListeners} from "../../../utils/interface";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {GroupOptions} from "../GroupsPanel/GroupOptions";
 import sound from "./../../../assets/sound/notifications-sound.mp3";
@@ -97,7 +91,7 @@ export function Chats() {
                             name: any;
                         }) => item.name).filter(item => item !== u.name);
                         console.log(username)
-                        if(username.length > 0){
+                        if (username.length > 0) {
                             _activity(username[0].toString().toUpperCase() + ' is Typing')
                         }
 
@@ -140,7 +134,8 @@ interface MessageInterface {
     User: {
         name: string,
         email: string,
-        profileImage: string
+        profileImage: string,
+        id: number
     }
 }
 
@@ -163,8 +158,20 @@ export function ConversationWrapper({messages, group, activity, send}: {
     const [message, _message] = useState('');
     const [typing, _typing] = useState<boolean>(false);
     const [options, showOptions] = useState<boolean>(false);
-    const [role, _] = useState<string | undefined>(group?.Role[0]?.type);
+    const [role, _role] = useState<Role | null>();
     const [init, setInit] = useState('members')
+    const [idx, _idx] = useState<number>(0);
+
+    useEffect(() => {
+        if (group?.id) {
+            _props._db(service.group).query(serviceRoute.groupRole, {}, reqType.get, group.id)
+                .then((result: { data: Role }) => {
+                    console.log(result.data)
+                    _role(result.data);
+                })
+        }
+    }, [group?.id]);
+
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         _message(e.target.value)
@@ -219,6 +226,8 @@ export function ConversationWrapper({messages, group, activity, send}: {
         scrollToBottom();
     }, [state.messages]);
     const {userId} = useContext(ShellContext);
+
+
     return (
         <div className={'convoPanel'}>
             {!options ?
@@ -230,7 +239,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                 name: string,
                                 email: string,
                                 profileImage: string
-                            },index:number) => (
+                            }, index: number) => (
                                 <div className={'usernamewrapper'} key={index}>
                                     <div className={'usernameImage'}>
                                         <img
@@ -246,7 +255,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                                         </div>
                                     </div>
                                 </div>))}
-                                {(role === 'OWNER') &&
+                                {(role?.type === 'OWNER') &&
                                     <div className={'usernamewrapper addMoreBtn'} onClick={() => {
                                         handleAddMore()
                                     }}>
@@ -265,27 +274,43 @@ export function ConversationWrapper({messages, group, activity, send}: {
                         'font-primary'
                     }>{activity}</div>
                     <div className={'convoHistory'} ref={containerRef}>
-                        {state.messages?.map((item: MessageInterface, index: number) => (
-                            <div key={index}
-                                 className={`messageWrapper ${item?.senderId === userId && 'selfMessage'}`}>
-                                <div className={'font-primary miscContainer'}>
-                                    <div
-                                        className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
-                                        <img style={{height: '100%', width: '100%', borderRadius: '50%'}}
-                                             src={item.User?.profileImage.split('').length > 0 ? item.User.profileImage : groupsImg}/>
+                        {state.messages?.map((item: MessageInterface, index: number) => {
+                            return <>
+                                {((formatDateToDDMMYYYY(item.created_at) !== formatDateToDDMMYYYY(state.messages[index ? index - 1 : index].created_at) || (!index)) &&
+                                    <div className={'w100 message-text-wrapper'}><div className={'chatDate'}> {formatDateToDDMMYYYY(item.created_at)}</div></div>)}
+                                <div key={index}
+                                     className={`messageWrapper ${item?.senderId === userId && 'selfMessage'}`}>
+                                    <div className={'font-primary miscContainer'}>
+                                        {(item.senderId !== userId && item.senderId !== state.messages[index ? index - 1 : index].senderId) &&
+                                            <div
+                                                className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
+                                                <img style={{height: '100%', width: '100%', borderRadius: '50%'}}
+                                                     src={item.User?.profileImage.split('').length > 0 ? item.User.profileImage : groupsImg}/>
+                                            </div>
+
+                                        }
+                                        {(item?.senderId !== userId && item.senderId !== state.messages[index ? index - 1 : index].senderId) && item?.User.name.toUpperCase()}
                                     </div>
-                                    {(item?.senderId != userId) && item?.User.name.toUpperCase()}
-                                </div>
-                                <div className={'contentWrapper'}>
-                                    <div
-                                        className={`messageBubble ${item?.senderId === userId && 'selfMessageBubble'}  `}>
-                                        {item?.MessageContent?.content}
+                                    <div className={'contentWrapper'}>
+                                        <div
+                                            className={`messageBubble ${item?.senderId === userId && 'selfMessageBubble'}  `}>
+                                            {((item.senderId !== state.messages[index ? index - 1 : index].senderId) || (!index) || (formatDateToDDMMYYYY(item.created_at) !== formatDateToDDMMYYYY(state.messages[index ? index - 1 : index].created_at) || (!index))) &&
+                                                <div
+                                                    className={`arrow ${item.senderId === userId ? 'arrow-right' : 'arrow-left'}`}></div>
+                                            }
+                                            {item?.MessageContent?.content}
+                                            <div className={'font-primary miscContainer '} style={{
+                                                display: 'flex',
+                                                justifyContent: item.senderId === userId ? 'end' : 'start',
+                                                color: item.senderId !== userId ? 'black' : 'whitesmoke'
+                                            }}>{formatTimeToHHMM(item.created_at)}</div>
+
+                                        </div>
                                     </div>
 
                                 </div>
-                                <div className={'font-primary miscContainer '}>{formatTime(item.created_at)}</div>
-                            </div>
-                        ))}
+                            </>
+                        })}
                     </div>
                     <div></div>
                     <form onSubmit={handleSubmit}>
@@ -307,7 +332,7 @@ export function ConversationWrapper({messages, group, activity, send}: {
                     </form>
                 </div>
                 : <>
-                    <GroupOptions groupId={group.id} role={role} init={init} showChat={() => {
+                    <GroupOptions groupId={group.id} role={role?.type} init={init} showChat={() => {
                         showOptions(false)
                     }}/>
                 </>}

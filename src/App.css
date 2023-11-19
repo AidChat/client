@@ -255,3 +255,9 @@ div::-webkit-scrollbar {
 .borderNone{
     border:none !important;
 }
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

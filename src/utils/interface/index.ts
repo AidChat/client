@@ -18,3 +18,10 @@ export enum SocketListeners {
     MESSAGE = "MESSAGE",
     TYPING = "TYPING"
 }
+
+export interface Role{
+    id:number,
+    type:"OWNER" | "ADMIN" | "MEMBER",
+    userId: number,
+    groupId:number
+}

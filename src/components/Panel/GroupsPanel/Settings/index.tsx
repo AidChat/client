@@ -11,9 +11,10 @@ import {groupTokensArray} from "../../../../assets/data";
 export function Settings(props: { groupId: string }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
     useEffect(() => {
-      getGroup();
+        getGroup();
     }, []);
-    function getGroup(){
+
+    function getGroup() {
         _props._db(service.group).query(serviceRoute.group, null, reqType.get, props.groupId)
             .then(result => {
                 setData(result.data);
@@ -25,7 +26,9 @@ export function Settings(props: { groupId: string }) {
             {
                 data ?
                     <div className={'font-primary'}>
-                        <GroupSettingContainer groupDetails={data} refresh={()=>{getGroup()}}/>
+                        <GroupSettingContainer groupDetails={data} refresh={() => {
+                            getGroup()
+                        }}/>
                     </div>
                     : <Spinner/>
             }
@@ -33,8 +36,8 @@ export function Settings(props: { groupId: string }) {
     )
 }
 
-function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()=>void }) {
-    const [isOwner, _updateOwnership] = useState(false);
+function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: () => void }) {
+    const [role, _updateOwnership] = useState<string>('');
     const [state, setState] = useState<{
         name: string,
         description: string,
@@ -52,15 +55,10 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
     const [update, _update] = useState<{ icon: boolean }>({icon: false})
     const [message, _message] = useState<string | null>(null);
     const [loading, _loading] = useState<boolean>(false);
-    const [searchTerm,updateSearch] = useState<string>('')
+    const [searchTerm, updateSearch] = useState<string>('')
     useEffect(() => {
-        if (props.groupDetails.Role[0].type === 'OWNER') {
-            _updateOwnership(true);
-        } else {
-            _updateOwnership(false)
-        }
+        _updateOwnership(props.groupDetails.Role[0].type);
     }, []);
-
     function handleUpdate(e: any) {
         setState({...state, [e.target.name]: e.target.value})
     }
@@ -138,20 +136,28 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
         );
         _tags(filteredData);
     }
-    function handleGroupDeleteRequest(){
-        if(props.groupDetails.Request.length > 0){
-            _props._db(service.group).query(serviceRoute.groupInvite, {},reqType.delete,props.groupDetails.Request[0].id)
-                .then(response=>{
+
+    function handleGroupDeleteRequest() {
+        if (props.groupDetails.Request.length > 0) {
+            _props._db(service.group).query(serviceRoute.groupInvite, {}, reqType.delete, props.groupDetails.Request[0].id)
+                .then(response => {
                     _message(response.message)
                     props.refresh();
                 })
-        }else{
-            _props._db(service.group).query(serviceRoute.group, {},reqType.post,props.groupDetails.id).then(response=>{
+        } else {
+            _props._db(service.group).query(serviceRoute.group, {}, reqType.post, props.groupDetails.id).then(response => {
                 _message(response.message)
                 props.refresh();
             })
         }
 
+    }
+
+    function handleGroupLeave() {
+        _props._db(service.group).query(serviceRoute.removeUserFromGroup, {}, reqType.put, props.groupDetails.id)
+            .then(response => {
+                console.log(response)
+            })
     }
 
     return (
@@ -166,7 +172,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
                         <img style={{height: '100%', width: '100%'}} src={state.icon ? state.icon : groupIcon}
                              alt={'group icon'}/>
                     </div>
-                    {isOwner &&
+                    {role === 'OWNER' &&
                         <ImageUploader
                             className={'imageUploader'}
                             withIcon={false}
@@ -183,15 +189,16 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
                 </div>
                 <div className={'settings-item-container nameContainer'}>
                     <div className={'center w25'}>Name</div>
-                    <input className={`settingInput w50 ${!isOwner && 'borderNone'} `} onChange={handleUpdate}
+                    <input className={`settingInput w50 ${role != 'OWNER' && 'borderNone'} `} onChange={handleUpdate}
                            name={'name'}
-                           value={state.name} disabled={!isOwner}/>
+                           value={state.name} disabled={role != 'OWNER'}/>
                 </div>
                 <div className={'settings-item-container descContainer'}>
                     <div className={'center w25'}>Description</div>
-                    <textarea className={`settingInput w100 ${!isOwner && 'borderNone'} `} onChange={handleUpdate}
+                    <textarea className={`settingInput w100 ${role != 'OWNER' && 'borderNone'} `}
+                              onChange={handleUpdate}
                               name={'description'}
-                              disabled={!isOwner}
+                              disabled={role != 'OWNER'}
                               value={state.description}/>
 
                 </div>
@@ -200,15 +207,17 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
                     <div className={'tagWrapper'}>{state.tags.map((tag: string) => {
                         return <div className={'tag'}>
                             {tag}
-                            {isOwner && <CiCircleRemove onClick={() => {
+                            {role === 'OWNER' && <CiCircleRemove onClick={() => {
                                 handleGroupTagsRemove(tag)
                             }} style={{marginLeft: '4px', cursor: 'pointer'}}/>}
                         </div>
                     })}
-                        {isOwner &&
+                        {role === 'OWNER' &&
                             <div>
-                                <div style={{position:'absolute'}}>
-                                    <input className={'tag-input'} value={searchTerm} onChange={(e)=>{filterTags(e)}} placeholder={'Add more tags'} type={"text"}/>
+                                <div style={{position: 'absolute'}}>
+                                    <input className={'tag-input'} value={searchTerm} onChange={(e) => {
+                                        filterTags(e)
+                                    }} placeholder={'Add more tags'} type={"text"}/>
                                     <div className={'tag-items'}>
                                         {tags.map((token, index) => {
                                                 return <div className={'token'} onClick={() => {
@@ -223,10 +232,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
                         }
                     </div>
                 </div>
-                {isOwner && <>
-                    <div className={'settings-item-container updateContainer'}>
-
-                    </div>
+                {role === 'OWNER' && <>
                     <div className={'settings-item-container dangerContainer'}>
                         <div>
                             <div className={'btn btn-primary btn-update'} onClick={handleGroupUpdate}> Update</div>
@@ -234,11 +240,25 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt,refresh:()
                         <div className={'center w25'}></div>
                         <div className={'center w25'}></div>
                         <div>
-                            <div className={'btn btn-primary btn-custom'} style={props.groupDetails.Request.length > 0 ?{background:"yellow",color:'black'}:{background:"red"}} onClick={()=>{handleGroupDeleteRequest()}}>{props.groupDetails.Request.length > 0 ? "Cancel delete request":"Request group delete"}</div>
+                            <div className={'btn btn-primary btn-custom'}
+                                 style={props.groupDetails.Request.length > 0 ? {
+                                     background: "yellow",
+                                     color: 'black'
+                                 } : {background: "red"}} onClick={() => {
+                                handleGroupDeleteRequest()
+                            }}>{props.groupDetails.Request.length > 0 ? "Cancel delete request" : "Request group delete"}</div>
+                        </div>
+                    </div>
+                </>}
+                {role === 'MEMBER' && <>
+                    <div className={'settings-item-container dangerContainer'}>
+                        <div>
+                            <div className={'btn btn-primary btn-update'} onClick={handleGroupLeave}> Leave Group</div>
                         </div>
                     </div>
                 </>
                 }
+
             </div>
         </>
     )
@@ -260,7 +280,7 @@ interface GroupDetailsInt {
         id: number,
         type: "MEMBER" | 'OWNER' | 'ADMIN'
     }[],
-    Request:{
-        id:string
+    Request: {
+        id: string
     }[]
 }

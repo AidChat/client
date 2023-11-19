@@ -21,6 +21,7 @@ export function GroupOptions(props: _int) {
     const handleMenuItemClick = (menuItem: React.SetStateAction<string>) => {
         setActiveMenuItem(menuItem);
     };
+    console.log(props)
 
     return (
         <div>
@@ -40,7 +41,7 @@ export function GroupOptions(props: _int) {
 
                     <div style={{flex: '1'}} className={activeMenuItem === 'members' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('members')}><BsPeople size={22} color={'white'}/></div>
-                    {props.role == 'OWNER' &&
+                    {(props.role == 'OWNER' || props.role == 'ADMIN')  &&
                         <div style={{flex: '1'}} className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
                              onClick={() => handleMenuItemClick('requests')}><AiOutlineUsergroupAdd size={22} color={'white'}/>
                         </div>

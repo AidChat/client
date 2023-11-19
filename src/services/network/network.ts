@@ -110,8 +110,10 @@ export enum serviceRoute {
     _groupMessages = '/group/messages',
     groupUsers = '/group/users',
     groupInvite = '/group/invite',
-    request= '/group/request'
-
+    request= '/group/request',
+    groupRole = '/group/role',
+    removeUserFromGroup = '/group/remove',
+    userRequest='/group/requests'
 }
 
 

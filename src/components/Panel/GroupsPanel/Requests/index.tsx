@@ -5,6 +5,7 @@ import {_props, reqType, service, serviceRoute} from "../../../../services/netwo
 import {validateEmail} from "../../../../utils/functions";
 import {MdDelete, MdMarkEmailRead} from "react-icons/md";
 import Snackbar from "../../../utility/Snackbar";
+import {Role} from "../../../../utils/interface";
 
 export function Requests(props: { groupId: string }) {
     const [data, setData] = useState(true);
@@ -46,6 +47,7 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
     const [loading, _loading] = useState<boolean>(false);
     const [message, _message] = useState<string | null>(null);
     const [isAdmin, _setAdmin] = useState<boolean>(false)
+    const [role, setRole] = useState<Role | null>(null);
 
     function handleSendInvite() {
         if (!loading) {
@@ -71,6 +73,13 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
         }
     }
 
+    useEffect(() => {
+        _props._db(service.group).query(serviceRoute.groupRole, {}, reqType.get, groupId)
+            .then((result: { data: Role }) => {
+                setRole(result.data);
+            })
+    }, []);
+
     return (
 
         <>
@@ -93,7 +102,7 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
                         }} placeholder={'Please enter the email to send an invite'}
                                className={'sendInviteInput'}/>
                     </div>
-                    <div className={'admin-panel'}>
+                    {role?.type === 'OWNER' && <div className={'admin-panel'}>
                         <label className="switch">
                             <input type="checkbox" checked={isAdmin} onClick={() => {
                                 _setAdmin(!isAdmin)
@@ -101,7 +110,8 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
                             <span className="slider round"></span>
                         </label>
                         <div>Invite as admin</div>
-                    </div>
+                    </div>}
+
                     <div className={'sendInviteBtn'}>
                         <div className={'btn btn-primary btn-custom'} onClick={() => {
                             handleSendInvite()

@@ -11,23 +11,38 @@ import Snackbar from "../../utility/Snackbar";
 import {Spinner} from "../../utility/spinner/spinner";
 
 export function ChatGroups() {
-    let groups: any[] = [];
+    const [requests, _requests] = useState<any>([]);
+    useEffect(() => {
+        _props._db(service.group).query(serviceRoute.userRequest, {}, reqType.get, undefined)
+            .then(result => {
+                _requests(result.data)
+            })
+            .catch((error: any) => {
+                console.log(error);
+            })
+    }, []);
+
     return (
         <div className={'group-item-container '}>
             <UserIcon/>
-            {groups.map((_item, idx) =>
-                <div className={'groupIcon-container-wrapper'} key={idx}>
-                    <GroupIcon/>
-                </div>
-            )}
+            {requests.length > 0 && <>
+                <div className={'font-primary '}>INVITES</div>
+                {requests.map((_item: any, idx: React.Key | null | undefined) =>
+                    <div className={'groupIcon-container-wrapper'} key={idx}>
+                        <GroupIcon url={_item?.group?.GroupDetail?.icon ? _item?.group?.GroupDetail?.icon : undefined}/>
+                        <div className={'font-primary truncate '} style={{textAlign: 'center'}}>{_item?.group?.name}</div>
+                    </div>
+                )}
+            </>
+            }
         </div>
     )
 }
 
-export function GroupIcon({url}:{url?:string}) {
+export function GroupIcon({url}: { url?: string }) {
     return (
         <div className={'item-wrapper'}>
-            <img src={url ? url: groupsImg} alt={'profile icon'}/>
+            <img src={url ? url : groupsImg} alt={'profile icon'}/>
         </div>
     )
 }
@@ -75,7 +90,7 @@ export function UserIcon() {
             }}/></>} onClose={() => {
                 setShowUserForm(false)
             }} load={false}/>
-            {user ? <div style={{position: 'relative', width: '100%'}} className={'userIcon'}>
+            {user ? <div style={{position: 'relative', width: '100%', margin: '10px 0'}} className={'userIcon'}>
                     <div onClick={() => {
                         showMenu(!menu)
                     }} style={{textAlign: 'center', width: '100%'}} className={'usernameWrapper'}>
