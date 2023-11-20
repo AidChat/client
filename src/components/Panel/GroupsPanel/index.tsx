@@ -11,8 +11,11 @@ import Snackbar from "../../utility/Snackbar";
 import {Spinner} from "../../utility/spinner/spinner";
 
 export function ChatGroups() {
+    const {_requestId,_setGroupType,_setGroupId,refetch} = useContext(ShellContext);
     const [requests, _requests] = useState<any>([]);
+
     useEffect(() => {
+        console.log(refetch)
         _props._db(service.group).query(serviceRoute.userRequest, {}, reqType.get, undefined)
             .then(result => {
                 _requests(result.data)
@@ -20,17 +23,26 @@ export function ChatGroups() {
             .catch((error: any) => {
                 console.log(error);
             })
-    }, []);
+    }, [refetch]);
+
+    function handleGroupId(id: string, requestID: string) {
+        _setGroupId(id);
+        _requestId(requestID);
+        _setGroupType("INVITE")
+    }
 
     return (
         <div className={'group-item-container '}>
             <UserIcon/>
             {requests.length > 0 && <>
-                <div className={'font-primary '} style={{fontWeight:'bolder'}}>INVITES</div>
+                <div className={'font-primary '} style={{fontWeight: 'bolder'}}>INVITES</div>
                 {requests.map((_item: any, idx: React.Key | null | undefined) =>
-                    <div className={'groupIcon-container-wrapper'} key={idx}>
+                    <div className={'groupIcon-container-wrapper'} key={idx} onClick={() => {
+                        handleGroupId(_item.groupId, _item.id)
+                    }}>
                         <GroupIcon url={_item?.group?.GroupDetail?.icon ? _item?.group?.GroupDetail?.icon : undefined}/>
-                        <div className={'font-primary truncate '} style={{textAlign: 'center'}}>{_item?.group?.name}</div>
+                        <div className={'font-primary truncate '}
+                             style={{textAlign: 'center'}}>{_item?.group?.name}</div>
                     </div>
                 )}
             </>

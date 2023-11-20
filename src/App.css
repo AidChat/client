@@ -54,13 +54,14 @@ div::-webkit-scrollbar {
 
 .btn {
     height: 2.4rem;
-    width: 3rem;
+    width: fit-content;
     border: 1px solid whitesmoke;
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding:0 8px;
 }
 
 .btn-primary {
@@ -138,8 +139,8 @@ div::-webkit-scrollbar {
 
 #tooltip {
     position: absolute;
-    left: 0px;
-    top: 18px;
+    left: -46px;
+    top: 32px;
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -227,11 +228,11 @@ div::-webkit-scrollbar {
 }
 
 #tooltip .tooltip-label {
-    max-width: 200px;
+    max-width: fit-content;
     padding: 3px 8px;
-    color: #fff;
+    color: #a1a0a0;
     text-align: center;
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.56);
     border-radius: 30px;
 }
 

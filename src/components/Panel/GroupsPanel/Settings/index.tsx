@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Spinner} from "../../../utility/spinner/spinner";
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
@@ -7,12 +7,15 @@ import ImageUploader from "react-images-upload";
 import groupIcon from './../../../../assets/svg/groups.svg'
 import {CiCircleRemove} from "react-icons/ci";
 import {groupTokensArray} from "../../../../assets/data";
+import {ShellContext} from "../../../../services/context/shell.context";
 
 export function Settings(props: { groupId: string }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
+    const {refetch,groupId} = useContext(ShellContext);
+
     useEffect(() => {
         getGroup();
-    }, []);
+    }, [refetch,groupId]);
 
     function getGroup() {
         _props._db(service.group).query(serviceRoute.group, null, reqType.get, props.groupId)
@@ -55,7 +58,8 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
     const [update, _update] = useState<{ icon: boolean }>({icon: false})
     const [message, _message] = useState<string | null>(null);
     const [loading, _loading] = useState<boolean>(false);
-    const [searchTerm, updateSearch] = useState<string>('')
+    const [searchTerm, updateSearch] = useState<string>('');
+    const {refetch,_setGroupId,_setRefetch,_setGroupType} = useContext(ShellContext);
     useEffect(() => {
         _updateOwnership(props.groupDetails.Role[0].type);
     }, []);
@@ -154,9 +158,14 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
     }
 
     function handleGroupLeave() {
+        _loading(true);
         _props._db(service.group).query(serviceRoute.removeUserFromGroup, {}, reqType.put, props.groupDetails.id)
-            .then(response => {
-                console.log(response)
+            .then(() => {
+                _message('You have successfully left the group!')
+                _loading(false);
+                _setRefetch(!refetch);
+                _setGroupType(null);
+                _setGroupId(null);
             })
     }
 

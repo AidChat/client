@@ -1,7 +1,6 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {io} from "socket.io-client";
 import {service} from "../network/network";
-import {useParams} from "react-router-dom";
 
 
 interface ShellInterface {
@@ -23,11 +22,13 @@ export const ShellContext = React.createContext<any>({snackbarProps: {show: fals
 
 
 export function ShellContextProvider({children}: { children: ReactElement }) {
-    const slug = useParams();
+    const [refetch,_setRefetch] = useState<boolean>(false);
     const [snackbarProps, setShowSnackbarProps] = useState({show: false, message: ''});
     const [groupId, _setGroupId] = useState<null | string>(null);
+    const [selectedGroupType,_setGroupType] = useState<"CHAT" | "INVITE" | "JOIN"| null>(null);
     const [userId, _setUserId] = useState<string | null>(null)
-    const [socketId, _socketId] = useState(null)
+    const [socketId, _socketId] = useState(null);
+    const [requestId, _requestId] = useState<string | null>(null)
     const [socket, setSocket] = useState<any>(io(service.messaging, {
         autoConnect: true,
         auth: {
@@ -35,23 +36,23 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
             'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : ''
         }
     }));
-    const [trigger,_trigger] = useState<boolean>(false);
+    const [trigger, _trigger] = useState<boolean>(false);
     // TODO
     /*
     Make a function that takes some args and trigger data refresh if its calles
      */
-    function ping(s?:string){
-       _trigger(true);
+    function ping(s?: string) {
+        _trigger(true);
     }
 
     useEffect(() => {
-        if(trigger){
+        if (trigger) {
             _trigger(false)
         }
     }, [trigger]);
 
     useEffect(() => {
-        if(socketId){
+        if (socketId) {
             setSocket(io(service.messaging, {
                 autoConnect: true,
                 auth: {
@@ -71,7 +72,24 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
 
     return (
         <ShellContext.Provider
-            value={{ping,trigger,snackbarProps, showSnackbar, _setGroupId, groupId, _setUserId, userId, socket, _socketId,socketId}}>
+            value={{
+                ping,
+                trigger,
+                snackbarProps,
+                showSnackbar,
+                _setGroupId,
+                groupId,
+                _setUserId,
+                userId,
+                socket,
+                _socketId,
+                socketId,
+                _requestId,
+                requestId,selectedGroupType,
+                _setGroupType,
+                refetch,
+                _setRefetch
+            }}>
             {children}
         </ShellContext.Provider>
     )

@@ -7,16 +7,17 @@ import {formatDateToDDMMYYYY} from "../../../utils/functions";
 
 export function GroupList() {
     const [items, setItem] = useState([])
-    const {_setGroupId} = useContext(ShellContext);
+    const {_setGroupId,_setGroupType,refetch} = useContext(ShellContext);
     const {trigger} = useContext(ShellContext);
 
     useEffect(() => {
         _props._db(service.group).query(serviceRoute.group, undefined, reqType.get).then(response => {
             setItem(response.data)
         })
-    }, []);
+    }, [refetch]);
     const handleGroupSelection = (groupId: string): void => {
         _setGroupId(groupId);
+        _setGroupType('CHAT')
     }
     useEffect(() => {
         if (trigger) {
@@ -24,8 +25,7 @@ export function GroupList() {
                 setItem(response.data)
             })
         }
-    }, [trigger]);
-    console.log(items)
+    }, [trigger,refetch]);
     return (<>
         {items.map((item: any, key: number) =>
             <div key={key} className={'groupListContainer shadow-box '} onClick={() => handleGroupSelection(item.id)}>
