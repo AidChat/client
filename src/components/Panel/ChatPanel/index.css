@@ -142,7 +142,7 @@
     justify-content: center;
     width: 100%;
     overflow-x: auto;
-    padding:32px 0;
+    padding: 32px 0;
 }
 
 .itemTags {
@@ -200,7 +200,6 @@
 
 .username {
     font-size: 14px;
-    margin-top: 4px;
     cursor: pointer;
 }
 
@@ -285,12 +284,12 @@
 }
 
 .invContainer {
-    min-height: 22rem;
     height: fit-content;
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 0 50px;
 }
 
 .tag-container {
@@ -302,31 +301,53 @@
     margin: 8px 2px;
     background: lightgrey;
     width: fit-content;
-    padding: 0 4px;
+    padding: 0 8px;
     border-radius: 40px;
 }
 
 .inviteHeading {
+    text-align: center;
     font-size: 4em;
 }
 
 .btn-Wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin: 10px 0;
+    flex: 1;
+    align-items: center;
 }
 
 .btn-Wrapper .btn-custom {
     height: 30px;
+
+
 }
-.invite-labels{
+
+.block-text {
+    display: flex;
+    align-items: center;
+    width: 80px;
+    text-align: center;
+    cursor:pointer;
+}
+
+
+.btn-Wrapper .btn-custom:first-child {
+    background: yellow;
+}
+
+.invite-labels {
     font-size: 20px;
 }
-.groupIcon_wrapper{
-    height:120px;
+
+.groupIcon_wrapper {
+    height: 120px;
     width: 120px;
-    margin:10px 0;
+    margin: 10px 0;
 }
-.groupIcon_wrapper_container{
+
+.groupIcon_wrapper_container {
     width: 100%;
     display: flex;
     justify-content: center;

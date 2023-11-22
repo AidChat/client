@@ -181,7 +181,7 @@ export function Chats() {
 function InviteContainer(props: { requestId?: string, groupId?: string }) {
     const [loading, _loading] = useState<boolean>(true);
     const [data, _data] = useState<any>(null);
-    const {_setGroupType,_setRefetch,refetch} = useContext(ShellContext);
+    const {_setGroupType, _setRefetch, refetch} = useContext(ShellContext);
 
     useEffect(() => {
         if (props.requestId) {
@@ -208,6 +208,26 @@ function InviteContainer(props: { requestId?: string, groupId?: string }) {
         }
     }
 
+    function handleInviteReject() {
+        _loading(true);
+        _props._db(service.group).query(serviceRoute.groupInvite, {status: "REJECTED"}, reqType.put, props.requestId)
+            .then(result => {
+                _loading(false);
+                _setRefetch(!refetch)
+                _setGroupType(null);
+            })
+    }
+
+    function handleRequestBlock() {
+        _loading(true)
+        _props._db(service.group).query(serviceRoute.groupInvite, {status: data.status === "BLOCKED" ? "PENDING" : "BLOCKED"}, reqType.put, props.requestId)
+            .then(result => {
+                _loading(false);
+                _setRefetch(!refetch)
+                _setGroupType(null);
+            });
+    }
+
     return (
         <div className={'inviteContainer'}>
             {loading ? <Spinner/> :
@@ -216,9 +236,15 @@ function InviteContainer(props: { requestId?: string, groupId?: string }) {
                         <div className={'invContainer'}>
                             <div className={'font-primary inviteHeading'}>Group Invitation</div>
                             <div className={'groupIcon_wrapper_container'}>
-                            <div className={'groupIcon_wrapper'}>
-                                <img style={{height:'100%',width:'100%',borderRadius:'50%',border:'1px solid lightgrey'}} src={data.group.GroupDetail.icon? data.group.GroupDetail.icon : groupsImg} alt={'Group image'} />
-                            </div>
+                                <div className={'groupIcon_wrapper'}>
+                                    <img style={{
+                                        height: '100%',
+                                        width: '100%',
+                                        borderRadius: '50%',
+                                        border: '1px solid lightgrey'
+                                    }} src={data.group.GroupDetail.icon ? data.group.GroupDetail.icon : groupsImg}
+                                         alt={'Group image'}/>
+                                </div>
                             </div>
                             <div className={'label font-primary'}>NAME</div>
                             <div className={'font-secondary invite-labels'}> {data.group.name} </div>
@@ -231,10 +257,29 @@ function InviteContainer(props: { requestId?: string, groupId?: string }) {
                             </div>
                             <div className={'font-primary'}>REQUESTER</div>
                             <div className={'font-secondary invite-labels'}>{data.user.name}</div>
-                            <div className={'btn-Wrapper'}>
+                            <div style={{display: 'flex'}}>
+                                <div className={'btn-Wrapper'}>
+                                    {data.status !== "BLOCKED" && <>
+                                        <div onClick={() => {
+                                            handleInviteReject()
+                                        }}
+                                             className={'btn btn-primary btn-custom'}>{!props.requestId ? "NOT INTERESTED" : "NOT INTERESTED"}</div>
+
+                                        <div onClick={() => {
+                                            handleGroupJoin()
+                                        }}
+                                             className={'btn btn-primary btn-custom'}>{!props.requestId ? "JOIN" : "I AM INTERESTED"}</div>
+                                    </>
+                                    }
+                                </div>
+
+
                                 <div onClick={() => {
-                                    handleGroupJoin()
-                                }} className={'btn btn-primary btn-custom'}>{!props.requestId ? "JOIN" : "I AM INTERESTED"}</div>
+                                    handleRequestBlock()
+                                }}
+                                     className={'font-primary block-text'}>{data.status === "BLOCKED" ? "Unblock ?" : "Block ?"}
+                                </div>
+
                             </div>
 
                         </div>
@@ -432,7 +477,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                 <div key={index}
                                      className={`messageWrapper ${item?.senderId === userId && 'selfMessage'}`}>
                                     <div className={'font-primary miscContainer'}>
-                                        {(item.senderId !== userId && item.senderId !== state.messages[index ? index - 1 : index].senderId)  &&
+                                        {(item.senderId !== userId && item.senderId !== state.messages[index ? index - 1 : index].senderId) &&
                                             <div
                                                 className={`imageWrapper ${item?.senderId === userId && 'selfMessageBubble'}`}>
                                                 <img style={{height: '100%', width: '100%', borderRadius: '50%'}}

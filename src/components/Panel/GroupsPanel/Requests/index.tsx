@@ -6,6 +6,9 @@ import {validateEmail} from "../../../../utils/functions";
 import {MdDelete, MdMarkEmailRead} from "react-icons/md";
 import Snackbar from "../../../utility/Snackbar";
 import {Role} from "../../../../utils/interface";
+import {SiMinutemailer} from "react-icons/si";
+import {RiCloseCircleLine} from "react-icons/ri";
+import {GoBlocked} from "react-icons/go";
 
 export function Requests(props: { groupId: string }) {
     const [data, setData] = useState(true);
@@ -51,7 +54,8 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
 
     function handleSendInvite() {
         if (!loading) {
-            if (validateEmail(email)) {
+            console.log(email)
+            if (true) {
                 _loading(true);
                 _props._db(service.group).query(serviceRoute.groupInvite, {
                     'requestee': email,
@@ -141,6 +145,7 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
             })
     }
 
+
     return (
         <>
             {allRequests ? <>
@@ -152,10 +157,13 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
                             <div> {item.invitee}</div>
 
                             <div className={'flex'}>
-                                <div style={{marginRight: '8px'}}><MdDelete onClick={() => {
+                                {item.status === 'PENDING' && <SiMinutemailer size={26} color={'white'}/>}
+                                {item.status === 'REJECTED' && <RiCloseCircleLine  size={26} color={'yellow'}/>}
+                                {item.status === 'BLOCKED' && <GoBlocked   size={26} color={'red'}/>}
+
+                                <div style={{margin: '0 10px'}}><MdDelete onClick={() => {
                                     handleDelete(item.id)
                                 }} size={26}/></div>
-                                <MdMarkEmailRead size={26}/>
                             </div>
                         </div>
                     )
@@ -174,5 +182,6 @@ interface Request {
     id: string,
     invitee: string,
     type: string,
-    userId: number
+    userId: number,
+    status: "ACCEPTED" | "PENDING" | "REJECTED" | "BLOCKED"
 }

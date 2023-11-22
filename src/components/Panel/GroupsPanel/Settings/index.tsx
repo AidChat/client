@@ -77,6 +77,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
             .then(result => {
                 _loading(false);
                 _message('Group updated successfully')
+                _setRefetch(!refetch);
             })
             .catch(error => {
                 _message("Failed to update group");
@@ -191,7 +192,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
                             onChange={(e) => {
                                 handleImageUpload(e)
                             }}
-                            imgExtension={['.jpeg', '.gif', '.png', '.gif']}
+                            imgExtension={['.jpeg', '.gif', '.png', '.gif','.jpg']}
                             maxFileSize={5242880}
                         />
                     }

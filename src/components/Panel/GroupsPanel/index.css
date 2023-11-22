@@ -51,11 +51,11 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    /*position: relative;*/
+    border-radius: 8px;
 }
 
 .usernameWrapper:hover {
-    background: rgba(0, 0, 0, 0.24);
+    background: rgba(157, 152, 152, 0.24);
 }
 
 .customMenu-wrapper {
@@ -145,4 +145,10 @@
     display: flex;
     justify-content: end;
     position: relative;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
 }

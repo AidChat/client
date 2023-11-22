@@ -240,7 +240,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
 export function CustomMenu({items, onClick}: { items: { name: string, id: number }[], onClick: (S: number) => void }) {
 
     return (
-        <div className={'customMenu-wrapper'}>
+        <div className={'customMenu-wrapper '}>
             {items.map((item, index) => (
                 <div className={'menu-item'} onClick={() => {
                     onClick(item.id)
