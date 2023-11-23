@@ -18,7 +18,7 @@ export function Settings(props: { groupId: string }) {
     }, [refetch,groupId]);
 
     function getGroup() {
-        _props._db(service.group).query(serviceRoute.group, null, reqType.get, props.groupId)
+        _props._db(service.group).query(serviceRoute.groupById, null, reqType.get, props.groupId)
             .then(result => {
                 setData(result.data);
             })
@@ -73,7 +73,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
         if (!update.icon) {
             delete data.icon
         }
-        _props._db(service.group).query(serviceRoute.group, data, reqType.put, props.groupDetails.id)
+        _props._db(service.group).query(serviceRoute.groupById, data, reqType.put, props.groupDetails.id)
             .then(result => {
                 _loading(false);
                 _message('Group updated successfully')
@@ -150,7 +150,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
                     props.refresh();
                 })
         } else {
-            _props._db(service.group).query(serviceRoute.group, {}, reqType.post, props.groupDetails.id).then(response => {
+            _props._db(service.group).query(serviceRoute.groupById, {}, reqType.post, props.groupDetails.id).then(response => {
                 _message(response.message)
                 props.refresh();
             })

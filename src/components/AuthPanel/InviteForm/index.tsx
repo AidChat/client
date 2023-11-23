@@ -7,7 +7,7 @@ import {Spinner} from "../../utility/spinner/spinner";
 
 
 interface requestInt {
-    id: number,
+    id: string,
     groupId: number,
     userId: number,
     type: string,

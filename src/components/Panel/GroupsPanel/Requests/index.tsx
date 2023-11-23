@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import {Spinner} from "../../../utility/spinner/spinner";
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
-import {validateEmail} from "../../../../utils/functions";
-import {MdDelete, MdMarkEmailRead} from "react-icons/md";
+import {MdDelete} from "react-icons/md";
 import Snackbar from "../../../utility/Snackbar";
 import {Role} from "../../../../utils/interface";
 import {SiMinutemailer} from "react-icons/si";
 import {RiCloseCircleLine} from "react-icons/ri";
 import {GoBlocked} from "react-icons/go";
+import {FaUserPlus} from "react-icons/fa";
 
 export function Requests(props: { groupId: string }) {
     const [data, setData] = useState(true);
@@ -144,6 +144,13 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
 
             })
     }
+    function handleGroupJoin(requestId:string){
+        _props._db(service.group).query(serviceRoute.request, {},reqType.put,requestId)
+            .then((response:any)=>{
+                fetch();
+                _message(response.message);
+            })
+    }
 
 
     return (
@@ -157,9 +164,16 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
                             <div> {item.invitee}</div>
 
                             <div className={'flex'}>
+                                {item.type === 'INVITE' ?
+                                    <>
                                 {item.status === 'PENDING' && <SiMinutemailer size={26} color={'white'}/>}
                                 {item.status === 'REJECTED' && <RiCloseCircleLine  size={26} color={'yellow'}/>}
-                                {item.status === 'BLOCKED' && <GoBlocked   size={26} color={'red'}/>}
+                                {item.status === 'BLOCKED' && <GoBlocked   size={26} color={'red'}/>}</>
+                                :<>
+                                        <div className={''} onClick={()=>{handleGroupJoin(item.id)}} >Accept</div>
+                                        <FaUserPlus  size={26} color={'#183b35'} />
+                                    </>
+                                }
 
                                 <div style={{margin: '0 10px'}}><MdDelete onClick={() => {
                                     handleDelete(item.id)
@@ -181,7 +195,7 @@ interface Request {
     groupId: number,
     id: string,
     invitee: string,
-    type: string,
     userId: number,
     status: "ACCEPTED" | "PENDING" | "REJECTED" | "BLOCKED"
+    type :"INVITE" | "MANUAL"   | "DELETE"
 }
