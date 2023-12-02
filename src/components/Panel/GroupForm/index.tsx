@@ -126,7 +126,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                                     onChange={(e) => {
                                         handleImageUpload(e)
                                     }}
-                                    imgExtension={['.jpeg', '.gif', '.png', '.gif']}
+                                    imgExtension={['.jpeg', '.gif', '.png', '.gif','.jpg']}
                                     maxFileSize={5242880}
                                 />
                             </div>

@@ -4,12 +4,13 @@ import {_props, reqType, service, serviceRoute} from "../../../../services/netwo
 import {Spinner} from "../../../utility/spinner/spinner";
 import groupsImg from "../../../../assets/svg/groups.svg";
 import Tooltip from "../../../utility/Tooltip";
+import Snackbar from "../../../utility/Snackbar";
 
 export function InviteContainer(props: { requestId?: string, groupId?: string }) {
     const [loading, _loading] = useState<boolean>(true);
     const [data, _data] = useState<any>(null);
     const {_setGroupType, _setRefetch, refetch} = useContext(ShellContext);
-
+    const [message,_message]= useState<string>('');
     useEffect(() => {
         if (props.requestId) {
             _loading(true);
@@ -26,12 +27,11 @@ export function InviteContainer(props: { requestId?: string, groupId?: string })
             _loading(true);
             _props._db(service.group).query(serviceRoute.request, {}, reqType.put, props.requestId)
                 .then(() => {
+                    _message("Request has been sent. You will get notified once you will be allowed to join.")
                     _loading(false)
                     _setRefetch(!refetch)
                     _setGroupType('CHAT');
                 })
-        } else {
-            // create a request to join this group
         }
     }
 
@@ -57,6 +57,7 @@ export function InviteContainer(props: { requestId?: string, groupId?: string })
 
     return (
         <div className={'inviteContainer'}>
+            <Snackbar message={message} onClose={()=>{_message('')}} />
             {loading ? <Spinner/> :
                 <>
                     <div className={'inviteWrapper'}>

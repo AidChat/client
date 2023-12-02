@@ -8,6 +8,7 @@ import groupIcon from './../../../../assets/svg/groups.svg'
 import {CiCircleRemove} from "react-icons/ci";
 import {groupTokensArray} from "../../../../assets/data";
 import {ShellContext} from "../../../../services/context/shell.context";
+import {Role} from "../../../../utils/interface";
 
 export function Settings(props: { groupId: string }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
@@ -61,8 +62,14 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
     const [searchTerm, updateSearch] = useState<string>('');
     const {refetch,_setGroupId,_setRefetch,_setGroupType} = useContext(ShellContext);
     useEffect(() => {
-        _updateOwnership(props.groupDetails.Role[0].type);
-    }, []);
+
+        _props._db(service.group).query(serviceRoute.groupRole, {}, reqType.get, props.groupDetails.id)
+            .then((result: { data: Role }) => {
+              _updateOwnership(result.data.type)
+            })
+
+    }, [props]);
+
     function handleUpdate(e: any) {
         setState({...state, [e.target.name]: e.target.value})
     }
@@ -101,7 +108,6 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
 
     function renderTags() {
         let tagsGroups = [...groupTokensArray];
-        console.log(tagsGroups)
         let data = {...state};
         let newTags = [];
         data.tags.forEach((t) => {
@@ -205,10 +211,10 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
                 </div>
                 <div className={'settings-item-container descContainer'}>
                     <div className={'center w25'}>Description</div>
-                    <textarea className={`settingInput w100 ${role != 'OWNER' && 'borderNone'} `}
+                    <textarea className={`settingInput w100 ${role !== 'OWNER' && 'borderNone'} `}
                               onChange={handleUpdate}
                               name={'description'}
-                              disabled={role != 'OWNER'}
+                              disabled={role !== 'OWNER'}
                               value={state.description}/>
 
                 </div>

@@ -9,6 +9,8 @@ import {SiMinutemailer} from "react-icons/si";
 import {RiCloseCircleLine} from "react-icons/ri";
 import {GoBlocked} from "react-icons/go";
 import {FaUserPlus} from "react-icons/fa";
+import Tooltip from "../../../utility/Tooltip";
+import {validateEmail} from "../../../../utils/functions";
 
 export function Requests(props: { groupId: string }) {
     const [data, setData] = useState(true);
@@ -55,7 +57,7 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
     function handleSendInvite() {
         if (!loading) {
             console.log(email)
-            if (true) {
+            if (validateEmail(email)) {
                 _loading(true);
                 _props._db(service.group).query(serviceRoute.groupInvite, {
                     'requestee': email,
@@ -166,9 +168,9 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
                             <div className={'flex'}>
                                 {item.type === 'INVITE' ?
                                     <>
-                                {item.status === 'PENDING' && <SiMinutemailer size={26} color={'white'}/>}
-                                {item.status === 'REJECTED' && <RiCloseCircleLine  size={26} color={'yellow'}/>}
-                                {item.status === 'BLOCKED' && <GoBlocked   size={26} color={'red'}/>}</>
+                                {item.status === 'PENDING' &&<Tooltip text={"Request is pending"}>  <SiMinutemailer size={26} color={'white'}/></Tooltip>}
+                                {item.status === 'REJECTED' && <Tooltip text={"Request is rejected"}> <RiCloseCircleLine  size={26} color={'yellow'}/></Tooltip>}
+                                {item.status === 'BLOCKED' && <Tooltip text={"Request is blocked by user"}> <GoBlocked   size={26} color={'red'}/></Tooltip>}</>
                                 :<>
                                         <div className={''} onClick={()=>{handleGroupJoin(item.id)}} >Accept</div>
                                         <FaUserPlus  size={26} color={'#183b35'} />

@@ -24,7 +24,7 @@ export function GroupList({items,listType}:{items:GroupListInterface[] | [],list
         _setGroupId(groupId);
         _setGroupType(listType)
     }
-
+console.log(items)
     return (<>
 
         {items.map((item: any, key: number) =>
@@ -41,9 +41,8 @@ export function GroupList({items,listType}:{items:GroupListInterface[] | [],list
                 {item.Message &&
                 <div style={{width:'10%'}}>
                     <div
-                        className={'font-primary'} style={{fontWeight:'bold',fontSize:'11px'}}>{item.Message.length > 0 && formatDateToDDMMYYYY(item.Message[item.Message.length - 1].created_at)}</div>
-                    <div
-                        className={' activity font-secondary'}>{item.Message && `+${item.Message.filter((item: any) => item.status === 'DELIVERED').length}`}</div>
+                        className={'font-primary'} style={{fontWeight:'bold',fontSize:'12px'}}>{item.Message.length > 0 && formatDateToDDMMYYYY(item.Message[item.Message.length - 1].created_at)}</div>
+                    {/*<div className={' activity font-secondary'}>{item.Message.length > 0 && `+${item.Message.filter((item: any) => item.status === 'DELIVERED').length}`}</div>*/}
                 </div>
                 }
             </div>

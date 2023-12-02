@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const TooltipWrapper = styled.div`
   position: relative;
   display: inline-block;
+  z-index: 999 !important;
 `;
 
 const TooltipText = styled.span`
@@ -21,6 +22,7 @@ const TooltipText = styled.span`
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
+  top:22px;
 
   ${TooltipWrapper}:hover & {
     visibility: visible;

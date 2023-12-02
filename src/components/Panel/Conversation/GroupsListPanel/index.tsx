@@ -9,6 +9,7 @@ import {Logo} from "../../../utility/logo";
 import {Spinner} from "../../../utility/spinner/spinner";
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
 import {ShellContext} from "../../../../services/context/shell.context";
+import {BsChatRightDots, BsFillChatQuoteFill} from "react-icons/bs";
 
 export function Index() {
     const [loading, _loading] = useState<boolean>(false);
@@ -106,7 +107,7 @@ function CreateGroup() {
 
     return (
         <div className="addGroupBtn">
-            <MdGroupAdd id="DialogOpenIcon" size={24} onClick={handleDialogOpen}/>
+            <BsFillChatQuoteFill id="DialogOpenIcon" size={24} onClick={handleDialogOpen}/>
             <DialogPanel
                 open={showDialog}
                 header="Add Group"

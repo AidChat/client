@@ -16,6 +16,7 @@ import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
 import Tooltip from "../../utility/Tooltip";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
+import {FaRegEye} from "react-icons/fa";
 
 export function Chats() {
     let [messages, _messages] = useState<any[]>([]);
@@ -55,7 +56,6 @@ export function Chats() {
 
     function handleCurrentGroup() {
         let gid = groupId;
-        console.log(selectedGroupType,gid)
         switch (selectedGroupType) {
             case "CHAT":
                 let startDate = new Date();
@@ -82,6 +82,7 @@ export function Chats() {
                         })
                     _props._db(service.group).query(serviceRoute._groupMessages, _p, reqType.post, gid)
                         .then(result => {
+                            console.log(result);
                             _loading(false);
                             _messages(result.data.reverse());
                             if (result.data.length === 0) {
@@ -149,7 +150,6 @@ export function Chats() {
             let data = {start: params.start, limit}
             _props._db(service.group).query(serviceRoute._groupMessages, data, reqType.post, groupId)
                 .then(result => {
-                    console.log(result)
                     _loading(false);
                     _messages([...result.data.reverse(), ...messages]);
                     if (result.data.length === 0) {
@@ -205,7 +205,12 @@ interface MessageInterface {
         email: string,
         profileImage: string,
         id: number
-    }
+    },
+    ReadReceipt ?:{
+        id:number,
+        userId:number,
+        status:"Read" | "Sent"
+    }[]
 }
 
 interface MessageContent {
@@ -321,14 +326,14 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
             }
         }
     };
-
+    console.log(state.messages)
     return (
         <div className={'convoPanel'}>
             {!options ?
                 <div className={'wrapperContainer'}>
                     <div className={'tagsWrapper'}>
                         <div className={'tagsWrapperName'}>{group?.name}</div>
-                        <div style={{flex: 8, position: 'relative', width: '80%'}}>
+                        <div style={{flex: 8, position: 'relative', width: '70%'}}>
                             <div className={'infoPanel font-primary'}>{group?.User.map((item: {
                                 name: string,
                                 email: string,
@@ -353,12 +358,14 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                     <div className={'usernamewrapper addMoreBtn'} onClick={() => {
                                         handleAddMore()
                                     }}>
+                                        <Tooltip text={"Add more members"}>
                                         <IoPersonAddSharp size={22}/>
+                                        </Tooltip>
                                     </div>
                                 }
                             </div>
                         </div>
-                        <div style={{padding: '4px 8px', width: '6%'}}>
+                        <div style={{padding: '4px 8px'}}>
                             <GiHamburgerMenu size={24} color={'white'} onClick={() => {
                                 showOptions(true)
                             }} style={{cursor: 'pointer'}}/>
@@ -399,8 +406,11 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                             <div className={'font-primary miscContainer '} style={{
                                                 display: 'flex',
                                                 justifyContent: item.senderId === userId ? 'end' : 'start',
-                                                color: item.senderId !== userId ? 'black' : 'whitesmoke'
-                                            }}>{formatTimeToHHMM(item.created_at)}</div>
+                                                color: item.senderId !== userId ? 'black' : 'whitesmoke',
+                                                marginTop:'2px',
+                                                alignItems:'center'
+                                            }}>{formatTimeToHHMM(item.created_at)} {item.senderId === userId &&  <div style={{margin:"0 0px 0 10px"}}><FaRegEye size={14}  color={item?.ReadReceipt?.length ? 'whitesmoke' : 'rgb(0, 183, 255)'}  /></div>}</div>
+
 
                                         </div>
                                     </div>
@@ -429,7 +439,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                     </form>
                 </div>
                 : <>
-                    <GroupOptions groupId={group.id} role={role?.type} init={init} showChat={() => {
+                    <GroupOptions groupId={group?.id} role={role?.type} init={init} showChat={() => {
                         showOptions(false)
                     }}/>
                 </>}

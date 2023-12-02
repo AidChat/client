@@ -10,12 +10,13 @@
 }
 
 .containerA {
-    width: 30%;
+    width: calc(100vw - 65vw);
     height: 100%;
 }
 
 .containerB {
-    width: 65%;
+    width: calc(100vw - 40vw);
+    max-width: 56%;
     height: 100%;
     padding: 4px;
 }
