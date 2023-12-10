@@ -24,9 +24,7 @@ export function GroupList({items,listType}:{items:GroupListInterface[] | [],list
         _setGroupId(groupId);
         _setGroupType(listType)
     }
-console.log(items)
     return (<>
-
         {items.map((item: any, key: number) =>
             <div key={key} className={'groupListContainer shadow-box '} onClick={() => handleGroupSelection(item.id)}>
                 <div className={'groupLogo'}><GroupIcon url={item.GroupDetail.icon}/></div>

@@ -4,11 +4,13 @@ import {_props, reqType, service, serviceRoute} from "../../../../services/netwo
 import {Spinner} from "../../../utility/spinner/spinner";
 import groupsImg from "../../../../assets/svg/groups.svg";
 import Tooltip from "../../../utility/Tooltip";
+import Snackbar from "../../../utility/Snackbar";
 
 export function InviteContainer(props: { requestId?: string, groupId?: string, type: "INVITE" | "JOIN" }) {
     const [loading, _loading] = useState<boolean>(true);
     const [data, _data] = useState<any>(null);
     const {_setGroupType, _setRefetch, refetch} = useContext(ShellContext);
+    const [message,_message] = useState<null | string>(null)
     useEffect(() => {
         if (props.type === 'INVITE') {
             _loading(true);
@@ -16,7 +18,6 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
             if (props.requestId) {
                 _props._db(service.group).query(serviceRoute.request, undefined, reqType.get, props.requestId)
                     .then(result => {
-                        console.log(result.data);
                         _data(result.data);
                         _loading(false);
                     })
@@ -37,13 +38,15 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
     }
 
     function handleGroupJoin() {
-        if (props.requestId) {
+        if (data.request.length) {
             _loading(true);
-            _props._db(service.group).query(serviceRoute.request, {}, reqType.put, props.requestId)
+            _props._db(service.group).query(serviceRoute.inviteUpdate, {status:"REJECTED"}, reqType.delete, data.request[0].id)
                 .then(() => {
+                    _message("Join request has been removed")
                     _loading(false)
                     _setRefetch(!refetch)
-                    _setGroupType('CHAT');
+                    _setGroupType(null);
+
                 })
         } else {
             _loading(true);
@@ -51,6 +54,7 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
                     console.log(result);
                     fetchGroupJoinDetails();
                     _loading(false);
+                    _message("Join request has been sent.You will be notified once you request will be accepted.")
 
                 })
 
@@ -79,6 +83,7 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
 
     return (
         <div className={'inviteContainer'}>
+            {message &&    <Snackbar message={message} onClose={()=>{_message(null)}} /> }
             {loading ? <Spinner/> :
                 <>
                     <div className={'inviteWrapper'}>

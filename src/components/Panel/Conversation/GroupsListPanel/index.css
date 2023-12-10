@@ -66,9 +66,7 @@
     border-radius: 50%;
     transition: all 100ms;
 }
-.addGroupBtn:hover{
-    background: rgba(255, 248, 248, 0.24);
-}
+
 .mygroup-label{
     background: #3f3f3f96;
     width: 100%;
