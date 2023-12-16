@@ -6,7 +6,7 @@ import {FcAddImage} from "react-icons/fc";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
-import groupsImg from './../../../assets/svg/groups.svg';
+import groupsImg from './../../../assets/png/defaultuser.png';
 import {formatDateToDDMMYYYY, formatTimeToHHMM} from "../../../utils/functions";
 import {Spinner} from "../../utility/spinner/spinner";
 import {Role, SocketEmitters, SocketListeners} from "../../../utils/interface";

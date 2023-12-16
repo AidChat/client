@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import groupsImg from './../../../assets/svg/groups.svg';
-import GroupImage from './../../../assets/svg/groups.svg';
+import GroupImage from './../../../assets/png/defaultgroup.png';
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
@@ -54,7 +53,7 @@ export function ChatGroups() {
 export function GroupIcon({url}: { url?: string }) {
     return (
         <div className={'item-wrapper'}>
-            <img src={url ? url : groupsImg} alt={'profile icon'}/>
+            <img src={url ? url : GroupImage} alt={'profile icon'}/>
         </div>
     )
 }
@@ -107,7 +106,7 @@ export function UserIcon() {
                         showMenu(!menu)
                     }} style={{textAlign: 'center', width: '100%'}} className={'usernameWrapper'}>
                         <div style={{textAlign: 'center', height: 50, width: 50}} className={'item-wrapper'}>
-                            <img src={user.profileImage ? user.profileImage : groupsImg} alt={'profile icon'}/>
+                            <img src={user.profileImage ? user.profileImage : GroupImage} alt={'profile icon'}/>
 
                         </div>
                         <div className={'w100'}><h1 className={'font-primary username'}>{user?.name.toUpperCase()}</h1>
@@ -206,7 +205,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                         onChange={(e) => {
                             handleImageUpload(e)
                         }}
-                        imgExtension={['.jpeg', '.gif', '.png', '.gif']}
+                        imgExtension={['.jpeg', '.gif', '.png', '.gif','.jpg']}
                         maxFileSize={5242880}
                     />
                 </div>

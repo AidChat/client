@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import './index.css'
 import {GroupIcon} from "../../GroupsPanel";
 import {ShellContext} from "../../../../services/context/shell.context";
-import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
 import {formatDateToDDMMYYYY} from "../../../../utils/functions";
 
 export interface GroupListInterface {
