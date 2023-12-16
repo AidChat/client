@@ -26,7 +26,7 @@ export function Chats() {
         Socket: { id: number, socket_id: string },
         User: { name: string, email: string, profileImage: string }[]
     } | null>(null);
-    const {groupId, socket, _socketId, socketId, requestId, _requestId, selectedGroupType} = useContext(ShellContext);
+    const {groupId, socket, _socketId, socketId, requestId, selectedGroupType} = useContext(ShellContext);
     const [loading, _loading] = useState<boolean>(false);
     const [activity, _activity] = useState<string>('');
     const [params, _params] = useState<{ start: Date, limit: number }>({
@@ -47,12 +47,14 @@ export function Chats() {
     }, [activity]);
 
     useEffect(() => {
-        handleCurrentGroup();
-        return () => {
-            socket.off(SocketListeners.MESSAGE);
-            socket.off(SocketListeners.TYPING);
+        if(groupId) {
+            handleCurrentGroup();
         }
-    }, [_socketId, groupId, requestId, selectedGroupType]);
+        return () => {
+            socket?.off(SocketListeners.MESSAGE);
+            socket?.off(SocketListeners.TYPING);
+        }
+    }, [groupId,socketId]);
 
     function handleCurrentGroup() {
         let gid = groupId;
@@ -183,13 +185,11 @@ export function Chats() {
             }
             {
                 selectedGroupType === 'JOIN' &&
-                <InviteContainer type={selectedGroupType} groupId={groupId} />
+                <InviteContainer type={selectedGroupType} groupId={groupId}/>
             }
         </div>
     </div>)
 }
-
-
 
 
 interface MessageInterface {
@@ -206,10 +206,10 @@ interface MessageInterface {
         profileImage: string,
         id: number
     },
-    ReadReceipt ?:{
-        id:number,
-        userId:number,
-        status:"Read" | "Sent"
+    ReadReceipt?: {
+        id: number,
+        userId: number,
+        status: "Read" | "Sent"
     }[]
 }
 
@@ -236,7 +236,6 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
     const [options, showOptions] = useState<boolean>(false);
     const [role, _role] = useState<Role | null>();
     const [init, setInit] = useState('members')
-    const [idx, _idx] = useState<number>(0);
     const [isScrolling, _setScrolling] = useState<boolean>(false);
     const [loading, _loading] = useState<boolean>(false);
 
@@ -326,7 +325,6 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
             }
         }
     };
-    console.log(state.messages)
     return (
         <div className={'convoPanel'}>
             {!options ?
@@ -346,7 +344,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                             style={{height: '100%', width: '100%', borderRadius: "50%"}}
                                             alt={'user-image'}/>
                                     </div>
-                                    <div className={'username tooltip-selector'} style={{marginTop:'5px'}}>
+                                    <div className={'username tooltip-selector'} style={{marginTop: '5px'}}>
                                         {item.name.toUpperCase()}
                                         <div id="tooltip" className="left">
                                             <div className={"tooltip-arrow"}/>
@@ -359,7 +357,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                         handleAddMore()
                                     }}>
                                         <Tooltip text={"Add more members"}>
-                                        <IoPersonAddSharp size={22}/>
+                                            <IoPersonAddSharp size={22}/>
                                         </Tooltip>
                                     </div>
                                 }
@@ -407,9 +405,12 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                                 display: 'flex',
                                                 justifyContent: item.senderId === userId ? 'end' : 'start',
                                                 color: item.senderId !== userId ? 'black' : 'whitesmoke',
-                                                marginTop:'2px',
-                                                alignItems:'center'
-                                            }}>{formatTimeToHHMM(item.created_at)} {item.senderId === userId &&  <div style={{margin:"0 0px 0 10px"}}><FaRegEye size={14}  color={item?.ReadReceipt?.length ? 'whitesmoke' : 'rgb(0, 183, 255)'}  /></div>}</div>
+                                                marginTop: '2px',
+                                                alignItems: 'center'
+                                            }}>{formatTimeToHHMM(item.created_at)} {item.senderId === userId &&
+                                                <div style={{margin: "0 0px 0 10px"}}><FaRegEye size={14}
+                                                                                                color={item?.ReadReceipt?.length ? 'whitesmoke' : 'rgb(0, 183, 255)'}/>
+                                                </div>}</div>
 
 
                                         </div>

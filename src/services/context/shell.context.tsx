@@ -29,17 +29,11 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     const [userId, _setUserId] = useState<string | null>(null)
     const [socketId, _socketId] = useState(null);
     const [requestId, _requestId] = useState<string | null>(null)
-    const [socket, setSocket] = useState<any>(io(service.messaging, {
-        autoConnect: true,
-        auth: {
-            'socketID': socketId,
-            'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : ''
-        }
-    }));
+    const [socket, setSocket] = useState<any>(null);
     const [trigger, _trigger] = useState<boolean>(false);
     // TODO
     /*
-    Make a function that takes some args and trigger data refresh if its calles
+    Make a function that takes some args and trigger data refresh if its called
      */
     function ping(s?: string) {
         _trigger(true);
@@ -52,7 +46,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     }, [trigger]);
 
     useEffect(() => {
-        if (socketId) {
+
             setSocket(io(service.messaging, {
                 autoConnect: true,
                 auth: {
@@ -60,7 +54,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
                     'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : ''
                 }
             }))
-        }
+
     }, [socketId]);
 
     function showSnackbar(msg: string) {

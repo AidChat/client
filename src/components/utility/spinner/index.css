@@ -2,7 +2,6 @@
     width: 28px;
     height: 28px;
     border-radius: 20%;
-    position: relative;
     animation: rotate 1s linear infinite;
     position:absolute;
     top:50%;
@@ -14,7 +13,7 @@
     position: absolute;
     inset: 0px;
     border-radius: 50%;
-    border: 5px solid #FFF;
+    border: 2px solid #398378;
     animation: prixClipFix 2s linear infinite ;
 }
 
