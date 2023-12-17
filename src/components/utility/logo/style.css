@@ -1,6 +1,7 @@
 .logoWrapper{
     height:40px;
-    width: 200px;
+    width: inherit;
+    max-width: 120px;
 
 }
 .logoWrapper img{

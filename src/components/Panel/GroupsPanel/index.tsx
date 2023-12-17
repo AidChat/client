@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import GroupImage from './../../../assets/png/defaultgroup.png';
+import userImage from './../../../assets/png/defaultuser.png'
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
@@ -14,7 +15,6 @@ export function ChatGroups() {
     const [requests, _requests] = useState<any>([]);
 
     useEffect(() => {
-        console.log(refetch)
         _props._db(service.group).query(serviceRoute.userRequest, {}, reqType.get, undefined)
             .then(result => {
                 _requests(result.data)
@@ -106,7 +106,7 @@ export function UserIcon() {
                         showMenu(!menu)
                     }} style={{textAlign: 'center', width: '100%'}} className={'usernameWrapper'}>
                         <div style={{textAlign: 'center', height: 50, width: 50}} className={'item-wrapper'}>
-                            <img src={user.profileImage ? user.profileImage : GroupImage} alt={'profile icon'}/>
+                            <img src={user.profileImage ? user.profileImage : userImage} alt={'profile icon'}/>
 
                         </div>
                         <div className={'w100'}><h1 className={'font-primary username'}>{user?.name.toUpperCase()}</h1>

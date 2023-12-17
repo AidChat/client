@@ -149,6 +149,7 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
     function handleGroupJoin(requestId:string){
         _props._db(service.group).query(serviceRoute.request, {},reqType.put,requestId)
             .then((response:any)=>{
+                console.log(response)
                 fetch();
                 _message(response.message);
             })
@@ -171,10 +172,10 @@ function AllRequestsPanelContainer({requests, fetch}: { fetch: () => void, reque
                                 {item.status === 'PENDING' &&<Tooltip text={"Request is pending"}>  <SiMinutemailer size={26} color={'white'}/></Tooltip>}
                                 {item.status === 'REJECTED' && <Tooltip text={"Request is rejected"}> <RiCloseCircleLine  size={26} color={'yellow'}/></Tooltip>}
                                 {item.status === 'BLOCKED' && <Tooltip text={"Request is blocked by user"}> <GoBlocked   size={26} color={'red'}/></Tooltip>}</>
-                                :<>
-                                        <div className={''} onClick={()=>{handleGroupJoin(item.id)}} >Accept</div>
+                                :<div onClick={()=>{handleGroupJoin(item.id)}}>
+                                        <div>Accept</div>
                                         <FaUserPlus  size={26} color={'#183b35'} />
-                                    </>
+                                    </div>
                                 }
 
                                 <div style={{margin: '0 10px'}}><MdDelete onClick={() => {

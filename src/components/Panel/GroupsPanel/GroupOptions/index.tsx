@@ -24,16 +24,8 @@ export function GroupOptions(props: _int) {
     console.log(props)
 
     return (
-        <div>
-            <div style={{
-                height: '5rem',
-                background: 'black',
-                borderRadius: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'column',
-                justifyContent: 'center'
-            }}>
+        <div style={{position:'relative'}}>
+            <div className={'options-panel-wrapper'}>
                 <div className={'options-wrapper'}
                      style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
                     <div style={{cursor: "pointer", marginRight: '20px'}}

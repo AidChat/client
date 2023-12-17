@@ -4,7 +4,7 @@ import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
 import Snackbar from "../../../utility/Snackbar";
 import ImageUploader from "react-images-upload";
-import groupIcon from './../../../../assets/svg/groups.svg'
+import groupIcon from './../../../../assets/png/defaultgroup.png'
 import {CiCircleRemove} from "react-icons/ci";
 import {groupTokensArray} from "../../../../assets/data";
 import {ShellContext} from "../../../../services/context/shell.context";

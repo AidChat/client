@@ -15,7 +15,7 @@
 }
 
 .containerB {
-    width: calc(100vw - 40vw);
+    width: calc(100vw - 50vw);
     max-width: 56%;
     height: 100%;
     padding: 4px;
@@ -24,7 +24,6 @@
 .containerC {
     height: 100%;
     padding: 4px;
-    width: 8%;
     display: flex;
     justify-content: center;
     align-items: start;

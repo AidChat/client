@@ -14,17 +14,22 @@ import {GiHamburgerMenu} from "react-icons/gi";
 import {GroupOptions} from "../GroupsPanel/GroupOptions";
 import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
-import Tooltip from "../../utility/Tooltip";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
-import {FaRegEye} from "react-icons/fa";
+import {IoIosCheckmark} from "react-icons/io";
+import {on} from "socket.io-client/build/esm-debug/on";
 
 export function Chats() {
-    let [messages, _messages] = useState<any[]>([]);
+    const [messages, _messages] = useState<any[]>([]);
     const [play] = useSound(sound);
     const [group, _group] = useState<{
         tags: string[],
         Socket: { id: number, socket_id: string },
-        User: { name: string, email: string, profileImage: string }[]
+        User: {
+            name: string,
+            email: string,
+            profileImage: string,
+            ActivityStatus: { id: number, status: string, date: Date }
+        }[]
     } | null>(null);
     const {groupId, socket, _socketId, socketId, requestId, selectedGroupType} = useContext(ShellContext);
     const [loading, _loading] = useState<boolean>(false);
@@ -43,18 +48,19 @@ export function Chats() {
     useEffect(() => {
         window.setTimeout(() => {
             _activity('');
-        }, 5000)
+        }, 10000)
     }, [activity]);
 
     useEffect(() => {
-        if(groupId) {
+        if (groupId) {
             handleCurrentGroup();
         }
         return () => {
             socket?.off(SocketListeners.MESSAGE);
             socket?.off(SocketListeners.TYPING);
         }
-    }, [groupId,socketId]);
+    }, [groupId, socketId]);
+    const [onliners, setOnliners] = useState<number[]>([])
 
     function handleCurrentGroup() {
         let gid = groupId;
@@ -84,7 +90,6 @@ export function Chats() {
                         })
                     _props._db(service.group).query(serviceRoute._groupMessages, _p, reqType.post, gid)
                         .then(result => {
-                            console.log(result);
                             _loading(false);
                             _messages(result.data.reverse());
                             if (result.data.length === 0) {
@@ -93,8 +98,16 @@ export function Chats() {
                                 _params({...params, start: result.data[0].created_at})
                             }
                         })
+
+                    socket.on(SocketListeners.USERONLINE, (data: any) => {
+                        console.log(data)
+                        let users = onliners.filter(item => item !== data.user);
+                        setOnliners(() => [...users, data.user]);
+                    })
+
                     socket?.on(SocketListeners.MESSAGE, (data: any) => {
                         _activity('');
+                        // TODO check if these messages are stored or not
                         let user: any = window.localStorage.getItem('_user');
                         if (user) {
                             user = JSON.parse(user);
@@ -109,8 +122,12 @@ export function Chats() {
                                 return [...prevMessage, data];
                             }
                         });
-                    })
+                        window.setTimeout(() => {
+                            // check if message is ready by all after receiving
+                            socket.emit(SocketEmitters._READMESSAGE, {messageId: data.id, userId: user.id})
 
+                        }, 2000)
+                    })
                     socket?.on(SocketListeners.TYPING, ({name}: { name: string }) => {
                         let user = window.localStorage.getItem('_user');
                         if (user) {
@@ -137,7 +154,6 @@ export function Chats() {
                 return
 
             case "JOIN":
-
                 return
 
             default:
@@ -162,18 +178,21 @@ export function Chats() {
                 })
         }
     }
-
     return (<div className={'chatContainer shadow-box'}>
         <div className={'wrapper'}>
             {loading && <Spinner/>}
             {selectedGroupType === 'CHAT'
                 &&
-                <ConversationWrapper fetch={() => {
+                <ConversationWrapper
+                    setOnliners={(id:number)=>{
+                        let old = onliners.filter(item=> item!== id);
+                        setOnliners((prevState)=>[...old]);
+                    }}
+                    fetch={() => {
                     refetch()
                 }} exceed={exceed} messages={messages} group={group} activity={activity} send={(s: string) => {
                     handleSubmit(s)
-
-                }}/>}
+                }} onliners={onliners}/>}
             {selectedGroupType === 'INVITE' &&
                 <InviteContainer type={selectedGroupType} requestId={rId}/>
             }
@@ -206,7 +225,8 @@ interface MessageInterface {
         profileImage: string,
         id: number
     },
-    ReadReceipt?: {
+    ReadByAll?: boolean,
+    ReadReceipt: {
         id: number,
         userId: number,
         status: "Read" | "Sent"
@@ -219,13 +239,15 @@ interface MessageContent {
     content: string
 }
 
-export function ConversationWrapper({messages, group, activity, send, fetch, exceed}: {
+export function ConversationWrapper({messages, group, activity, send, fetch, exceed, onliners,setOnliners}: {
     messages: MessageInterface[],
     group: any,
     activity: string,
     send: (s: string) => void,
     fetch: () => void,
-    exceed: boolean
+    exceed: boolean,
+    onliners: number[],
+    setOnliners : (id:number) => void
 }) {
     const [state, setState] = useState<{ tags?: string[], messages: MessageInterface[] }>({
         messages: []
@@ -238,7 +260,6 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
     const [init, setInit] = useState('members')
     const [isScrolling, _setScrolling] = useState<boolean>(false);
     const [loading, _loading] = useState<boolean>(false);
-
 
     useEffect(() => {
         _loading(false)
@@ -292,21 +313,32 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const scrollToBottom = () => {
-        if (!isScrolling) {
-            if (containerRef.current) {
-                containerRef.current.scrollTo({
-                    top: containerRef.current.scrollHeight,
-                    behavior: 'smooth',
-                });
-            }
+        // if (!isScrolling) {
+        if (containerRef.current) {
+            containerRef.current.scrollTo({
+                top: containerRef.current.scrollHeight,
+                behavior: 'smooth',
+            });
         }
-
+        // }
     };
+
+    const [recentOffline, setRecentOffline] = useState<number[]>([])
     useEffect(() => {
         if (containerRef.current && !isScrolling) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
+        socket.on(SocketListeners.USEROFFLINE, (data: { user: number }) => {
+            let d = recentOffline.filter(item => item !== data.user);
+            setRecentOffline(prevState => [...d, data.user])
+            setOnliners(data.user);
+            window.setTimeout(()=>{
+                setRecentOffline(()=>[]);
+            },3000)
+        })
     }, []);
+
+
     useEffect(() => {
         scrollToBottom();
     }, [state.messages]);
@@ -324,7 +356,8 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                 _setScrolling(false);
             }
         }
-    };
+    }
+    console.log(onliners,recentOffline)
     return (
         <div className={'convoPanel'}>
             {!options ?
@@ -333,32 +366,31 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                         <div className={'tagsWrapperName'}>{group?.name}</div>
                         <div style={{flex: 8, position: 'relative', width: '70%'}}>
                             <div className={'infoPanel font-primary'}>{group?.User.map((item: {
+                                id: number
                                 name: string,
                                 email: string,
-                                profileImage: string
+                                profileImage: string,
+                                ActivityStatus: {
+                                    id: number,
+                                    status: "ONLINE" | "OFFLINE" | "INACTIVE" | "BANNED" | "LEAVE" | "AWAY"
+                                    date: Date
+                                }
                             }, index: number) => (
                                 <div className={'usernamewrapper'} key={index}>
-                                    <div className={'usernameImage'}>
+                                    <div
+                                         className={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0)? 'usernameImage glow-border':'usernameImage'}
+                                         style={ ((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ?{border: '1px solid green'} : {border:'1px solid white'}}>
                                         <img
                                             src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
                                             style={{height: '100%', width: '100%', borderRadius: "50%"}}
                                             alt={'user-image'}/>
-                                    </div>
-                                    <div className={'username tooltip-selector'} style={{marginTop: '5px'}}>
-                                        {item.name.toUpperCase()}
-                                        <div id="tooltip" className="left">
-                                            <div className={"tooltip-arrow"}/>
-                                            <div className={"tooltip-label"}>{item.email}</div>
-                                        </div>
                                     </div>
                                 </div>))}
                                 {(role?.type === 'OWNER') &&
                                     <div className={'usernamewrapper addMoreBtn'} onClick={() => {
                                         handleAddMore()
                                     }}>
-                                        <Tooltip text={"Add more members"}>
-                                            <IoPersonAddSharp size={22}/>
-                                        </Tooltip>
+                                        <IoPersonAddSharp size={22}/>
                                     </div>
                                 }
                             </div>
@@ -369,9 +401,9 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                             }} style={{cursor: 'pointer'}}/>
                         </div>
                     </div>
-                    <div style={{textAlign: 'center'}} className={
+                    <div style={{textAlign: 'center', position: 'relative'}} className={
                         'font-primary'
-                    }>{activity}</div>
+                    }>{activity && <div className={'activity-text'}>{activity}</div>}</div>
                     <div className={'convoHistory'} ref={containerRef} onScroll={handleScroll}>
                         {loading && <div style={{position: 'relative', marginBottom: '30px'}}><Spinner/></div>}
                         {state.messages?.map((item: MessageInterface, index: number) => {
@@ -407,10 +439,9 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                                 color: item.senderId !== userId ? 'black' : 'whitesmoke',
                                                 marginTop: '2px',
                                                 alignItems: 'center'
-                                            }}>{formatTimeToHHMM(item.created_at)} {item.senderId === userId &&
-                                                <div style={{margin: "0 0px 0 10px"}}><FaRegEye size={14}
-                                                                                                color={item?.ReadReceipt?.length ? 'whitesmoke' : 'rgb(0, 183, 255)'}/>
-                                                </div>}</div>
+                                            }}>
+                                                <MessageReadIcon item={state.messages[index]}/>
+                                            </div>
 
 
                                         </div>
@@ -421,7 +452,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                         })}
                     </div>
                     <div></div>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} autoComplete='false'>
                         <div className={'optionsPanel'}>
 
                             <div><FcAddImage size={'2rem'} color={'#398378'}/></div>
@@ -448,6 +479,42 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
     )
 }
 
+function MessageReadIcon({item}: { item: any }) {
+    const {userId, socket} = useContext(ShellContext);
+    const [isRead, setRead] = useState<boolean>(
+        item?.ReadReceipt?.filter((_i: { status: string }) => _i.status !== 'Read').length > 0
+    );
+
+    useEffect(() => {
+        const handleReadByAll = (data: any) => {
+            if (data.id === item.id) {
+                setRead(true);
+            }
+        };
+
+        if (socket) {
+            socket.on(SocketListeners.READBYALL, handleReadByAll);
+
+            return () => {
+                // Clean up the event listener to avoid memory leaks
+                socket.off(SocketListeners.READBYALL, handleReadByAll);
+            };
+        }
+    }, [socket, item.id]);
+    return (
+        <>
+            {formatTimeToHHMM(item.created_at)}{' '}
+            {item.senderId === userId && (
+                <div style={{margin: '0 0px 0 10px'}}>
+                    <IoIosCheckmark
+                        size={18}
+                        color={isRead ? 'whitesmoke' : 'rgb(0, 183, 255)'}
+                    />
+                </div>
+            )}
+        </>
+    );
+}
 
 
 

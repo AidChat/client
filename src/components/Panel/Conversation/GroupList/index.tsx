@@ -36,7 +36,7 @@ export function GroupList({items,listType}:{items:GroupListInterface[] | [],list
                     }</div>
                 </div>
                 {item.Message &&
-                <div style={{width:'10%'}}>
+                <div style={{width:'20%'}}>
                     <div
                         className={'font-primary'} style={{fontWeight:'bold',fontSize:'12px'}}>{item.Message.length > 0 && formatDateToDDMMYYYY(item.Message[item.Message.length - 1].created_at)}</div>
                     {/*<div className={' activity font-secondary'}>{item.Message.length > 0 && `+${item.Message.filter((item: any) => item.status === 'DELIVERED').length}`}</div>*/}

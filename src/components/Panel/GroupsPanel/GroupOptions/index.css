@@ -11,3 +11,16 @@
     heighht:100%;
     overflow-y: auto;
 }
+
+.options-panel-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1D1D1D;
+    border-radius: 71px;
+    border: 1px solid lightgrey;
+    top: 0;
+    width: 100%;
+    z-index: 999999 !important;
+    padding:8px 0;
+}
