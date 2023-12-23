@@ -28,14 +28,14 @@ export function GroupList({items, listType}: { items: GroupListInterface[] | [],
                 <div className={'groupLogo'}><GroupIcon url={item.GroupDetail.icon}/></div>
                 <div className={'info'}>
                     <div style={{fontSize: '16px'}}>{item?.name}</div>
-                    {item.Message &&
+                    {item.Message[0]?.ReadReceipt[0]?.status !== 'Read' &&
                         <div style={{display: 'flex', fontSize: '13px'}}>
                             <div
-                                style={{fontSize: '13px', color: 'rgb(14 151 131)'}}>{item?.Message?.User.name}</div>
+                                style={{fontSize: '13px', color: 'rgb(14 151 131)'}}>{item?.Message[0]?.User?.name}</div>
                             <div
                                 style={{fontSize: '13px', color: 'rgb(14 151 131)'}}>:</div>
                             <div
-                                style={{fontSize: '13px',color:'darkgrey'}}>{item?.Message?.MessageContent.TYPE === 'TEXT' ? item?.Message?.MessageContent.content : 'Sent an image'}
+                                style={{fontSize: '13px',color:'darkgrey'}}>{item?.Message[0]?.MessageContent?.TYPE === 'TEXT' ? item?.Message[0]?.MessageContent?.content : 'Sent an image'}
                             </div>
                         </div>
                     }
