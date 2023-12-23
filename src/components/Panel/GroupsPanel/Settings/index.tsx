@@ -266,7 +266,7 @@ function GroupSettingContainer(props: { groupDetails: GroupDetailsInt, refresh: 
                         </div>
                     </div>
                 </>}
-                {role === 'MEMBER' && <>
+                {role === 'MEMBER' || role === 'ADMIN' && <>
                     <div className={'settings-item-container dangerContainer'}>
                         <div>
                             <div className={'btn btn-primary btn-update'} onClick={handleGroupLeave}> Leave Group</div>

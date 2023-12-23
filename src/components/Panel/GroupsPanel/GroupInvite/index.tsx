@@ -81,6 +81,7 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
             });
     }
 
+    console.log(data);
     return (
         <div className={'inviteContainer'}>
             {message &&    <Snackbar message={message} onClose={()=>{_message(null)}} /> }

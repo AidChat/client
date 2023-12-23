@@ -1,14 +1,17 @@
 .main-container-wrapper{
     padding:10px;
     height: 100%;
-    width:80vw;
+
+    margin:0 5vw;
+    min-width: 75vw;
 }
 .main-container{
     height: 100%;
     widht:100vw;
-    background: rgba(255, 255, 255, 0.1);
+    background: #1C1C1C;
     /*box-shadow: 0 8px 32px 0 rgba(49, 123, 92, 0.37);*/
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
     border-radius: 10px;
+
 }

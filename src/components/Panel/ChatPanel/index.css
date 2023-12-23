@@ -41,6 +41,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .convoHistory {
@@ -55,10 +56,8 @@
 .optionsPanel {
     justify-self: end;
     display: flex;
-    justify-content: space-between;
     justify-content: center;
     align-items: center;
-    padding: 0.5rem 2rem;
     margin-top: auto;
 }
 
@@ -69,12 +68,11 @@
     border: 1px solid whitesmoke;
     border-radius: 40px;
     color: white;
-    height: 2.5rem;
 }
 
 .inputWrapper {
     height: 100%;
-    width: 100%;
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -189,7 +187,145 @@
     border-radius: 50%;
     position: relative;
     margin: 0px 4px;
+    position: relative;
+    overflow: hidden;
+    margin:0px 8px;
 }
+
+
+/* Styles for the circles */
+.user-circle {
+    display: block;
+}
+
+.user-circle:nth-child(10n +1) {
+    top: 2px;
+    left: 0;
+}
+.user-circle:nth-child(10n +2) {
+    top: 4px;
+    left: 10px;
+}
+.user-circle:nth-child(10n +3) {
+    top: -2px;
+    left: -2px;
+}
+.user-circle:nth-child(10n +4) {
+    top: 4px;
+    left: 10px;
+}
+.user-circle:nth-child(10n +5) {
+    top: 1px;
+    left: 0;
+}
+.user-circle:nth-child(10n +6) {
+    top: 10px;
+    left: 0;
+}
+.user-circle:nth-child(10n +7) {
+    top: 10px;
+    left: 0;
+}
+.user-circle:nth-child(10n +8) {
+    top: 10px;
+    left: 0;
+}
+.user-circle:nth-child(10n +9) {
+    top: 10px;
+    left: 0;
+}
+
+
+/* Define the animations for the icons */
+.user-circle {
+    animation-name: floating;
+    -webkit-animation-name: floating;
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+.user-circle:nth-child(10n+1) {
+    animation-duration: 10s;
+}
+
+.user-circle:nth-child(10n+2) {
+    animation-duration: 12s;
+}
+
+.user-circle:nth-child(10n+3) {
+    animation-duration: 8s;
+}
+
+.user-circle:nth-child(10n+4) {
+    animation-duration: 14s;
+}
+
+.user-circle:nth-child(10n+5) {
+    animation-duration: 8s;
+}
+
+.user-circle:nth-child(10n+6) {
+    animation-duration: 14s;
+}
+
+.user-circle:nth-child(10n+7) {
+    animation-duration: 6s;
+}
+
+.user-circle:nth-child(10n+8) {
+    animation-duration: 9s;
+}
+
+.user-circle:nth-child(10n+9) {
+    animation-duration: 8s;
+}
+
+.user-circle:nth-child(10n+10) {
+    animation-duration: 14s;
+}
+
+
+/*.user-circle:nth-child(2) {animation-duration: 5s;}*/
+/*.user-circle:nth-child(3) {animation-duration: 3s;}*/
+
+@keyframes floating {
+    0% {
+        transform: translate(0%, 0%);
+    }
+    25% {
+        transform: translate(5%, 15%);
+    }
+    50% {
+        transform: translate(10%, 5%);
+    }
+    75% {
+        transform: translate(0%, 15%);
+    }
+    100% {
+        transform: translate(0%, 0%);
+    }
+}
+
+@-webkit-keyframes floating {
+    0% {
+        -webkit-transform: translate(0%, 0%);
+    }
+    25% {
+        -webkit-transform: translate(5%, 15%);
+    }
+    50% {
+        -webkit-transform: translate(10%, 5%);
+    }
+    75% {
+        -webkit-transform: translate(0%, 15%);
+    }
+    100% {
+        -webkit-transform: translate(0%, 0%);
+    }
+}
+
 
 .usernameImage {
     height: 35px;
@@ -205,13 +341,13 @@
 
 .addMoreBtn {
     border: none !important;
-    padding: 2px 8px;
+    padding: 8px 8px;
     cursor: pointer;
     transition: background-color 50ms linear;
 }
 
 .addMoreBtn:hover {
-    background: rgb(57, 131, 120);
+    background: rgb(94, 94, 94);
 
 }
 
@@ -356,7 +492,7 @@
 
 .activity-text {
     position: absolute;
-    left: 40%;
+    left: 50%;
     background: #9a9a9a;
     color: black;
     padding: 3px 6px;
@@ -374,4 +510,16 @@
     to {
         top: 5px; /* Slides down to 10px from the top */
     }
+}
+
+.scrollToBottom {
+    position: absolute;
+    right: 40px;
+    bottom: 60px;
+    padding: 8px;
+    background: lightgrey;
+    border-radius: 50%;
+    z-index: 99999;
+    cursor: pointer;
+    display: flex;
 }

@@ -18,12 +18,66 @@ body {
     -ms-user-select: none;
     /* IE 10 and IE 11 */
     user-select: none;
-    background: #030303;
-    /*background-image: url('./assets/png/background.jpg');*/
-    /*background-position: center;*/
-    /*background-repeat: no-repeat;*/
-    /*background-size: cover;*/
+    background: url("./assets/png/bg.png");
+    background-position: center;
+    background-repeat:repeat;
 }
+
+.chat-bubble {
+    background-color:#E6F8F1;
+    padding:16px 28px;
+    -webkit-border-radius: 20px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius: 20px;
+    -moz-border-radius-bottomleft: 2px;
+    border-radius: 20px;
+    border-bottom-left-radius: 2px;
+    display:inline-block;
+}
+.typing {
+    align-items: center;
+    display: flex;
+    height: 17px;
+}
+.typing .dot {
+    animation: mercuryTypingAnimation 1.8s infinite ease-in-out;
+    background-color: #6CAD96 ;
+    border-radius: 50%;
+    height: 7px;
+    margin-right: 4px;
+    vertical-align: middle;
+    width: 7px;
+    display: inline-block;
+}
+.typing .dot:nth-child(1) {
+    animation-delay: 200ms;
+}
+.typing .dot:nth-child(2) {
+    animation-delay: 300ms;
+}
+.typing .dot:nth-child(3) {
+    animation-delay: 400ms;
+}
+.typing .dot:last-child {
+    margin-right: 0;
+}
+
+@keyframes mercuryTypingAnimation {
+    0% {
+        transform: translateY(0px);
+        background-color:#6CAD96;
+    }
+    28% {
+        transform: translateY(-7px);
+        background-color:#9ECAB9;
+    }
+    44% {
+        transform: translateY(0px);
+        background-color: #B5D9CB;
+    }
+}
+
+
 
 #root {
     height: 100%;
@@ -56,14 +110,14 @@ div {
 }
 
 .btn {
-    height: 2.4rem;
+    height: 2rem;
     width: fit-content;
-    border-radius: 40px;
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    padding:0 8px;
+    border:none;
 }
 
 .btn-primary {
@@ -184,7 +238,9 @@ div {
     border-width: 5px 5px 5px 0;
     border-right-color: #000;
 }
+dialog::backdrop {
 
+}
 #tooltip.right .tooltip-arrow {
     top: 50%;
     left: auto;
@@ -242,14 +298,7 @@ div {
     display: block;
 }
 .shadow-box{
-    box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-;
+
 }
 
 .pointer{

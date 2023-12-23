@@ -108,7 +108,7 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
                         }} placeholder={'Please enter the email to send an invite'}
                                className={'sendInviteInput'}/>
                     </div>
-                    {role?.type === 'OWNER' && <div className={'admin-panel'}>
+                    {role?.type === 'OWNER'  && <div className={'admin-panel'}>
                         <label className="switch">
                             <input type="checkbox" checked={isAdmin} onClick={() => {
                                 _setAdmin(!isAdmin)
@@ -121,7 +121,7 @@ function SendRequestPanelContainer({groupId, fetch}: { groupId: string, fetch: (
                     <div className={'sendInviteBtn'}>
                         <div className={'btn btn-primary btn-custom'} onClick={() => {
                             handleSendInvite()
-                        }}> {'Send Invite'}
+                        }}> {'Invite'}
                         </div>
                     </div>
                     {loading && <Spinner/>}

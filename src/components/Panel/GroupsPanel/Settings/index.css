@@ -35,6 +35,8 @@
     flex-direction: row;
     bottom: 0;
     width:90%;
+    position: absolute;
+    bottom:0;
 }
 
 .updateContainer {
@@ -46,14 +48,14 @@
 
 .btn-update {
     width: 120px;
-    background: #0e490e;
+    background: #0080002b ;
     color: white;
     border: none;
 }
 
 .dangerContainer .btn-custom {
     width: 180px;
-    background: red;
+    background: #86000030;
     color: white;
     border: none;
 

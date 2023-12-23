@@ -8,7 +8,7 @@
 }
 .authBox{
     height:24rem;
-    width: 30rem;
+    width: 24rem;
     border-radius:10px;
     background: rgba(255, 255, 255, 0.14);
     display: flex;
@@ -48,7 +48,7 @@
     width: 100%;
     border-radius: 4px;
     border:none;
-    height:36px;
+    height:30px;
     background: transparent;
     padding:0 20px;
 }
@@ -57,7 +57,7 @@
 }
 .inputWrapper-icon{
     border:1px solid lightgray;
-    border-radius: 40px;
+    border-radius: 4px;
     background: lightgray;
 }
 .logincontainer:last-of-type{

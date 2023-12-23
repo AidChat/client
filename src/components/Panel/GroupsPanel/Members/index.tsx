@@ -22,7 +22,6 @@ export function Members(props: { groupId: string }) {
                 _users(result.data.User);
             })
     }, []);
-    console.log(users);
     return (
         <div className={'members-container'}>
             {

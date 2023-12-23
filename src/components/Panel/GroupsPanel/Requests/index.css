@@ -22,7 +22,7 @@
 }
 
 .sendInviteBtn {
-    width: 12em;
+    width: 6em;
 }
 
 .sendInviteBtn .btn-custom {
@@ -40,7 +40,6 @@
 }
 
 .admin-panel {
-    width: 280px;
     display: flex;
     align-items: center;
     justify-content: center;

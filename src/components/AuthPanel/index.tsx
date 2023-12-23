@@ -8,6 +8,8 @@ import {Spinner} from "../utility/spinner/spinner";
 import {Simulate} from "react-dom/test-utils";
 import load = Simulate.load;
 import {InviteForm} from "./InviteForm";
+import {FaFacebook, FaGoogle} from "react-icons/fa6";
+import {LoginGoogle} from "../utility/SocialLogin/LoginGoogle";
 
 export function Validator() {
     const {requestCode} = useParams();
@@ -51,7 +53,7 @@ export function Validator() {
 
     return (
         <div className={'authContainer'}>
-            <div><img src={gif}/></div>
+            <div style={{width:''}}><img style={{width:'100%'}} src={gif}/></div>
             <div className={'authBox'}>
                 <div className={'w100'} style={{height: '100%'}}>
                     {state.invite ? <InviteForm requestLogin={(E?: string) => {
@@ -59,6 +61,17 @@ export function Validator() {
                     }}/> : <>
                         {state.login && <LoginForm toggleState={switchAuthState} email={props.email}/>}
                         {state.register && <RegisterForm toggleState={switchAuthState} email={props.email}/>}
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                            <div style={{display: 'flex', justifyContent: 'space-between', width: '10%'}}>
+                                <div style={{padding: '10px'}}>
+                                   <LoginGoogle >
+                                    <FaGoogle size={28} color={'#398378'}/>
+                                   </LoginGoogle>
+                                </div>
+                                <div style={{padding: '10px'}}>
+                                </div>
+                            </div>
+                        </div>
                     </>}
                 </div>
             </div>

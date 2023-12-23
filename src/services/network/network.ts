@@ -116,7 +116,8 @@ export enum serviceRoute {
     removeUserFromGroup = '/group/remove',
     userRequest='/group/requests',
     search = '/group/search',
-    inviteUpdate = '/group/invite/update'
+    inviteUpdate = '/group/invite/update',
+    socialLogin='/auth/social-login'
 }
 
 

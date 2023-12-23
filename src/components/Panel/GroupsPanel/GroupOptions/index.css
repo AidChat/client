@@ -1,11 +1,11 @@
 .item-option-active{
     border-bottom: 2px solid lightgray;
+
 }
 .options-wrapper div{
     width: 40px;
     text-align: center;
     cursor: pointer;
-    margin: 0 40px;
 }
 .members-container{
     heighht:100%;
@@ -22,5 +22,5 @@
     top: 0;
     width: 100%;
     z-index: 999999 !important;
-    padding:8px 0;
+    padding:10px 0;
 }

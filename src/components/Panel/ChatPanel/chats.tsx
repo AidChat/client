@@ -17,6 +17,8 @@ import useSound from "use-sound";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
 import {IoIosCheckmark} from "react-icons/io";
 import {on} from "socket.io-client/build/esm-debug/on";
+import {AiOutlineVerticalAlignBottom} from "react-icons/ai";
+import {FaAnglesDown} from "react-icons/fa6";
 
 export function Chats() {
     const [messages, _messages] = useState<any[]>([]);
@@ -140,7 +142,7 @@ export function Chats() {
                                     name: any;
                                 }) => item.name).filter(item => item !== u.name);
                                 if (username.length > 0) {
-                                    _activity(username[0].toString().toUpperCase() + ' is Typing')
+                                    _activity(username[0].toString() + ' is writing')
                                 }
 
                             }
@@ -178,19 +180,20 @@ export function Chats() {
                 })
         }
     }
+
     return (<div className={'chatContainer shadow-box'}>
         <div className={'wrapper'}>
             {loading && <Spinner/>}
             {selectedGroupType === 'CHAT'
                 &&
                 <ConversationWrapper
-                    setOnliners={(id:number)=>{
-                        let old = onliners.filter(item=> item!== id);
-                        setOnliners((prevState)=>[...old]);
+                    setOnliners={(id: number) => {
+                        let old = onliners.filter(item => item !== id);
+                        setOnliners((prevState) => [...old]);
                     }}
                     fetch={() => {
-                    refetch()
-                }} exceed={exceed} messages={messages} group={group} activity={activity} send={(s: string) => {
+                        refetch()
+                    }} exceed={exceed} messages={messages} group={group} activity={activity} send={(s: string) => {
                     handleSubmit(s)
                 }} onliners={onliners}/>}
             {selectedGroupType === 'INVITE' &&
@@ -239,7 +242,7 @@ interface MessageContent {
     content: string
 }
 
-export function ConversationWrapper({messages, group, activity, send, fetch, exceed, onliners,setOnliners}: {
+export function ConversationWrapper({messages, group, activity, send, fetch, exceed, onliners, setOnliners}: {
     messages: MessageInterface[],
     group: any,
     activity: string,
@@ -247,7 +250,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
     fetch: () => void,
     exceed: boolean,
     onliners: number[],
-    setOnliners : (id:number) => void
+    setOnliners: (id: number) => void
 }) {
     const [state, setState] = useState<{ tags?: string[], messages: MessageInterface[] }>({
         messages: []
@@ -312,15 +315,15 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
 
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const scrollToBottom = () => {
-        // if (!isScrolling) {
-        if (containerRef.current) {
-            containerRef.current.scrollTo({
-                top: containerRef.current.scrollHeight,
-                behavior: 'smooth',
-            });
+    const scrollToBottom = (force?:boolean) => {
+        if (!isScrolling || force) {
+            if (containerRef.current) {
+                containerRef.current.scrollTo({
+                    top: containerRef.current.scrollHeight,
+                    behavior: 'smooth',
+                });
+            }
         }
-        // }
     };
 
     const [recentOffline, setRecentOffline] = useState<number[]>([])
@@ -332,9 +335,9 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
             let d = recentOffline.filter(item => item !== data.user);
             setRecentOffline(prevState => [...d, data.user])
             setOnliners(data.user);
-            window.setTimeout(()=>{
-                setRecentOffline(()=>[]);
-            },3000)
+            window.setTimeout(() => {
+                setRecentOffline(() => []);
+            }, 3000)
         })
     }, []);
 
@@ -357,9 +360,15 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
             }
         }
     }
-    console.log(onliners,recentOffline)
+
     return (
         <div className={'convoPanel'}>
+            {isScrolling && <div className={'scrollToBottom'}>
+                <FaAnglesDown color={'#044a40'}  size={20} onClick={() => {
+                    _setScrolling(false);
+                    scrollToBottom(true);
+                }}/>
+            </div>}
             {!options ?
                 <div className={'wrapperContainer'}>
                     <div className={'tagsWrapper'}>
@@ -376,15 +385,16 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                     date: Date
                                 }
                             }, index: number) => (
-                                <div className={'usernamewrapper'} key={index}>
+                                <div className={ ((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? 'user-circle usernamewrapper' : 'usernamewrapper'} key={index}>
                                     <div
-                                         className={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0)? 'usernameImage glow-border':'usernameImage'}
-                                         style={ ((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ?{border: '1px solid green'} : {border:'1px solid white'}}>
+                                        className={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? 'usernameImage glow-border' : 'usernameImage'}
+                                        style={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? {border: '1px solid green'} : {border: '1px solid white'}}>
                                         <img
                                             src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
                                             style={{height: '100%', width: '100%', borderRadius: "50%"}}
                                             alt={'user-image'}/>
                                     </div>
+
                                 </div>))}
                                 {(role?.type === 'OWNER') &&
                                     <div className={'usernamewrapper addMoreBtn'} onClick={() => {
@@ -393,6 +403,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                         <IoPersonAddSharp size={22}/>
                                     </div>
                                 }
+
                             </div>
                         </div>
                         <div style={{padding: '4px 8px'}}>
@@ -463,7 +474,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                                                    value={message}/>
                             </div>
                             <div>
-                                <IoSend size={'2rem'} color={message.split('').length > 0 ? '#398378' : 'grey'}
+                                <IoSend size={'1.5rem'} color={message.split('').length > 0 ? '#398378' : 'grey'}
                                         onClick={handleSubmit}/>
                             </div>
 
@@ -496,7 +507,6 @@ function MessageReadIcon({item}: { item: any }) {
             socket.on(SocketListeners.READBYALL, handleReadByAll);
 
             return () => {
-                // Clean up the event listener to avoid memory leaks
                 socket.off(SocketListeners.READBYALL, handleReadByAll);
             };
         }

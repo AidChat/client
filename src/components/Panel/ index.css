@@ -15,7 +15,7 @@
 }
 
 .containerB {
-    width: calc(100vw - 50vw);
+    width: calc(100vw - 58vw);
     max-width: 56%;
     height: 100%;
     padding: 4px;
@@ -27,6 +27,7 @@
     display: flex;
     justify-content: center;
     align-items: start;
+    width: 10%;
 }
 
 @media (max-width: 767px) {

@@ -21,24 +21,23 @@ export function GroupOptions(props: _int) {
     const handleMenuItemClick = (menuItem: React.SetStateAction<string>) => {
         setActiveMenuItem(menuItem);
     };
-    console.log(props)
 
     return (
-        <div style={{position:'relative'}}>
+        <div>
             <div className={'options-panel-wrapper'}>
                 <div className={'options-wrapper'}
                      style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
                     <div style={{cursor: "pointer", marginRight: '20px'}}
                          onClick={() => props.showChat()}><BiArrowBack size={22} color={'white'}/></div>
 
-                    <div style={{flex: '1'}} className={activeMenuItem === 'members' ? 'item-option-active ' : ''}
+                    <div style={{flex: '1', margin:'0 18px'}} className={activeMenuItem === 'members' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('members')}><BsPeople size={22} color={'white'}/></div>
                     {(props.role == 'OWNER' || props.role == 'ADMIN')  &&
-                        <div style={{flex: '1'}} className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
+                        <div style={{flex: '1',margin:'0 18px'}} className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
                              onClick={() => handleMenuItemClick('requests')}><AiOutlineUsergroupAdd size={22} color={'white'}/>
                         </div>
                     }
-                    <div style={{flex: '1'}} className={activeMenuItem === 'settings' ? 'item-option-active ' : ''}
+                    <div style={{flex: '1',margin:'0 18px'}} className={activeMenuItem === 'settings' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('settings')}><AiFillSetting size={22} color={'white'}/>
                     </div>
                 </div>
