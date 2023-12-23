@@ -9,7 +9,7 @@
     padding:2px 16px;
 }
 .dialog {
-    width: 30vw;
+    width: fit-content;
     min-width: 20vw;
     border-radius: 4px;
     position: absolute;

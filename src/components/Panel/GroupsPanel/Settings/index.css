@@ -1,10 +1,8 @@
 .groupContainer {
-    margin: 10px;
     height: 100%;
 }
 
 .settings-item-container {
-    height: 40px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -31,10 +29,14 @@
 }
 
 .dangerContainer {
-    justify-content: flex-start;
-    margin-top: 10px;
+    justify-content: space-between;
     display: flex;
     align-items: end;
+    flex-direction: row;
+    bottom: 0;
+    width:90%;
+    position: absolute;
+    bottom:0;
 }
 
 .updateContainer {
@@ -44,16 +46,16 @@
     align-items: start;
 }
 
-.updateContainer .btn-custom {
-    width: 100px;
-    background: #0e490e;
+.btn-update {
+    width: 120px;
+    background: #0080002b ;
     color: white;
     border: none;
 }
 
 .dangerContainer .btn-custom {
     width: 180px;
-    background: red;
+    background: #86000030;
     color: white;
     border: none;
 
@@ -62,6 +64,7 @@
 .tagWrapper {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .tagWrapper .tag {
@@ -70,4 +73,48 @@
     color: black;
     border-radius: 40px;
     padding: 4px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.profileContainer {
+    display: flex;
+    align-items: center;
+}
+
+.groupIconWrapper {
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    border: 1px solid whitesmoke;
+}
+
+.groupContainer img {
+    border-radius: 50%;
+}
+
+.tag-input {
+    background: transparent;
+    border: none;
+    color: whitesmoke;
+}
+
+.tag-items {
+    position: absolute;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.token {
+    margin-top: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.token:hover {
+    background: whitesmoke;
+    color: black;
+    border-radius: 8px;
+
 }

@@ -7,8 +7,8 @@
 }
 
 .item-wrapper {
-    height: 100%;
-    width: 100%;
+    height:40px;
+    width:40px;
     border: 1px solid rgb(128, 128, 128);
     border-radius: 50%;
     cursor: pointer;
@@ -28,9 +28,13 @@
 }
 
 .groupIcon-container-wrapper {
-    margin: 10px 0;
-    height: 50px;
+    margin: 14px 0;
+    height: 60px;
     width: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .username {
@@ -47,17 +51,20 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    /*position: relative;*/
+    border-radius: 8px;
+    transition: background-color 100ms;
+
 }
 
 .usernameWrapper:hover {
-    background: rgba(0, 0, 0, 0.24);
+    background: rgba(157, 152, 152, 0.24);
 }
 
 .customMenu-wrapper {
     position: absolute;
     top: 0;
     left: -80px;
+
 }
 
 .customMenu-wrapper {
@@ -141,4 +148,10 @@
     display: flex;
     justify-content: end;
     position: relative;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
 }

@@ -11,18 +11,12 @@ export let AuthContext = React.createContext<{
 } | undefined>(undefined);
 export const AuthContextProvider = ({children}: { children: ReactElement[] | ReactElement }) => {
     const navigate = useNavigate()
-    let [isAuthenticated, setAuth] = useState(false);
+    const [isAuthenticated, setAuth] = useState(false);
     const [invitation, _invitation] = useState<boolean>(false);
+    const [loading, setLoad] = useState(true);
     const {requestCode} = useParams();
     useEffect(() => {
-        _props._user().validateSession().then((d) => {
-            verifyAuthentication()
-        })
-            .catch((e) => {
-                console.error(e)
-                setAuth(false)
-                stopload()
-            })
+       verifyAuthentication()
     }, [])
     useEffect(() => {
         if (requestCode) {
@@ -37,10 +31,9 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
     }
 
     function verifyAuthentication(sessionId?: string,forceReload?:boolean): void {
-        if (sessionId) window.localStorage.setItem('session', sessionId)
+        if (sessionId) window.localStorage.setItem('session', sessionId);
         _props._user().validateSession().then((r) => {
             setAuth(true);
-            stopload()
             if(!requestCode){
                 navigate('/');
             }
@@ -48,12 +41,17 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
                 navigate('/')
                 window.location.reload()
             }
+            if(!forceReload){
+                stopload()
+            }
 
         })
             .catch((e) => {
                 console.error(e)
-                setAuth(false)
-                stopload()
+                setAuth(false);
+                if(!sessionId){
+                    stopload();
+                }
             })
     }
     function removeUserSession(){
@@ -65,7 +63,7 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
                verifyAuthentication(undefined,true);
            })
     }
-    const [loading, setLoad] = useState(true);
+
     return (
         <AuthContext.Provider
             value={{isAuthenticated, verifyAuthentication,removeUserSession}}>{!loading ? (isAuthenticated && !invitation) ? children :

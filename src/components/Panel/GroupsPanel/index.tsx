@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
-import groupsImg from './../../../assets/svg/groups.svg';
-import GroupImage from './../../../assets/svg/groups.svg';
+import GroupImage from './../../../assets/png/defaultgroup.png';
+import userImage from './../../../assets/png/defaultuser.png'
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
@@ -11,23 +11,49 @@ import Snackbar from "../../utility/Snackbar";
 import {Spinner} from "../../utility/spinner/spinner";
 
 export function ChatGroups() {
-    let groups: any[] = [];
+    const {_requestId,_setGroupType,_setGroupId,refetch} = useContext(ShellContext);
+    const [requests, _requests] = useState<any>([]);
+
+    useEffect(() => {
+        _props._db(service.group).query(serviceRoute.userRequest, {}, reqType.get, undefined)
+            .then(result => {
+                _requests(result.data)
+            })
+            .catch((error: any) => {
+                console.log(error);
+            })
+    }, [refetch]);
+
+    function handleGroupId(id: string, requestID: string) {
+        _setGroupId(id);
+        _requestId(requestID);
+        _setGroupType("INVITE")
+    }
+
     return (
         <div className={'group-item-container '}>
             <UserIcon/>
-            {groups.map((_item, idx) =>
-                <div className={'groupIcon-container-wrapper'} key={idx}>
-                    <GroupIcon/>
-                </div>
-            )}
+            {requests.length > 0 && <>
+                <div className={'font-primary '} style={{fontWeight: 'bolder'}}>INVITES</div>
+                {requests.map((_item: any, idx: React.Key | null | undefined) =>
+                    <div className={'groupIcon-container-wrapper'} key={idx} onClick={() => {
+                        handleGroupId(_item.groupId, _item.id)
+                    }}>
+                        <GroupIcon url={_item?.group?.GroupDetail?.icon ? _item?.group?.GroupDetail?.icon : undefined}/>
+                        <div className={'font-primary truncate '}
+                             style={{textAlign: 'center'}}>{_item?.group?.name}</div>
+                    </div>
+                )}
+            </>
+            }
         </div>
     )
 }
 
-export function GroupIcon() {
+export function GroupIcon({url}: { url?: string }) {
     return (
         <div className={'item-wrapper'}>
-            <img src={groupsImg} alt={'profile icon'}/>
+            <img src={url ? url : GroupImage} alt={'profile icon'}/>
         </div>
     )
 }
@@ -70,17 +96,17 @@ export function UserIcon() {
     }
 
     return (<>
-            <DialogPanel open={showUserForm} header={"Profile"} BodyEle={<><ProfileForm onUpdate={() => {
+            <DialogPanel open={showUserForm} header={""} BodyEle={<><ProfileForm onUpdate={() => {
                 fetchProfile()
             }}/></>} onClose={() => {
                 setShowUserForm(false)
             }} load={false}/>
-            {user ? <div style={{position: 'relative', width: '100%'}} className={'userIcon'}>
+            {user ? <div style={{position: 'relative', width: '100%', margin: '10px 0'}} className={'userIcon'}>
                     <div onClick={() => {
                         showMenu(!menu)
                     }} style={{textAlign: 'center', width: '100%'}} className={'usernameWrapper'}>
                         <div style={{textAlign: 'center', height: 50, width: 50}} className={'item-wrapper'}>
-                            <img src={user.profileImage ? user.profileImage : groupsImg} alt={'profile icon'}/>
+                            <img src={user.profileImage ? user.profileImage : userImage} alt={'profile icon'}/>
 
                         </div>
                         <div className={'w100'}><h1 className={'font-primary username'}>{user?.name.toUpperCase()}</h1>
@@ -120,9 +146,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }, []);
 
     function handleImageUpload(e: any) {
-
         const file = e[0];
-
         const reader = new FileReader();
         reader.onloadend = function () {
             if (reader && reader.result) {
@@ -130,18 +154,14 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     const base64String = reader.result;
                     setUser({...user, profileImage: base64String});
                     _update({...update, profileImage: true})
-                } // Extracting the Base64 data
-                // Use base64String as needed (e.g., send it to the server, display it, etc.)
+                }
             }
         };
-
-        reader.readAsDataURL(file); // Read the file as Data URL
-
+        reader.readAsDataURL(file);
     }
 
     function handleUpdate() {
-        let data: { name?: string; profileImage?: string } = {...user}; // Create a new object based on `user`
-
+        let data: { name?: string; profileImage?: string } = {...user};
         if (!update.profileImage) {
             delete data.profileImage;
         }
@@ -185,7 +205,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                         onChange={(e) => {
                             handleImageUpload(e)
                         }}
-                        imgExtension={['.jpeg', '.gif', '.png', '.gif']}
+                        imgExtension={['.jpeg', '.gif', '.png', '.gif','.jpg']}
                         maxFileSize={5242880}
                     />
                 </div>
@@ -219,7 +239,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
 export function CustomMenu({items, onClick}: { items: { name: string, id: number }[], onClick: (S: number) => void }) {
 
     return (
-        <div className={'customMenu-wrapper'}>
+        <div className={'customMenu-wrapper '}>
             {items.map((item, index) => (
                 <div className={'menu-item'} onClick={() => {
                     onClick(item.id)

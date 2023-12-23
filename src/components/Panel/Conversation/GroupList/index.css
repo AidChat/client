@@ -11,21 +11,16 @@
     cursor: pointer;
     transition: all 100ms linear;
 }
-.groupListContainer:hover{
-    transform: scale(1.005);
-}
 
 .groupLogo {
     height: 40px;
-    width: 40px;
-    border: 1px solid whitesmoke;
     border-radius: 50%;
 }
 
 .info {
-    width: 84%;
+    width: 76%;
     height: 100%;
-    padding:0px 8px;
+    padding:0 8px;
     font-size: 14px;
 }
 
@@ -45,4 +40,8 @@
 .conversationWrapper{
     width: 100%;
     overflow-x:auto;
+}
+
+.activity{
+    font-size: 14px;
 }

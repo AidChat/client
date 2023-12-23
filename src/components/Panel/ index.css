@@ -10,12 +10,13 @@
 }
 
 .containerA {
-    width: 30%;
+    width: calc(100vw - 65vw);
     height: 100%;
 }
 
 .containerB {
-    width: 65%;
+    width: calc(100vw - 58vw);
+    max-width: 56%;
     height: 100%;
     padding: 4px;
 }
@@ -23,10 +24,10 @@
 .containerC {
     height: 100%;
     padding: 4px;
-    width: 5%;
     display: flex;
     justify-content: center;
     align-items: start;
+    width: 10%;
 }
 
 @media (max-width: 767px) {
@@ -40,6 +41,7 @@
 
     .containerB {
         width: 100%;
+        max-width:100%;
     }
 
 }

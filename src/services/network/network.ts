@@ -105,13 +105,19 @@ export enum serviceRoute {
     login = '/auth/login',
     register = '/auth/register',
     session = '/auth/session',
+    groupById = '/group/GET',
     group = '/group',
     user = '/user',
     _groupMessages = '/group/messages',
     groupUsers = '/group/users',
     groupInvite = '/group/invite',
-    request= '/group/request'
-
+    request= '/group/request',
+    groupRole = '/group/role',
+    removeUserFromGroup = '/group/remove',
+    userRequest='/group/requests',
+    search = '/group/search',
+    inviteUpdate = '/group/invite/update',
+    socialLogin='/auth/social-login'
 }
 
 
