@@ -8,8 +8,7 @@
 .main-container{
     height: 100%;
     widht:100vw;
-    background: #1C1C1C;
-    /*box-shadow: 0 8px 32px 0 rgba(49, 123, 92, 0.37);*/
+    background:#1e1d1e;
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
     border-radius: 10px;
