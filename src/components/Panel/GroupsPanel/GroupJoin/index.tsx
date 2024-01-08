@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
-import {Spinner} from "../../../utility/spinner/spinner";
+import {Spinner} from "../../../utility/Spinner/spinner";
 import groupsImg from "../../../../assets/svg/groups.svg";
 import Tooltip from "../../../utility/Tooltip";
 import Snackbar from "../../../utility/Snackbar";

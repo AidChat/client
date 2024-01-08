@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Spinner} from "../../../utility/spinner/spinner";
+import {Spinner} from "../../../utility/Spinner/spinner";
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
 import './index.css';
 

@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import notfoundCat from './../../../assets/svg/notfound_cat.svg';
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
-import {Spinner} from "../../utility/spinner/spinner";
+import {Spinner} from "../../utility/Spinner/spinner";
 
 
 interface requestInt {

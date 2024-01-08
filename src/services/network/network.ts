@@ -1,4 +1,5 @@
 import axios from "axios";
+import {UserProps} from "../../utils/interface";
 
 export const _props = {
     session: window.localStorage.getItem('session'),
@@ -80,7 +81,7 @@ export const _props = {
             });
         };
 
-        const get = () => {
+        const get = () : Promise<UserProps> => {
             return new Promise((resolve, reject) => {
                 this._db(service.authentication).query(serviceRoute.user, {}, reqType.get)
                     .then(resolve)
@@ -117,7 +118,8 @@ export enum serviceRoute {
     userRequest='/group/requests',
     search = '/group/search',
     inviteUpdate = '/group/invite/update',
-    socialLogin='/auth/social-login'
+    socialLogin='/auth/social-login',
+    consent = '/user/consent'
 }
 
 

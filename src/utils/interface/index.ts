@@ -3,7 +3,8 @@ export interface UserProps{
     email ?: string,
     password ?: string,
     contact ?: string,
-    extend ?: boolean
+    extend ?: boolean,
+    Type ?: 'Pending' | 'Seeker' | 'Helper'
 }
 
 export enum SocketEmitters {
@@ -29,3 +30,4 @@ export interface Role{
     userId: number,
     groupId:number
 }
+

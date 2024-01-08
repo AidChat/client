@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Spinner} from "../../../utility/spinner/spinner";
+import {Spinner} from "../../../utility/Spinner/spinner";
 import './index.css'
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
 import {MdDelete} from "react-icons/md";

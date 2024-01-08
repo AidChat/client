@@ -1,7 +1,7 @@
 import React, {ReactElement, useState} from 'react';
 import {IoMdClose} from "react-icons/io";
 import './index.css'
-import {Spinner} from "../utility/spinner/spinner";
+import {Spinner} from "../utility/Spinner/spinner";
 
 interface DialogPanelProps {
     open: boolean,

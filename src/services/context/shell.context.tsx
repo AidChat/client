@@ -46,7 +46,6 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     }, [trigger]);
 
     useEffect(() => {
-
             setSocket(io(service.messaging, {
                 autoConnect: true,
                 auth: {

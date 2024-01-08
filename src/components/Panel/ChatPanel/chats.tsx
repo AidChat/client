@@ -8,7 +8,7 @@ import {_props, reqType, service, serviceRoute} from "../../../services/network/
 import {ShellContext} from "../../../services/context/shell.context";
 import groupsImg from './../../../assets/png/defaultuser.png';
 import {formatDateToDDMMYYYY, formatTimeToHHMM} from "../../../utils/functions";
-import {Spinner} from "../../utility/spinner/spinner";
+import {Spinner} from "../../utility/Spinner/spinner";
 import {Role, SocketEmitters, SocketListeners} from "../../../utils/interface";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {GroupOptions} from "../GroupsPanel/GroupOptions";
@@ -275,6 +275,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                     _role(result.data);
                 })
         }
+        showOptions(false);
     }, [group?.id]);
 
 
@@ -339,6 +340,8 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                 setRecentOffline(() => []);
             }, 3000)
         })
+
+
     }, []);
 
 
@@ -363,7 +366,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
 
     return (
         <div className={'convoPanel'}>
-            {isScrolling && <div className={'scrollToBottom'}>
+            {isScrolling && !options && <div className={'scrollToBottom'}>
                 <FaAnglesDown color={'#044a40'}  size={20} onClick={() => {
                     _setScrolling(false);
                     scrollToBottom(true);
@@ -489,6 +492,10 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
         </div>
     )
 }
+
+
+
+
 
 function MessageReadIcon({item}: { item: any }) {
     const {userId, socket} = useContext(ShellContext);
