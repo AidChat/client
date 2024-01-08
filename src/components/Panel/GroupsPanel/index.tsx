@@ -8,7 +8,7 @@ import {AuthContext} from "../../../services/context/auth.context";
 import {DialogPanel} from "../../Dialog";
 import ImageUploader from 'react-images-upload';
 import Snackbar from "../../utility/Snackbar";
-import {Spinner} from "../../utility/spinner/spinner";
+import {Spinner} from "../../utility/Spinner/spinner";
 
 export function ChatGroups() {
     const {_requestId,_setGroupType,_setGroupId,refetch} = useContext(ShellContext);

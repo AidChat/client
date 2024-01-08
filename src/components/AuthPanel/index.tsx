@@ -3,12 +3,9 @@ import './index.css';
 import {LoginForm} from "./LoginForm/loginForm";
 import gif from './../../assets/gifs/slogan.gif';
 import {RegisterForm} from "./RegisterForm";
-import {redirect, useNavigate, useParams} from "react-router-dom";
-import {Spinner} from "../utility/spinner/spinner";
-import {Simulate} from "react-dom/test-utils";
-import load = Simulate.load;
+import {useNavigate, useParams} from "react-router-dom";
 import {InviteForm} from "./InviteForm";
-import {FaFacebook, FaGoogle} from "react-icons/fa6";
+import {FaGoogle} from "react-icons/fa6";
 import {LoginGoogle} from "../utility/SocialLogin/LoginGoogle";
 
 export function Validator() {

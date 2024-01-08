@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../../services/context/auth.context";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
-import {Spinner} from "../../utility/spinner/spinner";
+import {Spinner} from "../../utility/Spinner/spinner";
 import {useParams} from "react-router-dom";
 
 interface LoginFromProps {

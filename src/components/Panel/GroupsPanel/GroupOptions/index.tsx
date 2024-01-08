@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css'
 import {BsPeople} from "react-icons/bs";
 import {AiFillSetting, AiOutlineUsergroupAdd} from "react-icons/ai";
@@ -27,7 +27,7 @@ export function GroupOptions(props: _int) {
             <div className={'options-panel-wrapper'}>
                 <div className={'options-wrapper'}
                      style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-                    <div style={{cursor: "pointer", marginRight: '20px'}}
+                    <div style={{cursor: "pointer", marginRight: '20px',display:'flex',justifyContent:'center',alignItems:'center'}}
                          onClick={() => props.showChat()}><BiArrowBack size={22} color={'white'}/></div>
 
                     <div style={{flex: '1', margin:'0 18px'}} className={activeMenuItem === 'members' ? 'item-option-active ' : ''}

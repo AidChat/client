@@ -1,0 +1,40 @@
+.consent-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px 20px;
+}
+
+.consent-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.consent-image-wrapper {
+    height: 50px;
+    width: 150px;
+}
+
+.consent-image {
+    height: 100%;
+    width: 100%;
+}
+
+.consent-text {
+    color: white;
+    line-height: 1.5;
+    font-size: 22px;
+}
+
+.btn-custom {
+    padding: 0 8px;
+}
+
+.consent-btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding:10px 0;
+
+}

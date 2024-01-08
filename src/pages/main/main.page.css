@@ -6,11 +6,11 @@
     min-width: 75vw;
 }
 .main-container{
-    height: 100%;
-    widht:100vw;
     background:#1e1d1e;
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
     border-radius: 10px;
-
+    min-width: 85vw;
+    width: 85vw;
+height: 100%;
 }

@@ -6,7 +6,7 @@ import {AiOutlineCloseCircle} from "react-icons/ai";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 import Snackbar from "../../utility/Snackbar";
-import {Spinner} from "../../utility/spinner/spinner";
+import {Spinner} from "../../utility/Spinner/spinner";
 import ImageUploader from "react-images-upload";
 import group from './../../../assets/svg/groups.svg'
 
