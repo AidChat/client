@@ -58,9 +58,10 @@ Compliance with Regulations:
 Consent:
 - By using our services, you consent to data collection, processing, and storage. We are also very strict regarding data sharing and leaks so it is very striclty prohabited to share any data to any external users and the company is allowed to take strict actions for anyone who is caught guilty in such scenarios.
 <br>
-Contact Information:
-If you have questions or requests regarding your data, contact us at contact@aidchat.com.
-`
+<br>
+<div style="font-size:18px">
+If you have questions or requests regarding your data, contact us at <i> contact@aidchat.com</i>.
+</div>`
 }
 
 export enum enString {

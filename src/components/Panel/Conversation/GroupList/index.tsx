@@ -52,7 +52,7 @@ export function GroupList({items, listType}: { items: GroupListInterface[] | [],
                             display:'flex',
                             justifyContent:'space-between'
                         }}>{item?.Message?.length > 0 && formatDateToDDMMYYYY(item.Message[item?.Message?.length - 1].created_at)}
-                            {item.Message[0].ReadReceipt[0].status == 'Sent' && !hasSeen && <PiHandHeartFill />}
+                            {item.Message[0].ReadReceipt[0].status == 'Sent' && !hasSeen && <PiHandHeartFill size={22} />}
                         </div>
                     </div>
                 }
