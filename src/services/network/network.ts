@@ -119,7 +119,8 @@ export enum serviceRoute {
     search = '/group/search',
     inviteUpdate = '/group/invite/update',
     socialLogin='/auth/social-login',
-    consent = '/user/consent'
+    consent = '/user/consent',
+    updateInvite = '/group/invite/update'
 }
 
 

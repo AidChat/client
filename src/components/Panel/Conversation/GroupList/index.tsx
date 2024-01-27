@@ -30,7 +30,7 @@ export function GroupList({items, listType}: { items: GroupListInterface[] | [],
                 <div className={'groupLogo'}><GroupIcon url={item.GroupDetail.icon}/></div>
                 <div className={'info'}>
                     <div style={{fontSize: '16px'}}>{item?.name}</div>
-                    {item.Message.length > 0 && groupId !== item.id &&
+                    {item?.Message?.length > 0 && groupId !== item.id &&
                         <div style={{display: 'flex', fontSize: '13px'}}>
                             <div
                                 style={{fontSize: '13px', color: 'rgb(14 151 131)'}}>{item?.Message[0]?.User.id === userId ? 'You' : item?.Message[0]?.User?.name.split(' ')[0]}
