@@ -3,6 +3,8 @@
     flex-direction: column;
     width: 100%;
     padding: 20px 20px;
+    background : #1e1d1e;
+    border-radius: 10px;
 }
 
 .consent-image-container {

@@ -48,6 +48,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     useEffect(() => {
             setSocket(io(service.messaging, {
                 autoConnect: true,
+                reconnectionAttempts:2,
                 auth: {
                     'socketID': socketId,
                     'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : ''

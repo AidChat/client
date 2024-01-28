@@ -118,6 +118,7 @@ div {
     align-items: center;
     cursor: pointer;
     border:none;
+    padding:2px 4px;
 }
 
 .btn-primary {

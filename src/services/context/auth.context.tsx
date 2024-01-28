@@ -35,9 +35,10 @@ export const AuthContextProvider = ({children}: { children: ReactElement[] | Rea
     function verifyAuthentication(sessionId?: string, forceReload?: boolean): void {
         if (sessionId) window.localStorage.setItem('session', sessionId);
         _props._user().validateSession().then(() => {
-            _props._user().get().then((user: UserProps) => {
+            _props._user().get().then((user: any) => {
                 if (user) {
-                    if (user.Type === 'Pending') {
+                    debugger
+                    if (user.data.Type === 'Pending') {
                         setFormVisibility(true);
                     }else{
                         setFormVisibility(false);

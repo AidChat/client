@@ -31,16 +31,20 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
     function fetchGroupJoinDetails(){
         _props._db(service.group).query(serviceRoute.groupById, {}, reqType.get, props.groupId)
             .then(result => {
-                console.log(result)
                 _data({group: result.data, user: result.data.User,request:result.data.Request});
                 _loading(false);
             })
     }
 
     function handleGroupJoin() {
-        if (data.request.length) {
+        let d = null;
+        if(data.request.length > 0){
+            d = data?.request[0]
+        }
+
+        if (d) {
             _loading(true);
-            _props._db(service.group).query(serviceRoute.inviteUpdate, {status:"REJECTED"}, reqType.delete, data.request[0].id)
+            _props._db(service.group).query(serviceRoute.updateInvite, {status:"REJECTED"}, reqType.delete, d.id)
                 .then(() => {
                     _message("Join request has been removed")
                     _loading(false)
@@ -51,10 +55,9 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
         } else {
             _loading(true);
                 _props._db(service.group).query(serviceRoute.groupInvite, {},reqType.post,props.groupId).then(result=>{
-                    console.log(result);
                     fetchGroupJoinDetails();
                     _loading(false);
-                    _message("Join request has been sent.You will be notified once you request will be accepted.")
+                    _message(result.message)
 
                 })
 
@@ -81,7 +84,6 @@ export function InviteContainer(props: { requestId?: string, groupId?: string, t
             });
     }
 
-    console.log(data);
     return (
         <div className={'inviteContainer'}>
             {message &&    <Snackbar message={message} onClose={()=>{_message(null)}} /> }
