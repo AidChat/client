@@ -15,10 +15,10 @@ export const _props = {
                 switch (_req) {
                     case reqType.get:
                         axios.get(`${model}${service}/`+_params , {headers: {session: this.session}})
-                            .then((response) => {
+                            .then((response: { data: { data: any; }; }) => {
                                 resolve(response.data.data);
                             })
-                            .catch((reason) => {
+                            .catch((reason: any) => {
                                 console.error(reason);
                                 reject(reason);
                             });
@@ -125,7 +125,7 @@ export enum serviceRoute {
 
 
 export enum service {
-    authentication = 'http://127.0.0.1:8999/v1',
-    group = 'http://127.0.0.1:8901/v1',
-    messaging = 'http://127.0.0.1:8900'
+    authentication = 'http://16.170.243.105:8999/v1',
+    group = 'http://13.60.30.128:8901/v1',
+    messaging = 'http://16.170.201.34:8900'
 }

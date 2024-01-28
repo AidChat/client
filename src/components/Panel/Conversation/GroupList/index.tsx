@@ -37,7 +37,7 @@ export function GroupList({items, listType}: { items: GroupListInterface[] | [],
                             </div>
                             &nbsp;
                               <div
-                                style={{fontSize: '13px',color:'darkgrey'}}>{item?.Message[0]?.MessageContent?.TYPE === 'TEXT' ? item?.Message[0]?.MessageContent?.content : 'Sent an image'}
+                                style={{fontSize: '13px',color:'darkgrey',width:'80%',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{item?.Message[0]?.MessageContent?.TYPE === 'TEXT' ? item?.Message[0]?.MessageContent?.content : 'Sent an image'}
                             </div>
 
                         </div>
@@ -48,11 +48,11 @@ export function GroupList({items, listType}: { items: GroupListInterface[] | [],
                         <div className={'font-primary'} style={{
                             fontWeight: 'bold',
                             fontSize: '14px',
-                            color: !hasSeen && item.Message[0].ReadReceipt[0].status === 'Sent' ? '#0e9783' : 'whitesmoke',
+                            color: !hasSeen && item.Message[0]?.ReadReceipt[0].status === 'Sent' ? '#0e9783' : 'whitesmoke',
                             display:'flex',
                             justifyContent:'space-between'
                         }}>{item?.Message?.length > 0 && formatDateToDDMMYYYY(item.Message[item?.Message?.length - 1].created_at)}
-                            {item.Message[0].ReadReceipt[0].status == 'Sent' && !hasSeen && <PiHandHeartFill size={22} />}
+                            {item.Message[0]?.ReadReceipt[0].status == 'Sent' && !hasSeen && <PiHandHeartFill size={22} />}
                         </div>
                     </div>
                 }
