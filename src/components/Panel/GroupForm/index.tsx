@@ -105,16 +105,13 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
     }
 
     return (<>
-            {message && <Snackbar message={message} onClose={() => {
-                _message('')
-            }}/>}
-            {loading && <Spinner/>}
             <div className={'groupFormContainer'}>
                 <div className={'groupFormEleWrapper'}>
                     <form onSubmit={handleSubmit}>
                         <div className={'formEleWrapper iconSection'}>
                             <div style={{height: '120px', width: '120px'}}>
-                                <img src={state.icon ? state.icon : group} alt={'group icon'} style={{height: '100%', width: '100%',borderRadius:'50%'}}/>
+                                <img src={state.icon ? state.icon : group} alt={'group icon'}
+                                     style={{height: '100%', width: '100%', borderRadius: '50%'}}/>
                             </div>
                             <div>
                                 <ImageUploader
@@ -126,7 +123,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                                     onChange={(e) => {
                                         handleImageUpload(e)
                                     }}
-                                    imgExtension={['.jpeg', '.gif', '.png', '.gif','.jpg']}
+                                    imgExtension={['.jpeg', '.gif', '.png', '.gif', '.jpg']}
                                     maxFileSize={5242880}
                                 />
                             </div>
@@ -156,22 +153,11 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                                    className={'borderRadius-light custom-input-people borderRadius-heavy'} type={'text'}
                                    placeholder={'Write some description about your group'}/>
 
-                            <div className={'sendInviteWrapper block'}>
-                                <div className={'brick'}>
-                                    <input type={'email'} name={'requestee'} onChange={handleChange}
-                                           value={state.requestee} required
-                                           className={'borderRadius-light custom-input w100'}
-                                           placeholder={'Enter his/her email'}/>
-                                </div>
-                                <div className={'btn btn-round-primary'} onClick={() => {
-                                    _message('Invitation will be sent post group creation.')
-                                }}>
-                                    Send invite
-                                </div>
-                            </div>
                         </div>
                         <div className={'flex sendBtnWrapper'}>
-                            <div className={'btn btn-round-secondary'} onClick={(e) => handleSubmit()}>Create</div>
+                            <div className={'btn btn-round-secondary'} onClick={(e) => handleSubmit()}>
+                                {loading ? <Spinner/> :
+                                    'Create'}</div>
                         </div>
                     </form>
                     {message && <Snackbar message={message} onClose={() => {

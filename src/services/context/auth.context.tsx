@@ -4,7 +4,7 @@ import {Spinner} from "../../components/utility/Spinner/spinner";
 import {_props, reqType, service, serviceRoute} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
 import {UserProps} from "../../utils/interface";
-import {UserDetailsForm} from "../../pages/consent";
+import {UserDetailsForm} from "../../components/consent";
 
 export let AuthContext = React.createContext<{
     isAuthenticated?: boolean,

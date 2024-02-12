@@ -19,8 +19,9 @@ import {IoIosCheckmark} from "react-icons/io";
 import {on} from "socket.io-client/build/esm-debug/on";
 import {AiOutlineVerticalAlignBottom} from "react-icons/ai";
 import {FaAnglesDown} from "react-icons/fa6";
+import Tooltip from "../../utility/Tooltip";
 
-export function Chats() {
+export function Chat() {
     const [messages, _messages] = useState<any[]>([]);
     const [play] = useSound(sound);
     const [group, _group] = useState<{
@@ -316,7 +317,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
 
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const scrollToBottom = (force?:boolean) => {
+    const scrollToBottom = (force?: boolean) => {
         if (!isScrolling || force) {
             if (containerRef.current) {
                 containerRef.current.scrollTo({
@@ -367,7 +368,7 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
     return (
         <div className={'convoPanel'}>
             {isScrolling && !options && <div className={'scrollToBottom'}>
-                <FaAnglesDown color={'#044a40'}  size={20} onClick={() => {
+                <FaAnglesDown color={'#044a40'} size={20} onClick={() => {
                     _setScrolling(false);
                     scrollToBottom(true);
                 }}/>
@@ -388,17 +389,21 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
                                     date: Date
                                 }
                             }, index: number) => (
-                                <div className={ ((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? 'user-circle usernamewrapper' : 'usernamewrapper'} key={index}>
+                                <Tooltip text={item.name}>
                                     <div
-                                        className={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? 'usernameImage glow-border' : 'usernameImage'}
-                                        style={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? {border: '1px solid green'} : {border: '1px solid white'}}>
-                                        <img
-                                            src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
-                                            style={{height: '100%', width: '100%', borderRadius: "50%"}}
-                                            alt={'user-image'}/>
-                                    </div>
+                                        className={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? 'user-circle usernamewrapper' : 'usernamewrapper'}
+                                        key={index}>
+                                        <div
+                                            className={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? 'usernameImage glow-border' : 'usernameImage'}
+                                            style={((onliners.filter(_i => _i === item.id).length > 0 || item?.ActivityStatus?.status === 'ONLINE') && recentOffline.filter(_k => _k === item.id).length === 0) ? {border: '1px solid green'} : {border: '1px solid white'}}>
+                                            <img
+                                                src={item?.profileImage.split('').length > 0 ? item.profileImage : groupsImg}
+                                                style={{height: '100%', width: '100%', borderRadius: "50%"}}
+                                                alt={'user-image'}/>
+                                        </div>
 
-                                </div>))}
+                                    </div>
+                                </Tooltip>))}
                                 {(role?.type === 'OWNER') &&
                                     <div className={'usernamewrapper addMoreBtn'} onClick={() => {
                                         handleAddMore()
@@ -492,9 +497,6 @@ export function ConversationWrapper({messages, group, activity, send, fetch, exc
         </div>
     )
 }
-
-
-
 
 
 function MessageReadIcon({item}: { item: any }) {

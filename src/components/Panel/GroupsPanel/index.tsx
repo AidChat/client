@@ -10,7 +10,7 @@ import ImageUploader from 'react-images-upload';
 import Snackbar from "../../utility/Snackbar";
 import {Spinner} from "../../utility/Spinner/spinner";
 
-export function ChatGroups() {
+export function UtilityPanel() {
     const {_requestId,_setGroupType,_setGroupId,refetch} = useContext(ShellContext);
     const [requests, _requests] = useState<any>([]);
 

@@ -10,20 +10,21 @@ const TooltipWrapper = styled.div`
 
 const TooltipText = styled.span`
   visibility: hidden;
-  width: max-content;
-  background-color: black;
-  color: white;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  left: 90%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  top:22px;
-
+    width: max-content;
+    background-color: #1C1C1C;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    left: 90%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    top: 34px;
+    border: 1px solid darkgrey;
+    font-size: small;
   ${TooltipWrapper}:hover & {
     visibility: visible;
     opacity: 1;

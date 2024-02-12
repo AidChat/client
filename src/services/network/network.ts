@@ -125,7 +125,7 @@ export enum serviceRoute {
 
 
 export enum service {
-    authentication = 'http://16.170.243.105:8999/v1',
-    group = 'http://13.60.30.128:8901/v1',
-    messaging = 'http://16.170.201.34:8900'
+    authentication = 'http://localhost:8999/v1',
+    group = 'http://localhost:8901/v1',
+    messaging = 'http://localhost:8900'
 }

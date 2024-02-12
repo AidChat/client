@@ -10,8 +10,10 @@ import {Spinner} from "../../../utility/Spinner/spinner";
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {BsChatRightDots, BsFillChatQuoteFill} from "react-icons/bs";
+import {FaHandHoldingHeart} from "react-icons/fa6";
+import Tooltip from "../../../utility/Tooltip";
 
-export function Index() {
+export function GroupListPanel() {
     const [loading, _loading] = useState<boolean>(false);
     const {refetch} = useContext(ShellContext);
     const [items, setItem] = useState<GroupListInterface[] | []>([])
@@ -107,10 +109,13 @@ function CreateGroup() {
 
     return (
         <div className="addGroupBtn">
-            <BsFillChatQuoteFill id="DialogOpenIcon" size={24} onClick={handleDialogOpen}/>
+         <Tooltip text={"Wanna help?"}>
+            <FaHandHoldingHeart
+                id="DialogOpenIcon" size={24} onClick={handleDialogOpen}/>
+         </Tooltip>
             <DialogPanel
                 open={showDialog}
-                header="Add Group"
+                header="Create your own Aidgroup"
                 onClose={handleDialogClose}
                 BodyEle={<GroupForm onSubmit={() => {
                     handleDialogClose()

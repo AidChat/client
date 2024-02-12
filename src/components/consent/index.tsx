@@ -1,5 +1,5 @@
 import React from 'react';
-import gif from './../../assets/gifs/nameLogo.gif'
+import gif from '../../assets/gifs/nameLogo.gif'
 import './concent.page.css'
 import {en, enString} from "../../utils/strings/en";
 import {_props, reqType, service, serviceRoute} from "../../services/network/network";
