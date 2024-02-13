@@ -51,7 +51,6 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
             .catch((reason) => {
                 setError(reason?.response.data.data.message)
                 _loading(false);
-
             })
     }
 

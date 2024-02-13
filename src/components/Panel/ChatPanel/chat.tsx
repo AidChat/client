@@ -5,16 +5,16 @@ import {IoPersonAddSharp, IoSend} from "react-icons/io5";
 import {FcAddImage} from "react-icons/fc";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
-import {ShellContext} from "../../../services/context/shell.context";
+import {ShellContext, socket} from "../../../services/context/shell.context";
 import groupsImg from './../../../assets/png/defaultuser.png';
 import {formatDateToDDMMYYYY, formatTimeToHHMM} from "../../../utils/functions";
 import {Spinner} from "../../utility/Spinner/spinner";
 import {Role, SocketEmitters, SocketListeners} from "../../../utils/interface";
 import {GiHamburgerMenu} from "react-icons/gi";
-import {GroupOptions} from "../GroupsPanel/GroupOptions";
+import {GroupOptions} from "./GroupOptions";
 import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
-import {InviteContainer} from "../GroupsPanel/GroupInvite";
+import {InviteContainer} from "./GroupInvite";
 import {IoIosCheckmark} from "react-icons/io";
 import {on} from "socket.io-client/build/esm-debug/on";
 import {AiOutlineVerticalAlignBottom} from "react-icons/ai";
@@ -34,7 +34,7 @@ export function Chat() {
             ActivityStatus: { id: number, status: string, date: Date }
         }[]
     } | null>(null);
-    const {groupId, socket, _socketId, socketId, requestId, selectedGroupType} = useContext(ShellContext);
+    const {groupId, _socketId, socketId, requestId, selectedGroupType} = useContext(ShellContext);
     const [loading, _loading] = useState<boolean>(false);
     const [activity, _activity] = useState<string>('');
     const [params, _params] = useState<{ start: Date, limit: number }>({

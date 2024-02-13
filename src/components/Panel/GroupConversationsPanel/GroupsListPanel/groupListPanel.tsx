@@ -4,7 +4,7 @@ import {RiSearchLine} from "react-icons/ri";
 import {MdGroupAdd} from "react-icons/md";
 import {GroupList, GroupListInterface} from "../GroupList";
 import {DialogPanel} from "../../../Dialog";
-import {GroupForm} from "../../GroupForm";
+import {GroupForm} from "../../../GroupForm";
 import {Logo} from "../../../utility/Logo";
 import {Spinner} from "../../../utility/Spinner/spinner";
 import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";

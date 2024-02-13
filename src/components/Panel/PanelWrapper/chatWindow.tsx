@@ -1,7 +1,7 @@
 import React from 'react';
-import {GroupListPanel} from "../Conversation/GroupsListPanel/groupListPanel";
+import {GroupListPanel} from "../GroupConversationsPanel/GroupsListPanel/groupListPanel";
 import {Chat} from "../ChatPanel/chat";
-import {UtilityPanel} from "../GroupsPanel";
+import {UtilityPanel} from "../UtilityPanel";
 
 
 export function ChatWindow() {

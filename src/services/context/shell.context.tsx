@@ -1,6 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {io} from "socket.io-client";
 import {service} from "../network/network";
+import {SocketEmitters} from "../../utils/interface";
 
 
 interface ShellInterface {
@@ -20,6 +21,13 @@ interface ShellInterface {
 
 export const ShellContext = React.createContext<any>({snackbarProps: {show: false, message: ''}});
 
+export const socket = io(service.messaging, {
+    autoConnect: true,
+    reconnectionAttempts:2,
+    auth: {
+        'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : undefined
+    }
+})
 
 export function ShellContextProvider({children}: { children: ReactElement }) {
     const [refetch,_setRefetch] = useState<boolean>(false);
@@ -31,13 +39,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     const [requestId, _requestId] = useState<string | null>(null)
     const [socket, setSocket] = useState<any>(null);
     const [trigger, _trigger] = useState<boolean>(false);
-    // TODO
-    /*
-    Make a function that takes some args and trigger data refresh if its called
-     */
-    function ping(s?: string) {
-        _trigger(true);
-    }
+
 
     useEffect(() => {
         if (trigger) {
@@ -46,31 +48,14 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     }, [trigger]);
 
     useEffect(() => {
-            setSocket(io(service.messaging, {
-                autoConnect: true,
-                reconnectionAttempts:2,
-                auth: {
-                    'socketID': socketId,
-                    'session': window.localStorage.getItem('session') ? window.localStorage.getItem('session') : ''
-                }
-            }))
-
+         socket.emit(SocketEmitters._JOIN,{socketId:socketId});
     }, [socketId]);
-
-    function showSnackbar(msg: string) {
-        setShowSnackbarProps({show: true, message: msg})
-        setTimeout(() => {
-            setShowSnackbarProps({show: false, message: ''})
-        }, 5000)
-    }
 
     return (
         <ShellContext.Provider
             value={{
-                ping,
                 trigger,
                 snackbarProps,
-                showSnackbar,
                 _setGroupId,
                 groupId,
                 _setUserId,

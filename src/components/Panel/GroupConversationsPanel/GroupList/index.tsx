@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './index.css'
-import {GroupIcon} from "../../GroupsPanel";
+import {GroupIcon} from "../../UtilityPanel";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {formatDateToDDMMYYYY} from "../../../../utils/functions";
 import {PiHandHeartFill} from "react-icons/pi";

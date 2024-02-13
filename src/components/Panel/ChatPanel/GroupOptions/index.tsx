@@ -17,11 +17,9 @@ interface _int {
 
 export function GroupOptions(props: _int) {
     const [activeMenuItem, setActiveMenuItem] = useState(props.init ? props.init : 'members');
-
     const handleMenuItemClick = (menuItem: React.SetStateAction<string>) => {
         setActiveMenuItem(menuItem);
     };
-
     return (
         <div>
             <div className={'options-panel-wrapper'}>

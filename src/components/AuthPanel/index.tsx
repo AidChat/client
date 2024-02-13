@@ -10,7 +10,6 @@ import {LoginGoogle} from "../utility/SocialLogin/LoginGoogle";
 
 export function Validator() {
     const {requestCode} = useParams();
-    const nav = useNavigate();
     const [props, setProps] = useState<{ email: string }>({email: ''});
     const [state, setState] = useState({
         login: !requestCode,
@@ -33,8 +32,6 @@ export function Validator() {
             invite: false
         })
     }
-
-    console.log(state)
 
     function handleResetParams(e?: string) {
         if (e) {

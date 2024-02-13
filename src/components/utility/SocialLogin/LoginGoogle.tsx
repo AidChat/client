@@ -5,14 +5,12 @@ import {AuthContext} from "../../../services/context/auth.context";
 import {useParams} from "react-router-dom";
 import {ShellContext} from "../../../services/context/shell.context";
 
-const REDIRECT_URI = window.location.href;
 
 export const LoginGoogle = ({children}: { children: ReactNode }) => {
     let context = useContext(AuthContext);
     const {requestCode} = useParams()
 
     function handleLoginSuccess(data: objectType | undefined) {
-        console.log(data)
         _props._db(service.authentication).query(serviceRoute.socialLogin, {
             access_token: data?.access_token,
             scope: data?.scope,

@@ -1,14 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './index.css'
-import {groupTokensArray} from "../../../assets/data";
-import {Search} from "../../utility/Select";
+import {groupTokensArray} from "../../assets/data";
+import {Search} from "../utility/Select";
 import {AiOutlineCloseCircle} from "react-icons/ai";
-import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
-import {ShellContext} from "../../../services/context/shell.context";
-import Snackbar from "../../utility/Snackbar";
-import {Spinner} from "../../utility/Spinner/spinner";
+import {_props, reqType, service, serviceRoute} from "../../services/network/network";
+import {ShellContext} from "../../services/context/shell.context";
+import Snackbar from "../utility/Snackbar";
+import {Spinner} from "../utility/Spinner/spinner";
 import ImageUploader from "react-images-upload";
-import group from './../../../assets/svg/groups.svg'
+import group from '../../assets/svg/groups.svg'
 
 interface _gfIterface {
     onSubmit?: () => void,

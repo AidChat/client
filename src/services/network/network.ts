@@ -61,7 +61,6 @@ export const _props = {
         return {query};
     },
     _user: function () {
-
         const validateSession = () => {
             if (window.localStorage.getItem('session')) {
                 this.session = window.localStorage.getItem('session');
@@ -87,11 +86,14 @@ export const _props = {
                     .then(resolve)
                     .catch(reject)
             })
+        };
+        const removeSession = () : Promise<void> =>{
+            return new Promise<void>(function(resolve){
+                window.localStorage.removeItem('session');
+                resolve();
+            })
         }
-
-
-
-        return {validateSession, get};
+        return {validateSession, get,removeSession};
     },
 };
 
