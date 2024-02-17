@@ -2,6 +2,7 @@ import React, {ChangeEvent, FormEvent, FormEventHandler, FormHTMLAttributes, use
 import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
 import {useParams} from "react-router-dom";
 import {FaFacebook, FaGoogle} from "react-icons/fa6";
+import {Spinner} from "../../utility/Spinner/spinner";
 
 
 interface RegisterFormProps {
@@ -10,7 +11,8 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({toggleState, email}: RegisterFormProps) {
-    const {requestCode} = useParams()
+    const {requestCode} = useParams();
+    const [loading, setLoading] = useState<boolean>(false);
     const [state, setState] = useState<{
         name?: string,
         email?: string,
@@ -24,13 +26,18 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
     });
     let [error, _seterror] = useState(null);
 
-    function handleLogin(e: FormEvent) {
+    function handleRegistration(e: FormEvent) {
         e.preventDefault();
+        setLoading(!loading);
         _props._db(service.authentication).query(serviceRoute.register, state, reqType.post).then(result => {
             toggleState();
+            setLoading(!loading);
+
         })
             .catch((reason) => {
-                _seterror(reason.response.data.data.message)
+                _seterror(reason.response.data.data.message);
+                setLoading(!loading);
+
             })
     }
 
@@ -52,7 +59,7 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
 
     return (<>
             <div className={'loginFormWrapper'}>
-                <form style={{width: '80%'}} onSubmit={handleLogin}>
+                <form style={{width: '80%'}} onSubmit={handleRegistration}>
                     <div className={'logincontainer center font-primary'}>{error}</div>
                     <div className={'logincontainer'}>
                         <label style={{marginLeft: '4px'}}>Name</label>
@@ -75,7 +82,9 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
                         </div>
                     </div>
                     <div className={'logincontainer flex-center'}>
-                        <input type={'submit'} className={'btn btn-primary w50'} value={'Register'}></input>
+                        <button onClick={handleRegistration} className={'btn btn-primary w50'}>
+                            {loading ? <Spinner/> : 'Register'}
+                        </button>
                     </div>
                     <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
                         <div className={'font-primary'} onClick={() => {

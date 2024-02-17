@@ -1,18 +1,17 @@
-import React, {useEffect} from "react";
 import {Panel} from "../../components/Panel";
-import './main.page.css'
-import {useParams} from "react-router-dom";
+import {EwindowSizes, useWindowSize} from "../../services/hooks/appHooks";
+import "./main.page.css";
 export const Main = () => {
+  const {size: isSmall} = useWindowSize(EwindowSizes.S);
   return (
-    <div className={'main-container-wrapper'}
-    onContextMenu={(event)=>{
-      // have to disable it in dev mode
-      // event.preventDefault();
-    }}
+    <div
+      className={
+        isSmall ? "main-container-wrapper fullCover" : "main-container-wrapper"
+      }
     >
-      <div className={'main-container'}>
-      <Panel />
-    </div>
+      <div className={"main-container"}>
+        <Panel />
+      </div>
     </div>
   );
 };

@@ -12,12 +12,8 @@ interface DialogPanelProps {
 }
 
 export function DialogPanel(props: DialogPanelProps) {
-    const [loading,setLoading] = useState<boolean>(props.load ? props.load : false);
-
-
     return (
         <>
-            {loading && <Spinner />}
         <div className={'dialogContainer'}>
         <dialog className={'dialog'} open={props.open}>
            <div className={'dialogWrapper'}>

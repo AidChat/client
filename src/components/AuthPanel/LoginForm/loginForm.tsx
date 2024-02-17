@@ -6,17 +6,22 @@ import {useParams} from "react-router-dom";
 
 interface LoginFromProps {
     toggleState: () => void,
-    email?:string
+    email?: string
 }
 
-export function LoginForm({toggleState,email}: LoginFromProps) {
+export function LoginForm({toggleState, email}: LoginFromProps) {
     let context = useContext(AuthContext);
     const {requestCode} = useParams()
-    const [userdata, setUserData] = useState<{ email: any, password: any, extend: boolean,requestId:string | undefined }>({
+    const [userdata, setUserData] = useState<{
+        email: any,
+        password: any,
+        extend: boolean,
+        requestId: string | undefined
+    }>({
         email: email,
         password: undefined,
         extend: false,
-        requestId:requestCode
+        requestId: requestCode
     })
     const [error, setError] = useState(null);
     const [loading, _loading] = useState(false);
@@ -39,12 +44,11 @@ export function LoginForm({toggleState,email}: LoginFromProps) {
         _loading(true)
         _props._db(service.authentication).query(serviceRoute.login, userdata, reqType.post).then(
             response => {
-                context?.verifyAuthentication(response.data.session.session_id,requestCode ? true:false)
+                context?.verifyAuthentication(response.data.session.session_id, requestCode ? true : false)
                 _loading(false);
             }
         )
             .catch((reason) => {
-                console.log(reason)
                 setError(reason?.response.data.data.message)
                 _loading(false);
 
@@ -74,18 +78,21 @@ export function LoginForm({toggleState,email}: LoginFromProps) {
                     <input type={'checkbox'} style={{height: 20, width: 20}} name={'extend'} checked={userdata.extend}
                            onClick={() => setUserData({...userdata, extend: !userdata.extend})}/>
                     <div>
-                        <label className={'font-primary'} onClick={()=>{setUserData({...userdata, extend: !userdata.extend})}}>Remember me</label>
+                        <label className={'font-primary'} onClick={() => {
+                            setUserData({...userdata, extend: !userdata.extend})
+                        }}>Remember me</label>
                     </div>
                 </div>
                 <div className={'logincontainer flex-center'}>
-                    {loading ? <Spinner></Spinner> :
-                        <input type={'submit'} className={'btn btn-primary w50'} value={'Login'}></input>
-                    }</div>
+                    <button onClick={handleLogin} className={'btn btn-primary w50'} style={{position:'relative'}}>
+                        {loading ? <Spinner/> : 'Login'}
+                    </button>
+                </div>
                 <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
                     <div className={'font-primary'} onClick={() => {
                         toggleState()
                     }}>{
-                        <p>New here? <span className={'color-green'} style={{cursor:'pointer'}}> Register </span></p>
+                        <p>New here? <span className={'color-green'} style={{cursor: 'pointer'}}> Register </span></p>
                     }</div>
                 </div>
             </form>
