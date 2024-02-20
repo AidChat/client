@@ -17,6 +17,7 @@
     margin:0;
     padding:0px;
 }
-.fullCover.main-container, .fullCover.chatContainer{
+.fullCover .main-container, .fullCover .chatContainer{
     border-radius: 0px;
+    border:none;
 }

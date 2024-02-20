@@ -60,7 +60,10 @@ export function UtilityPanel() {
       <UserIcon />
       {requests.length > 0 && (
         <>
-          <div className={"font-primary "} style={{fontWeight: "bolder"}}>
+          <div
+            className={"font-primary mygroup-label"}
+            style={{fontWeight: "bolder", textAlign: "center"}}
+          >
             INVITES
           </div>
           {requests.map((_item: any, idx: React.Key | null | undefined) => (

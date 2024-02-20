@@ -323,7 +323,7 @@ export function ConversationWrapper({
   const {socket} = useContext(ShellContext);
   const [message, _message] = useState("");
   const [typing, _typing] = useState<boolean>(false);
-  const [options, showOptions] = useState<boolean>(false);
+  let [options, showOptions] = useState<boolean>(false);
   const [role, _role] = useState<Role | null>();
   const [init, setInit] = useState("members");
   const [isScrolling, _setScrolling] = useState<boolean>(false);
@@ -334,6 +334,8 @@ export function ConversationWrapper({
   }, [exceed]);
 
   useEffect(() => {
+    showOptions(false);
+
     if (group?.id) {
       _props
         ._db(service.group)
@@ -447,7 +449,15 @@ export function ConversationWrapper({
         <div className={"wrapperContainer"}>
           <div className={"tagsWrapper"}>
             <div className={"tagsWrapperName"}>{group?.name}</div>
-            <div style={{flex: 8, position: "relative", width: "70%"}}>
+
+            <div
+              style={{
+                flex: 8,
+                position: "relative",
+                width: "70%",
+                display: !valid ? "" : "none",
+              }}
+            >
               <div className={"infoPanel font-primary"}>
                 {group?.User.map(
                   (
@@ -652,7 +662,7 @@ export function ConversationWrapper({
               );
             })}
           </div>
-          <div style={{flex: valid ? "2" : "2"}}>
+          <div className="textSentInputBtn">
             <form onSubmit={handleSubmit} autoComplete="false">
               <div className={"optionsPanel"}>
                 <div>
