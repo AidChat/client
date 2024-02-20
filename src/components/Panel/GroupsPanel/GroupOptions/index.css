@@ -8,8 +8,8 @@
     cursor: pointer;
 }
 .members-container{
-    heighht:100%;
     overflow-y: auto;
+     max-height: 75vh;
 }
 
 .options-panel-wrapper{

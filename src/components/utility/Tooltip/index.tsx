@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import styled from 'styled-components';
+import React, {ReactNode} from "react";
+import styled from "styled-components";
 
 // Styled component for Tooltip
 const TooltipWrapper = styled.div`
@@ -9,7 +9,7 @@ const TooltipWrapper = styled.div`
 `;
 
 const TooltipText = styled.span`
-  visibility: hidden;
+    display: none;
     width: max-content;
     background-color: #1C1C1C;
     color: white;
@@ -26,25 +26,25 @@ const TooltipText = styled.span`
     border: 1px solid darkgrey;
     font-size: small;
   ${TooltipWrapper}:hover & {
-    visibility: visible;
+    display:block;
     opacity: 1;
   }
 `;
 
 // Tooltip props definition
 interface TooltipProps {
-    text: string;
-    children: ReactNode;
+  text: string;
+  children: ReactNode;
 }
 
 // Tooltip component
-const Tooltip: React.FC<TooltipProps> = ({ text, children }) => {
-    return (
-        <TooltipWrapper>
-            {children}
-        <TooltipText>{text}</TooltipText>
-        </TooltipWrapper>
-    );
+const Tooltip: React.FC<TooltipProps> = ({text, children}) => {
+  return (
+    <TooltipWrapper>
+      {children}
+      <TooltipText>{text}</TooltipText>
+    </TooltipWrapper>
+  );
 };
 
 export default Tooltip;

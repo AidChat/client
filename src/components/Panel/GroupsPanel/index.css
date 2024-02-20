@@ -139,7 +139,7 @@
     color: #797575;
 }
 .row-space{
-    padding:0 40px;
+    /* padding:0 40px; */
 }
 .row:last-of-type{
     margin-top:20px;

@@ -1,9 +1,16 @@
 .requestWrapper {
-    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 14px 8px;
+   
+}
+._MrequestWrapper {
+    flex-direction:column;
+    
+}
+._MrequestWrapper .inputWrapper{
+    width: 100%;
 }
 
 .inputwrapper {
@@ -43,7 +50,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 10px;
+    margin: 0px 10px;
+}
+._Madmin-panel{
+    margin: 4px 10px;
 }
 
 .switch {

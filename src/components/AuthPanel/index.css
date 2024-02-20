@@ -8,7 +8,8 @@
 }
 .authBox{
     height:24rem;
-    width: 24rem;
+    width: 90%;
+    max-width: 400px;
     border-radius:10px;
     background: rgba(255, 255, 255, 0.14);
     display: flex;
