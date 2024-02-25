@@ -97,6 +97,7 @@ export function GroupListPanel() {
                   size="22"
                   color="whitesmoke"
                   onClick={() => close()}
+                  className="div_animateLR"
                 />
               </div>
             )}

@@ -1,5 +1,6 @@
 import React, {ReactNode} from "react";
 import styled from "styled-components";
+import {EwindowSizes, useWindowSize} from "../../../services/hooks/appHooks";
 
 // Styled component for Tooltip
 const TooltipWrapper = styled.div`
@@ -39,10 +40,11 @@ interface TooltipProps {
 
 // Tooltip component
 const Tooltip: React.FC<TooltipProps> = ({text, children}) => {
+  const {size: valid} = useWindowSize(EwindowSizes.S);
   return (
     <TooltipWrapper>
       {children}
-      <TooltipText>{text}</TooltipText>
+      <TooltipText style={{display: valid ? "none" : ""}}>{text}</TooltipText>
     </TooltipWrapper>
   );
 };

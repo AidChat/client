@@ -37,6 +37,9 @@
     position: absolute;
     bottom:0;
 }
+.MdangerContainer{
+    flex-direction:column
+}
 
 .updateContainer {
     justify-content: flex-start;

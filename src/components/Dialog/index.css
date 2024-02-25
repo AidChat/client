@@ -6,11 +6,11 @@
     padding:14px;
 }
 .dialogBody{
-    padding:2px 16px;
+    padding: 2px 16px;
+    width: 20vw;
+    min-width: 300px;
 }
 .dialog {
-    width: 100%;
-    max-width:60%;
     border-radius: 4px;
     position: absolute;
     top: 10%;

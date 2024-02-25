@@ -314,3 +314,30 @@ dialog::backdrop {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.div_animateLR{
+    position: relative;
+    animation: move 2s infinite alternate; 
+}
+@keyframes move {
+    0% {
+      left: 0;
+    }
+    10% {
+        left: -2px;
+      }
+      20% {
+        left: -4px;
+      }
+    50% {
+      left: -5px;
+    }
+    75% {
+        left: -4px;
+      }
+      80% {
+        left: -2px;
+      }
+    100% {
+      left: 0;
+    }
+  }
