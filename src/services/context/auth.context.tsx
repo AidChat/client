@@ -1,10 +1,11 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {Validator} from "../../components/AuthPanel";
-import {Spinner} from "../../components/utility/Spinner/spinner";
-import {_props, reqType, service, serviceRoute} from "../network/network";
+import {Validator} from "../../components/Auth";
+import {Spinner} from "../../components/Utils/Spinner/spinner";
+import {_props} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
 import {UserProps} from "../../utils/interface";
-import {UserDetailsForm} from "../../components/consent";
+import {UserDetailsForm} from "../../components/Concent";
+import {reqType, service, serviceRoute} from "../../utils/enum";
 
 export let AuthContext = React.createContext<
   | {

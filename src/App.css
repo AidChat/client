@@ -8,15 +8,14 @@
     font-weight: bold;
     font-size: 16px;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     margin: 0;
     height: 100vh;
     -webkit-user-select: none;
-    /* Safari */
     -ms-user-select: none;
-    /* IE 10 and IE 11 */
     user-select: none;
     background: url("./assets/png/bg.png");
     background-position: center;
@@ -341,3 +340,16 @@ dialog::backdrop {
       left: 0;
     }
   }
+
+.dnone{
+    display:none !important;
+}
+.dblock{
+    display: block !important;
+}
+.dflex{
+    display: flex !important;
+}
+.height95{
+    height: 95% !important;
+}

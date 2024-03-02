@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Spinner} from "../../../utility/Spinner/spinner";
-import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
+import {Spinner} from "../../../Utils/Spinner/spinner";
+import {_props} from "../../../../services/network/network";
 import './index.css';
+import {reqType, service, serviceRoute} from "../../../../utils/enum";
 
 interface User {
     email: string,

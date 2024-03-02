@@ -1,4 +1,5 @@
-import {EwindowSizes, useWindowSize} from "../../services/hooks/appHooks";
+import {useWindowSize} from "../../services/hooks/appHooks";
+import {EwindowSizes} from "../enum";
 
 export function formatTime(date: string) {
   return new Date(date).toTimeString().slice(0, 8);
@@ -26,6 +27,17 @@ export function formatTimeToHHMM(date: any) {
   )} ${amOrPm}`;
   return formattedTime;
 }
+
+export const _debounce = (fn: () => void, timeout: number = 2000) => {
+  let current;
+  if (current) {
+    clearTimeout(current);
+  }
+  current = window.setTimeout(function () {
+    fn();
+  }, timeout);
+};
+
 
 export function formatDateToDDMMYYYY(date: any) {
   const d = new Date(date);
@@ -55,7 +67,7 @@ export function useResponsizeClass(
     return "";
   }
   function handleClass() {
-    classArr.map(function (element, index) {
+    classArr.forEach(function (element, index) {
       classes += " " + element;
     });
     return classes;

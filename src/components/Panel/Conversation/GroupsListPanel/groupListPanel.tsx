@@ -4,19 +4,19 @@ import {RiSearchLine} from "react-icons/ri";
 import {GroupList, GroupListInterface} from "../GroupList";
 import {DialogPanel} from "../../../Dialog";
 import {GroupForm} from "../../GroupForm";
-import {Logo} from "../../../utility/Logo";
-import {Spinner} from "../../../utility/Spinner/spinner";
+import {Logo} from "../../../Utils/Logo";
+import {Spinner} from "../../../Utils/Spinner/spinner";
 import {
   _props,
-  reqType,
-  service,
-  serviceRoute,
+
+
 } from "../../../../services/network/network";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {FaHandHoldingHeart} from "react-icons/fa6";
-import Tooltip from "../../../utility/Tooltip";
+import Tooltip from "../../../Utils/Tooltip";
 import {IoIosArrowBack} from "react-icons/io";
-import {EwindowSizes, useWindowSize} from "../../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {EwindowSizes, reqType, service, serviceRoute} from "../../../../utils/enum";
 export function GroupListPanel() {
   const [loading, _loading] = useState<boolean>(false);
   const {refetch} = useContext(ShellContext);

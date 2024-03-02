@@ -1,19 +1,19 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Spinner} from "../../../utility/Spinner/spinner";
+import {Spinner} from "../../../Utils/Spinner/spinner";
 import "./index.css";
 import {
   _props,
-  reqType,
-  service,
-  serviceRoute,
+
+
 } from "../../../../services/network/network";
-import Snackbar from "../../../utility/Snackbar";
+import Snackbar from "../../../Utils/Snackbar";
 import ImageUploader from "react-images-upload";
 import groupIcon from "./../../../../assets/png/defaultgroup.png";
 import {CiCircleRemove} from "react-icons/ci";
 import {groupTokensArray} from "../../../../assets/data";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {Role} from "../../../../utils/interface";
+import {reqType, service, serviceRoute} from "../../../../utils/enum";
 
 export function Settings(props: {groupId: string}) {
   const [data, setData] = useState<GroupDetailsInt | null>(null);

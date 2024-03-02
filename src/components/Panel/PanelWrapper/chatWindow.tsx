@@ -1,9 +1,10 @@
 import {GroupListPanel} from "../Conversation/GroupsListPanel/groupListPanel";
 import {Chat} from "../ChatPanel/chat";
 import {UtilityPanel} from "../GroupsPanel";
-import {EwindowSizes, useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks/appHooks";
 import {useContext, useEffect} from "react";
 import {ShellContext} from "../../../services/context/shell.context";
+import {EwindowSizes} from "../../../utils/enum";
 
 export function ChatWindow() {
   let {size: smallScreen} = useWindowSize(EwindowSizes.S);

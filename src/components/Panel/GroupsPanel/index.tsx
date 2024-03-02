@@ -4,18 +4,18 @@ import userImage from "./../../../assets/png/defaultuser.png";
 import "./index.css";
 import {
   _props,
-  reqType,
-  service,
-  serviceRoute,
+
+
 } from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 import {AuthContext} from "../../../services/context/auth.context";
 import {DialogPanel} from "../../Dialog";
 import ImageUploader from "react-images-upload";
-import Snackbar from "../../utility/Snackbar";
-import {Spinner} from "../../utility/Spinner/spinner";
-import {EwindowSizes, useWindowSize} from "../../../services/hooks/appHooks";
+import Snackbar from "../../Utils/Snackbar";
+import {Spinner} from "../../Utils/Spinner/spinner";
+import {useWindowSize} from "../../../services/hooks/appHooks";
 import {IoIosArrowForward} from "react-icons/io";
+import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
 
 export function UtilityPanel() {
   const {

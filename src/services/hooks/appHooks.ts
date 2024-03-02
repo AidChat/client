@@ -1,22 +1,7 @@
 import {useEffect, useState} from "react";
+import {_debounce} from "../../utils/functions";
+import {EwindowSizes, windowSize} from "../../utils/enum";
 
-type windowSize = "Xl" | "M" | "S";
-
-export enum EwindowSizes {
-  Xl = "Xl",
-  M = "M",
-  S = "S",
-}
-
-export const _debounce = (fn: () => void, timeout: number = 2000) => {
-  let current;
-  if (current) {
-    clearTimeout(current);
-  }
-  current = window.setTimeout(function () {
-    fn();
-  }, timeout);
-};
 
 export const useWindowSize = (size?: windowSize) => {
   const [current, setCurrent] = useState<windowSize>(EwindowSizes.Xl);

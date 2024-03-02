@@ -8,13 +8,13 @@ import React, {
 import {AuthContext} from "../../../services/context/auth.context";
 import {
   _props,
-  reqType,
-  service,
-  serviceRoute,
+
+
 } from "../../../services/network/network";
-import {Spinner} from "../../utility/Spinner/spinner";
+import {Spinner} from "../../Utils/Spinner/spinner";
 import {useParams} from "react-router-dom";
-import {EwindowSizes, useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks/appHooks";
+import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
 
 interface LoginFromProps {
   toggleState: () => void;

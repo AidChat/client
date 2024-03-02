@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import notfoundCat from './../../../assets/svg/notfound_cat.svg';
 import './index.css'
-import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
-import {Spinner} from "../../utility/Spinner/spinner";
+import {_props} from "../../../services/network/network";
+import {Spinner} from "../../Utils/Spinner/spinner";
+import {reqType, service, serviceRoute} from "../../../utils/enum";
 
 
 interface requestInt {

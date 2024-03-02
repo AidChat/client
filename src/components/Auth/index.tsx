@@ -3,16 +3,16 @@ import "./index.css";
 import {LoginForm} from "./LoginForm/loginForm";
 import gif from "./../../assets/gifs/slogan.gif";
 import {RegisterForm} from "./RegisterForm";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {InviteForm} from "./InviteForm";
 import {FaGoogle} from "react-icons/fa6";
-import {LoginGoogle} from "../utility/SocialLogin/LoginGoogle";
+import {LoginGoogle} from "../Utils/SocialLogin/LoginGoogle";
 import {useResponsizeClass} from "../../utils/functions";
-import {EwindowSizes} from "../../services/hooks/appHooks";
+
+import {EwindowSizes} from "../../utils/enum";
 
 export function Validator() {
   const {requestCode} = useParams();
-  const nav = useNavigate();
   const [props, setProps] = useState<{email: string}>({email: ""});
   const [state, setState] = useState({
     login: !requestCode,
@@ -35,9 +35,6 @@ export function Validator() {
       invite: false,
     });
   }
-
-  console.log(state);
-
   function handleResetParams(e?: string) {
     if (e) {
       setProps({email: e});

@@ -6,9 +6,8 @@ import {FcAddImage} from "react-icons/fc";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {
   _props,
-  reqType,
-  service,
-  serviceRoute,
+
+
 } from "../../../services/network/network";
 import {
   EsidePanel,
@@ -16,20 +15,29 @@ import {
   sidePanelType,
 } from "../../../services/context/shell.context";
 import groupsImg from "./../../../assets/png/defaultuser.png";
-import {formatDateToDDMMYYYY, formatTimeToHHMM} from "../../../utils/functions";
-import {Spinner} from "../../utility/Spinner/spinner";
-import {Role, SocketEmitters, SocketListeners} from "../../../utils/interface";
+import {
+  formatDateToDDMMYYYY,
+  formatTimeToHHMM,
+  useResponsizeClass,
+} from "../../../utils/functions";
+import {Spinner} from "../../Utils/Spinner/spinner";
+import {
+  MessageInterface,
+  Role,
+  SocketEmitters,
+  SocketListeners,
+} from "../../../utils/interface";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {GroupOptions} from "../GroupsPanel/GroupOptions";
 import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
 import {IoIosCheckmark} from "react-icons/io";
-import {FaAnglesDown} from "react-icons/fa6";
-import Tooltip from "../../utility/Tooltip";
+import Tooltip from "../../Utils/Tooltip";
 import {IoChatbubbleEllipses} from "react-icons/io5";
 import {CgProfile} from "react-icons/cg";
-import {EwindowSizes, useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks/appHooks";
+import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
 
 export function Chat() {
   const [messages, _messages] = useState<any[]>([]);
@@ -54,10 +62,8 @@ export function Chat() {
   });
   const [rId, _rId] = useState<string | undefined>(undefined);
   const [exceed, _exceed] = useState<boolean>(false);
-
-  function handleSubmit(s: string) {
-    socket?.emit(SocketEmitters._MESSAGE, {text: s});
-  }
+  const {updateSidePanelState} = useContext(ShellContext);
+  const [onliners, setOnliners] = useState<number[]>([]);
 
   useEffect(() => {
     window.setTimeout(() => {
@@ -74,7 +80,10 @@ export function Chat() {
       socket?.off(SocketListeners.TYPING);
     };
   }, [groupId, socketId]);
-  const [onliners, setOnliners] = useState<number[]>([]);
+
+  function handleSubmit(s: string) {
+    socket?.emit(SocketEmitters._MESSAGE, {text: s});
+  }
 
   function handleCurrentGroup() {
     let gid = groupId;
@@ -141,7 +150,6 @@ export function Chat() {
               }
             });
             window.setTimeout(() => {
-              // check if message is ready by all after receiving
               socket.emit(SocketEmitters._READMESSAGE, {
                 messageId: data.id,
                 userId: user.id,
@@ -196,8 +204,6 @@ export function Chat() {
         });
     }
   }
-  const {size: valid} = useWindowSize(EwindowSizes.S);
-  const {updateSidePanelState, sidePanel} = useContext(ShellContext);
 
   function handleSidePanels(panel: sidePanelType) {
     updateSidePanelState(function (previous: {[x: string]: any}) {
@@ -209,23 +215,32 @@ export function Chat() {
   }
   return (
     <div className="midPanelWrapper">
-      {valid && (
-        <div className="sidePanelBtnContainer">
-          <IoChatbubbleEllipses
-            className="btn-wrapper-options"
-            color="white"
-            size="30px"
-            onClick={() => handleSidePanels(EsidePanel.group)}
-          />
-          <CgProfile
-            className="btn-wrapper-options"
-            color="white"
-            size="30px"
-            onClick={() => handleSidePanels(EsidePanel.utit)}
-          />
-        </div>
-      )}
-      <div className={"shadow-box"}>
+      <div
+        className={
+          "sidePanelBtnContainer" +
+          useResponsizeClass(EwindowSizes.S, ["dflex"])
+        }
+      >
+        <IoChatbubbleEllipses
+          className="btn-wrapper-options"
+          color="white"
+          size="30px"
+          onClick={() => handleSidePanels(EsidePanel.group)}
+        />
+        <CgProfile
+          className="btn-wrapper-options"
+          color="white"
+          size="30px"
+          onClick={() => handleSidePanels(EsidePanel.utit)}
+        />
+      </div>
+
+      <div
+        className={
+          "shadow-box" + useResponsizeClass(EwindowSizes.S, ["height95"])
+        }
+        style={{height: "100%"}}
+      >
         <div className={"wrapper"}>
           {loading && <Spinner />}
           {selectedGroupType === "CHAT" && (
@@ -265,34 +280,6 @@ export function Chat() {
       </div>
     </div>
   );
-}
-
-interface MessageInterface {
-  MessageContent: MessageContent;
-  created_at: string;
-  groupId: number;
-  id: number;
-  messageContentId: number;
-  senderId: number;
-  status: string;
-  User: {
-    name: string;
-    email: string;
-    profileImage: string;
-    id: number;
-  };
-  ReadByAll?: boolean;
-  ReadReceipt: {
-    id: number;
-    userId: number;
-    status: "Read" | "Sent";
-  }[];
-}
-
-interface MessageContent {
-  id: number;
-  caption: null | string;
-  content: string;
 }
 
 export function ConversationWrapper({

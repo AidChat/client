@@ -1,21 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {io} from "socket.io-client";
-import {service} from "../network/network";
+import {service} from "../../utils/enum";
 
-interface ShellInterface {
-  snackbarProps: {
-    show: boolean;
-    message: string;
-  };
-  setShowSnackbarProps?: (V: boolean) => void;
-  showSnackbar?: (M: string) => void;
-  _setGroupId: (Id: string) => void;
-  groupId: string | null;
-  _setUserId: (Id: string) => void;
-  userId: string | null;
-  socketId: string | null;
-  _setSocketId: (S: string) => void;
-}
 
 export const ShellContext = React.createContext<any>({
   snackbarProps: {show: false, message: ""},
@@ -45,11 +31,7 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
   const [sidePanel, updateSidePanelState] = useState<{
     Util: boolean;
     Group: boolean;
-  }>({Util: false, Group: false});
-  // TODO
-  /*
-    Make a function that takes some args and trigger data refresh if its called
-     */
+  }>({Util: false, Group: true});
   function ping(s?: string) {
     _trigger(true);
   }

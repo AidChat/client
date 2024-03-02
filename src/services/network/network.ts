@@ -1,8 +1,13 @@
 import axios from "axios";
 import {UserProps} from "../../utils/interface";
+import {reqType, service, serviceRoute} from "../../utils/enum";
 
 export const _props = {
     session: window.localStorage.getItem('session'),
+    /**
+     *
+     * @param model
+     */
     _db: function (model: service) {
         const query = (
             service: serviceRoute,
@@ -95,37 +100,4 @@ export const _props = {
     },
 };
 
-export enum reqType {
-    get = "GET",
-    post = "POST",
-    put = "PUT",
-    delete = 'DELETE'
-}
 
-export enum serviceRoute {
-    login = '/auth/login',
-    register = '/auth/register',
-    session = '/auth/session',
-    groupById = '/group/GET',
-    group = '/group',
-    user = '/user',
-    _groupMessages = '/group/messages',
-    groupUsers = '/group/users',
-    groupInvite = '/group/invite',
-    request= '/group/request',
-    groupRole = '/group/role',
-    removeUserFromGroup = '/group/remove',
-    userRequest='/group/requests',
-    search = '/group/search',
-    inviteUpdate = '/group/invite/update',
-    socialLogin='/auth/social-login',
-    consent = '/user/consent',
-    updateInvite = '/group/invite/update'
-}
-
-
-export enum service {
-    authentication = 'http://localhost:8999/v1',
-    group = 'http://localhost:8901/v1',
-    messaging = 'http://localhost:8900'
-}
