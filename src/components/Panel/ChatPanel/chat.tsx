@@ -10,9 +10,8 @@ import {
 
 } from "../../../services/network/network";
 import {
-  EsidePanel,
   ShellContext,
-  sidePanelType,
+
 } from "../../../services/context/shell.context";
 import groupsImg from "./../../../assets/png/defaultuser.png";
 import {
@@ -37,7 +36,7 @@ import Tooltip from "../../Utils/Tooltip";
 import {IoChatbubbleEllipses} from "react-icons/io5";
 import {CgProfile} from "react-icons/cg";
 import {useWindowSize} from "../../../services/hooks/appHooks";
-import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
+import {EsidePanel, EwindowSizes, reqType, service, serviceRoute, sidePanelType} from "../../../utils/enum";
 
 export function Chat() {
   const [messages, _messages] = useState<any[]>([]);

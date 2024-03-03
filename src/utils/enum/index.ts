@@ -147,3 +147,10 @@ export enum EwindowSizes {
 }
 
 export type windowSize = "Xl" | "M" | "S";
+
+export type sidePanelType = "Group" | "Util";
+
+export enum EsidePanel {
+    group = "Group", utit = "Util",
+}
+
