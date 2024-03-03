@@ -1,22 +1,23 @@
 import React, {useEffect, useState} from "react";
-import {Spinner} from "../../../utility/Spinner/spinner";
+import {Spinner} from "../../../Utils/Spinner/spinner";
 import "./index.css";
 import {
   _props,
-  reqType,
-  service,
-  serviceRoute,
+
+
 } from "../../../../services/network/network";
 import {MdDelete} from "react-icons/md";
-import Snackbar from "../../../utility/Snackbar";
+import Snackbar from "../../../Utils/Snackbar";
 import {Role} from "../../../../utils/interface";
 import {SiMinutemailer} from "react-icons/si";
 import {RiCloseCircleLine} from "react-icons/ri";
 import {GoBlocked} from "react-icons/go";
 import {FaUserPlus} from "react-icons/fa";
-import Tooltip from "../../../utility/Tooltip";
+import Tooltip from "../../../Utils/Tooltip";
 import {validateEmail} from "../../../../utils/functions";
-import {EwindowSizes, useWindowSize} from "../../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {EwindowSizes, reqType, service, serviceRoute} from "../../../../utils/enum";
+import { motion } from "framer-motion";
 
 export function Requests(props: {groupId: string}) {
   const [data, setData] = useState(true);
@@ -37,7 +38,7 @@ export function Requests(props: {groupId: string}) {
     fetchData();
   }, []);
   return (
-    <div className={"members-container"}>
+    <motion.div initial={{y:10}} animate={{y:0}}  className={"members-container"}>
       {data ? (
         <div className={"font-primary"}>
           <SendRequestPanelContainer
@@ -56,7 +57,7 @@ export function Requests(props: {groupId: string}) {
       ) : (
         <Spinner />
       )}
-    </div>
+    </motion.div>
   );
 }
 

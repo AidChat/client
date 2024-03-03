@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './index.css'
 import {BsPeople} from "react-icons/bs";
 import {AiFillSetting, AiOutlineUsergroupAdd} from "react-icons/ai";
@@ -12,7 +12,7 @@ interface _int {
     groupId: string
     showChat: () => void
     role: string | undefined
-    init ?:string
+    init?: string
 }
 
 export function GroupOptions(props: _int) {
@@ -22,32 +22,37 @@ export function GroupOptions(props: _int) {
         setActiveMenuItem(menuItem);
     };
 
-    return (
-        <div>
+    return (<>
             <div className={'options-panel-wrapper'}>
                 <div className={'options-wrapper'}
                      style={{display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-                    <div style={{cursor: "pointer", marginRight: '20px',display:'flex',justifyContent:'center',alignItems:'center'}}
+                    <div style={{
+                        cursor: "pointer",
+                        marginRight: '20px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
                          onClick={() => props.showChat()}><BiArrowBack size={22} color={'white'}/></div>
 
-                    <div style={{flex: '1', margin:'0 18px'}} className={activeMenuItem === 'members' ? 'item-option-active ' : ''}
+                    <div style={{flex: '1', margin: '0 18px'}}
+                         className={activeMenuItem === 'members' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('members')}><BsPeople size={22} color={'white'}/></div>
-                    {(props.role == 'OWNER' || props.role == 'ADMIN')  &&
-                        <div style={{flex: '1',margin:'0 18px'}} className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
-                             onClick={() => handleMenuItemClick('requests')}><AiOutlineUsergroupAdd size={22} color={'white'}/>
-                        </div>
-                    }
-                    <div style={{flex: '1',margin:'0 18px'}} className={activeMenuItem === 'settings' ? 'item-option-active ' : ''}
+                    {(props.role == 'OWNER' || props.role == 'ADMIN') && <div style={{flex: '1', margin: '0 18px'}}
+                                                                              className={activeMenuItem === 'requests' ? 'item-option-active ' : ''}
+                                                                              onClick={() => handleMenuItemClick('requests')}>
+                        <AiOutlineUsergroupAdd size={22} color={'white'}/>
+                    </div>}
+                    <div style={{flex: '1', margin: '0 18px'}}
+                         className={activeMenuItem === 'settings' ? 'item-option-active ' : ''}
                          onClick={() => handleMenuItemClick('settings')}><AiFillSetting size={22} color={'white'}/>
                     </div>
                 </div>
             </div>
-            <div>
-                {activeMenuItem === 'members' && <Members groupId={props.groupId}/>}
-                {activeMenuItem === 'requests' && <Requests groupId={props.groupId}/>}
-                {activeMenuItem === 'settings' && <Settings groupId={props.groupId}/>}
-            </div>
-        </div>
-    );
+            {activeMenuItem === 'members' && <Members groupId={props.groupId}/>}
+            {activeMenuItem === 'requests' && <Requests groupId={props.groupId}/>}
+            {activeMenuItem === 'settings' && <Settings groupId={props.groupId}/>}
+
+        </>);
 }
 

@@ -105,3 +105,52 @@ export enum MESSAGE_CONTENT_TYPE {
     IMAGE
 }
 
+
+export enum reqType {
+    get = "GET",
+    post = "POST",
+    put = "PUT",
+    delete = 'DELETE'
+}
+
+export enum serviceRoute {
+    login = '/auth/login',
+    register = '/auth/register',
+    session = '/auth/session',
+    groupById = '/group/GET',
+    group = '/group',
+    user = '/user',
+    _groupMessages = '/group/messages',
+    groupUsers = '/group/users',
+    groupInvite = '/group/invite',
+    request = '/group/request',
+    groupRole = '/group/role',
+    removeUserFromGroup = '/group/remove',
+    userRequest = '/group/requests',
+    search = '/group/search',
+    inviteUpdate = '/group/invite/update',
+    socialLogin = '/auth/social-login',
+    consent = '/user/consent',
+    updateInvite = '/group/invite/update'
+}
+
+export enum service {
+    authentication = 'http://localhost:8999/v1',
+    group = 'http://localhost:8901/v1',
+    messaging = 'http://localhost:8900'
+}
+
+export enum EwindowSizes {
+    Xl = "Xl",
+    M = "M",
+    S = "S",
+}
+
+export type windowSize = "Xl" | "M" | "S";
+
+export type sidePanelType = "Group" | "Util";
+
+export enum EsidePanel {
+    group = "Group", utit = "Util",
+}
+

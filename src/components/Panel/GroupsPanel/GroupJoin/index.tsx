@@ -1,10 +1,11 @@
 import {useContext, useEffect, useState} from "react";
 import {ShellContext} from "../../../../services/context/shell.context";
-import {_props, reqType, service, serviceRoute} from "../../../../services/network/network";
-import {Spinner} from "../../../utility/Spinner/spinner";
+import {_props} from "../../../../services/network/network";
+import {Spinner} from "../../../Utils/Spinner/spinner";
 import groupsImg from "../../../../assets/svg/groups.svg";
-import Tooltip from "../../../utility/Tooltip";
-import Snackbar from "../../../utility/Snackbar";
+import Tooltip from "../../../Utils/Tooltip";
+import Snackbar from "../../../Utils/Snackbar";
+import {reqType, service, serviceRoute} from "../../../../utils/enum";
 
 export function InviteContainer(props: { requestId?: string, groupId?: string }) {
     const [loading, _loading] = useState<boolean>(true);

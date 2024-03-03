@@ -1,9 +1,10 @@
 import {ReactNode, useCallback, useContext, useState} from "react";
 import {IResolveParams, LoginSocialGoogle, objectType} from "reactjs-social-login";
-import {_props, reqType, service, serviceRoute} from "../../../services/network/network";
+import {_props} from "../../../services/network/network";
 import {AuthContext} from "../../../services/context/auth.context";
 import {useParams} from "react-router-dom";
 import {ShellContext} from "../../../services/context/shell.context";
+import {reqType, service, serviceRoute} from "../../../utils/enum";
 
 const REDIRECT_URI = window.location.href;
 
