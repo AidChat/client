@@ -315,7 +315,7 @@ dialog::backdrop {
 }
 .div_animateLR{
     position: relative;
-    animation:  move 2s  infinite ;
+    animation:   2s  infinite ;
     animation-timing-function: linear;
 }
 @keyframes move {
@@ -323,64 +323,40 @@ dialog::backdrop {
         left: 0;
     }
     5% {
-        left: -0.5px;
+        left: -0.1px;
     }
     10% {
-        left: -1px;
+        left: -0.3px;
     }
     15% {
-        left: -1.5px;
+        left: -0.3px;
     }
     20% {
-        left: -2px;
+        left: -0.4px;
     }
     25% {
-        left: -2.5px;
-    }
-    30% {
-        left: -3px;
-    }
-    35% {
-        left: -2.5px;
-    }
-    40% {
-        left: -2px;
-    }
-    45% {
-        left: -1.5px;
-    }
-    50% {
-        left: -1px;
-    }
-    55% {
         left: -0.5px;
     }
+    30% {
+        left: -0.6px;
+    }
+    35% {
+        left: -0.5px;
+    }
+    40% {
+        left: -0.4px;
+    }
+    45% {
+        left: -0.3px;
+    }
+    50% {
+        left: -0.2px;
+    }
+    55% {
+        left: -0.1px;
+    }
     60% {
-        left: 0px;
-    }
-    65% {
-        left: 0.5px;
-    }
-    70% {
-        left: 1px;
-    }
-    75% {
-        left: 1.5px;
-    }
-    80% {
-        left: 2px;
-    }
-    85% {
-        left: 2.5px;
-    }
-    90% {
-        left: 3px;
-    }
-    95% {
-        left: 2.5px;
-    }
-    100% {
-        left: 2px;
+        left: 0;
     }
 }
 
