@@ -3,6 +3,7 @@ import {Spinner} from "../../../Utils/Spinner/spinner";
 import {_props} from "../../../../services/network/network";
 import './index.css';
 import {reqType, service, serviceRoute} from "../../../../utils/enum";
+import { motion } from "framer-motion";
 
 interface User {
     email: string,
@@ -24,7 +25,7 @@ export function Members(props: { groupId: string }) {
             })
     }, []);
     return (
-        <div className={'members-container'}>
+        <motion.div transition={{delay:0.1}} initial={{x:10,opacity:0}} animate={{x:0,opacity:1}} className={'members-container'}>
             {
                 data ?
                     <div className={'font-primary'}>
@@ -34,14 +35,14 @@ export function Members(props: { groupId: string }) {
                     </div>
                     : <Spinner/>
             }
-        </div>
+        </motion.div>
     )
 }
 
 function UsersList({user}: { user: User }) {
     return (
         <div className={'shadow userlistWrapper'}>
-            <div> {user.name}</div>
+            <motion.div transition={{delay:0.2}} initial={{y:-10}} animate={{y:0}} > {user.name}</motion.div>
             <div>
                 {ClientRole[user?.Role[0]?.type]}
             </div>

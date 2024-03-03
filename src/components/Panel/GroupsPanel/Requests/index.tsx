@@ -17,6 +17,7 @@ import Tooltip from "../../../Utils/Tooltip";
 import {validateEmail} from "../../../../utils/functions";
 import {useWindowSize} from "../../../../services/hooks/appHooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../../utils/enum";
+import { motion } from "framer-motion";
 
 export function Requests(props: {groupId: string}) {
   const [data, setData] = useState(true);
@@ -37,7 +38,7 @@ export function Requests(props: {groupId: string}) {
     fetchData();
   }, []);
   return (
-    <div className={"members-container"}>
+    <motion.div initial={{y:10}} animate={{y:0}}  className={"members-container"}>
       {data ? (
         <div className={"font-primary"}>
           <SendRequestPanelContainer
@@ -56,7 +57,7 @@ export function Requests(props: {groupId: string}) {
       ) : (
         <Spinner />
       )}
-    </div>
+    </motion.div>
   );
 }
 

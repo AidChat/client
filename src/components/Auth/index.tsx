@@ -41,41 +41,41 @@ export function Validator() {
     }
 
     return (<AnimatePresence>
-            <motion.div exit={{x: -300, opacity: 0}} initial={{y: -100}} animate={{y: 0}}
-                        className={"authContainer" + useResponsizeClass(EwindowSizes.S, ["MauthContainer"])}
-            >
-                <div>
-                    <img alt={''} style={{width: "100%"}} src={gif}/>
-                </div>
-                <div className={"authBox"}>
-                    <div className={"w100"} style={{height: "100%"}}>
-                        {state.invite ? (<InviteForm
-                                requestLogin={(E?: string) => {
-                                    handleResetParams(E);
+        <motion.div exit={{x: -300, opacity: 0}} initial={{y: -100}} animate={{y: 0}}
+                    className={"authContainer" + useResponsizeClass(EwindowSizes.S, ["MauthContainer"])}
+        >
+            <div>
+                <img alt={''} style={{width: "100%"}} src={gif}/>
+            </div>
+            <div className={"authBox"}>
+                <div className={"w100"} style={{height: "100%"}}>
+                    {state.invite ? (<InviteForm
+                        requestLogin={(E?: string) => {
+                            handleResetParams(E);
+                        }}
+                    />) : <>
+                        {state.login && (<LoginForm toggleState={switchAuthState} email={props.email}/>)}
+                        {state.register && (<RegisterForm
+                            toggleState={switchAuthState}
+                            email={props.email}
+                        />)}
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            <div
+                                style={{
+                                    display: "flex", justifyContent: "space-between", width: "10%",
                                 }}
-                            />) : (<>
-                                {state.login && (<LoginForm toggleState={switchAuthState} email={props.email}/>)}
-                                {state.register && (<RegisterForm
-                                        toggleState={switchAuthState}
-                                        email={props.email}
-                                    />)}
-                                <div style={{display: "flex", justifyContent: "center"}}>
-                                    <div
-                                        style={{
-                                            display: "flex", justifyContent: "space-between", width: "10%",
-                                        }}
-                                    >
-                                        <div style={{padding: "10px"}}>
-                                            <LoginGoogle>
-                                                <FaGoogle size={28} color={"#398378"}/>
-                                            </LoginGoogle>
-                                        </div>
-                                        <div style={{padding: "10px"}}></div>
-                                    </div>
+                            >
+                                <div style={{padding: "10px"}}>
+                                    <LoginGoogle>
+                                        <FaGoogle size={28} color={"#398378"}/>
+                                    </LoginGoogle>
                                 </div>
-                            </>)}
-                    </div>
+                                <div style={{padding: "10px"}}></div>
+                            </div>
+                        </div>
+                    </>}
                 </div>
-            </motion.div>
-        </AnimatePresence>);
+            </div>
+        </motion.div>
+    </AnimatePresence>);
 }

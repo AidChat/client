@@ -15,8 +15,7 @@ export const Panel = () => {
         if (smallScreen) {
             if (sidePanel.Group) {
                 style["group"] = {
-                    display: "flex",
-                    position: "absolute",
+                    display: "flex", position: "absolute",
                 };
             } else {
                 style["group"] = {
@@ -35,14 +34,11 @@ export const Panel = () => {
         }
         return style;
     };
-    useEffect(
-        function () {
-            handleShow();
-        },
-        [smallScreen]
-    );
-    return (
-        <div className={"chatWrapper"}>
+    useEffect(function () {
+        handleShow();
+    }, [smallScreen]);
+
+    return (<div className={"chatWrapper"}>
             <div className={"chatContainer shadow-box "}>
                 <div className={"containerA"} style={handleShow()?.group}>
                     <GroupListPanel/>
@@ -55,8 +51,7 @@ export const Panel = () => {
                     <UtilityPanel/>
                 </div>
             </div>
-        </div>
-    );
+        </div>);
 };
 
 

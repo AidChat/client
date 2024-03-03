@@ -52,92 +52,92 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
             });
     }
 
-    return (<motion.div animate={{x: 0}} initial={{x: 50}} transition={{type: "tween"}} exit={{x: 100}}
+    return (<motion.div animate={{x: 0}} initial={{x: 5}} transition={{type: "tween"}} exit={{x: 10}}
                         className={"loginFormWrapper"}>
-            <form style={{width: "80%"}} onSubmit={handleLogin}>
-                <div
-                    className={"logincontainer color-green"}
-                    style={{textAlign: "center"}}
+        <form style={{width: "80%"}} onSubmit={handleLogin}>
+            <div
+                className={"logincontainer color-green"}
+                style={{textAlign: "center"}}
+            >
+                {error}
+            </div>
+            <div className={"logincontainer"}>
+                <label style={{marginLeft: "4px"}}>Email</label>
+                <div className={"inputWrapper-icon"}>
+                    <input
+                        type={"email"}
+                        name={"email"}
+                        onChange={handleUpdate}
+                        required={true}
+                        className={"inputEle"}
+                    />
+                </div>
+            </div>
+            <div className={"logincontainer"}>
+                <label>Password</label>
+                <div className={"inputWrapper-icon"}>
+                    <input
+                        type={"password"}
+                        className={"inputEle"}
+                        required={true}
+                        name={"password"}
+                        onChange={handleUpdate}
+                    />
+                </div>
+            </div>
+            <div
+                style={{
+                    marginTop: 10, display: "flex", alignContent: "center", alignItems: "center",
+                }}
+            >
+                {!isSmall && (<>
+                    <input
+                        type={"checkbox"}
+                        style={{height: 20, width: 20}}
+                        name={"extend"}
+                        checked={userdata.extend}
+                        onClick={() => setUserData({...userdata, extend: !userdata.extend})}
+                    />
+                    <div>
+                        <label
+                            className={"font-primary"}
+                            onClick={() => {
+                                setUserData({...userdata, extend: !userdata.extend});
+                            }}
+                        >
+                            Remember me
+                        </label>
+                    </div>
+                </>)}
+            </div>
+            <div className={"logincontainer flex-center"}>
+                <button
+                    onClick={handleLogin}
+                    className={"btn btn-primary w50"}
+                    style={{position: "relative"}}
                 >
-                    {error}
-                </div>
-                <div className={"logincontainer"}>
-                    <label style={{marginLeft: "4px"}}>Email</label>
-                    <div className={"inputWrapper-icon"}>
-                        <input
-                            type={"email"}
-                            name={"email"}
-                            onChange={handleUpdate}
-                            required={true}
-                            className={"inputEle"}
-                        />
-                    </div>
-                </div>
-                <div className={"logincontainer"}>
-                    <label>Password</label>
-                    <div className={"inputWrapper-icon"}>
-                        <input
-                            type={"password"}
-                            className={"inputEle"}
-                            required={true}
-                            name={"password"}
-                            onChange={handleUpdate}
-                        />
-                    </div>
-                </div>
+                    {loading ? <Spinner/> : "Login"}
+                </button>
+            </div>
+            <div
+                className={"logincontainer flex-right"}
+                style={{marginTop: "24px"}}
+            >
                 <div
-                    style={{
-                        marginTop: 10, display: "flex", alignContent: "center", alignItems: "center",
+                    className={"font-primary"}
+                    onClick={() => {
+                        toggleState();
                     }}
                 >
-                    {!isSmall && (<>
-                            <input
-                                type={"checkbox"}
-                                style={{height: 20, width: 20}}
-                                name={"extend"}
-                                checked={userdata.extend}
-                                onClick={() => setUserData({...userdata, extend: !userdata.extend})}
-                            />
-                            <div>
-                                <label
-                                    className={"font-primary"}
-                                    onClick={() => {
-                                        setUserData({...userdata, extend: !userdata.extend});
-                                    }}
-                                >
-                                    Remember me
-                                </label>
-                            </div>
-                        </>)}
-                </div>
-                <div className={"logincontainer flex-center"}>
-                    <button
-                        onClick={handleLogin}
-                        className={"btn btn-primary w50"}
-                        style={{position: "relative"}}
-                    >
-                        {loading ? <Spinner/> : "Login"}
-                    </button>
-                </div>
-                <div
-                    className={"logincontainer flex-right"}
-                    style={{marginTop: "24px"}}
-                >
-                    <div
-                        className={"font-primary"}
-                        onClick={() => {
-                            toggleState();
-                        }}
-                    >
-                        {<p>
-                            New here?{" "}
-                            <span className={"color-green"} style={{cursor: "pointer"}}>
+                    {<p>
+                        New here?{" "}
+                        <span className={"color-green"} style={{cursor: "pointer"}}>
                   {" "}
-                                Register{" "}
+                            Register{" "}
                 </span>
-                        </p>}
-                    </div>
+                    </p>}
                 </div>
-            </form>
-        </motion.div>);
+            </div>
+        </form>
+    </motion.div>);
 }

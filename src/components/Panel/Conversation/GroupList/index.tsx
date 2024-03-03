@@ -4,6 +4,7 @@ import {GroupIcon} from "../../GroupsPanel";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {formatDateToDDMMYYYY} from "../../../../utils/functions";
 import {PiHandHeartFill} from "react-icons/pi";
+import { motion } from "framer-motion";
 
 export interface GroupListInterface {
     GroupDetail: {
@@ -31,10 +32,14 @@ export function GroupList({
             };
         });
     };
-    const {userId, groupId, sidePanel, updateSidePanelState} = useContext(ShellContext);
+    const {userId, groupId, updateSidePanelState} = useContext(ShellContext);
 
     return (<>
-        {items.map((item: any, key: number) => (<div
+        {items.map((item: any, key: number) => (<motion.div
+            whileHover={{
+                scale: 1.01,
+                transition: { duration: 1 },
+            }}
             key={key}
             className={"groupListContainer shadow-box "}
             onClick={() => handleGroupSelection(item.id)}
@@ -78,6 +83,6 @@ export function GroupList({
                     {item.Message[0]?.ReadReceipt[0].status == "Sent" && !hasSeen && <PiHandHeartFill size={22}/>}
                 </div>
             </div>)}
-        </div>))}
+        </motion.div>))}
     </>);
 }

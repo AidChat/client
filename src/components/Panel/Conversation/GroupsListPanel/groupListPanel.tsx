@@ -73,7 +73,7 @@ export function GroupListPanel() {
             });
     }, [refetch]);
 
-    return (<div style={{width: "100%"}}>
+    return (<div className={'w100'}>
         <div className={"item-container"}>
             <div className={" item searchItem"}>
                 <Logo/>
@@ -93,7 +93,7 @@ export function GroupListPanel() {
                         className="div_animateLR"
                     />
                 </div>)}
-                {!search ? (<>
+                <>
                     <div
                         className={"font-primary mygroup-label "}
                         style={{
@@ -107,13 +107,9 @@ export function GroupListPanel() {
                         MY GROUPS
                     </div>
                     <div className={"item contactsItem"}>
-                        <GroupList listType={"CHAT"} items={items}/>
+                        <GroupList listType={!search ? "CHAT" : "JOIN"} items={items}/>
                     </div>
-                </>) : (<>
-                    <div className={"item contactsItem"}>
-                        <GroupList listType={"JOIN"} items={items}/>
-                    </div>
-                </>)}
+                </>
             </>)}
         </div>
     </div>);
