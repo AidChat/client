@@ -4,19 +4,22 @@
     align-items: center;
     width: 100%;
     padding:14px;
+    background: rgba(0, 128, 0, 0.06);
+    border-radius: 10px;
 }
 .dialogBody{
     padding: 2px 16px;
-    width: 20vw;
     min-width: 300px;
 }
-.dialog {
+.dialog-ele {
     border-radius: 4px;
     position: absolute;
-    top: 10%;
     margin: 0 auto;
     border:none;
     z-index: 9999999999;
+    top:0;
+    height: 60vh;
+    width: 40vw;
 }
 
 .dialogWrapper {

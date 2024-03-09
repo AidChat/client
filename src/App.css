@@ -109,15 +109,16 @@ div {
 }
 
 .btn {
-    height: 2rem;
+    height: 2.5rem;
     width: fit-content;
-    border-radius: 4px;
+    border-radius: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     border:none;
     padding:2px 4px;
+    transition: all 0.5s;
 }
 
 .btn-primary {
@@ -146,11 +147,10 @@ div {
 }
 
 .w100 {
-    width: 100%;
+    width: 100% !important;
 }
 
 .btn-round-secondary {
-    border: 1px solid green;
     background: white;
     color: green;
 }
@@ -165,7 +165,8 @@ div {
 }
 
 .btn-round-secondary:hover {
-    background: lightgray;
+    background: green;
+    color:white
 }
 
 .flex-center {
@@ -372,4 +373,16 @@ dialog::backdrop {
 }
 .height95{
     height: 95% !important;
+}
+.h100{
+    height:100% !important;
+}
+.p8{
+    padding:8px;
+}
+.m8{
+    margin:8px;
+}
+.border-light{
+    border:1px solid lightgrey;
 }

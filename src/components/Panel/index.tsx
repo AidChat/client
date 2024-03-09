@@ -6,6 +6,7 @@ import {EwindowSizes} from "../../utils/enum";
 import {GroupListPanel} from "./Conversation/GroupsListPanel/groupListPanel";
 import {Chat} from "./ChatPanel/chat";
 import {UtilityPanel} from "./GroupsPanel";
+import {useResponsizeClass} from "../../utils/functions";
 
 export const Panel = () => {
     let {size: smallScreen} = useWindowSize(EwindowSizes.S);
@@ -40,7 +41,7 @@ export const Panel = () => {
 
     return (<div className={"chatWrapper"}>
             <div className={"chatContainer shadow-box "}>
-                <div className={"containerA"} style={handleShow()?.group}>
+                <div className={"containerA" + useResponsizeClass(EwindowSizes.S, ['w100'])} style={handleShow()?.group}>
                     <GroupListPanel/>
                 </div>
 

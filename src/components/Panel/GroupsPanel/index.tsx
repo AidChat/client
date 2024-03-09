@@ -13,6 +13,8 @@ import {useWindowSize} from "../../../services/hooks/appHooks";
 import {IoIosArrowForward} from "react-icons/io";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
 import {motion} from "framer-motion";
+import {Menu} from "../../Utils/Menu";
+import {MdVerified} from "react-icons/md";
 
 export function UtilityPanel() {
     const {
@@ -46,40 +48,40 @@ export function UtilityPanel() {
     }
 
     return (<motion.div initial={{x: 50}} animate={{x: 0}} exit={{x: 50}} className={"group-item-container "}>
-            {isSmall && (<IoIosArrowForward onClick={() => close()} size="22" color="white"/>)}
-            <UserIcon/>
-            {requests.length > 0 && (<>
-                    <div
-                        className={"font-primary mygroup-label"}
-                        style={{fontWeight: "bolder", textAlign: "center"}}
-                    >
-                        INVITES
-                    </div>
-                    {requests.map((_item: any, idx: React.Key | null | undefined) => (<div
-                            className={"groupIcon-container-wrapper"}
-                            key={idx}
-                            onClick={() => {
-                                handleGroupId(_item.groupId, _item.id);
-                            }}
-                        >
-                            <GroupIcon
-                                url={_item?.group?.GroupDetail?.icon ? _item?.group?.GroupDetail?.icon : undefined}
-                            />
-                            <div
-                                className={"font-primary truncate "}
-                                style={{textAlign: "center"}}
-                            >
-                                {_item?.group?.name}
-                            </div>
-                        </div>))}
-                </>)}
-        </motion.div>);
+        {isSmall && (<IoIosArrowForward onClick={() => close()} size="22" color="white"/>)}
+        <UserIcon/>
+        {requests.length > 0 && (<>
+            <div
+                className={"font-primary mygroup-label"}
+                style={{fontWeight: "bolder", textAlign: "center"}}
+            >
+                INVITES
+            </div>
+            {requests.map((_item: any, idx: React.Key | null | undefined) => (<div
+                className={"groupIcon-container-wrapper"}
+                key={idx}
+                onClick={() => {
+                    handleGroupId(_item.groupId, _item.id);
+                }}
+            >
+                <GroupIcon
+                    url={_item?.group?.GroupDetail?.icon ? _item?.group?.GroupDetail?.icon : undefined}
+                />
+                <div
+                    className={"font-primary truncate "}
+                    style={{textAlign: "center"}}
+                >
+                    {_item?.group?.name}
+                </div>
+            </div>))}
+        </>)}
+    </motion.div>);
 }
 
 export function GroupIcon({url}: { url?: string }) {
     return (<div className={"item-wrapper"}>
-            <img src={url ? url : GroupImage} alt={"profile icon"}/>
-        </div>);
+        <img src={url ? url : GroupImage} alt={"profile icon"}/>
+    </div>);
 }
 
 export function UserIcon() {
@@ -90,6 +92,8 @@ export function UserIcon() {
     const {_setUserId} = useContext(ShellContext);
     const auth = useContext(AuthContext);
     const [showUserForm, setShowUserForm] = useState<boolean>(false);
+    const {size: small} = useWindowSize(EwindowSizes.S);
+
     useEffect(() => {
         fetchProfile();
     }, []);
@@ -124,65 +128,69 @@ export function UserIcon() {
     }
 
     return (<>
-            <DialogPanel
-                open={showUserForm}
-                header={""}
-                BodyEle={<>
-                    <ProfileForm
-                        onUpdate={() => {
-                            fetchProfile();
-                        }}
-                    />
-                </>}
-                onClose={() => {
-                    setShowUserForm(false);
+        <DialogPanel
+            open={showUserForm}
+            header={""}
+            BodyEle={<>
+                <ProfileForm
+                    onUpdate={() => {
+                        fetchProfile();
+                    }}
+                />
+            </>}
+            onClose={() => {
+                setShowUserForm(false);
+            }}
+            load={false}
+        />
+        {user ? (<div
+            style={{position: "relative", width: "100%", margin: "10px 0", display: 'flex', flexDirection: 'column'}}
+            className={!small ? "userIcon" : " h100"}
+        >
+            <div
+                onClick={() => {
+                    small && handleClick(2);
                 }}
-                load={false}
-            />
-            {user ? (<div
-                    style={{position: "relative", width: "100%", margin: "10px 0"}}
-                    className={"userIcon"}
-                >
-                    <div
-                        onClick={() => {
-                            showMenu(!menu);
-                        }}
-                        style={{textAlign: "center", width: "100%"}}
-                        className={"usernameWrapper"}
-                    >
-                        <div
-                            style={{textAlign: "center", height: 50, width: 50}}
-                            className={"item-wrapper"}
-                        >
-                            <img
-                                src={user.profileImage ? user.profileImage : userImage}
-                                alt={"profile icon"}
-                            />
-                        </div>
-                        <div className={"w100"}>
-                            <h1 className={"font-primary username"}>
-                                {user?.name.toUpperCase()}
-                            </h1>
-                        </div>
-                    </div>
+                style={{textAlign: "center", width: "100%"}}
+                className={"usernameWrapper"}
+            >
+                <div
+                    style={{textAlign: "center", height: 50, width: 50}}
+                    className={"item-wrapper"}
 
-                    <div className={"customInput menu"}>
-                        <CustomMenu
-                            items={menuItems}
-                            onClick={(id: number) => {
-                                handleClick(id);
-                            }}
-                        />
-                    </div>
-                </div>) : (<></>)}
-        </>);
+                >
+                    <img
+                        src={user.profileImage ? user.profileImage : userImage}
+                        alt={"profile icon"}
+                    />
+                </div>
+                <div className={"w100"}>
+                    <h1 className={"font-primary username"}>
+                        {user?.name.toUpperCase()}
+                    </h1>
+                </div>
+            </div>
+
+            <div className={"customInput menu"}>
+                <Menu
+                    items={menuItems}
+                    onClick={(id: number) => {
+                        handleClick(id);
+                    }}
+                />
+            </div>
+            {small && <div className={'btn btn-primary w100 lgt-btn'} onClick={() => {
+                handleClick(1);
+            }}>Logout</div>}
+        </div>) : (<></>)}
+    </>);
 }
 
 function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     const [user, setUser] = useState<{
-        name: string; email: string; id: number | null; profileImage: string;
+        name: string; email: string; id: number | null; profileImage: string; about: string; mobile?: number
     }>({
-        name: "", email: "", profileImage: "", id: null,
+        name: "", email: "", profileImage: "", id: null, about: '', mobile: undefined
     });
     const [loading, _loading] = useState<boolean>(false);
     const [message, _message] = useState<string | null>(null);
@@ -198,6 +206,9 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                 _loading(false);
                 setUser(result.data);
             });
+        return () => {
+            _loading(false);
+        }
     }, []);
 
     function handleImageUpload(e: any) {
@@ -216,7 +227,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }
 
     function handleUpdate() {
-        let data: { name?: string; profileImage?: string } = {...user};
+        let data: { name?: string; profileImage?: string, about?: string, mobile?: number } = {...user};
         if (!update.profileImage) {
             delete data.profileImage;
         }
@@ -239,81 +250,89 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }
 
     return (<div className={"profile-Wrapper"}>
-            {message && (<Snackbar
-                    message={message}
-                    onClose={() => {
-                        _message(null);
+        {message && (<Snackbar
+            message={message}
+            onClose={() => {
+                _message(null);
+            }}
+        />)}
+        <div className={"row1 row"}>
+            <div>
+                <div className={"dialogCoverImageContainer"}>
+                    <img
+                        className={"profileCoverImage"}
+                        src={user.profileImage.split("").length > 0 ? user.profileImage : GroupImage}
+                        alt={"Profile image"}
+                    />
+                </div>
+            </div>
+            <div>
+                <ImageUploader
+                    className={"imageUploader"}
+                    withIcon={false}
+                    singleImage={true}
+                    buttonText="Update"
+                    label={""}
+                    onChange={e => {
+                        handleImageUpload(e);
                     }}
-                />)}
-            <div className={"row1 row"}>
-                <div>
-                    <div className={"profileImageContainer"}>
-                        <img
-                            style={{height: "100%", width: "100%", borderRadius: "50%"}}
-                            src={user.profileImage.split("").length > 0 ? user.profileImage : GroupImage}
-                            alt={"Profile image"}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <ImageUploader
-                        className={"imageUploader"}
-                        withIcon={false}
-                        singleImage={true}
-                        buttonText="Update"
-                        label={""}
-                        onChange={e => {
-                            handleImageUpload(e);
-                        }}
-                        imgExtension={[".jpeg", ".gif", ".png", ".gif", ".jpg"]}
-                        maxFileSize={5242880}
-                    />
-                </div>
+                    imgExtension={[".jpeg", ".gif", ".png", ".gif", ".jpg"]}
+                    maxFileSize={5242880}
+                />
             </div>
-            <div style={{margin: "0 auto"}}>
-                <div className={"row row-space"}>
-                    <label>Name</label>
-                    <input
-                        value={user.name}
-                        onChange={e => {
-                            _update({...update, name: true});
-                            setUser({...user, name: e.target.value});
-                        }}
-                    />
-                </div>
-                <div className={"row row-space"}>
-                    <label>Email</label>
-                    {user.email}
-                </div>
-            </div>
-            <div className={"row row-space flex flex-center update-btn"}>
-                {loading ? (<Spinner/>) : (<div
-                        onClick={() => {
-                            handleUpdate();
-                        }}
-                        className={"btn btn-round-secondary btn-custom-profile"}
-                    >
-                        {" "}
-                        UPDATE
-                    </div>)}
-            </div>
-        </div>);
+        </div>
+
+        <div className={"row row-space"}>
+            <label>Name</label>
+            <input
+                className={'custom-input borderRadius-light'}
+                value={user.name}
+                onChange={e => {
+                    _update({...update, name: true});
+                    setUser({...user, name: e.target.value});
+                }}
+            />
+        </div>
+        <div className={"row row-space"}>
+            <label>Email <MdVerified/></label>
+            {user.email}
+        </div>
+
+
+        <div className={"row row-space"}>
+            <label>Mobile <MdVerified/></label>
+            <input
+                disabled={true}
+                className={'custom-input borderRadius-light'}
+                onChange={(e)=>{
+                    setUser({...user,mobile:Number.parseInt(e.target.value)})
+                }}
+                type={'tel'}
+            />
+        </div>
+        <div className={"row row-space"}>
+            <label>About me</label>
+            <textarea
+                className={'custom-input borderRadius-light h100'}
+                onChange={(e) => {
+                    setUser({...user, about: e.target.value})
+                }}
+            />
+        </div>
+
+
+        <div className={"row row-space flex flex-center update-btn"}>
+            {loading ? (<Spinner/>) : (<div
+                onClick={() => {
+                    handleUpdate();
+                }}
+                className={"btn btn-round-secondary btn-custom-profile"}
+            >
+                {" "}
+                UPDATE
+            </div>)}
+        </div>
+    </div>);
 }
 
-export function CustomMenu({
-                               items, onClick,
-                           }: {
-    items: { name: string; id: number }[]; onClick: (S: number) => void;
-}) {
-    return (<div className={"customMenu-wrapper "}>
-            {items.map((item, index) => (<div
-                    className={"menu-item"}
-                    onClick={() => {
-                        onClick(item.id);
-                    }}
-                    key={index}
-                >
-                    {item.name.toUpperCase()}
-                </div>))}
-        </div>);
-}
+

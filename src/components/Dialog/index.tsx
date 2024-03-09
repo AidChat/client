@@ -1,36 +1,37 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement} from 'react';
 import {IoMdClose} from "react-icons/io";
 import './index.css'
-import {Spinner} from "../Utils/Spinner/spinner";
+import {useResponsizeClass} from "../../utils/functions";
+import {EwindowSizes} from "../../utils/enum";
+import {AnimatePresence, motion} from 'framer-motion';
 
 interface DialogPanelProps {
     open: boolean,
     header: string,
     BodyEle: ReactElement,
-    onClose : (B:boolean)=> void,
-    load ?:boolean
+    onClose: (B: boolean) => void,
+    load?: boolean
 }
 
 export function DialogPanel(props: DialogPanelProps) {
-    return (
-        <>
-        <div className={'dialogContainer'}>
-        <dialog className={'dialog'} open={props.open}>
-           <div className={'dialogWrapper'}>
-            <div className={'dialogHeader'}>
-                <div className={'dialogHeaderText'}>
-                    {props.header}
+    return (<AnimatePresence>
+            <motion.dialog initial={{opacity: 0}}
+                           animate={{opacity: 1}}
+                           exit={{opacity: 0}} className={'dialog-ele' + useResponsizeClass(EwindowSizes.S, ['w100 h100'])}
+                           open={props.open}>
+                <div className={'dialogWrapper'}>
+                    <div className={'dialogHeader'}>
+                        <div className={'dialogHeaderText'}>
+                            {props.header}
+                        </div>
+                        <div style={{cursor: 'pointer'}} onClick={() => {
+                            props.onClose(false);
+                        }}>
+                            <IoMdClose color={'black'} size={18}/>
+                        </div>
+                    </div>
+                    <div className={'dialogBody'}>{props.BodyEle}</div>
                 </div>
-                <div style={{cursor:'pointer'}} onClick={()=>{
-                    props.onClose(false);
-                }}>
-                    <IoMdClose color={'#398378'} size={18} />
-                </div>
-            </div>
-            <div className={'dialogBody'}>{props.BodyEle}</div>
-           </div>
-        </dialog>
-        </div>
-        </>
-    )
+            </motion.dialog>
+        </AnimatePresence>)
 }
