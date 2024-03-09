@@ -266,11 +266,14 @@ export function ConversationWrapper({
     const {socket} = useContext(ShellContext);
     const [message, _message] = useState("");
     const [typing, _typing] = useState<boolean>(false);
-    let [options, showOptions] = useState<boolean>(false);
+    const [options, showOptions] = useState<boolean>(false);
     const [role, _role] = useState<Role | null>();
     const [init, setInit] = useState("members");
     const [isScrolling, _setScrolling] = useState<boolean>(false);
     const [loading, _loading] = useState<boolean>(false);
+    const [recentOffline, setRecentOffline] = useState<number[]>([]);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const {size: valid} = useWindowSize(EwindowSizes.S);
 
     useEffect(() => {
         _loading(false);
@@ -324,36 +327,35 @@ export function ConversationWrapper({
         _message("");
     }
 
-    const containerRef = useRef<HTMLDivElement | null>(null);
-    const scrollToBottom = (force?: boolean) => {
-        if (!isScrolling || force) {
-            if (containerRef.current) {
-                containerRef.current.scrollTo({
-                    top: containerRef.current.scrollHeight, behavior: "smooth",
-                });
-            }
+    const scrollToBottom = () => {
+        if (containerRef.current) {
+            containerRef.current.scrollTo({
+                top: containerRef.current.scrollHeight, behavior: "smooth",
+            });
         }
     };
 
-    const [recentOffline, setRecentOffline] = useState<number[]>([]);
     useEffect(() => {
         if (containerRef.current && !isScrolling) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
         }
         socket.on(SocketListeners.USEROFFLINE, (data: { user: number }) => {
-            let d = recentOffline.filter(item => item !== data.user);
             setRecentOffline(prevState => [...prevState, data.user]);
             setOnliners(data.user);
             window.setTimeout(() => {
                 setRecentOffline(() => []);
             }, 3000);
         });
+        return () => {
+            _setScrolling(false);
+        }
     }, []);
 
     useEffect(() => {
         scrollToBottom();
     }, [state.messages]);
     const {userId} = useContext(ShellContext);
+
     const handleScroll = () => {
         _setScrolling(true);
         if (containerRef.current?.scrollTop === 0) {
@@ -368,7 +370,6 @@ export function ConversationWrapper({
             }
         }
     };
-    const {size: valid} = useWindowSize(EwindowSizes.S);
     return (<div className={"convoPanel"}>
         {!options ? (<div className={"wrapperContainer"}>
             <div className={"tagsWrapper"}>

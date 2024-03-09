@@ -380,7 +380,7 @@
     color: lightgrey;
     font-size: 14px;
     text-align: center;
-    padding: 6px 4px;
+    padding: 6px 14px;
     background: #3f3f3f96;
     border-radius: 50px;
     margin: 10px 0;
@@ -456,8 +456,7 @@
 
 .btn-Wrapper .btn-custom {
     height: 30px;
-    padding:2px 24px;
-
+    padding:2px 44px;
 }
 
 .block-text {
@@ -465,6 +464,10 @@
     align-items: center;
     text-align: center;
     cursor: pointer;
+    padding:2px 10px;
+    background: lightgray;
+    color:black;
+    height:2rem;
 }
 
 

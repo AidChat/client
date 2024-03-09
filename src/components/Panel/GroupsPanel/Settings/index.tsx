@@ -179,7 +179,7 @@ function GroupSettingContainer(props: {
                 _setGroupId(null);
             });
     }
-
+   console.log(role)
     return (<>
             {message && (<Snackbar
                     message={message}
@@ -296,7 +296,7 @@ function GroupSettingContainer(props: {
                             </div>
                         </div>
                     </>)}
-                {role === "MEMBER" || (role === "ADMIN" && (<>
+                {(role === "MEMBER" || role === "ADMIN" ) && (<>
                         <div className={"settings-item-container dangerContainer"}>
                             <div>
                                 <div
@@ -308,7 +308,7 @@ function GroupSettingContainer(props: {
                                 </div>
                             </div>
                         </div>
-                    </>))}
+                    </>)}
             </div>
         </>);
 }

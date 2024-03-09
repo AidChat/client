@@ -7,8 +7,8 @@
 }
 
 .item-wrapper {
-    height:40px;
-    width:40px;
+    height: 40px;
+    width: 40px;
     border: 1px solid rgb(128, 128, 128);
     border-radius: 50%;
     cursor: pointer;
@@ -75,19 +75,22 @@
 }
 
 .menu-item {
-    padding:4px 8px ;
+    padding: 4px 8px;
 }
-.menu-item:hover{
+
+.menu-item:hover {
     background: lightgrey;
     cursor: pointer;
 }
 
-.customMenu-wrapper  {
+.customMenu-wrapper {
 
 }
-.menu{
+
+.menu {
     display: none;
 }
+
 .customMenu-wrapper ::before {
     content: '';
     position: absolute;
@@ -98,60 +101,98 @@
     border-color: transparent transparent whitesmoke transparent;
     transform: rotate(90deg);
 }
-.userIcon:hover .menu{
+
+.userIcon:hover .menu {
     display: block;
 }
-.imageUploader{
+
+.imageUploader {
     width: 100px !important;
 }
-.imageUploader .fileContainer{
-    height:40px;
+
+.imageUploader .fileContainer {
+    height: 40px;
     background: transparent;
     border: none;
     box-shadow: unset;
 }
-.profileImageContainer{
-    height:140px;
-    width: 140px;
-    border:1px solid black;
-    border-radius: 50%;
+
+.dialogCoverImageContainer {
+    height: 30vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
-.row1{
+
+.row1 {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 }
-.btn-custom-profile{
+
+.btn-custom-profile {
     width: 100px;
 }
-.profile-Wrapper{
+
+.profile-Wrapper {
     display: flex;
     flex-direction: column;
 
 }
-.row{
-    margin:14px;
+
+.row {
+    margin: 8px 0;
     display: flex;
     flex-direction: column;
 }
-.row label{
+
+.row label {
     color: #797575;
+    font-size: large;
 }
-.row-space{
+
+.row-space {
     /* padding:0 40px; */
 }
-.row:last-of-type{
-    margin-top:20px;
+
+.row:last-of-type {
+    margin-top: 20px;
 }
-.update-btn{
+
+.update-btn {
     display: flex;
     justify-content: end;
     position: relative;
 }
-.show{
+
+.show {
     display: block;
 }
-.hide{
+
+.hide {
     display: none;
+}
+
+.profileCoverImage {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.group-token-container {
+    max-height: 150px;
+    position: relative;
+    width: 100%;
+    flex-wrap: wrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+.lgt-btn{
+    margin-top:auto;
 }

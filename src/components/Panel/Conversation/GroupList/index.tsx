@@ -74,13 +74,13 @@ export function GroupList({
                     style={{
                         fontWeight: "bold",
                         fontSize: "14px",
-                        color: !hasSeen && item.Message[0]?.ReadReceipt[0].status === "Sent" ? "#0e9783" : "whitesmoke",
+                        color: !hasSeen && item.Message[0]?.ReadReceipt[0]?.status === "Sent" ? "#0e9783" : "whitesmoke",
                         display: "flex",
                         justifyContent: "space-between",
                     }}
                 >
                     {item?.Message?.length > 0 && formatDateToDDMMYYYY(item.Message[item?.Message?.length - 1].created_at)}
-                    {item.Message[0]?.ReadReceipt[0].status == "Sent" && !hasSeen && <PiHandHeartFill size={22}/>}
+                    {item?.Message[0]?.ReadReceipt[0]?.status === "Sent" && !hasSeen && <PiHandHeartFill size={22}/>}
                 </div>
             </div>)}
         </motion.div>))}
