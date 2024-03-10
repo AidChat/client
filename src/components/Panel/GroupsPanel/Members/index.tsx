@@ -15,7 +15,7 @@ interface User {
     }[]
 }
 
-export function Members(props: { groupId: string }) {
+export function GroupMemberList(props: { groupId: string }) {
     const [data, setData] = useState(true);
     const [users, _users] = useState<User[] | []>([]);
     useEffect(() => {
@@ -42,7 +42,7 @@ export function Members(props: { groupId: string }) {
 function UsersList({user}: { user: User }) {
     return (
         <div className={'shadow userlistWrapper'}>
-            <motion.div transition={{delay:0.2}} initial={{y:-10}} animate={{y:0}} > {user.name}</motion.div>
+            <div > {user.name}</div>
             <div>
                 {ClientRole[user?.Role[0]?.type]}
             </div>

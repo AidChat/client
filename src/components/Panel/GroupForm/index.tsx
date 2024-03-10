@@ -10,6 +10,7 @@ import {Spinner} from "../../Utils/Spinner/spinner";
 import ImageUploader from "react-images-upload";
 import group from './../../../assets/svg/groups.svg'
 import {reqType, service, serviceRoute} from "../../../utils/enum";
+import {AnimatePresence, motion} from 'framer-motion';
 
 interface _gfIterface {
     onSubmit?: () => void,
@@ -60,6 +61,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
             _props._db(service.group).query(serviceRoute.group, state, reqType.post, undefined)
                 .then(result => {
                     if (onSubmit) {
+                        _message("Group added")
                         resetState();
                         ping();
                         onSubmit();
@@ -101,61 +103,64 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
     }
 
     return (<>
-            <form onSubmit={handleSubmit}>
-                <div className={'formEleWrapper iconSection'}>
-                    <div className={'dialogCoverImageContainer'}>
-                        <img src={state.icon ? state.icon : group} alt={'group icon'} className={'profileCoverImage'}/>
-                    </div>
-                    <div>
-                        <ImageUploader
-                            className={'imageUploader'}
-                            withIcon={false}
-                            singleImage={true}
-                            buttonText='Update'
-                            label={''}
-                            onChange={(e) => {
-                                handleImageUpload(e)
-                            }}
-                            imgExtension={['.jpeg', '.gif', '.png', '.gif', '.jpg']}
-                            maxFileSize={5242880}
-                        />
-                    </div>
+        <form onSubmit={handleSubmit}>
+            <div className={'formEleWrapper iconSection'}>
+                <div className={'dialogCoverImageContainer'}>
+                    <img src={state.icon ? state.icon : group} alt={'group icon'} className={'profileCoverImage'}/>
                 </div>
-                <div className={'formEleWrapper'}>
-                    <input name={'name'} onChange={handleChange} required={true} value={state.name}
-                           className={'borderRadius-light custom-input'} type={'text'}
-                           placeholder={'Choose a name that explains the purpose'}/>
+                <div>
+                    <ImageUploader
+                        className={'imageUploader'}
+                        withIcon={false}
+                        singleImage={true}
+                        buttonText='Update'
+                        label={''}
+                        onChange={(e) => {
+                            handleImageUpload(e)
+                        }}
+                        imgExtension={['.jpeg', '.gif', '.png', '.gif', '.jpg']}
+                        maxFileSize={5242880}
+                    />
                 </div>
-                <div className={'formEleWrapper token-section'}>
-                    <div className={'borderRadius-light border-light group-token-container'}>
-                        <Search onSelect={(s: string) => {
-                            handleKeywords(s)
-                        }} dataList={groupTokensArray}/>
+            </div>
+            <div className={'formEleWrapper'}>
+                <input name={'name'} onChange={handleChange} required={true} value={state.name}
+                       className={'borderRadius-light custom-input'} type={'text'}
+                       placeholder={'Choose a name that explains the purpose'}/>
+            </div>
+            <div className={'formEleWrapper token-section border-light borderRadius-light'}>
+                <div className={'  group-token-container'}>
+                    <Search onSelect={(s: string) => {
+                        handleKeywords(s)
+                    }} dataList={groupTokensArray}/>
 
-                        {state.keywords.map(item => {
-                            return <div className={'tokens'}>{item} <span
+                    {state.keywords.map(item => {
+                        return <AnimatePresence>
+                            <motion.div initial={{x: '-10px'}} animate={{x: 0}} exit={{x: '-10px'}}
+                                        className={'tokens'}>{item} <span
                                 className={'close'}><AiOutlineCloseCircle
                                 onClick={() => removeKeyword(item)}/></span>
-                            </div>
-                        })}
-
-                    </div>
+                            </motion.div>
+                        </AnimatePresence>
+                    })}
 
                 </div>
-                <div className={'formEleWrapper'}>
+
+            </div>
+            <div className={'formEleWrapper'}>
                             <textarea required={true} name={'description'} onChange={handleChange}
                                       value={state.description}
                                       className={'borderRadius-light custom-input-people borderRadius-heavy'}
                                       placeholder={'Write some description about your group'}/>
 
-                </div>
-                <div className={'flex sendBtnWrapper'}>
-                    <div className={'btn btn-round-secondary'} onClick={(e) => handleSubmit()}>
-                        {loading ? <Spinner/> : 'Create'}</div>
-                </div>
-            </form>
-            {message && <Snackbar message={message} onClose={() => {
-                _message(null)
-            }}/>}
-        </>)
+            </div>
+            <div className={'flex sendBtnWrapper'}>
+                <div className={'btn btn-round-secondary'} onClick={(e) => handleSubmit()}>
+                    {loading ? <Spinner/> : 'Create'}</div>
+            </div>
+        </form>
+        {message && <Snackbar message={message} onClose={() => {
+            _message(null)
+        }}/>}
+    </>)
 }

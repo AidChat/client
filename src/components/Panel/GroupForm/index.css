@@ -27,7 +27,7 @@
 .custom-input-people {
     border: 1px solid lightgray;
     padding: 18px 4px;
-    height:200px;
+    height:10vh;
 }
 
 .sendInviteWrapper {
@@ -69,6 +69,8 @@
 .token-section {
     display: flex;
     flex-direction: row;
+    height:15vh;
+    overflow-y:scroll;
 }
 
 .selected-token {

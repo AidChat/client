@@ -15,23 +15,22 @@ interface DialogPanelProps {
 
 export function DialogPanel(props: DialogPanelProps) {
     return (<AnimatePresence>
-            <motion.dialog initial={{opacity: 0}}
-                           animate={{opacity: 1}}
-                           exit={{opacity: 0}} className={'dialog-ele' + useResponsizeClass(EwindowSizes.S, ['w100 h100'])}
-                           open={props.open}>
-                <div className={'dialogWrapper'}>
-                    <div className={'dialogHeader'}>
-                        <div className={'dialogHeaderText'}>
-                            {props.header}
-                        </div>
-                        <div style={{cursor: 'pointer'}} onClick={() => {
-                            props.onClose(false);
-                        }}>
-                            <IoMdClose color={'black'} size={18}/>
-                        </div>
+        <motion.dialog initial={{opacity: 0}}
+                       animate={{opacity: 1}}
+                       exit={{opacity: 0}} className={'dialog-ele' + useResponsizeClass(EwindowSizes.S, ['w100 h100'])}
+                       open={props.open}>
+            <div className={'dialogWrapper'}>
+                <div className={'dialogHeader'}>
+                    <div className={'dialogHeaderText'}>
+                        {props.header}
                     </div>
-                    <div className={'dialogBody'}>{props.BodyEle}</div>
+                    <IoMdClose style={{cursor: 'pointer'}} onClick={() => {
+                        props.onClose(false);
+                    }} color={'green'} size={20}/>
+
                 </div>
-            </motion.dialog>
-        </AnimatePresence>)
+                <div className={'dialogBody'}>{props.BodyEle}</div>
+            </div>
+        </motion.dialog>
+    </AnimatePresence>)
 }

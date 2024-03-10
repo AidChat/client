@@ -1,15 +1,18 @@
 import React from "react";
 
-export function Menu({
-                               items, onClick,
-                           }: {
-    items: { name: string; id: number }[]; onClick: (S: number) => void;
-}) {
+
+interface IMenu {
+    items: { name: string, id: number }[],
+    onClick: (id: number) => void
+}
+
+
+export function Menu(props: IMenu) {
     return (<div className={"customMenu-wrapper "}>
-        {items.map((item, index) => (<div
+        {props.items.map((item, index) => (<div
             className={"menu-item"}
             onClick={() => {
-                onClick(item.id);
+                props.onClick(item.id);
             }}
             key={index}
         >
