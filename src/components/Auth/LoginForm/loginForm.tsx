@@ -38,10 +38,12 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
 
     function handleLogin(event: FormEvent) {
         event.preventDefault();
+        let body = userdata;
+        if(isSmall)  body.extend = true;
         _loading(true);
         _props
             ._db(service.authentication)
-            .query(serviceRoute.login, userdata, reqType.post)
+            .query(serviceRoute.login, body, reqType.post)
             .then(response => {
                 context?.verifyAuthentication(response.data.session.session_id, requestCode ? true : false);
                 _loading(false);

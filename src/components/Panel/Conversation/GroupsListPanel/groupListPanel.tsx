@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import "./index.css";
 import {RiSearchLine} from "react-icons/ri";
 import {GroupList, GroupListInterface} from "../GroupList";
@@ -116,12 +116,24 @@ export function GroupListPanel() {
 }
 
 function SearchContact({onChange}: { onChange: (e: string) => void }) {
+    let inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+
+        return()=>{
+            if (inputRef.current) {
+                inputRef.current.value = '';
+            }
+        }
+    }, [])
+
     return (<div className={"searchBarContainer shadow-box"}>
         <div>
             <RiSearchLine color={"#398378"} size={20}/>
         </div>
         <div>
             <input
+                ref={inputRef}
                 className={"inputEle"}
                 onChange={e => {
                     onChange(e.target.value);
@@ -153,7 +165,7 @@ function CreateGroup() {
         </Tooltip>
         <DialogPanel
             open={showDialog}
-            header="Create your own Aidgroup"
+            header="AIDGROUP"
             onClose={handleDialogClose}
             BodyEle={<GroupForm
                 onSubmit={() => {

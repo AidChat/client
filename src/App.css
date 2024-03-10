@@ -109,9 +109,9 @@ div {
 }
 
 .btn {
-    height: 2.5rem;
+    height: 2rem;
     width: fit-content;
-    border-radius: 200px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -385,4 +385,7 @@ dialog::backdrop {
 }
 .border-light{
     border:1px solid lightgrey;
+}
+.m0{
+    margin:0 !important;
 }

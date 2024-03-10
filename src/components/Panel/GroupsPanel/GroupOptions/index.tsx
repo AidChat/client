@@ -4,7 +4,7 @@ import {BsPeople} from "react-icons/bs";
 import {AiFillSetting, AiOutlineUsergroupAdd} from "react-icons/ai";
 import {BiArrowBack} from "react-icons/bi";
 import {Requests} from "../Requests";
-import {Members} from "../Members";
+import {GroupMemberList} from "../Members";
 import {Settings} from "../Settings";
 
 
@@ -49,7 +49,7 @@ export function GroupOptions(props: _int) {
                     </div>
                 </div>
             </div>
-            {activeMenuItem === 'members' && <Members groupId={props.groupId}/>}
+            {activeMenuItem === 'members' && <GroupMemberList groupId={props.groupId}/>}
             {activeMenuItem === 'requests' && <Requests groupId={props.groupId}/>}
             {activeMenuItem === 'settings' && <Settings groupId={props.groupId}/>}
 

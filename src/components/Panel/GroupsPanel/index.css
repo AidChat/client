@@ -64,7 +64,7 @@
     position: absolute;
     top: 0;
     left: -80px;
-
+    z-index:999999999;
 }
 
 .customMenu-wrapper {
@@ -75,7 +75,8 @@
 }
 
 .menu-item {
-    padding: 4px 8px;
+    padding: 4px 20px;
+    border-radius: 6px;
 }
 
 .menu-item:hover {
@@ -83,8 +84,9 @@
     cursor: pointer;
 }
 
-.customMenu-wrapper {
 
+.customMenu-wrapper {
+    border-radius:6px;
 }
 
 .menu {
@@ -94,8 +96,8 @@
 .customMenu-wrapper ::before {
     content: '';
     position: absolute;
-    top: -0px;
-    right: -20px;
+    top: 4px;
+    right: -22px;
     border-width: 10px;
     border-style: solid;
     border-color: transparent transparent whitesmoke transparent;
@@ -111,14 +113,15 @@
 }
 
 .imageUploader .fileContainer {
-    height: 40px;
     background: transparent;
     border: none;
     box-shadow: unset;
+    margin:0 auto !important;
+    padding:0px !important;
 }
 
 .dialogCoverImageContainer {
-    height: 30vh;
+    height: 24vh;
     width: 100%;
     top: 0;
     left: 0;

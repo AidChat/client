@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import GroupImage from "./../../../assets/png/defaultgroup.png";
 import userImage from "./../../../assets/png/defaultuser.png";
 import "./index.css";
-import {_props,} from "../../../services/network/network";
+import {_props} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 import {AuthContext} from "../../../services/context/auth.context";
 import {DialogPanel} from "../../Dialog";
@@ -15,6 +15,7 @@ import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum"
 import {motion} from "framer-motion";
 import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
+import {useResponsizeClass} from "../../../utils/functions";
 
 export function UtilityPanel() {
     const {
@@ -85,7 +86,6 @@ export function GroupIcon({url}: { url?: string }) {
 }
 
 export function UserIcon() {
-    const [menu, showMenu] = useState<boolean>(false);
     const [user, setUser] = useState<{
         id: string; email: string; name: string; profileImage: string;
     } | null>(null);
@@ -112,7 +112,7 @@ export function UserIcon() {
             });
     }
 
-    const menuItems = [{name: "Logout", id: 1}, {name: "Profile", id: 2},];
+    const menuItems : {name:string,id:number}[] = [{name: "Logout", id: 2}, {name: "Profile", id: 1}];
 
     function handleClick(id: number) {
         switch (id) {
@@ -130,7 +130,7 @@ export function UserIcon() {
     return (<>
         <DialogPanel
             open={showUserForm}
-            header={""}
+            header={"Profile"}
             BodyEle={<>
                 <ProfileForm
                     onUpdate={() => {
@@ -256,15 +256,13 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                 _message(null);
             }}
         />)}
-        <div className={"row1 row"}>
-            <div>
+        <div className={"row1 row " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
                 <div className={"dialogCoverImageContainer"}>
                     <img
                         className={"profileCoverImage"}
                         src={user.profileImage.split("").length > 0 ? user.profileImage : GroupImage}
                         alt={"Profile image"}
                     />
-                </div>
             </div>
             <div>
                 <ImageUploader
@@ -282,7 +280,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
             </div>
         </div>
 
-        <div className={"row row-space"}>
+        <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             <label>Name</label>
             <input
                 className={'custom-input borderRadius-light'}
@@ -293,24 +291,24 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                 }}
             />
         </div>
-        <div className={"row row-space"}>
+        <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             <label>Email <MdVerified/></label>
             {user.email}
         </div>
 
 
-        <div className={"row row-space"}>
+        <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             <label>Mobile <MdVerified/></label>
             <input
                 disabled={true}
                 className={'custom-input borderRadius-light'}
-                onChange={(e)=>{
-                    setUser({...user,mobile:Number.parseInt(e.target.value)})
+                onChange={(e) => {
+                    setUser({...user, mobile: Number.parseInt(e.target.value)})
                 }}
                 type={'tel'}
             />
         </div>
-        <div className={"row row-space"}>
+        <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             <label>About me</label>
             <textarea
                 className={'custom-input borderRadius-light h100'}
@@ -321,7 +319,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         </div>
 
 
-        <div className={"row row-space flex flex-center update-btn"}>
+        <div className={"row row-space flex flex-center update-btn " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             {loading ? (<Spinner/>) : (<div
                 onClick={() => {
                     handleUpdate();

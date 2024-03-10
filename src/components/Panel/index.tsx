@@ -4,7 +4,7 @@ import {ShellContext} from "../../services/context/shell.context";
 import {useWindowSize} from "../../services/hooks/appHooks";
 import {EwindowSizes} from "../../utils/enum";
 import {GroupListPanel} from "./Conversation/GroupsListPanel/groupListPanel";
-import {Chat} from "./ChatPanel/chat";
+import {Chat} from "./ChatPanel/Chat";
 import {UtilityPanel} from "./GroupsPanel";
 import {useResponsizeClass} from "../../utils/functions";
 
@@ -41,7 +41,7 @@ export const Panel = () => {
 
     return (<div className={"chatWrapper"}>
             <div className={"chatContainer shadow-box "}>
-                <div className={"containerA" + useResponsizeClass(EwindowSizes.S, ['w100'])} style={handleShow()?.group}>
+                <div className={"containerA " + useResponsizeClass(EwindowSizes.S, ['w100'])} style={handleShow()?.group}>
                     <GroupListPanel/>
                 </div>
 
