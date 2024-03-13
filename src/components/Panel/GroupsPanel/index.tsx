@@ -12,7 +12,6 @@ import {Spinner} from "../../Utils/Spinner/spinner";
 import {useWindowSize} from "../../../services/hooks/appHooks";
 import {IoIosArrowForward} from "react-icons/io";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
-import {motion} from "framer-motion";
 import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
 import {useResponsizeClass} from "../../../utils/functions";
@@ -41,15 +40,15 @@ export function UtilityPanel() {
     const {size: isSmall} = useWindowSize(EwindowSizes.S);
 
     function close() {
-        updateSidePanelState(function (previous: { Group: boolean; Util: boolean }) {
+        if (isSmall) updateSidePanelState(function (previous: { Group: boolean; Util: boolean }) {
             return {
                 ...previous, Util: !previous.Util,
             };
         });
     }
 
-    return (<motion.div initial={{x: 50}} animate={{x: 0}} exit={{x: 50}} className={"group-item-container "}>
-        {isSmall && (<IoIosArrowForward onClick={() => close()} size="22" color="white"/>)}
+    return (<div className={"group-item-container "}>
+        {isSmall && (<IoIosArrowForward onClick={() => close()} size="24" color="white"/>)}
         <UserIcon/>
         {requests.length > 0 && (<>
             <div
@@ -76,7 +75,7 @@ export function UtilityPanel() {
                 </div>
             </div>))}
         </>)}
-    </motion.div>);
+    </div>);
 }
 
 export function GroupIcon({url}: { url?: string }) {
@@ -112,14 +111,14 @@ export function UserIcon() {
             });
     }
 
-    const menuItems : {name:string,id:number}[] = [{name: "Logout", id: 2}, {name: "Profile", id: 1}];
+    const menuItems: { name: string, id: number }[] = [{name: "Profile", id: 1}, {name: "Logout", id: 2}];
 
     function handleClick(id: number) {
         switch (id) {
-            case 1:
+            case 2:
                 auth?.removeUserSession();
                 break;
-            case 2:
+            case 1:
                 setShowUserForm(true);
                 break;
             default:
@@ -149,7 +148,7 @@ export function UserIcon() {
         >
             <div
                 onClick={() => {
-                    small && handleClick(2);
+                    small && handleClick(1);
                 }}
                 style={{textAlign: "center", width: "100%"}}
                 className={"usernameWrapper"}
@@ -180,7 +179,7 @@ export function UserIcon() {
                 />
             </div>
             {small && <div className={'btn btn-primary w100 lgt-btn'} onClick={() => {
-                handleClick(1);
+                handleClick(2);
             }}>Logout</div>}
         </div>) : (<></>)}
     </>);
@@ -257,12 +256,12 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
             }}
         />)}
         <div className={"row1 row " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
-                <div className={"dialogCoverImageContainer"}>
-                    <img
-                        className={"profileCoverImage"}
-                        src={user.profileImage.split("").length > 0 ? user.profileImage : GroupImage}
-                        alt={"Profile image"}
-                    />
+            <div className={"dialogCoverImageContainer"}>
+                <img
+                    className={"profileCoverImage"}
+                    src={user.profileImage.split("").length > 0 ? user.profileImage : GroupImage}
+                    alt={"Profile image"}
+                />
             </div>
             <div>
                 <ImageUploader
@@ -288,12 +287,15 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                 onChange={e => {
                     _update({...update, name: true});
                     setUser({...user, name: e.target.value});
+
                 }}
+                placeholder={'Your name'}
             />
         </div>
         <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             <label>Email <MdVerified/></label>
-            {user.email}
+            <input className={'custom-input borderRadius-light'} disabled={true} value={user.email}
+                   placeholder={'Type you email'}/>
         </div>
 
 
@@ -315,20 +317,21 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                 onChange={(e) => {
                     setUser({...user, about: e.target.value})
                 }}
+                placeholder={'Write something about yourself.'}
             />
         </div>
 
 
         <div className={"row row-space flex flex-center update-btn " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
-            {loading ? (<Spinner/>) : (<div
+            <div
                 onClick={() => {
                     handleUpdate();
                 }}
                 className={"btn btn-round-secondary btn-custom-profile"}
             >
                 {" "}
-                UPDATE
-            </div>)}
+                {loading ? <Spinner/> : 'UPDATE'}
+            </div>
         </div>
     </div>);
 }

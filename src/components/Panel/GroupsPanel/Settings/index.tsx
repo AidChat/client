@@ -10,7 +10,7 @@ import {groupTokensArray} from "../../../../assets/data";
 import {ShellContext} from "../../../../services/context/shell.context";
 import {Role} from "../../../../utils/interface";
 import {reqType, service, serviceRoute} from "../../../../utils/enum";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 
 export function Settings(props: { groupId: string }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
@@ -30,15 +30,15 @@ export function Settings(props: { groupId: string }) {
     }
 
     return (<motion.div initial={{x: 10}} animate={{x: 0}} className={"members-container"}>
-            {data ? (<div className={"font-primary"}>
-                    <GroupSettingContainer
-                        groupDetails={data}
-                        refresh={() => {
-                            getGroup();
-                        }}
-                    />
-                </div>) : (<Spinner/>)}
-        </motion.div>);
+        {data ? (<div className={"font-primary"}>
+            <GroupSettingContainer
+                groupDetails={data}
+                refresh={() => {
+                    getGroup();
+                }}
+            />
+        </div>) : (<Spinner/>)}
+    </motion.div>);
 }
 
 function GroupSettingContainer(props: {
@@ -179,138 +179,141 @@ function GroupSettingContainer(props: {
                 _setGroupId(null);
             });
     }
-   console.log(role)
+
     return (<>
-            {message && (<Snackbar
-                    message={message}
-                    onClose={() => {
-                        _message(null);
+        {message && (<Snackbar
+            message={message}
+            onClose={() => {
+                _message(null);
+            }}
+        />)}
+        {loading && <Spinner/>}
+        <div className={"groupContainer"}>
+            <div className={"settings-item-container profileContainer"}>
+                <div className={"groupIconWrapper"}>
+                    <img
+                        style={{height: "100%", width: "100%"}}
+                        src={state.icon ? state.icon : groupIcon}
+                        alt={"group icon"}
+                    />
+                </div>
+                {role === "OWNER" && (<ImageUploader
+                    className={"imageUploader"}
+                    withIcon={false}
+                    singleImage={true}
+                    buttonText="Update"
+                    label={""}
+                    onChange={e => {
+                        handleImageUpload(e);
                     }}
+                    imgExtension={[".jpeg", ".gif", ".png", ".gif", ".jpg"]}
+                    maxFileSize={5242880}
                 />)}
-            {loading && <Spinner/>}
-            <div className={"groupContainer"}>
-                <div className={"settings-item-container profileContainer"}>
-                    <div className={"groupIconWrapper"}>
-                        <img
-                            style={{height: "100%", width: "100%"}}
-                            src={state.icon ? state.icon : groupIcon}
-                            alt={"group icon"}
-                        />
-                    </div>
-                    {role === "OWNER" && (<ImageUploader
-                            className={"imageUploader"}
-                            withIcon={false}
-                            singleImage={true}
-                            buttonText="Update"
-                            label={""}
-                            onChange={e => {
-                                handleImageUpload(e);
-                            }}
-                            imgExtension={[".jpeg", ".gif", ".png", ".gif", ".jpg"]}
-                            maxFileSize={5242880}
-                        />)}
-                </div>
-                <div className={"settings-item-container nameContainer"}>
-                    <div className={"center w25"}>Name</div>
-                    <input
-                        className={`settingInput w50 ${role != "OWNER" && "borderNone"} `}
-                        onChange={handleUpdate}
-                        name={"name"}
-                        value={state.name}
-                        disabled={role != "OWNER"}
-                    />
-                </div>
-                <div className={"settings-item-container descContainer"}>
-                    <div className={"center w25"}>Description</div>
-                    <textarea
-                        className={`settingInput w100 ${role !== "OWNER" && "borderNone"} `}
-                        onChange={handleUpdate}
-                        name={"description"}
-                        disabled={role !== "OWNER"}
-                        value={state.description}
-                    />
-                </div>
-                <div className={"settings-item-container tagContainer"}>
-                    <div className={"center w25"}>Group Tags</div>
-                    <div className={"tagWrapper"}>
-                        {state.tags.map((tag: string) => {
-                            return (<div className={"tag"}>
-                                    {tag}
-                                    {role === "OWNER" && (<CiCircleRemove
-                                            onClick={() => {
-                                                handleGroupTagsRemove(tag);
-                                            }}
-                                            style={{marginLeft: "4px", cursor: "pointer"}}
-                                        />)}
-                                </div>);
-                        })}
-                        {role === "OWNER" && (<div>
-                                <div style={{position: "relative"}}>
-                                    <input
-                                        className={"tag-input"}
-                                        value={searchTerm}
-                                        onChange={e => {
-                                            filterTags(e);
-                                        }}
-                                        placeholder={"Add more tags"}
-                                        type={"text"}
-                                    />
-                                    <div className={"tag-items"}>
-                                        {tags.map((token, index) => {
-                                            return (<div
-                                                    className={"token"}
-                                                    onClick={() => {
-                                                        handleTokenAdd(token.name);
-                                                    }}
-                                                >
-                                                    {token.name}
-                                                </div>);
-                                        })}
-                                    </div>
-                                </div>
-                            </div>)}
-                    </div>
-                </div>
-                {role === "OWNER" && (<>
-                        <div className={"settings-item-container dangerContainer"}>
-                            <div>
-                                <div
-                                    className={"btn btn-primary btn-update"}
-                                    onClick={handleGroupUpdate}
-                                >
-                                    {" "}
-                                    Update
-                                </div>
-                            </div>
-                            <div className={"center w25"}></div>
-                            <div className={"center w25"}></div>
-                            <div>
-                                <div
-                                    className={"btn btn-primary btn-custom"}
-                                    onClick={() => {
-                                        handleGroupDeleteRequest();
-                                    }}
-                                >
-                                    {props.groupDetails.Request.length > 0 ? "Cancel delete request" : "Request group delete"}
-                                </div>
-                            </div>
-                        </div>
-                    </>)}
-                {(role === "MEMBER" || role === "ADMIN" ) && (<>
-                        <div className={"settings-item-container dangerContainer"}>
-                            <div>
-                                <div
-                                    className={"btn btn-primary btn-update"}
-                                    onClick={handleGroupLeave}
-                                >
-                                    {" "}
-                                    Leave Group
-                                </div>
-                            </div>
-                        </div>
-                    </>)}
             </div>
-        </>);
+            <div className={"settings-item-container nameContainer"}>
+                <div className={"center w25"}>Name</div>
+                <input
+                    className={`settingInput w50 ${role != "OWNER" && "borderNone"} `}
+                    onChange={handleUpdate}
+                    name={"name"}
+                    value={state.name}
+                    disabled={role != "OWNER"}
+                />
+            </div>
+            <div className={"settings-item-container descContainer"}>
+                <div className={"center w25"}>Description</div>
+                <textarea
+                    className={`settingInput w100 ${role !== "OWNER" && "borderNone"} `}
+                    onChange={handleUpdate}
+                    name={"description"}
+                    disabled={role !== "OWNER"}
+                    value={state.description}
+                />
+            </div>
+            <div className={"settings-item-container tagContainer"}>
+                <div className={"center w25"}>Group Tags</div>
+                <div className={"tagWrapper"}>
+                    {state.tags.map((tag: string) => {
+                        return (<AnimatePresence>
+                            <motion.div initial={{x: '-10px'}} animate={{x: '0px'}} exit={{x: '-10px'}}
+                                        className={"tag"}>
+                                {tag}
+                                {role === "OWNER" && (<CiCircleRemove
+                                    onClick={() => {
+                                        handleGroupTagsRemove(tag);
+                                    }}
+                                    style={{marginLeft: "4px", cursor: "pointer"}}
+                                />)}
+                            </motion.div>
+                        </AnimatePresence>);
+                    })}
+                    {role === "OWNER" && (<div>
+                        <div style={{position: "relative"}}>
+                            <input
+                                className={"tag-input"}
+                                value={searchTerm}
+                                onChange={e => {
+                                    filterTags(e);
+                                }}
+                                placeholder={"Add more tags"}
+                                type={"text"}
+                            />
+                            <div className={"tag-items"}>
+                                {tags.map((token, index) => {
+                                    return (<div
+                                        className={"token"}
+                                        onClick={() => {
+                                            handleTokenAdd(token.name);
+                                        }}
+                                    >
+                                        {token.name}
+                                    </div>);
+                                })}
+                            </div>
+                        </div>
+                    </div>)}
+                </div>
+            </div>
+            {role === "OWNER" && (<>
+                <div className={"settings-item-container dangerContainer"}>
+                    <div>
+                        <div
+                            className={"btn btn-primary btn-update"}
+                            onClick={handleGroupUpdate}
+                        >
+                            {" "}
+                            Update
+                        </div>
+                    </div>
+                    <div className={"center w25"}></div>
+                    <div className={"center w25"}></div>
+                    <div>
+                        <div
+                            className={"btn btn-primary btn-custom"}
+                            onClick={() => {
+                                handleGroupDeleteRequest();
+                            }}
+                        >
+                            {props.groupDetails.Request.length > 0 ? "Undo" : "Remove"}
+                        </div>
+                    </div>
+                </div>
+            </>)}
+            {(role === "MEMBER" || role === "ADMIN") && (<>
+                <div className={"settings-item-container dangerContainer"}>
+                    <div>
+                        <div
+                            className={"btn btn-primary btn-update"}
+                            onClick={handleGroupLeave}
+                        >
+                            {" "}
+                            Leave Group
+                        </div>
+                    </div>
+                </div>
+            </>)}
+        </div>
+    </>);
 }
 
 interface GroupDetailsInt {

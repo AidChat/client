@@ -3,6 +3,7 @@ import {ShellContext} from "../../../services/context/shell.context";
 import {SocketListeners} from "../../../utils/interface";
 import {formatTimeToHHMM} from "../../../utils/functions";
 import {IoIosCheckmark} from "react-icons/io";
+import {RiCheckDoubleLine} from "react-icons/ri";
 
 export function RecipientReadStatus({item}: { item: any }) {
     const {userId, socket} = useContext(ShellContext);
@@ -29,10 +30,11 @@ export function RecipientReadStatus({item}: { item: any }) {
     return (<>
         {formatTimeToHHMM(item.created_at)}{" "}
         {item.senderId === userId && (<div style={{margin: "0 0px 0 10px"}}>
-            <IoIosCheckmark
+            {!isRead ? <IoIosCheckmark
                 size={18}
-                color={isRead ? "whitesmoke" : "rgb(0, 183, 255)"}
-            />
+                color={"whitesmoke"}
+            /> : <RiCheckDoubleLine size={14}
+                                    color={"rgb(0, 183, 255)"}/>}
         </div>)}
     </>);
 }

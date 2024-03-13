@@ -1,6 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {io} from "socket.io-client";
-import {service} from "../../utils/enum";
+import {EwindowSizes, service} from "../../utils/enum";
+import {useWindowSize} from "../hooks/appHooks";
 
 
 export const ShellContext = React.createContext<any>({});
@@ -13,9 +14,10 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
     const [socketId, _socketId] = useState(null);
     const [requestId, _requestId] = useState<string | null>(null);
     const [socket, setSocket] = useState<any>(null);
+    const {size:isSmall} = useWindowSize(EwindowSizes.S)
     const [sidePanel, updateSidePanelState] = useState<{
         Util: boolean; Group: boolean;
-    }>({Util: false, Group: true});
+    }>({Util: isSmall ?false:true, Group: true});
 
 
     useEffect(() => {
@@ -44,7 +46,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
             refetch,
             _setRefetch,
             sidePanel,
-            updateSidePanelState,
+            updateSidePanelState : isSmall ? updateSidePanelState :null,
         }}
     >
         {children}

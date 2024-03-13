@@ -5,6 +5,8 @@ import {ShellContext} from "../../../../services/context/shell.context";
 import {formatDateToDDMMYYYY} from "../../../../utils/functions";
 import {PiHandHeartFill} from "react-icons/pi";
 import { motion } from "framer-motion";
+import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {EwindowSizes} from "../../../../utils/enum";
 
 export interface GroupListInterface {
     GroupDetail: {
@@ -22,10 +24,12 @@ export function GroupList({
 }) {
     const {_setGroupId, _setGroupType} = useContext(ShellContext);
     const [hasSeen, setHasSeen] = useState<boolean>(false);
+    const {size:isSmall} = useWindowSize(EwindowSizes.S);
     const handleGroupSelection = (groupId: string): void => {
         setHasSeen(true);
         _setGroupId(groupId);
         _setGroupType(listType);
+        if(isSmall)
         updateSidePanelState(function (previous: { Group: boolean; Util: boolean }) {
             return {
                 ...previous, Group: !previous.Group,

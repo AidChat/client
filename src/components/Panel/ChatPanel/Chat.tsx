@@ -44,7 +44,7 @@ export function Chat() {
     const [exceed, _exceed] = useState<boolean>(false);
     const {updateSidePanelState} = useContext(ShellContext);
     const [onliners, setOnliners] = useState<number[]>([]);
-
+    const {size:isSmall} = useWindowSize(EwindowSizes.S)
     useEffect(() => {
         window.setTimeout(() => {
             _activity("");
@@ -144,7 +144,6 @@ export function Chat() {
         });
 
         socket?.on(SocketListeners.TYPING, async ({name}: { name: string }) => {
-            debugger
             const user: UserProps = await _props._user().get();
             if (user && group) {
                 const username = group.User
@@ -188,7 +187,7 @@ export function Chat() {
     }
 
     function handleSidePanels(panel: sidePanelType) {
-        updateSidePanelState(function (previous: { [x: string]: any }) {
+if(isSmall) updateSidePanelState(function (previous: { [x: string]: any }) {
             return {
                 ...previous, [panel]: !previous[panel],
             };

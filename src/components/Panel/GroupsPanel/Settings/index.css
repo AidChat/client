@@ -32,10 +32,9 @@
     display: flex;
     align-items: end;
     flex-direction: row;
-    bottom: 0;
     width:100%;
     position: absolute;
-    bottom:0;
+    bottom:8px;
 }
 .MdangerContainer{
     flex-direction:column
@@ -56,7 +55,6 @@
 }
 
 .dangerContainer .btn-custom {
-    width: 180px;
     background: #ea000073;
     color: white;
     border: none;
@@ -86,14 +84,16 @@
 }
 
 .groupIconWrapper {
-    height: 130px;
-    width: 130px;
+    height: 150px;
+    width: 100%;
     border-radius: 50%;
-    border: 1px solid whitesmoke;
+    padding:4px 10px;
+    margin:2px 0;
 }
 
 .groupContainer img {
-    border-radius: 50%;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .tag-input {
@@ -104,7 +104,7 @@
 
 .tag-items {
     position: absolute;
-    max-height: 100px;
+    max-height: 105px;
     overflow-y: auto;
 }
 

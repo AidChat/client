@@ -185,7 +185,7 @@ function AllRequestsPanelContainer({
             .query(serviceRoute.request, {}, reqType.put, requestId)
             .then((response: any) => {
                 fetch();
-                _message(response.message);
+                _message("Request accepted.");
             });
     }
 
@@ -220,8 +220,7 @@ function AllRequestsPanelContainer({
                                             handleGroupJoin(item.id);
                                         }}
                                     >
-                                        <div>Accept</div>
-                                        <FaUserPlus size={26} color={"#183b35"}/>
+                                        <div className={'btn btn-round-primary'} style={{padding:'4px 10px'}}>Accept</div>
                                     </div>)}
 
                                 <div style={{margin: "0 10px"}}>

@@ -12,12 +12,11 @@
 }
 
 .containerA {
-    height: 100%;
     transition: visibility 0s, opacity 0.5s linear;
     background: #1e1d1e;
     z-index: 9999999;
     border-radius: 10px;
-    width:100%;
+    width:60%;
 }
 
 .containerB {
@@ -25,6 +24,7 @@
     height: 100%;
     padding: 4px;
     max-width: 100%;
+    min-width: 60%;
 }
 .containerC {
     height: 100%;

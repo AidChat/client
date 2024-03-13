@@ -64,7 +64,7 @@
     position: absolute;
     top: 0;
     left: -80px;
-    z-index:999999999;
+    z-index: 999999999;
 }
 
 .customMenu-wrapper {
@@ -86,7 +86,7 @@
 
 
 .customMenu-wrapper {
-    border-radius:6px;
+    border-radius: 6px;
 }
 
 .menu {
@@ -116,16 +116,22 @@
     background: transparent;
     border: none;
     box-shadow: unset;
-    margin:0 auto !important;
-    padding:0px !important;
+    margin: 0 auto !important;
+    padding: 0px !important;
 }
 
 .dialogCoverImageContainer {
-    height: 24vh;
+    height: 30vh;
     width: 100%;
     top: 0;
     left: 0;
     z-index: -1;
+    border-radius: 4px;
+}
+
+.dialogCoverImageContainer img {
+    border-radius: 4px;
+    object-fit: cover;
 }
 
 .row1 {
@@ -182,7 +188,7 @@
     height: 100%;
     width: 100%;
     border-radius: 4px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .group-token-container {
@@ -196,6 +202,6 @@
 
 }
 
-.lgt-btn{
-    margin-top:auto;
+.lgt-btn {
+    margin-top: auto;
 }

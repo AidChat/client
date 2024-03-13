@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Spinner} from "../../../Utils/Spinner/spinner";
 import {_props} from "../../../../services/network/network";
 import './index.css';
-import {reqType, service, serviceRoute} from "../../../../utils/enum";
+import {ClientRole, reqType, service, serviceRoute} from "../../../../utils/enum";
 import { motion } from "framer-motion";
 
 interface User {
@@ -16,7 +16,7 @@ interface User {
 }
 
 export function GroupMemberList(props: { groupId: string }) {
-    const [data, setData] = useState(true);
+    const [data, _] = useState(true);
     const [users, _users] = useState<User[] | []>([]);
     useEffect(() => {
         _props._db(service.group).query(serviceRoute.groupUsers, {}, reqType.get, props.groupId)
@@ -50,8 +50,3 @@ function UsersList({user}: { user: User }) {
     )
 }
 
-enum ClientRole{
-    OWNER = 'GROUP OWNER',
-    ADMIN = 'ADMIN',
-    MEMBER = 'PARTICIPANT'
-}

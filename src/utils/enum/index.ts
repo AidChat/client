@@ -153,3 +153,8 @@ export enum EsidePanel {
     group = "Group", utit = "Util",
 }
 
+export enum ClientRole{
+    OWNER = 'OWNER',
+    ADMIN = 'AIDER',
+    MEMBER = 'MEMBER'
+}

@@ -46,6 +46,7 @@ export function GroupListPanel() {
     }, [search]);
 
     function close() {
+        if(isSmall)
         updateSidePanelState(function (previous: { Group: boolean; Util: boolean }) {
             return {
                 ...previous, Group: !previous.Group,

@@ -27,7 +27,7 @@ interface GroupFormStateInterface {
 
 export function GroupForm({onSubmit, onError}: _gfIterface) {
     const [state, _state] = useState<GroupFormStateInterface>({
-        name: '', description: '', keywords: [], requestee: '', icon: undefined
+        name: '', description: '', keywords: ['CHANGE','COMMUNITY','HOPE'], requestee: '', icon: undefined
 
     })
     const {ping} = useContext(ShellContext)
@@ -101,7 +101,6 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
         };
         reader.readAsDataURL(file);
     }
-
     return (<>
         <form onSubmit={handleSubmit}>
             <div className={'formEleWrapper iconSection'}>
@@ -128,7 +127,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
                        className={'borderRadius-light custom-input'} type={'text'}
                        placeholder={'Choose a name that explains the purpose'}/>
             </div>
-            <div className={'formEleWrapper token-section border-light borderRadius-light'}>
+            <div className={'formEleWrapper token-section  borderRadius-light'}>
                 <div className={'  group-token-container'}>
                     <Search onSelect={(s: string) => {
                         handleKeywords(s)

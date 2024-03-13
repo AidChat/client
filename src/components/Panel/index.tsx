@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import './ index.css'
 import {ShellContext} from "../../services/context/shell.context";
 import {useWindowSize} from "../../services/hooks/appHooks";
@@ -6,53 +6,36 @@ import {EwindowSizes} from "../../utils/enum";
 import {GroupListPanel} from "./Conversation/GroupsListPanel/groupListPanel";
 import {Chat} from "./ChatPanel/Chat";
 import {UtilityPanel} from "./GroupsPanel";
+import {AnimatePresence, motion} from "framer-motion";
 import {useResponsizeClass} from "../../utils/functions";
 
 export const Panel = () => {
     let {size: smallScreen} = useWindowSize(EwindowSizes.S);
     const {sidePanel} = useContext(ShellContext);
-    const handleShow = () => {
-        let style = {group: {}, util: {}};
-        if (smallScreen) {
-            if (sidePanel.Group) {
-                style["group"] = {
-                    display: "flex", position: "absolute",
-                };
-            } else {
-                style["group"] = {
-                    display: "none",
-                };
-            }
-            if (sidePanel.Util) {
-                style["util"] = {
-                    display: "flex",
-                };
-            } else {
-                style["util"] = {
-                    display: "none",
-                };
-            }
-        }
-        return style;
-    };
-    useEffect(function () {
-        handleShow();
-    }, [smallScreen]);
 
-    return (<div className={"chatWrapper"}>
+    function handleSmallSizeClass(){
+        if(smallScreen) return ' w100  pabsolute'
+        else return ''
+    }
+
+    return (<AnimatePresence>
+        <div className={"chatWrapper"}>
             <div className={"chatContainer shadow-box "}>
-                <div className={"containerA " + useResponsizeClass(EwindowSizes.S, ['w100'])} style={handleShow()?.group}>
+                {sidePanel.Group && <motion.div initial={{x: -10}} animate={{x: 0}}
+                                                className={"containerA " + handleSmallSizeClass()}
+                >
                     <GroupListPanel/>
-                </div>
+                </motion.div>}
 
                 <div className={"containerB"}>
                     <Chat/>
                 </div>
-                <div className={"containerC"} style={handleShow().util}>
+                {sidePanel.Util && <motion.div initial={{x: -10}} animate={{x: 0}} exit={{x: -10}}  className={"containerC"} >
                     <UtilityPanel/>
-                </div>
+                </motion.div>}
             </div>
-        </div>);
+        </div>
+    </AnimatePresence>);
 };
 
 
