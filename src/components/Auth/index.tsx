@@ -10,7 +10,6 @@ import {LoginGoogle} from "../Utils/SocialLogin/LoginGoogle";
 import {useResponsizeClass} from "../../utils/functions";
 
 import {EwindowSizes} from "../../utils/enum";
-import {AnimatePresence, motion} from "framer-motion";
 
 export function Validator() {
     const {requestCode} = useParams();
@@ -40,10 +39,8 @@ export function Validator() {
         });
     }
 
-    return (<AnimatePresence>
-        <motion.div exit={{x: -300, opacity: 0}} initial={{y: -100}} animate={{y: 0}}
-                    className={"authContainer" + useResponsizeClass(EwindowSizes.S, ["MauthContainer"])}
-        >
+    return (<div
+            className={"authContainer" + useResponsizeClass(EwindowSizes.S, ["MauthContainer"])}>
             <div>
                 <img alt={''} style={{width: "100%"}} src={gif}/>
             </div>
@@ -76,6 +73,5 @@ export function Validator() {
                     </>}
                 </div>
             </div>
-        </motion.div>
-    </AnimatePresence>);
+        </div>);
 }

@@ -64,9 +64,6 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
                             _invalid(false)
                         })
 
-                    // if user matches the invitee then give option to Join -> Click on join then remove request and reload
-                    // no session then user register form and send requestId with register request.
-
                 })
                 .catch(error => {
                     console.log(error);

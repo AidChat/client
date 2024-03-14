@@ -12,7 +12,7 @@ import {Role} from "../../../../utils/interface";
 import {reqType, service, serviceRoute} from "../../../../utils/enum";
 import {AnimatePresence, motion} from "framer-motion";
 
-export function Settings(props: { groupId: string }) {
+export function Settings(props: { groupId: number }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
     const {refetch, groupId} = useContext(ShellContext);
 

@@ -305,9 +305,6 @@ dialog::backdrop {
     display: block;
 }
 
-.shadow-box {
-
-}
 
 .pointer {
     cursor: pointer;
@@ -418,4 +415,39 @@ dialog::backdrop {
     height: 100%;
     z-index: 99;
     background: #1C1D1C;
+}
+
+.flex-column{
+    flex-direction: column !important;
+}
+.flex-row{
+    flex-direction: row !important;
+}
+.app-input{
+    background:transparent;
+    color:white;
+    border:none;
+    width: 100%;
+}
+.font-thick{
+    font-weight: 800;
+}
+.app-checkbox-round{
+    height:20px;
+    width: 20px;
+    border-radius: 50px;
+    border:none;
+}
+.flex-start{
+    align-items: start;
+    justify-content: start;
+}
+.space-between{
+    justify-content: space-between;
+}
+.space-evenly{
+    justify-content: space-evenly;
+}
+.flex-wrap{
+    flex-wrap: wrap;
 }

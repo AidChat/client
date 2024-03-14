@@ -32,7 +32,7 @@ export function GroupList({
         if(isSmall)
         updateSidePanelState(function (previous: { Group: boolean; Util: boolean }) {
             return {
-                ...previous, Group: !previous.Group,
+                Util:false, Group: !previous.Group,
             };
         });
     };
@@ -40,10 +40,7 @@ export function GroupList({
 
     return (<>
         {items.map((item: any, key: number) => (<motion.div
-            whileHover={{
-                scale: 1.01,
-                transition: { duration: 1 },
-            }}
+
             key={key}
             className={"groupListContainer shadow-box "}
             onClick={() => handleGroupSelection(item.id)}

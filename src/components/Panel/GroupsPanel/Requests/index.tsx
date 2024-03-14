@@ -15,7 +15,7 @@ import {useWindowSize} from "../../../../services/hooks/appHooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../../utils/enum";
 import {motion} from "framer-motion";
 
-export function Requests(props: { groupId: string }) {
+export function Requests(props: { groupId: number }) {
     const [data, setData] = useState(true);
     const [requests, _requests] = useState<Request[] | null>(null);
 
@@ -52,7 +52,7 @@ export function Requests(props: { groupId: string }) {
 function SendRequestPanelContainer({
                                        groupId, fetch,
                                    }: {
-    groupId: string; fetch: () => void;
+    groupId: number; fetch: () => void;
 }) {
     const [email, _email] = useState<string>("");
     const [loading, _loading] = useState<boolean>(false);

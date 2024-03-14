@@ -1,0 +1,31 @@
+.reminderContainer {
+    border-radius: 4px;
+    margin: 1em 0;
+    display: flex;
+    height: 20vh;
+}
+.MreminderContainer{
+    height: fit-content;
+}
+.reminderContainer.div *{
+    width: 33%;
+}
+
+.reminder-inputarea{
+    display: flex;
+    flex-direction: column;
+    height:20px;
+}
+.dayToken{
+    background: transparent;
+    color:whitesmoke;
+    padding:0 10px;
+    margin:2px 0;
+    border-radius: 10px;
+}
+.reminderDate{
+    background: transparent;
+    border:none;
+    color:lightgrey;
+    width: 100%;
+}

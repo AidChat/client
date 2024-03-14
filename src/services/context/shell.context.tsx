@@ -21,6 +21,10 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
 
 
     useEffect(() => {
+        updateSidePanelState({Util:true,Group:true})
+    }, [isSmall]);
+
+    useEffect(() => {
         setSocket(io(service.messaging, {
             autoConnect: true, reconnectionAttempts: 1, auth: {
                 socketID: socketId,

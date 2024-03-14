@@ -17,7 +17,6 @@ export function InviteContainer(props: {
     useEffect(() => {
         if (props.type === "INVITE") {
             _loading(true);
-            console.log(props.requestId);
             if (props.requestId) {
                 _props
                     ._db(service.group)
@@ -115,10 +114,11 @@ export function InviteContainer(props: {
             ._db(service.group)
             .query(serviceRoute.groupInvite, {status: data.status === "BLOCKED" ? "PENDING" : "BLOCKED"}, reqType.put, props.requestId)
             .then(result => {
+                _message("Request blocked")
                 _loading(false);
                 _setRefetch(!refetch);
-                _setGroupType(null);
-                _message("Request blocked")
+
+                // _setGroupType(null);
             });
     }
 

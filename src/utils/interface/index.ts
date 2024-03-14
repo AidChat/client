@@ -55,3 +55,16 @@ export interface MessageContent {
     caption: null | string;
     content: string;
 }
+export interface IReminder {
+    message ?: string,
+    title:string,
+    id?:number
+    notifyBefore: boolean,
+    notifyApp: boolean,
+    notifyWeb: boolean,
+    self: boolean,
+    participants: number[],
+    recurring:boolean,
+    days:string[],
+when:string,
+}

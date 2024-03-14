@@ -13,7 +13,7 @@ export const _props = {
             service: serviceRoute,
             _data: any,
             _req: reqType,
-            _params?: {},
+            _params?: string | number,
         ): Promise<any> => {
             return new Promise((resolve, reject) => {
                 if(!_params) _params = ''

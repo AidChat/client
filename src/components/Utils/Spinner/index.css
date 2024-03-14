@@ -4,12 +4,14 @@
     border-radius: 20%;
     animation: rotate 1s linear infinite;
     position:absolute;
+    /*top:50%;*/
+    /*left:50%;*/
 }
 .loader::before {
     content: "";
     box-sizing: border-box;
     position: absolute;
-    inset: 0px;
+    inset: 0;
     border-radius: 50%;
     border: 2px solid #398378;
     animation: prixClipFix 2s linear infinite ;

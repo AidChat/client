@@ -11,7 +11,7 @@ import {GroupReminder} from "../GroupReminder";
 
 
 interface _int {
-    groupId: string
+    groupId: number
     showChat: () => void
     role: string | undefined
     init?: string
@@ -58,11 +58,11 @@ export function GroupOptions(props: _int) {
                      onClick={() => props.showChat()}><BiArrowBack size={22} color={'white'}/></div>
                 {groupOptions.map(function (item) {
                     return (<>
-                        {(!item.role.length || item.role.filter(item=> item === props.role).length > 0) &&  <div style={{flex: '1', margin: '0 18px'}}
-                             className={activeMenuItem === item.label ? 'item-option-active ' : ''}
-                             onClick={() => handleMenuItemClick(item.label)}>{handleOptionsIcon(item.icon)}
-                        </div>
-                        }
+                        {(!item.role.length || item.role.filter(item => item === props.role).length > 0) &&
+                            <div style={{flex: '1', margin: '0 18px'}}
+                                 className={activeMenuItem === item.label ? 'item-option-active ' : ''}
+                                 onClick={() => handleMenuItemClick(item.label)}>{handleOptionsIcon(item.icon)}
+                            </div>}
                     </>)
                 })}
             </div>
