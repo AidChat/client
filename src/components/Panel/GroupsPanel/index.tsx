@@ -187,7 +187,7 @@ export function UserIcon() {
 
 function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     const [user, setUser] = useState<{
-        name: string; email: string; id: number | null; profileImage: string; about: string; mobile?: number
+        name: string; email: string; id: number | null; profileImage: string; about: string; mobile?: string
     }>({
         name: "", email: "", profileImage: "", id: null, about: '', mobile: undefined
     });
@@ -226,7 +226,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }
 
     function handleUpdate() {
-        let data: { name?: string; profileImage?: string, about?: string, mobile?: number } = {...user};
+        let data: { name?: string; profileImage?: string, about?: string, mobile?: string } = {...user};
         if (!update.profileImage) {
             delete data.profileImage;
         }
@@ -302,10 +302,11 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
             <label>Mobile <MdVerified/></label>
             <input
+                value={user.mobile}
                 disabled={true}
                 className={'custom-input borderRadius-light'}
                 onChange={(e) => {
-                    setUser({...user, mobile: Number.parseInt(e.target.value)})
+                    setUser({...user, mobile: e.target.value})
                 }}
                 type={'tel'}
             />

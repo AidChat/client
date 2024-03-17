@@ -45,9 +45,14 @@ export interface MessageInterface {
         name: string; email: string; profileImage: string; id: number;
     };
     ReadByAll?: boolean;
-    ReadReceipt: {
-        id: number; userId: number; status: "Read" | "Sent";
-    }[];
+    ReadReceipt:ReadReceipt[]
+}
+
+export interface ReadReceipt {
+    id: number;
+    userId: number;
+    status: "Read" | "Sent";
+
 }
 
 export interface MessageContent {
@@ -55,16 +60,25 @@ export interface MessageContent {
     caption: null | string;
     content: string;
 }
+
 export interface IReminder {
-    message ?: string,
-    title:string,
-    id?:number
+    message?: string,
+    title: string,
+    id?: number
     notifyBefore: boolean,
     notifyApp: boolean,
     notifyWeb: boolean,
     self: boolean,
-    participants: number[],
-    recurring:boolean,
-    days:string[],
-when:string,
+    recurring: boolean,
+    when: string,
+    recurringDays: string[],
+    createdById ?:number,
+    par ?:UserProps[],
+    participants?:IReminderMembers
+    createdBy ?:UserProps
+}
+export interface IReminderMembers{
+    id:number,
+    users:UserProps[]
+    reminderId:number
 }

@@ -1,7 +1,6 @@
-import React, {ChangeEvent, FormEvent, FormEventHandler, FormHTMLAttributes, useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {_props} from "../../../services/network/network";
 import {useParams} from "react-router-dom";
-import {FaFacebook, FaGoogle} from "react-icons/fa6";
 import {Spinner} from "../../Utils/Spinner/spinner";
 import {reqType, service, serviceRoute} from "../../../utils/enum";
 import {motion} from 'framer-motion';
@@ -16,9 +15,9 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
     const {requestCode} = useParams();
     const [loading, setLoading] = useState<boolean>(false);
     const [state, setState] = useState<{
-        name?: string, email?: string, password?: string, requestId?: undefined | string
+        name?: string, email?: string, password?: string, requestId?: undefined | string, mobile: number | null
     }>({
-        name: undefined, email: email, password: undefined, requestId: requestCode
+        name: undefined, email: email, password: undefined, requestId: requestCode, mobile: null
     });
     let [error, _seterror] = useState(null);
 
@@ -27,12 +26,12 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
         setLoading(!loading);
         _props._db(service.authentication).query(serviceRoute.register, state, reqType.post).then(result => {
             toggleState();
-            setLoading(!loading);
+            setLoading(false);
 
         })
             .catch((reason) => {
                 _seterror(reason.response.data.data.message);
-                setLoading(!loading);
+                setLoading(false);
 
             })
     }
@@ -52,13 +51,26 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
     }, [error]);
 
 
-    return (<motion.div animate={{x:0}}  transition={{type:"tween"}} initial={{x:-50}} exit={{x:100}} className={'loginFormWrapper'}>
+    return (<motion.div animate={{x: 0}} transition={{type: "tween"}} initial={{x: -50}} exit={{x: 100}}
+                        className={'loginFormWrapper'}>
             <form style={{width: '80%'}} onSubmit={handleRegistration}>
-                <div className={'logincontainer center font-primary'}>{error}</div>
+                <motion.div initial={{y: 10}} animate={{y: 0}}
+                            className={"color-green authErrorContainer"}
+                            style={{textAlign: "center"}}
+                >
+                    {error}
+                </motion.div>
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Name</label>
                     <div className={'inputWrapper-icon'}>
                         <input type={'name'} value={state.name} name={'name'} onChange={handleUpdate}
+                               className={'inputEle'}/>
+                    </div>
+                </div>
+                <div className={'logincontainer'}>
+                    <label style={{marginLeft: '4px'}}>Mobile</label>
+                    <div className={'inputWrapper-icon'}>
+                        <input type={'tel'} value={state.mobile?.toString()} name={'mobile'} onChange={handleUpdate}
                                className={'inputEle'}/>
                     </div>
                 </div>

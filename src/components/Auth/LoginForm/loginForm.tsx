@@ -57,12 +57,12 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
     return (<motion.div animate={{x: 0}} initial={{x: 5}} transition={{type: "tween"}} exit={{x: 10}}
                         className={"loginFormWrapper"}>
         <form style={{width: "80%"}} onSubmit={handleLogin}>
-            <div
-                className={"logincontainer color-green"}
+            <motion.div initial={{y:10}} animate={{y:0}}
+                className={"color-green authErrorContainer"}
                 style={{textAlign: "center"}}
             >
                 {error}
-            </div>
+            </motion.div>
             <div className={"logincontainer"}>
                 <label style={{marginLeft: "4px"}}>Email</label>
                 <div className={"inputWrapper-icon"}>

@@ -18,7 +18,8 @@ export function DialogPanel(props: DialogPanelProps) {
             <motion.dialog  initial={{ x: "-100px", opacity: 0 }}
                             animate={{ x: "0px", opacity: 1 }}
                             exit={{ x: "-100px", opacity: 0 }}
-                           className={'dialog-ele' + useResponsizeClass(EwindowSizes.S, [' w100  br-none '])}
+                           className={'' +
+                               'dialog-ele' + useResponsizeClass(EwindowSizes.S, [' h100 w100  br-none '])}
                            open={props.open}>
                 <div className={'dialogWrapper'}>
                     <div className={'dialogHeader'}>

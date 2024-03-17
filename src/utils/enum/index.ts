@@ -131,7 +131,9 @@ export enum serviceRoute {
     socialLogin = '/auth/social-login',
     consent = '/user/consent',
     updateInvite = '/group/invite',
-    groupReminder = '/group/reminder'
+    groupReminders = '/group/reminders',
+    reminder = '/group/reminder',
+    removeReminder= '/group/restrictReminder'
 }
 
 export enum service {
