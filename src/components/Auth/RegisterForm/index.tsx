@@ -4,11 +4,12 @@ import {useParams} from "react-router-dom";
 import {Spinner} from "../../Utils/Spinner/spinner";
 import {reqType, service, serviceRoute} from "../../../utils/enum";
 import {motion} from 'framer-motion';
+import Snackbar from "../../Utils/Snackbar";
 
 
 interface RegisterFormProps {
-    toggleState: () => void,
-    email?: string,
+    toggleState: (e?:string) => void,
+    email: string,
 }
 
 export function RegisterForm({toggleState, email}: RegisterFormProps) {
@@ -20,12 +21,15 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
         name: undefined, email: email, password: undefined, requestId: requestCode, mobile: null
     });
     let [error, _seterror] = useState(null);
+    let [message, _message] = useState<string>('');
 
     function handleRegistration(e: FormEvent) {
         e.preventDefault();
         setLoading(!loading);
         _props._db(service.authentication).query(serviceRoute.register, state, reqType.post).then(result => {
-            toggleState();
+            _message(result.message)
+            toggleState(email);
+
             setLoading(false);
 
         })
@@ -51,9 +55,10 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
     }, [error]);
 
 
-    return (<motion.div animate={{x: 0}} transition={{type: "tween"}} initial={{x: -50}} exit={{x: 100}}
+    return (<motion.div animate={{x: 0}} transition={{type: "tween"}} initial={{x: -20}} exit={{x: 100}}
                         className={'loginFormWrapper'}>
-            <form style={{width: '80%'}} onSubmit={handleRegistration}>
+            <Snackbar message={message} onClose={()=>_message('')} />
+             <form style={{width: '80%'}} onSubmit={handleRegistration}>
                 <motion.div initial={{y: 10}} animate={{y: 0}}
                             className={"color-green authErrorContainer"}
                             style={{textAlign: "center"}}

@@ -25,7 +25,7 @@ export const _props = {
                             })
                             .catch((reason: any) => {
                                 console.error(reason);
-                                reject(reason);
+                                reject(reason.response.data);
                             });
                         break;
                     case reqType.post:
@@ -35,7 +35,7 @@ export const _props = {
                             })
                             .catch((reason) => {
                                 console.error(reason);
-                                reject(reason);
+                                reject(reason.response.data);
                             });
                         break;
                     case reqType.put:
@@ -45,7 +45,7 @@ export const _props = {
                             })
                             .catch((reason) => {
                                 console.error(reason);
-                                reject(reason);
+                                reject(reason.response.data);
                             });
                         break;
                     case reqType.delete:
@@ -55,7 +55,7 @@ export const _props = {
                             })
                             .catch((reason) => {
                                 console.error(reason);
-                                reject(reason);
+                                reject(reason.response.data);
                             });
                         break;
                     default:

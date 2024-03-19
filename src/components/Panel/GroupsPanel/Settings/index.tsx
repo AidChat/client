@@ -110,7 +110,6 @@ function GroupSettingContainer(props: {
     function renderTags() {
         let tagsGroups = [...groupTokensArray];
         let data = {...state};
-        let newTags = [];
         data.tags.forEach(t => {
             tagsGroups.map(item => {
                 if (item.name === t) {
@@ -137,6 +136,7 @@ function GroupSettingContainer(props: {
         data.tags.push(s);
         setState({...state, tags: data.tags});
         renderTags();
+        updateSearch('');
     }
 
     function filterTags(e: any) {
@@ -144,6 +144,7 @@ function GroupSettingContainer(props: {
         let data = [...groupTokensArray];
         let filteredData = data.filter(item => item.name.toUpperCase().includes(searchTerm.toUpperCase()));
         _tags(filteredData);
+
     }
 
     function handleGroupDeleteRequest() {

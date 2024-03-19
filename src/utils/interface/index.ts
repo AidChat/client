@@ -8,6 +8,7 @@ export interface UserProps {
     Type?: "Pending" | "Seeker" | "Helper";
     about?: string;
     mobile?: number;
+    verifiedEmail ?: boolean
 }
 
 export enum SocketEmitters {

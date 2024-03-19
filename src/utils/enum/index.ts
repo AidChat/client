@@ -133,7 +133,9 @@ export enum serviceRoute {
     updateInvite = '/group/invite',
     groupReminders = '/group/reminders',
     reminder = '/group/reminder',
-    removeReminder= '/group/restrictReminder'
+    removeReminder= '/group/restrictReminder',
+    generateCode='/auth/code',
+    verifyCode='/auth/code'
 }
 
 export enum service {

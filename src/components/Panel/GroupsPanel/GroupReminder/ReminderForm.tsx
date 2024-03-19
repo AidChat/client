@@ -41,7 +41,7 @@ export function ReminderForm({groupId, reminder,refetch}: { groupId: number, rem
     function handleRecursiveDaysSelection(day:string){
         let days:string[] = reminderForm.recurringDays;
         let reminderDays : string[] = reminderForm.recurringDays;
-        days = days.filter(item=>item === day);
+        days = days.filter((item:string)=>item === day);
         if(days.length > 0){
             reminderDays = reminderDays.filter(item=>item !== day);
         }else{
@@ -60,6 +60,7 @@ export function ReminderForm({groupId, reminder,refetch}: { groupId: number, rem
                updateMessage(response.message);
                setLoading(false);
                refetch();
+
            }
        }catch (e) {
            setLoading(false);
