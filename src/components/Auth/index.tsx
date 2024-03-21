@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "./index.css";
-import {LoginForm} from "./LoginForm/loginForm";
+import {Index} from "./LoginForm";
 import gif from "./../../assets/gifs/slogan.gif";
 import {RegisterForm} from "./RegisterForm";
 import {useParams} from "react-router-dom";
@@ -23,22 +23,23 @@ export function Validator() {
         });
     }, [requestCode]);
 
-    function switchAuthState(showCode?: boolean,email?:string) {
+    function switchAuthState(state:"LOGIN"|"REGISTER"|"CODE" | "INVITE",email?:string) {
+        debugger
         setState({
-            login: showCode ? false : !state.login, register: !state.register, invite: false, code: !!showCode
+            login: state === "LOGIN", register:state === 'REGISTER', invite: state === 'INVITE', code: state === 'CODE'
         });
         if(email)
         setProps({email:email});
     }
 
-    console.log(props)
+    console.log(state)
 
     function handleResetParams(e?: string) {
         if (e) {
             setProps({email: e});
         }
         setState({
-            invite: false, register: true, login: false, code: false
+            invite: true, register: true, login: false, code: false
         });
     }
 
@@ -51,16 +52,18 @@ export function Validator() {
         <div className={"authBox"}>
             <div className={"w100"} style={{height: "100%"}}>
                 {state.invite ? (<InviteForm
-                    requestLogin={(E?: string) => {
+                    requestLogin={(S:"LOGIN" |"REGISTER",E?: string) => {
+                        switchAuthState(S)
                         handleResetParams(E);
                     }}
                 />) : <>
-                    {state.login && (<LoginForm toggleState={switchAuthState} email={props.email}/>)}
+                    {state.login && (<Index toggleState={(s)=>{switchAuthState(s)}} email={props.email}/>)}
                     {state.register && (<RegisterForm
-                        toggleState={(email) => switchAuthState(true,email)}
+                        toggleState={(s,email) => switchAuthState(s,email)}
                         email={props.email}
+                        invite={state.invite}
                     />)}
-                    {state.code && (<OTPForm toggleState={()=>switchAuthState()}  email={props.email}/>)}
+                    {state.code && (<OTPForm toggleState={(s)=>switchAuthState(s)}  email={props.email}/>)}
                     <div style={{display: "flex", justifyContent: "center"}}>
                         <div
                             style={{

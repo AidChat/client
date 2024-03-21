@@ -6,7 +6,7 @@ import Snackbar from "../../Utils/Snackbar";
 
 interface ICode {
     email: string,
-    toggleState:()=>void
+    toggleState: (s:"LOGIN" | "REGISTER" | "CODE") => void
 }
 
 enum specialKeyEvents {
@@ -29,7 +29,6 @@ export function OTPForm(props: ICode) {
             default input elements are 4
              */
             let length: number = 4;
-
             for (let i: number = 0; i < length; i++) {
                 setState((prev: Array<{ [key: number]: number | undefined }>) => {
                     return [...prev, {[i]: undefined}]
@@ -89,11 +88,10 @@ export function OTPForm(props: ICode) {
         }, reqType.post, undefined)
             .then(function (response) {
                 setLoading(false);
-                setMessage(response?.message)
+                props.toggleState("LOGIN");
             })
             .catch(function (response) {
                 setLoading(false);
-                console.log(response)
                 setError(response.data.message);
             })
 
@@ -104,13 +102,11 @@ export function OTPForm(props: ICode) {
         _props._db(service.authentication).query(serviceRoute.generateCode, {email: props.email}, reqType.put, undefined)
             .then(function (response) {
                 setLoading(false);
-                console.log(response?.message)
                 setMessage(response?.message);
 
             })
             .catch(function (response) {
                 setLoading(false);
-                console.log(response)
                 setError(response.message)
             })
 
@@ -140,6 +136,7 @@ export function OTPForm(props: ICode) {
             </div>
             <h2 className={'font-primary'}>Enter the opt sent to you email</h2>
             <h2 style={{alignSelf: 'end'}} className={'font-secondary pointer'} onClick={generateCode}>Resend</h2>
+            <h2 style={{alignSelf: 'end'}} className={'font-secondary pointer'} onClick={()=>{props.toggleState("LOGIN")}}>Login</h2>
         </div>
 
     </div>)

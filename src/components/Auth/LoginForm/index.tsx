@@ -6,13 +6,16 @@ import {useParams} from "react-router-dom";
 import {useWindowSize} from "../../../services/hooks/appHooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum";
 import {motion} from "framer-motion";
+import {Input} from "../../Utils/CustomInput";
+import {FaEye} from "react-icons/fa6";
+import {MdOutlineAlternateEmail} from "react-icons/md";
 
 interface LoginFromProps {
-    toggleState: () => void;
+    toggleState: (state: "LOGIN" | "REGISTER" | "CODE" | "INVITE") => void;
     email?: string;
 }
 
-export function LoginForm({toggleState, email}: LoginFromProps) {
+export function Index({toggleState, email}: LoginFromProps) {
     let context = useContext(AuthContext);
     const {requestCode} = useParams();
     const [userdata, setUserData] = useState<{
@@ -39,7 +42,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
     function handleLogin(event: FormEvent) {
         event.preventDefault();
         let body = userdata;
-        if(isSmall)  body.extend = true;
+        if (isSmall) body.extend = true;
         _loading(true);
         _props
             ._db(service.authentication)
@@ -49,42 +52,34 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                 _loading(false);
             })
             .catch(reason => {
-                setError(reason?.response.data.data.message);
+                setError(reason.data.message);
                 _loading(false);
             });
     }
 
+    console.log(userdata)
+
     return (<motion.div animate={{x: 0}} initial={{x: 5}} transition={{type: "tween"}} exit={{x: 10}}
                         className={"loginFormWrapper"}>
         <form style={{width: "80%"}} onSubmit={handleLogin}>
-            <motion.div initial={{y:10}} animate={{y:0}}
-                className={"color-green authErrorContainer"}
-                style={{textAlign: "center"}}
+            <motion.div initial={{y: 10}} animate={{y: 0}}
+                        className={"color-green authErrorContainer"}
+                        style={{textAlign: "center"}}
             >
                 {error}
             </motion.div>
             <div className={"logincontainer"}>
                 <label style={{marginLeft: "4px"}}>Email</label>
                 <div className={"inputWrapper-icon"}>
-                    <input
-                        type={"email"}
-                        name={"email"}
-                        onChange={handleUpdate}
-                        required={true}
-                        className={"inputEle"}
-                    />
+                    <Input inputName={'email'} onChange={handleUpdate} type={'email'} allowToggle={false}
+                           icon={<MdOutlineAlternateEmail size={22}/>}/>
                 </div>
             </div>
             <div className={"logincontainer"}>
                 <label>Password</label>
                 <div className={"inputWrapper-icon"}>
-                    <input
-                        type={"password"}
-                        className={"inputEle"}
-                        required={true}
-                        name={"password"}
-                        onChange={handleUpdate}
-                    />
+                    <Input inputName={'password'} onChange={handleUpdate} type={'password'} allowToggle={true}
+                           icon={<FaEye size={22}/>}/>
                 </div>
             </div>
             <div
@@ -128,7 +123,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                 <div
                     className={"font-primary"}
                     onClick={() => {
-                        toggleState();
+                        toggleState("REGISTER");
                     }}
                 >
                     {<p>

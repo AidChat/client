@@ -70,7 +70,7 @@ export function ChatContainer({
     }
 
     function handleAddMore() {
-        setInit("requests");
+        setInit("invites");
         showOptions(true);
     }
 

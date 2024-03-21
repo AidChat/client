@@ -1,26 +1,19 @@
 import "./index.css";
 import emptyChats from "./../../../assets/svg/empty-chats.svg";
 import {getString} from "../../../utils/strings";
-import {IoChatbubbleEllipses, IoPersonAddSharp, IoSend} from "react-icons/io5";
-import {FcAddImage} from "react-icons/fc";
-import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
+import {IoChatbubbleEllipses} from "react-icons/io5";
+import {useContext, useEffect, useState} from "react";
 import {_props,} from "../../../services/network/network";
 import {ShellContext,} from "../../../services/context/shell.context";
-import groupsImg from "./../../../assets/png/defaultuser.png";
-import {formatDateToDDMMYYYY, formatTimeToHHMM, useResponsizeClass,} from "../../../utils/functions";
+import {useResponsizeClass,} from "../../../utils/functions";
 import {Spinner} from "../../Utils/Spinner/spinner";
-import {MessageInterface, Role, SocketEmitters, SocketListeners, UserProps,} from "../../../utils/interface";
-import {GiHamburgerMenu} from "react-icons/gi";
-import {GroupOptions} from "../GroupsPanel/GroupOptions";
+import {SocketEmitters, SocketListeners, UserProps,} from "../../../utils/interface";
 import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
-import {IoIosCheckmark} from "react-icons/io";
-import Tooltip from "../../Utils/Tooltip";
 import {CgProfile} from "react-icons/cg";
 import {useWindowSize} from "../../../services/hooks/appHooks";
 import {EsidePanel, EwindowSizes, reqType, service, serviceRoute, sidePanelType} from "../../../utils/enum";
-import {motion} from "framer-motion";
 import {ChatContainer} from "./ChatContainer";
 
 export function Chat() {
@@ -44,7 +37,7 @@ export function Chat() {
     const [exceed, _exceed] = useState<boolean>(false);
     const {updateSidePanelState} = useContext(ShellContext);
     const [onliners, setOnliners] = useState<number[]>([]);
-    const {size:isSmall} = useWindowSize(EwindowSizes.S)
+    const {size: isSmall} = useWindowSize(EwindowSizes.S)
     useEffect(() => {
         window.setTimeout(() => {
             _activity("");
@@ -187,7 +180,7 @@ export function Chat() {
     }
 
     function handleSidePanels(panel: sidePanelType) {
-if(isSmall) updateSidePanelState(function (previous: { [x: string]: any }) {
+        if (isSmall) updateSidePanelState(function (previous: { [x: string]: any }) {
             return {
                 ...previous, [panel]: !previous[panel],
             };

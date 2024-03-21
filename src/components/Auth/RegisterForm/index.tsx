@@ -5,20 +5,26 @@ import {Spinner} from "../../Utils/Spinner/spinner";
 import {reqType, service, serviceRoute} from "../../../utils/enum";
 import {motion} from 'framer-motion';
 import Snackbar from "../../Utils/Snackbar";
+import {Input} from "../../Utils/CustomInput";
+import {CiUser} from "react-icons/ci";
+import {FiPhone} from "react-icons/fi";
+import {MdOutlineAlternateEmail} from "react-icons/md";
+import {FaRegEye, FaRegUser} from "react-icons/fa";
 
 
 interface RegisterFormProps {
-    toggleState: (e?:string) => void,
+    toggleState: (state: "LOGIN" | "REGISTER" | "CODE" | "INVITE", e?: string) => void,
     email: string,
+    invite?: boolean
 }
 
-export function RegisterForm({toggleState, email}: RegisterFormProps) {
+export function RegisterForm({toggleState, email, invite = false}: RegisterFormProps) {
     const {requestCode} = useParams();
     const [loading, setLoading] = useState<boolean>(false);
     const [state, setState] = useState<{
         name?: string, email?: string, password?: string, requestId?: undefined | string, mobile: number | null
     }>({
-        name: undefined, email: email, password: undefined, requestId: requestCode, mobile: null
+        name: undefined, email: invite ? email : undefined, password: undefined, requestId: requestCode, mobile: null
     });
     let [error, _seterror] = useState(null);
     let [message, _message] = useState<string>('');
@@ -28,13 +34,12 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
         setLoading(!loading);
         _props._db(service.authentication).query(serviceRoute.register, state, reqType.post).then(result => {
             _message(result.message)
-            toggleState(email);
-
+            toggleState("CODE", state.email);
             setLoading(false);
 
         })
-            .catch((reason) => {
-                _seterror(reason.response.data.data.message);
+            .catch((response) => {
+                _seterror(response.data.message);
                 setLoading(false);
 
             })
@@ -57,8 +62,8 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
 
     return (<motion.div animate={{x: 0}} transition={{type: "tween"}} initial={{x: -20}} exit={{x: 100}}
                         className={'loginFormWrapper'}>
-            <Snackbar message={message} onClose={()=>_message('')} />
-             <form style={{width: '80%'}} onSubmit={handleRegistration}>
+            <Snackbar message={message} onClose={() => _message('')}/>
+            <form style={{width: '80%'}} onSubmit={handleRegistration}>
                 <motion.div initial={{y: 10}} animate={{y: 0}}
                             className={"color-green authErrorContainer"}
                             style={{textAlign: "center"}}
@@ -68,38 +73,44 @@ export function RegisterForm({toggleState, email}: RegisterFormProps) {
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Name</label>
                     <div className={'inputWrapper-icon'}>
-                        <input type={'name'} value={state.name} name={'name'} onChange={handleUpdate}
-                               className={'inputEle'}/>
+                        <Input onChange={handleUpdate} type={'text'} allowToggle={false} inputName={'name'}
+                               value={state.name} icon={<FaRegUser size={20}/>
+                        }/>
                     </div>
                 </div>
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Mobile</label>
                     <div className={'inputWrapper-icon'}>
-                        <input type={'tel'} value={state.mobile?.toString()} name={'mobile'} onChange={handleUpdate}
-                               className={'inputEle'}/>
+                        <Input onChange={handleUpdate} type={'tel'} allowToggle={false} inputName={'mobile'}
+                               value={state.mobile?.toString()} icon={<FiPhone size={22}/>}/>
+
                     </div>
                 </div>
                 <div className={'logincontainer'}>
                     <label style={{marginLeft: '4px'}}>Email</label>
                     <div className={'inputWrapper-icon'}>
-                        <input type={'email'} name={'email'} value={state.email} disabled={email ? true : false}
-                               onChange={handleUpdate} className={'inputEle'}/>
+                        <Input disabled={!!(email && invite)} onChange={handleUpdate} type={'email'}
+                               allowToggle={false} inputName={'email'} value={state.email}
+                               icon={<MdOutlineAlternateEmail size={22}/>}/>
+
                     </div>
                 </div>
                 <div className={'logincontainer'}>
                     <label>Password</label>
                     <div className={'inputWrapper-icon'}>
-                        <input type={'password'} name={'password'} onChange={handleUpdate} className={'inputEle'}/>
+                        <Input disabled={!state.email} onChange={handleUpdate} type={'password'}
+                               allowToggle={true} inputName={'password'} value={state.password}
+                               icon={<FaRegEye size={22}/>}/>
                     </div>
                 </div>
                 <div className={'logincontainer flex-center'}>
-                    <button onClick={handleRegistration} className={'btn btn-primary w50'}>
+                    <button disabled={loading} onClick={handleRegistration} className={'btn btn-primary w50'}>
                         {loading ? <Spinner/> : 'Register'}
                     </button>
                 </div>
                 <div className={'logincontainer flex-right'} style={{marginTop: '24px'}}>
                     <div className={'font-primary'} onClick={() => {
-                        toggleState()
+                        toggleState("LOGIN")
                     }}>
                         <p>Already part of our community? <span className={'color-green'}
                                                                 style={{cursor: 'pointer'}}> Login </span></p>

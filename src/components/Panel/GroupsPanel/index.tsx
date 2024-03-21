@@ -15,6 +15,7 @@ import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum"
 import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
 import {useResponsizeClass} from "../../../utils/functions";
+import {OTPForm} from "../../Auth/Code";
 
 export function UtilityPanel() {
     const {
@@ -187,9 +188,10 @@ export function UserIcon() {
 
 function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     const [user, setUser] = useState<{
-        name: string; email: string; id: number | null; profileImage: string; about: string; mobile?: string
+        name: string; email: string; id: number | null; profileImage: string; about: string; mobile?: string,
+        verifiedEmail:boolean
     }>({
-        name: "", email: "", profileImage: "", id: null, about: '', mobile: undefined
+        name: "", email: "", profileImage: "", id: null, about: '', mobile: undefined,verifiedEmail:false
     });
     const [loading, _loading] = useState<boolean>(false);
     const [message, _message] = useState<string | null>(null);
@@ -293,7 +295,9 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
             />
         </div>
         <div className={"row row-space " + useResponsizeClass(EwindowSizes.S, ['m0'])}>
-            <label>Email <MdVerified/></label>
+            <label className={'dflex'}>Email {user.verifiedEmail ? <MdVerified/>:
+            <span className={'font-secondary font-thick pointer'} style={{margin:'0 10px'}}>Verify</span>
+            }</label>
             <input className={'custom-input borderRadius-light'} disabled={true} value={user.email}
                    placeholder={'Type you email'}/>
         </div>

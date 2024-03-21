@@ -117,8 +117,6 @@ export function InviteContainer(props: {
                 _message("Request blocked")
                 _loading(false);
                 _setRefetch(!refetch);
-
-                // _setGroupType(null);
             });
     }
 
@@ -139,7 +137,7 @@ export function InviteContainer(props: {
                         <div className={"groupIcon_wrapper"}>
                             <img
                                 style={{
-                                    height: "100%", width: "100%", borderRadius: "50%", border: "1px solid lightgrey",
+                                    height: "100%", width: "100%", borderRadius: "4px",
                                 }}
                                 src={data?.group.GroupDetail.icon ? data?.group.GroupDetail.icon : groupsImg}
                                 alt={"Group image"}
