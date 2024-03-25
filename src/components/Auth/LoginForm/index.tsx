@@ -46,7 +46,7 @@ export function Index({toggleState, email}: LoginFromProps) {
   useEffect(() => {
     window.setTimeout(() => {
       setError(null);
-    }, 3000);
+    }, 5000);
   }, [error]);
 
   function handleUpdate(event: ChangeEvent<HTMLInputElement>) {

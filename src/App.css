@@ -13,13 +13,14 @@
 
 body {
     margin: 0;
-    height: 100vh;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
     background: url("./assets/png/bg.png");
     background-position: center;
     background-repeat: repeat;
+    height: 100vh;
+    min-height: max-content;
 }
 
 .chat-bubble {

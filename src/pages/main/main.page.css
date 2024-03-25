@@ -16,6 +16,7 @@
     width: 100%;
     margin:0;
     padding:0;
+    /* position: fixed; */
 }
 .fullCover .main-container, .fullCover .chatContainer{
     border-radius: 0px;

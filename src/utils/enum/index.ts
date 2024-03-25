@@ -134,12 +134,13 @@ export enum serviceRoute {
   removeReminder = "/group/restrictReminder",
   generateCode = "/auth/code",
   verifyCode = "/auth/code",
+  deviceInfo = "/auth/deviceinfo",
 }
 
 export enum service {
-  authentication = "https://nor-country-curve-negative.trycloudflare.com/v1",
-  group = "https://agreements-kissing-jackie-donna.trycloudflare.com/v1",
-  messaging = "https://powder-mysimon-caution-statistics.trycloudflare.com",
+  authentication = "http://localhost:8999/v1",
+  group = "http://localhost:8901/v1",
+  messaging = "http://localhost:8900/",
 }
 
 export enum EwindowSizes {

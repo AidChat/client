@@ -24,7 +24,7 @@ export function DialogPanel(props: DialogPanelProps) {
         className={
           "" +
           "dialog-ele" +
-          useResponsizeClass(EwindowSizes.S, [" h100 w100  br-none "])
+          useResponsizeClass(EwindowSizes.S, ["  w100  br-none "])
         }
         open={props.open}
       >

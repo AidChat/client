@@ -9,6 +9,10 @@
       "resize": "body",
       "style": "DARK",
       "resizeOnFullScreen": true
+    },
+    "Device": {
+      "orientation": "portrait-primary",
+      "hideStatusBar": true
     }
   }
 }

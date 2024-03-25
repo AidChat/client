@@ -1,7 +1,6 @@
 import axios from "axios";
 import {UserProps} from "../../utils/interface";
 import {reqType, service, serviceRoute} from "../../utils/enum";
-import {log} from "console";
 
 export const _props = {
   session: window.localStorage.getItem("session"),
@@ -24,7 +23,6 @@ export const _props = {
                 resolve(response.data.data);
               })
               .catch((reason: any) => {
-                console.error(reason);
                 reject(reason.response.data);
               });
             break;
@@ -37,7 +35,6 @@ export const _props = {
                 resolve(response.data.data);
               })
               .catch(reason => {
-                console.error(reason);
                 reject(reason.response.data);
               });
             break;
@@ -50,7 +47,6 @@ export const _props = {
                 resolve(response.data.data);
               })
               .catch(reason => {
-                console.error(reason);
                 reject(reason.response.data);
               });
             break;
@@ -63,7 +59,6 @@ export const _props = {
                 resolve(response.data.data);
               })
               .catch(reason => {
-                console.error(reason);
                 reject(reason.response.data);
               });
             break;

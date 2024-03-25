@@ -72,7 +72,7 @@ export function Chat() {
   }, [groupId]);
 
   function handleSubmit(text: string) {
-    socket?.emit(SocketEmitters._MESSAGE, {text: text});
+    socket?.emit(SocketEmitters._MESSAGE, {text: text, groupId});
   }
 
   function handleCurrentGroup() {
@@ -97,11 +97,6 @@ export function Chat() {
     const startDate = new Date();
     const _p = {start: startDate, limit: 20};
     _params({start: startDate, limit: 20});
-
-    if (socketId) {
-      socket?.emit(SocketEmitters._DISCONNECT, {socketId});
-    }
-
     _activity("");
     _loading(true);
     _messages([]);
@@ -115,10 +110,7 @@ export function Chat() {
           document.title = result.data.name;
           _loading(false);
           _group(result.data);
-          const socketId = result.data.Socket.socket_id;
-          _socketId(socketId);
-          socket?.connect();
-          socket?.emit(SocketEmitters._JOIN, {socketId});
+          socket?.emit(SocketEmitters._JOIN, {groupId});
         }
       });
 

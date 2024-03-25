@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "^5.0.0",
-    "@capacitor/core": "^5.0.0",
-    "@capacitor/keyboard": "^5.0.8",
+    "@capacitor/android": "next",
+    "@capacitor/core": "next",
+    "@capacitor/device": "next",
+    "@capacitor/keyboard": "next",
+    "@capacitor/push-notifications": "next",
     "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -15,6 +17,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "axios": "^1.5.1",
+    "firebase": "^10.9.0",
     "formik": "^2.4.3",
     "framer-motion": "^11.0.8",
     "jest": "^27.5.1",
@@ -61,6 +64,6 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "^5.0.0"
+    "@capacitor/cli": "next"
   }
 }
