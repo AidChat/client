@@ -14,7 +14,7 @@
     min-width: 300px;
 }
 .dialog-ele {
-    border-radius: 20px;
+    border-radius: 4px;
     position: absolute;
     margin: 0 auto;
     z-index: 9999999999;

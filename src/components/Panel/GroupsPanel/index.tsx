@@ -211,7 +211,7 @@ export function UserIcon() {
               />
             </div>
             <div className={"w100"}>
-              <h1 className={"font-primary username"}>
+              <h1 className={"font-primary username ellipsis"} style={{width:'100%'}}>
                 {user?.name.toUpperCase()}
               </h1>
             </div>

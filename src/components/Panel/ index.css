@@ -6,7 +6,6 @@
 .chatContainer {
     display: flex;
     height: 100%;
-    padding: 4px;
     transition: all 3s;
  
 }
@@ -23,7 +22,6 @@
 .containerB {
     width: 100%;
     height: 100%;
-    padding: 4px;
     max-width: 100%;
     min-width: 60%;
 }

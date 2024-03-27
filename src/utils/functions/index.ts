@@ -1,10 +1,9 @@
 import {Capacitor} from "@capacitor/core";
 import {useWindowSize} from "../../services/hooks/appHooks";
 import {EwindowSizes} from "../enum";
-import {Device} from "@capacitor/device";
+import {Device, DeviceInfo} from "@capacitor/device";
 import {fcmMessaging} from "../../firebase.config";
 import {getToken} from "firebase/messaging";
-import {log} from "console";
 import {PushNotifications} from "@capacitor/push-notifications";
 
 export function formatTime(date: string) {
@@ -93,7 +92,7 @@ export async function getFCMToken() {
   });
 }
 export async function requestForNotificationAccessIfNotGranted() {
-  const deviceInfo = await getDeviceInfoUsingCapacitor();
+  const deviceInfo:DeviceInfo = await getDeviceInfoUsingCapacitor();
   if (deviceInfo.platform === "web") {
     if (window.Notification && Notification.permission !== "granted") {
       Notification.requestPermission().then(permission => {

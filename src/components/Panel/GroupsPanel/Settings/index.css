@@ -33,8 +33,12 @@
     align-items: end;
     flex-direction: row;
     width:100%;
-    position: fixed;
+    position: absolute;
     bottom:0;
+    border:1px solid  #fdfdfd;
+    padding:10px;
+    border-radius: 4px;
+    margin:4px 0;
 }
 .MdangerContainer{
     flex-direction:column

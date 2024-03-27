@@ -6,7 +6,7 @@ import {RegisterForm} from "./RegisterForm";
 import {useParams} from "react-router-dom";
 import {InviteForm} from "./InviteForm";
 import {useResponsizeClass} from "../../utils/functions";
-
+import {motion} from 'framer-motion'
 import {EwindowSizes} from "../../utils/enum";
 import {OTPForm} from "./Code";
 
@@ -60,10 +60,10 @@ export function Validator() {
         "authContainer" + useResponsizeClass(EwindowSizes.S, ["MauthContainer"])
       }
     >
-      <div>
+      <motion.div initial={{y:'30vh'}} animate={{y:0}} transition={{duration:1,delay:0.5}} >
         <img alt={""} style={{width: "100%"}} src={gif} />
-      </div>
-      <div className={"authBox"}>
+      </motion.div>
+      <motion.div className={"authBox"} initial={{opacity:0}} animate={{opacity:1}} transition={{duration:1,delay:1.5}} >
         <div className={"w100"} style={{height: "100%"}}>
           {state.invite ? (
             <InviteForm
@@ -114,7 +114,7 @@ export function Validator() {
             </>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

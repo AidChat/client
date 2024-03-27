@@ -10,6 +10,10 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
+dialog[open]::backdrop {
+    background-color:red;
+    opacity: 0.75;
+}
 
 body {
     margin: 0;
@@ -33,6 +37,12 @@ body {
     border-radius: 20px;
     border-bottom-left-radius: 2px;
     display: inline-block;
+}
+
+.ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .typing {
