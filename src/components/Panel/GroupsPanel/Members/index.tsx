@@ -59,10 +59,10 @@ export function GroupMemberList(props: {
                         className={'members-container'}>
         {data ? <div className={'font-primary'}>
             {users?.map((user: User) => (<div onClick={() => handleSelected(user.id)}
-                                              className={user.selected ? 'shadow userlistWrapper border-light' : 'shadow userlistWrapper'}>
+                                              className={user.selected ? 'shadow userlistWrapper border-light' : 'shadow userlistWrapper'} style={{justifyContent:'space-between'}}>
                 <div> {user.id === U?.id ? 'You' : user.name}</div>
-                <div>
-                    {ClientRole[user?.Role[0]?.type]}
+                <div className={'w25 font-primary font-thick'}>
+                    {ClientRole[user?.Role[0]?.type].toUpperCase()}
                 </div>
             </div>))}
         </div> : <Spinner/>}

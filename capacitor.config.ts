@@ -11,13 +11,13 @@ const config: CapacitorConfig = {
   },
   plugins: {
     Keyboard: {
-      resize: KeyboardResize.Body,
-      style: KeyboardStyle.Dark,
+      resize: KeyboardResize.Ionic,
+      style: KeyboardStyle.Default,
       resizeOnFullScreen: true,
     },
     PushNotifications: {
-      presentationOptions: ["badge", "sound", "alert"],
-    },
+      presentationOptions: []
+    }
   },
 };
 

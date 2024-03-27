@@ -60,10 +60,10 @@ export function Validator() {
         "authContainer" + useResponsizeClass(EwindowSizes.S, ["MauthContainer"])
       }
     >
-      <motion.div initial={{y:'30vh'}} animate={{y:0}} transition={{duration:1,delay:0.5}} >
+      <motion.div initial={{y:'20vh'}} animate={{y:0}} transition={{duration:0.5,delay:0.3}} >
         <img alt={""} style={{width: "100%"}} src={gif} />
       </motion.div>
-      <motion.div className={"authBox"} initial={{opacity:0}} animate={{opacity:1}} transition={{duration:1,delay:1.5}} >
+      <motion.div className={"authBox"} initial={{opacity:0}} animate={{opacity:1}} transition={{duration:0.5,delay:1}} >
         <div className={"w100"} style={{height: "100%"}}>
           {state.invite ? (
             <InviteForm

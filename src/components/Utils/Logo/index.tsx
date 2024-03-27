@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./../../../assets/gifs/nameLogo.gif";
+import logo from "./../../../assets/png/icon.png";
 import "./style.css";
 export function Logo() {
   return (

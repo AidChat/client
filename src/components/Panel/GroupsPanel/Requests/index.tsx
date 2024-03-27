@@ -198,7 +198,7 @@ function AllRequestsPanelContainer({
                             }}
                         />)}
                     {allRequests.map((item: Request, index: number) => (
-                        <div className={"shadow userlistWrapper"} key={index}>
+                        <div className={"shadow userlistWrapper"} style={{justifyContent:'space-between'}} key={index}>
                             <div> {item.invitee}</div>
 
                             <div className={"flex"}>
@@ -223,8 +223,8 @@ function AllRequestsPanelContainer({
                                         <div className={'btn btn-round-primary'} style={{padding:'4px 10px'}}>Accept</div>
                                     </div>)}
 
-                                <div style={{margin: "0 10px"}}>
-                                    <MdDelete
+                                <div style={{margin: "2px 10px"}}>
+                                    <MdDelete color={'white'}
                                         onClick={() => {
                                             handleDelete(item.id);
                                         }}

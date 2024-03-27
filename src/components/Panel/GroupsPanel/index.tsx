@@ -19,7 +19,7 @@ import {
 } from "../../../utils/enum";
 import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
-import {useResponsizeClass} from "../../../utils/functions";
+import {showConfirm, useResponsizeClass} from "../../../utils/functions";
 import {OTPForm} from "../../Auth/Code";
 
 export function UtilityPanel() {
@@ -71,7 +71,7 @@ export function UtilityPanel() {
       {requests.length > 0 && (
         <>
           <div
-            className={"font-primary mygroup-label"}
+            className={"font-primary mygroup-label w100"}
             style={{fontWeight: "bolder", textAlign: "center"}}
           >
             INVITES
@@ -92,7 +92,7 @@ export function UtilityPanel() {
                 }
               />
               <div
-                className={"font-primary truncate "}
+                className={"font-primary truncate"}
                 style={{textAlign: "center"}}
               >
                 {_item?.group?.name}
@@ -498,7 +498,9 @@ function ProfileForm({onUpdate}: {onUpdate: () => void}) {
       >
         <div
           onClick={() => {
-            handleUpdate();
+
+             handleUpdate();
+
           }}
           className={"btn btn-round-secondary btn-custom-profile"}
         >

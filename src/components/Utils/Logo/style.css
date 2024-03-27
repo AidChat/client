@@ -1,12 +1,12 @@
 .logoWrapper{
-    height:40px;
+    height:30px;
     width: inherit;
-    max-width: 120px;
+    max-width: 30px;
 
 }
 .logoWrapper img{
     height:100%;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
     image-rendering:  high-quality;
 }

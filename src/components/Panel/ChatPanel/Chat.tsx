@@ -15,7 +15,6 @@ import {
 import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
-import {CgProfile} from "react-icons/cg";
 import {useWindowSize} from "../../../services/hooks/appHooks";
 import {
   EsidePanel,
@@ -74,6 +73,11 @@ export function Chat() {
   function handleSubmit(text: string) {
     socket?.emit(SocketEmitters._MESSAGE, {text: text, groupId});
   }
+
+  // TODO
+  /**
+   * Handle image upload
+   */
 
   function handleCurrentGroup() {
     switch (selectedGroupType) {

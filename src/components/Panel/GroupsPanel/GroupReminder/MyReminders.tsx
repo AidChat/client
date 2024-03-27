@@ -54,13 +54,13 @@ export function ReminderBar(props: { reminder: IReminder, self: boolean, refetch
     return <div style={{position: 'relative'}} className={'reminderBarWrapper'}>
         <Snackbar message={message} onClose={() => _message('')}/>
         <div className={'shadow userlistWrapper '}>
-            <div>{props.reminder.title}</div>
-            <div className={'dflex flex-row'}>{props.reminder.recurringDays.map((day: string) => <div
+            <div className={'w25'}>{props.reminder.title}</div>
+            <div className={'dflex flex-row w50'}>{props.reminder.recurringDays.map((day: string) => <div
                 className={'token-days'}>{day}</div>)}</div>
-            { !isSmall &&  <div className={'w50'} style={{textAlign: 'right', margin: '0 6px'}}><CiUser/>
+            { !isSmall &&  <div className={'w50 dlfex'} style={{textAlign: 'right', margin: '0 6px'}}><CiUser color={'white'}/>
                 {props.reminder.createdBy?.name}</div>
             }
-            <div>{formatTimeToHHMM(props.reminder.when)}</div>
+            <div className={'w25'}>{formatTimeToHHMM(props.reminder.when)}</div>
             {<MdDelete onClick={handleRemove} size={22} color={'#510707'}/>}
         </div>
     </div>
