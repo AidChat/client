@@ -25,10 +25,12 @@ function App(): React.ReactElement {
                     });
                 }
                 requestForNotificationAccessIfNotGranted();
+            }else{
+                setScreenOrientation('portrait');
+                hideStatusBar()
             }
         })
-        setScreenOrientation('portrait');
-        hideStatusBar();
+
         return () => {
             socket?.emit(SocketEmitters._DISCONNECT);
         };
