@@ -7,10 +7,6 @@
     border-radius: 50px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     cursor: pointer;
-    transition: all 100ms;
-}
-.userlistWrapper:hover{
-    transform: scale(1.001);
+
 }

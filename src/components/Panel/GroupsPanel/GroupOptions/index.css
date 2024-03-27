@@ -1,5 +1,6 @@
 .item-option-active{
-    border-bottom: 2px solid lightgray;
+    border-bottom: 2px solid whitesmoke;
+    transition:all 0.5s;
 
 }
 .options-wrapper div{
@@ -9,7 +10,7 @@
 }
 .members-container{
     overflow-y: auto;
-    height:80%;
+    height:100%;
 }
 
 .options-panel-wrapper{

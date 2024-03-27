@@ -1,19 +1,23 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type {CapacitorConfig} from "@capacitor/cli";
 import {KeyboardResize, KeyboardStyle} from "@capacitor/keyboard";
 
 const config: CapacitorConfig = {
-  appId: 'app.aidchat.com',
-  appName: 'aidchat',
-  webDir: 'build',
+  appId: "app.aidchat.com",
+  appName: "aidchat",
+  webDir: "build",
   server: {
-    allowNavigation: []
+    hostname: "app.aidchat.com",
+    allowNavigation: [],
   },
   plugins: {
     Keyboard: {
-      resize: KeyboardResize.Body,
-      style: KeyboardStyle.Dark,
+      resize: KeyboardResize.Ionic,
+      style: KeyboardStyle.Default,
       resizeOnFullScreen: true,
     },
+    PushNotifications: {
+      presentationOptions: []
+    }
   },
 };
 

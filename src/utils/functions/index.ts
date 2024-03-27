@@ -1,5 +1,12 @@
 import {useWindowSize} from "../../services/hooks/appHooks";
 import {EwindowSizes} from "../enum";
+import {Device, DeviceInfo} from "@capacitor/device";
+import {getToken} from "firebase/messaging";
+import {PushNotifications} from "@capacitor/push-notifications";
+import {getFCMMessaging} from "../../firebase.config";
+import {ScreenOrientation} from "@capacitor/screen-orientation";
+import {StatusBar, StyleOptions} from "@capacitor/status-bar";
+import {Dialog} from "@capacitor/dialog";
 
 export function formatTime(date: string) {
     return new Date(date).toTimeString().slice(0, 8);
@@ -33,12 +40,11 @@ export const _debounce = (fn: () => void, timeout: number = 2000) => {
     }, timeout);
 };
 
-
 export function formatDateToDDMMYYYY(date: any) {
     const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, "0"); // Get day and pad with leading zero if needed
-    const month = String(d.getMonth() + 1).padStart(2, "0"); // Get month (+1 because months are zero-indexed) and pad with leading zero if needed
-    const year = d.getFullYear(); // Get full year
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
     const d1 = new Date();
     const day1 = String(d1.getDate()).padStart(2, "0");
     const month1 = String(d1.getMonth() + 1).padStart(2, "0");
@@ -68,3 +74,62 @@ export function useResponsizeClass(size: EwindowSizes, classArr: string[]): stri
 
     return classes;
 }
+
+export async function getDeviceInfoUsingCapacitor() {
+    const info = await Device.getInfo();
+    console.log("Device Info ", info)
+    return info
+}
+
+export async function getFCMToken() {
+    return getToken(getFCMMessaging(), {
+        vapidKey: process.env.REACT_APP_FIREBASEKEY,
+    });
+}
+
+export async function requestForNotificationAccessIfNotGranted() {
+    const deviceInfo: DeviceInfo = await getDeviceInfoUsingCapacitor();
+    if (deviceInfo.platform === "web") {
+        if (window.Notification && Notification.permission !== "granted") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    new Notification("Welcome to aidchat", {});
+                }
+            });
+        }
+    } else {
+        PushNotifications.requestPermissions().then(function (result) {
+            if (result.receive === "granted") {
+                PushNotifications.register();
+            }
+        });
+    }
+}
+
+export async function setScreenOrientation(type:'portrait'|'landscape'){
+    await ScreenOrientation.lock({ orientation: type });
+}
+
+export const hideStatusBar = async () => {
+    await StatusBar.hide();
+};
+
+
+export const showConfirm = async () => {
+    const { value } = await Dialog.confirm({
+        title: 'Please confirm.',
+        message: `Are you sure you'd like to continue?`,
+        okButtonTitle:'Yes',
+        cancelButtonTitle:'Cancel',
+
+    });
+
+    return value
+};
+
+export const showAlert = async (title:string,message:string) => {
+    await Dialog.alert({
+        title: title,
+        message: message,
+    });
+};

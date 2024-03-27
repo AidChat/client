@@ -3,7 +3,6 @@ import {Validator} from "../../components/Auth";
 import {Spinner} from "../../components/Utils/Spinner/spinner";
 import {_props} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
-import {UserProps} from "../../utils/interface";
 import {UserDetailsForm} from "../../components/Concent";
 import {reqType, service, serviceRoute} from "../../utils/enum";
 
@@ -15,6 +14,7 @@ export let AuthContext = React.createContext<
         session_id?: string,
         forceReload?: boolean
       ) => void;
+      isUserVerified: boolean;
     }
   | undefined
 >(undefined);
@@ -29,6 +29,7 @@ export const AuthContextProvider = ({
   const [loading, setLoad] = useState(true);
   const {requestCode} = useParams();
   const [showUserForm, setFormVisibility] = useState<boolean>(true);
+  const [isUserVerified, setVerifyState] = useState<boolean>(false);
   useEffect(() => {
     verifyAuthentication();
   }, []);
@@ -42,7 +43,6 @@ export const AuthContextProvider = ({
   function stopload() {
     setLoad(false);
   }
-
   function verifyAuthentication(
     sessionId?: string,
     forceReload?: boolean
@@ -56,8 +56,10 @@ export const AuthContextProvider = ({
           ._user()
           .get()
           .then((user: any) => {
+            console.log(user);
             if (user) {
-              if (user.data.Type === "Pending") {
+              setVerifyState(user.verifiedEmail);
+              if (user.Type === "Pending") {
                 setFormVisibility(true);
               } else {
                 setFormVisibility(false);
@@ -76,8 +78,7 @@ export const AuthContextProvider = ({
             }
           });
       })
-      .catch(e => {
-        console.error(e);
+      .catch(() => {
         setAuth(false);
         if (!sessionId) {
           stopload();
@@ -103,6 +104,7 @@ export const AuthContextProvider = ({
         isAuthenticated,
         verifyAuthentication,
         removeUserSession,
+        isUserVerified,
       }}
     >
       {!loading ? (

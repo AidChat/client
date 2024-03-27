@@ -8,6 +8,7 @@ export interface UserProps {
     Type?: "Pending" | "Seeker" | "Helper";
     about?: string;
     mobile?: number;
+    verifiedEmail ?: boolean
 }
 
 export enum SocketEmitters {
@@ -45,13 +46,40 @@ export interface MessageInterface {
         name: string; email: string; profileImage: string; id: number;
     };
     ReadByAll?: boolean;
-    ReadReceipt: {
-        id: number; userId: number; status: "Read" | "Sent";
-    }[];
+    ReadReceipt:ReadReceipt[]
+}
+
+export interface ReadReceipt {
+    id: number;
+    userId: number;
+    status: "Read" | "Sent";
+
 }
 
 export interface MessageContent {
     id: number;
     caption: null | string;
     content: string;
+}
+
+export interface IReminder {
+    message?: string,
+    title: string,
+    id?: number
+    notifyBefore: boolean,
+    notifyApp: boolean,
+    notifyWeb: boolean,
+    self: boolean,
+    recurring: boolean,
+    when: string,
+    recurringDays: string[],
+    createdById ?:number,
+    par ?:UserProps[],
+    participants?:IReminderMembers
+    createdBy ?:UserProps
+}
+export interface IReminderMembers{
+    id:number,
+    users:UserProps[]
+    reminderId:number
 }

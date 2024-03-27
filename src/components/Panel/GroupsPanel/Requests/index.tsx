@@ -15,7 +15,7 @@ import {useWindowSize} from "../../../../services/hooks/appHooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../../utils/enum";
 import {motion} from "framer-motion";
 
-export function Requests(props: { groupId: string }) {
+export function Requests(props: { groupId: number }) {
     const [data, setData] = useState(true);
     const [requests, _requests] = useState<Request[] | null>(null);
 
@@ -52,7 +52,7 @@ export function Requests(props: { groupId: string }) {
 function SendRequestPanelContainer({
                                        groupId, fetch,
                                    }: {
-    groupId: string; fetch: () => void;
+    groupId: number; fetch: () => void;
 }) {
     const [email, _email] = useState<string>("");
     const [loading, _loading] = useState<boolean>(false);
@@ -185,7 +185,7 @@ function AllRequestsPanelContainer({
             .query(serviceRoute.request, {}, reqType.put, requestId)
             .then((response: any) => {
                 fetch();
-                _message(response.message);
+                _message("Request accepted.");
             });
     }
 
@@ -198,7 +198,7 @@ function AllRequestsPanelContainer({
                             }}
                         />)}
                     {allRequests.map((item: Request, index: number) => (
-                        <div className={"shadow userlistWrapper"} key={index}>
+                        <div className={"shadow userlistWrapper"} style={{justifyContent:'space-between'}} key={index}>
                             <div> {item.invitee}</div>
 
                             <div className={"flex"}>
@@ -220,12 +220,11 @@ function AllRequestsPanelContainer({
                                             handleGroupJoin(item.id);
                                         }}
                                     >
-                                        <div>Accept</div>
-                                        <FaUserPlus size={26} color={"#183b35"}/>
+                                        <div className={'btn btn-round-primary'} style={{padding:'4px 10px'}}>Accept</div>
                                     </div>)}
 
-                                <div style={{margin: "0 10px"}}>
-                                    <MdDelete
+                                <div style={{margin: "2px 10px"}}>
+                                    <MdDelete color={'white'}
                                         onClick={() => {
                                             handleDelete(item.id);
                                         }}

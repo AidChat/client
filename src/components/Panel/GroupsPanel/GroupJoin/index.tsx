@@ -6,6 +6,7 @@ import groupsImg from "../../../../assets/svg/groups.svg";
 import Tooltip from "../../../Utils/Tooltip";
 import Snackbar from "../../../Utils/Snackbar";
 import {reqType, service, serviceRoute} from "../../../../utils/enum";
+import {AnimatePresence, motion} from "framer-motion";
 
 export function InviteContainer(props: { requestId?: string, groupId?: string }) {
     const [loading, _loading] = useState<boolean>(true);
@@ -81,7 +82,7 @@ export function InviteContainer(props: { requestId?: string, groupId?: string })
                             <div className={'font-secondary invite-labels'}>{data.group.GroupDetail.description}</div>
                             <div className={'font-primary'}>TAGS</div>
                             <div className={'tag-container '}>{data.group.GroupDetail.tags.map((item: string) => {
-                                return <div className={'tag'}>{item}</div>
+                                return <AnimatePresence> <motion.div initial={{x:-100}} animate={{x:0}} exit={{x:-100}} className={'tag'}>{item}</motion.div></AnimatePresence>
                             })}
                             </div>
                             <div className={'font-primary'}>REQUESTER</div>

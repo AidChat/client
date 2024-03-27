@@ -29,7 +29,7 @@ interface requestInt {
     }
 }
 
-export function InviteForm({requestLogin}: { requestLogin: (email?:string) => void }) {
+export function InviteForm({requestLogin}: { requestLogin: (s:'LOGIN' | "REGISTER",email?:string) => void }) {
     const {requestCode} = useParams();
     const [request, _request] = useState<requestInt | null>(null)
     const [validRequest, _valid] = useState(false);
@@ -51,7 +51,6 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
                     }
                     // check for user session
                     _props._user().validateSession().then((result: any) => {
-                        console.log(result,response)
                         if (result.data.email.data === response.data.invitee) {
                             _invalid(true)
                         } else {
@@ -63,9 +62,6 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
                             _loading(false);
                             _invalid(false)
                         })
-
-                    // if user matches the invitee then give option to Join -> Click on join then remove request and reload
-                    // no session then user register form and send requestId with register request.
 
                 })
                 .catch(error => {
@@ -86,7 +82,7 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
                 })
         } else {
             window.localStorage.removeItem('session');
-            requestLogin(request?.invitee);
+            requestLogin("REGISTER",request?.invitee);
         }
     }
 
@@ -95,19 +91,13 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
             {loading ? <Spinner/> :
                 validRequest ? <>
                         {request?.group.name}
-                        {validSession ? <>
-                            <div className={'btn btn-round-secondary'} onClick={() => {
-                                handleRequest()
-                            }}>
-                                Join
-                            </div>
-                        </> : <>
+
                             <div className={'btn btn-round-secondary'} onClick={() => {
                                 handleRequest();
                             }}>
                                 Join
                             </div>
-                        </>}
+
                     </> :
                     <>
                         <div className={'requestContainer-image'}>
@@ -115,7 +105,7 @@ export function InviteForm({requestLogin}: { requestLogin: (email?:string) => vo
 
                         </div>
                         <div className={'btn-wrapper'}>
-                            <div className={'btn btn-primary btn-custom'} onClick={() => {requestLogin()}}>
+                            <div className={'btn btn-primary btn-custom'} onClick={() => {requestLogin("LOGIN")}}>
                                 Login
                             </div>
                         </div>

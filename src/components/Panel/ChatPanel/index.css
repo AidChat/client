@@ -43,6 +43,7 @@
     flex-direction: column;
     position: relative;
     margin-top:10px;
+    padding:4px;
 }
 
 .convoHistory {
@@ -484,9 +485,11 @@
 }
 
 .groupIcon_wrapper {
-    height: 120px;
-    width: 120px;
-    margin: 10px 0;
+    height: 200px;
+    width: 100%;
+}
+.groupIcon_wrapper img{
+    object-fit: cover;
 }
 
 .groupIcon_wrapper_container {

@@ -1,0 +1,42 @@
+.reminderContainer {
+    border-radius: 4px;
+    display: flex;
+    height: 20vh;
+}
+.MreminderContainer{
+    height: fit-content;
+}
+.reminderContainer.div *{
+    width: 33%;
+}
+
+.reminder-inputarea{
+    display: flex;
+    flex-direction: column;
+    height:15px;
+}
+.dayToken{
+    background: transparent;
+    color: whitesmoke;
+    padding: 0 4px;
+    margin: 2px 0;
+    border-radius: 4px;
+}
+.reminderDate{
+    background: transparent;
+    border:none;
+    color:lightgrey;
+}
+.token-days{
+    border:1px solid whitesmoke;
+    color:whitesmoke;
+    border-radius: 4px;
+    margin:0 4px;
+    padding:0 4px;
+}
+.reminderBarWrapper:hover .menu{
+    display: block;
+}
+.reminderBarWrapper.menu.customMenu-wrapper{
+    left:40px;
+}

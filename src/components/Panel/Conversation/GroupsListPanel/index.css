@@ -71,7 +71,11 @@
     background: #3f3f3f96;
     width: 100%;
     border-radius: 4px;
-    padding:6px 8px;
+    font-weight: bolder;
+    display: flex;
+    align-self: start;
+    padding: 4px 6px;
+    margin-top: 8px;
 }
 
 .backBtnGroupList{

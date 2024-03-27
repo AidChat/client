@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {_debounce} from "../../utils/functions";
 import {EwindowSizes, windowSize} from "../../utils/enum";
-
+import {AuthContext} from "../context/auth.context";
+import {log} from "console";
 
 export const useWindowSize = (size?: windowSize) => {
   const [current, setCurrent] = useState<windowSize>(EwindowSizes.Xl);
@@ -34,4 +35,10 @@ export const useWindowSize = (size?: windowSize) => {
     current,
     size: size === current,
   };
+};
+
+export const useCheckUserVerification = () => {
+  const data = useContext(AuthContext);
+
+  return data?.isUserVerified;
 };

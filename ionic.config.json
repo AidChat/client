@@ -1,14 +1,21 @@
 {
-  "name": "client-website",
+  "name": "aidchat",
   "integrations": {
     "capacitor": {}
   },
   "type": "custom",
   "plugins": {
     "Keyboard": {
-      "resize": "body",
-      "style": "DARK",
+      "resize": "ionic",
+      "style": "default",
       "resizeOnFullScreen": true
+    },
+    "PushNotifications": {
+      "presentationOptions": []
+    },
+    "Device": {
+      "orientation": "portrait-primary",
+      "hideStatusBar": true
     }
   }
 }

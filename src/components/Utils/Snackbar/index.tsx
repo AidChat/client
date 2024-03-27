@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 import { AiFillCloseCircle } from 'react-icons/ai';
+import {motion} from "framer-motion";
 
 interface SnackbarProps {
     message: string;
@@ -16,18 +17,18 @@ const Snackbar: React.FC<SnackbarProps> = ({ message, onClose }) => {
             const timeout = setTimeout(() => {
                 setShow(false);
                 onClose();
-            }, 3000); // Adjust the timeout duration as needed
+            }, 3000);
             return () => clearTimeout(timeout);
         }
     }, [message, onClose]);
 
     return show ? (
-        <div className="snackbar">
+        <motion.div initial={{y:'10px'}} animate={{y:'0px'}} className="snackbar">
             <div style={{ flex: 2 }}>{message}</div>
             <div style={{ display: 'flex', marginLeft: '10px' }} onClick={onClose}>
                 <AiFillCloseCircle />
             </div>
-        </div>
+        </motion.div>
     ) : null;
 };
 

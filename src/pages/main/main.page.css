@@ -3,7 +3,7 @@
     height: 100%;
     margin:0 5vw;
     min-width: 75vw;
-    width: 85vw;
+    width: 90vw;
 }
 .main-container{
     background:#1C1D1C;
@@ -16,6 +16,7 @@
     width: 100%;
     margin:0;
     padding:0;
+    /* position: fixed; */
 }
 .fullCover .main-container, .fullCover .chatContainer{
     border-radius: 0px;

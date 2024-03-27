@@ -1,58 +1,80 @@
 import React, {useContext, useEffect} from "react";
-import './ index.css'
+import "./ index.css";
 import {ShellContext} from "../../services/context/shell.context";
 import {useWindowSize} from "../../services/hooks/appHooks";
-import {EwindowSizes} from "../../utils/enum";
+import {EwindowSizes, reqType, service, serviceRoute} from "../../utils/enum";
 import {GroupListPanel} from "./Conversation/GroupsListPanel/groupListPanel";
 import {Chat} from "./ChatPanel/Chat";
 import {UtilityPanel} from "./GroupsPanel";
-import {useResponsizeClass} from "../../utils/functions";
+import {AnimatePresence, motion} from "framer-motion";
+import {getDeviceInfoUsingCapacitor, getFCMToken} from "../../utils/functions";
+import {_props} from "../../services/network/network";
+import {PushNotifications} from "@capacitor/push-notifications";
 
 export const Panel = () => {
     let {size: smallScreen} = useWindowSize(EwindowSizes.S);
     const {sidePanel} = useContext(ShellContext);
-    const handleShow = () => {
-        let style = {group: {}, util: {}};
-        if (smallScreen) {
-            if (sidePanel.Group) {
-                style["group"] = {
-                    display: "flex", position: "absolute",
-                };
-            } else {
-                style["group"] = {
-                    display: "none",
-                };
-            }
-            if (sidePanel.Util) {
-                style["util"] = {
-                    display: "flex",
-                };
-            } else {
-                style["util"] = {
-                    display: "none",
-                };
-            }
-        }
-        return style;
-    };
-    useEffect(function () {
-        handleShow();
-    }, [smallScreen]);
 
-    return (<div className={"chatWrapper"}>
+    function handleSmallSizeClass() {
+        if (smallScreen) return " w100  pabsolute"; else return "";
+    }
+
+    useEffect(() => {
+        let deviceInfo = getDeviceInfoUsingCapacitor();
+        deviceInfo.then(function (info) {
+            let deviceInfo: any = info;
+            if (info.platform === 'web') {
+                getFCMToken().then(function (token) {
+                    deviceInfo["token"] = token;
+                    let data = {
+                        token, type: info.platform,
+                    };
+                    _props
+                        ._db(service.authentication)
+                        .query(serviceRoute.deviceInfo, data, reqType.post, undefined);
+                });
+            } else {
+                PushNotifications.requestPermissions().then(function (register) {
+                    if (register.receive === 'granted') {
+                        PushNotifications.register().then(r => {
+                            PushNotifications.addListener('registration', function (token) {
+                                let data = {
+                                    token:token.value, type: info.platform,
+                                };
+                                _props
+                                    ._db(service.authentication)
+                                    .query(serviceRoute.deviceInfo, data, reqType.post, undefined);
+                            });
+                        })
+                    }
+                })
+            }
+        });
+    }, []);
+
+    return (<AnimatePresence>
+        <div className={"chatWrapper"}>
             <div className={"chatContainer shadow-box "}>
-                <div className={"containerA " + useResponsizeClass(EwindowSizes.S, ['w100'])} style={handleShow()?.group}>
+                {sidePanel.Group && (<motion.div
+                    initial={{x: -10}}
+                    animate={{x: 0}}
+                    className={"containerA " + handleSmallSizeClass()}
+                >
                     <GroupListPanel/>
-                </div>
+                </motion.div>)}
 
                 <div className={"containerB"}>
                     <Chat/>
                 </div>
-                <div className={"containerC"} style={handleShow().util}>
+                {sidePanel.Util && (<motion.div
+                    initial={{x: -10}}
+                    animate={{x: 0}}
+                    exit={{x: -10}}
+                    className={"containerC"}
+                >
                     <UtilityPanel/>
-                </div>
+                </motion.div>)}
             </div>
-        </div>);
+        </div>
+    </AnimatePresence>);
 };
-
-

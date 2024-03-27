@@ -27,7 +27,7 @@ export function Search(props: SearchInterface) {
     return (
         <div className={'searchComponent'}>
             <div className={'input-wrapper'}>
-                <input value={input} type={'name'} onChange={e => handleFilter(e.target.value)} placeholder={'Type keywords'}/>
+                <input value={input} type={'name'} onChange={e => handleFilter(e.target.value)} placeholder={'Add keywords'}/>
             </div>
             <div className={'result-list'}>
                 {item.map((item: string) => {

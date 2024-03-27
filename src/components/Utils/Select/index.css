@@ -7,10 +7,11 @@
     max-height:100px;
     overflow-y: auto;
     position: absolute;
-    background: white;
+    background: #1C1D1C;
+    border:none
 }
 .list-item{
-    border:1px solid lightgrey;
+    border-bottom:1px solid lightgrey;
     padding:4px;
 }
 .input-wrapper input{
