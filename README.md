@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+# Aidchat - A Messaging App for Psychological Support
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aidchat is a messaging application designed to connect psychologists with users seeking support. It allows users to create groups, invite members, set reminders, and receive FCM notifications. The application is available for both web and mobile platforms (Android), utilizing Capacitor from Ionic for mobile deployment.
 
-## Available Scripts
+## Screenshots
 
-In the project directory, you can run:
+### Home
+![Home](https://res.cloudinary.com/marcrove/image/upload//fl_attachment:homeview_iw6a4o//v1711713478/homeview_iw6a4o.png?_s=public-apps)
 
-### `npm start`
+### Members List
+![Members List](https://res.cloudinary.com/marcrove/image/upload//fl_attachment:Members_qsisbj//v1711712915/Members_qsisbj.png?_s=public-apps)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Reminders
+![Invite Feature](https://res.cloudinary.com/marcrove/image/upload//fl_attachment:Create_reminders_v9u9uc//v1711712913/Create_reminders_v9u9uc.png?_s=public-apps)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Invite to groups.
+![Reminder](https://res.cloudinary.com/marcrove/image/upload//fl_attachment:inviteoveremail_xzjyq4//v1711713943/inviteoveremail_xzjyq4.png?_s=public-apps)
 
-### `npm test`
+## Authentication View
+![Authentication](https://res.cloudinary.com/marcrove/video/upload//fl_attachment:AuthflowVideo_ponfwa//v1711714247/AuthflowVideo_ponfwa.mp4?_s=public-apps)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Mobile version 
+![Authentication](https://res.cloudinary.com/marcrove/image/upload//fl_attachment:Screenshot_20240329_174356_diel1j//v1711714492/Screenshot_20240329_174356_diel1j.png?_s=public-apps)
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Messaging:** Users can chat with psychologists and other members in groups.
+- **Group Creation:** Users can create groups and invite others to join.
+- **Reminders:** Set reminders within groups for important events or discussions.
+- **FCM Notifications:** Receive push notifications for messages and reminders.
+- **Authentication:** Secure user authentication for access control.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Technologies Used
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **React:** Frontend development framework.
+- **Firebase:** Backend services for authentication, messaging, and notifications.
+- **Capacitor:** Cross-platform app deployment for Android and web.
