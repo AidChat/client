@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "394483049495",
+    "project_id": "react-cart-f7ebd",
+    "storage_bucket": "react-cart-f7ebd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394483049495:android:ce90b3a99725a6b18aa852",
+        "android_client_info": {
+          "package_name": "app.aidchat.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394483049495-ne8okp8d94v5tm250nflefflmb700har.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjddbUPirgZ4nKQO1nHIdjHDO7Z3YTvR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394483049495-ne8okp8d94v5tm250nflefflmb700har.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
