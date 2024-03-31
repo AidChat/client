@@ -70,14 +70,10 @@ export function Chat() {
     };
   }, [groupId]);
 
-  function handleSubmit(text: string) {
-    socket?.emit(SocketEmitters._MESSAGE, {text: text, groupId});
+  function handleSubmit(text: string,images?:string[] | null) {
+    socket?.emit(SocketEmitters._MESSAGE, {text: text, groupId,images});
   }
 
-  // TODO
-  /**
-   * Handle image upload
-   */
 
   function handleCurrentGroup() {
     switch (selectedGroupType) {
@@ -136,9 +132,10 @@ export function Chat() {
       setOnliners([...users, data.user]);
     });
 
-    socket?.on(
+    socket.on(
       SocketListeners.MESSAGE,
       async (data: {senderId: any; id: any}) => {
+        console.log(data)
         _activity("");
         const user: UserProps = await _props._user().get();
 
@@ -251,8 +248,8 @@ export function Chat() {
               messages={messages}
               group={group}
               activity={activity}
-              send={(s: string) => {
-                handleSubmit(s);
+              send={(s: string,images?:string[] | null) => {
+                handleSubmit(s,images);
               }}
               onliners={onliners}
             />

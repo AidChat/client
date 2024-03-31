@@ -1,4 +1,4 @@
-import {MessageInterface, Role, SocketEmitters, SocketListeners} from "../../../utils/interface";
+import {MessageContent, MessageInterface, Role, SocketEmitters, SocketListeners} from "../../../utils/interface";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {ShellContext} from "../../../services/context/shell.context";
 import {useWindowSize} from "../../../services/hooks/appHooks";
@@ -12,8 +12,9 @@ import {Spinner} from "../../Utils/Spinner/spinner";
 import {formatDateToDDMMYYYY} from "../../../utils/functions";
 import {motion} from "framer-motion";
 import {FcAddImage} from "react-icons/fc";
-import {GroupOptions} from "../GroupsPanel/GroupOptions";
+import {ChatSwitchMenu} from "../GroupsPanel/GroupOptions";
 import {RecipientReadStatus} from "./RecipientReadStatus";
+import {MultiImageUpload} from "../../Utils/MulltiImageUpload";
 
 export function ChatContainer({
                                   messages, group, activity, send, fetch, exceed, onliners, setOnliners,
@@ -21,7 +22,7 @@ export function ChatContainer({
     messages: MessageInterface[];
     group: any;
     activity: string;
-    send: (s: string) => void;
+    send: (s: string, images?: string[] | null) => void;
     fetch: () => void;
     exceed: boolean;
     onliners: number[];
@@ -43,7 +44,8 @@ export function ChatContainer({
     const [recentOffline, setRecentOffline] = useState<number[]>([]);
     const containerRef = useRef<HTMLDivElement | null>(null);
     const {size: valid} = useWindowSize(EwindowSizes.S);
-
+    const [showImageUpload, setImageUploadOption] = useState(false);
+    const [images, setImages] = useState<string[] | null>(null)
     useEffect(() => {
         _loading(false);
     }, [exceed]);
@@ -69,6 +71,7 @@ export function ChatContainer({
         }
     }
 
+
     function handleAddMore() {
         setInit("invites");
         showOptions(true);
@@ -89,11 +92,14 @@ export function ChatContainer({
 
     function handleSubmit(e: any) {
         e.preventDefault();
-        if (message.split("").length === 0) {
+        if (message.split("").length === 0 && !images) {
             return;
         }
-        send(message);
+        send(message, images);
         _message("");
+        if (images?.length) window.setTimeout(function () {
+            handleShowImageUploadArea(false);
+        }, 0)
     }
 
     const scrollToBottom = () => {
@@ -139,6 +145,27 @@ export function ChatContainer({
             }
         }
     };
+
+    function handleShowImageUploadArea(show?: boolean) {
+        setImageUploadOption(!!show ? show : !showImageUpload)
+    }
+
+    function handleFileUpload(s: string[]) {
+        setImages(s);
+    }
+
+    function renderImages(data: MessageContent) {
+        let images: string[] | any = data.content;
+        images = images.slice(7);
+        images = images.split(',').map((item: any) => item.trim());
+        return images.map((image: string | undefined, index: number) => {
+            // eslint-disable-next-line jsx-a11y/img-redundant-alt
+            if (image !== '') return <img  onClick={()=>{window.open(image)}} style={{maxHeight:'100px',objectFit:'contain',margin:'4px'}} height={'100%'} width={'100%'} key={index} src={image}
+                                          alt={`Image ${index}`}/>
+
+        });
+    }
+
     return (<div className={"convoPanel"}>
         {!options ? (<div className={"wrapperContainer"}>
             <div className={"tagsWrapper"}>
@@ -249,7 +276,11 @@ export function ChatContainer({
                                         <div
                                             className={`arrow ${item.senderId === userId ? "arrow-right" : "arrow-left"}`}
                                         ></div>)}
-                                    {item?.MessageContent?.content}
+                                    {item.MessageContent.TYPE === 'TEXT' ? item?.MessageContent?.content : <>
+                                        {renderImages(item.MessageContent)}
+                                        <div>{item.MessageContent.caption}</div>
+                                    </>}
+
                                     <div
                                         className={"font-primary miscContainer "}
                                         style={{
@@ -270,9 +301,13 @@ export function ChatContainer({
             </div>
             <div className="textSentInputBtn">
                 <form onSubmit={handleSubmit} autoComplete="false">
+                    {showImageUpload && <MultiImageUpload onSelect={handleFileUpload}/>}
                     <div className={"optionsPanel"}>
                         <div>
-                            <FcAddImage size={"2rem"} color={"#398378"}/>
+                            <FcAddImage className={'pointer'} size={"2rem"} color={"#398378"} onClick={() => {
+                                handleShowImageUploadArea()
+                            }}
+                            />
                         </div>
                         <div className={"inputWrapper"}>
                             <input
@@ -287,7 +322,7 @@ export function ChatContainer({
                         <div>
                             <IoSend
                                 size={"1.5rem"}
-                                color={message.split("").length > 0 ? "#398378" : "grey"}
+                                color={message.split("").length > 0 || (images && images.length > 0) ? "#398378" : "grey"}
                                 onClick={handleSubmit}
                             />
                         </div>
@@ -295,7 +330,7 @@ export function ChatContainer({
                 </form>
             </div>
         </div>) : (<>
-            <GroupOptions
+            <ChatSwitchMenu
                 groupId={group?.id}
                 role={role?.type}
                 init={init}

@@ -138,9 +138,9 @@ export enum serviceRoute {
 }
 
 export enum service {
-  authentication = "https://diseases-beneficial-cho-evaluations.trycloudflare.com/v1",
-  group = "https://doors-pac-boutique-helena.trycloudflare.com/v1",
-  messaging = "https://craft-incorporate-graphical-kernel.trycloudflare.com/",
+  authentication = "http://localhost:8999/v1",
+  group = "http://localhost:8901/v1",
+  messaging = "http://localhost:8900/",
 }
 
 export enum EwindowSizes {
