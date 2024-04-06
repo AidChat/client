@@ -215,11 +215,11 @@ function GroupSettingContainer(props: {
             <div className={"settings-item-container nameContainer"}>
                 <div className={"center w25"}>Name</div>
                 <input
-                    className={`settingInput w50 ${role != "OWNER" && "borderNone"} `}
+                    className={`settingInput w50 borderNone `}
                     onChange={handleUpdate}
                     name={"name"}
                     value={state.name}
-                    disabled={role != "OWNER"}
+                    disabled={role !== "OWNER"}
                 />
             </div>
             <div className={"settings-item-container descContainer"}>
@@ -280,25 +280,23 @@ function GroupSettingContainer(props: {
                 <div className={"settings-item-container dangerContainer"}>
                     <div>
                         <div
-                            className={"btn btn-primary btn-update"}
+                            className={"btn btn-primary btn-update m4"}
                             onClick={handleGroupUpdate}
                         >
                             {" "}
                             Update
                         </div>
                     </div>
-                    <div className={"center w25"}></div>
-                    <div className={"center w25"}></div>
                     <div>
                         <div
-                            className={"btn btn-primary btn-custom"}
+                            className={"btn btn-primary btn-custom m4"}
                             onClick={() => {
                                 showConfirm().then(function(response) {
                                     handleGroupDeleteRequest();
                                 })
                             }}
                         >
-                            {props.groupDetails.Request.length > 0 ? "Undo" : "Remove"}
+                            {props.groupDetails.Request.length > 0 ? "Undo" : "Delete"}
                         </div>
                     </div>
                 </div>

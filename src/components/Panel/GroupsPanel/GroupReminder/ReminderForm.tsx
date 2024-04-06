@@ -69,10 +69,11 @@ export function ReminderForm({groupId, reminder,refetch}: { groupId: number, rem
     }
 
 
-    return (<>
-        <Snackbar message={message} onClose={()=>updateMessage('')} />
-        <div className={'reminderContainer p8' + useResponsizeClass(EwindowSizes.S, [' flex-column MreminderContainer '])}>
-            <div className={'reminder-inputarea h100 w75 ' +useResponsizeClass(EwindowSizes.S, ['w100'])}>
+    return (<div style={{position:'sticky',top:0}}>
+        <Snackbar message={message} onClose={() => updateMessage('')}/>
+        <div
+            className={'reminderContainer p8' + useResponsizeClass(EwindowSizes.S, [' flex-column MreminderContainer '])}>
+            <div className={'reminder-inputarea h100 w75 ' + useResponsizeClass(EwindowSizes.S, ['w100'])}>
                 <div className={'dflex h100 flex-column flex-start'}>
                     <label className={'font-primary font-thick'}>TITLE</label>
                     <input onChange={(e) => handleFormChange('title', e.target.value)} className={'app-input w10 h100'}
@@ -81,7 +82,9 @@ export function ReminderForm({groupId, reminder,refetch}: { groupId: number, rem
                     <textarea onChange={(e) => handleFormChange('message', e.target.value)}
                               className={'app-input w10 h100'} placeholder={'Write your message.'}/>
                     <label className={'font-primary font-thick'}>When</label>
-                    <input onChange={(e)=>{handleFormChange('when',e.target.value)}} className={'font-primary  h100 reminderDate'} type={'datetime-local'} />
+                    <input onChange={(e) => {
+                        handleFormChange('when', e.target.value)
+                    }} className={'font-primary  h100 reminderDate'} type={'datetime-local'}/>
                 </div>
 
             </div>
@@ -109,25 +112,28 @@ export function ReminderForm({groupId, reminder,refetch}: { groupId: number, rem
                         </div>
                         <div>
                             {reminderForm.recurring &&
-                            <div className={'dflex flex-row space-between w100 flex-wrap'}>
-                                {days.map(function(day){
-                                return <div onClick={()=>handleRecursiveDaysSelection(day)} className={reminderForm.recurringDays.filter((item: string)=>item===day).length > 0 ? 'border-light dayToken  ' : ' dayToken' }>{day}</div>
-                                })}
-                            </div>
+                                <div className={'dflex flex-row space-between w100 flex-wrap'}>
+                                    {days.map(function (day) {
+                                        return <div onClick={() => handleRecursiveDaysSelection(day)}
+                                                    className={reminderForm.recurringDays.filter((item: string) => item === day).length > 0 ? 'border-light dayToken  ' : ' dayToken'}>{day}</div>
+                                    })}
+                                </div>
                             }
                         </div>
                     </div>
                 </div>
             </div>
             {!reminderForm.self && <div className={'reminder-inputarea h100 w100 '}>
-                <GroupMemberList selectable={true} groupId={groupId} onSelection={(ids: number[]) => handleUsersSelection(ids)}/>
+                <GroupMemberList selectable={true} groupId={groupId}
+                                 onSelection={(ids: number[]) => handleUsersSelection(ids)}/>
             </div>
             }
+
         </div>
         <div>
             <div className={'btn btn-primary w25 ' + useResponsizeClass(EwindowSizes.S, [' w50'])}
                  onClick={handleSave}>{loading ? <Spinner></Spinner> : 'Save'}</div>
         </div>
-    </>)
+    </div>)
 }
 

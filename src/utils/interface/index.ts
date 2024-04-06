@@ -60,6 +60,7 @@ export interface MessageContent {
     id: number;
     caption: null | string;
     content: string;
+    TYPE:'TEXT'| 'IMAGE'
 }
 
 export interface IReminder {

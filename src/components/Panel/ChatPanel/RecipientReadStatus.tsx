@@ -30,7 +30,7 @@ export function RecipientReadStatus({item}: { item: any }) {
     return (<>
         {formatTimeToHHMM(item.created_at)}{" "}
         {item.senderId === userId && (<div style={{margin: "0 0px 0 10px"}}>
-            {!isRead ? <IoIosCheckmark
+            {true ? <IoIosCheckmark
                 size={18}
                 color={"whitesmoke"}
             /> : <RiCheckDoubleLine size={14}

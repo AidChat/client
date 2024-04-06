@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './index.css'
-import {BsAlarm, BsPeople} from "react-icons/bs";
+import {BsAlarm, BsChatLeftQuoteFill, BsPeople} from "react-icons/bs";
 import {AiFillSetting, AiOutlineUsergroupAdd} from "react-icons/ai";
 import {BiArrowBack} from "react-icons/bi";
 import {Requests} from "../Requests";
@@ -17,7 +17,7 @@ interface _int {
     init?: string
 }
 
-export function GroupOptions(props: _int) {
+export function ChatSwitchMenu(props: _int) {
     const [activeMenuItem, setActiveMenuItem] = useState(props.init ? props.init : 'members');
 
     const handleMenuItemClick = (menuItem: React.SetStateAction<string>) => {

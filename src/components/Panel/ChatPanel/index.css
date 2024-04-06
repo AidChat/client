@@ -42,7 +42,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    margin-top:10px;
     padding:4px;
 }
 
@@ -102,7 +101,7 @@
     padding: 4px 10px;
     color: black;
     margin: 1px;
-    background: lightgrey;
+    background: rgba(255, 255, 255, 0.767);
     border-radius: 4px;
     width: fit-content;
     max-width: 85%;
@@ -441,7 +440,7 @@
     margin: 2px 4px;
     background: lightgrey;
     width: fit-content;
-    padding: 0 8px;
+    padding: 2px 8px;
     border-radius: 40px;
     height:20px;
 }
