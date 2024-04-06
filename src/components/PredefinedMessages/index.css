@@ -1,0 +1,13 @@
+.PredefinedMessages-container{
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	height: 100%;
+}
+.PredefinedMessages-message{
+	border:1px dashed grey;
+	padding:6px 8px;
+	margin:4px;
+	border-radius: 20px;
+	cursor: pointer;
+}
