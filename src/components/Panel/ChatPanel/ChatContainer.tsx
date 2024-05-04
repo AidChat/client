@@ -249,7 +249,7 @@ export function ChatContainer({
                             item?.ActivityStatus?.status === "ONLINE") &&
                           recentOffline.filter(_k => _k === item.id).length ===
                             0
-                            ? "user-circle usernamewrapper"
+                            ? " usernamewrapper"
                             : "usernamewrapper"
                         }
                         key={index}
@@ -329,7 +329,7 @@ export function ChatContainer({
                 <Spinner />
               </div>
             )}
-            {state.messages.length === 0 && (
+            {state.messages && state.messages.length === 0 && (
               <PredefinedMessages
                 onSelect={(s: string) => {
                   handleSubmit(false, s);

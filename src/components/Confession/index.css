@@ -1,0 +1,18 @@
+.confession_container{
+    padding:0 10px;
+    width:80%;
+    max-width: 500px;
+}
+.confession{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.btncontainer{
+    text-align: center;
+    margin-top: 10px;
+
+}

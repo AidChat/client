@@ -9,7 +9,10 @@ import {DialogPanel} from "../../Dialog";
 import ImageUploader from "react-images-upload";
 import Snackbar from "../../Utils/Snackbar";
 import {Spinner} from "../../Utils/Spinner/spinner";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {
+  useNetworkConnectivity,
+  useWindowSize,
+} from "../../../services/hooks/appHooks";
 import {IoIosArrowForward} from "react-icons/io";
 import {
   EwindowSizes,
@@ -21,6 +24,7 @@ import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
 import {showConfirm, useResponsizeClass} from "../../../utils/functions";
 import {OTPForm} from "../../Auth/Code";
+import Drawer from "react-modern-drawer";
 
 export function UtilityPanel() {
   const {
@@ -163,12 +167,13 @@ export function UserIcon() {
         break;
     }
   }
+  const {isOnline} = useNetworkConnectivity();
 
   return (
     <>
       <DialogPanel
         open={showUserForm}
-        header={"Profile"}
+        header={"MY PROFILE"}
         BodyEle={
           <>
             <ProfileForm
@@ -198,11 +203,15 @@ export function UserIcon() {
             onClick={() => {
               small && handleClick(1);
             }}
-            style={{textAlign: "center", width: "100%"}}
+            style={{
+              textAlign: "center",
+              width: "100%",
+              borderColor: isOnline ? "green" : "whitesmoke",
+            }}
             className={"usernameWrapper"}
           >
             <div
-              style={{textAlign: "center", height: 50, width: 50}}
+              style={{textAlign: "center", height: 60, width: 60}}
               className={"item-wrapper"}
             >
               <img
@@ -211,7 +220,10 @@ export function UserIcon() {
               />
             </div>
             <div className={"w100"}>
-              <h1 className={"font-primary username ellipsis"} style={{width:'100%'}}>
+              <h1
+                className={"font-primary username ellipsis"}
+                style={{width: "100%"}}
+              >
                 {user?.name.toUpperCase()}
               </h1>
             </div>
@@ -498,9 +510,13 @@ function ProfileForm({onUpdate}: {onUpdate: () => void}) {
       >
         <div
           onClick={() => {
+            handleUpdate();
+            handleUpdate();
 
-             handleUpdate();
+            handleUpdate();
+            handleUpdate();
 
+            handleUpdate();
           }}
           className={"btn btn-round-secondary btn-custom-profile"}
         >

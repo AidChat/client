@@ -10,7 +10,7 @@ import {motion} from 'framer-motion'
 import {EwindowSizes} from "../../utils/enum";
 import {OTPForm} from "./Code";
 
-export function Validator() {
+export function AuthenticationContainer() {
   const {requestCode} = useParams();
   const [props, setProps] = useState<{email: string}>({email: ""});
   const [state, setState] = useState({

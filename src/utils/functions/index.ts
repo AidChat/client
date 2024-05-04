@@ -5,7 +5,7 @@ import {getToken} from "firebase/messaging";
 import {PushNotifications} from "@capacitor/push-notifications";
 import {getFCMMessaging} from "../../firebase.config";
 import {ScreenOrientation} from "@capacitor/screen-orientation";
-import {StatusBar, StyleOptions} from "@capacitor/status-bar";
+import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
 
 export function formatTime(date: string) {
@@ -79,6 +79,9 @@ export async function getDeviceInfoUsingCapacitor() {
     const info = await Device.getInfo();
     console.log("Device Info ", info)
     return info
+}
+export async function getDeviceID() {
+    return await Device.getId()
 }
 
 export async function getFCMToken() {

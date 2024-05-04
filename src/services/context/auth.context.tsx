@@ -1,10 +1,11 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {Validator} from "../../components/Auth";
+import {AuthenticationContainer} from "../../components/Auth";
 import {Spinner} from "../../components/Utils/Spinner/spinner";
 import {_props} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
 import {UserDetailsForm} from "../../components/Concent";
 import {reqType, service, serviceRoute} from "../../utils/enum";
+import {Confession} from "../../components/Confession";
 
 export let AuthContext = React.createContext<
   | {
@@ -30,6 +31,7 @@ export const AuthContextProvider = ({
   const {requestCode} = useParams();
   const [showUserForm, setFormVisibility] = useState<boolean>(true);
   const [isUserVerified, setVerifyState] = useState<boolean>(false);
+  const [isConfession, setConfession] = useState<boolean>(true);
   useEffect(() => {
     verifyAuthentication();
   }, []);
@@ -39,6 +41,10 @@ export const AuthContextProvider = ({
       _invitation(true);
     }
   }, [requestCode]);
+
+  function changeConfession() {
+      setConfession(!isConfession);
+  }
 
   function stopload() {
     setLoad(false);
@@ -115,7 +121,8 @@ export const AuthContextProvider = ({
             children
           )
         ) : (
-          <Validator />
+            isConfession ? <Confession click={()=>changeConfession()}  /> :
+          <AuthenticationContainer />
         )
       ) : (
         <Spinner />
