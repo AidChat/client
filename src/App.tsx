@@ -7,7 +7,6 @@ import {SocketEmitters} from "./utils/interface";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 
 import {
-    getDeviceID,
     getDeviceInfoUsingCapacitor,
     requestForNotificationAccessIfNotGranted,
     setScreenOrientation,
@@ -16,29 +15,29 @@ import {
 function App(): React.ReactElement {
     const {socket} = useContext(ShellContext);
     useEffect(() => {
-        getDeviceInfoUsingCapacitor().then(function (info) {
-            if (info.platform === "web") {
-                if ("serviceWorker" in navigator) {
-                    navigator.serviceWorker.register("./firebase-messaging-sw.js").then(
-                        function (registration) {
-                            console.log(
-                                "ServiceWorker registration successful with scope: ",
-                                registration.scope
-                            );
-                        },
-                        function (err) {
-                            console.error("ServiceWorker registration failed: ", err);
-                        }
-                    );
+        console.log(process.env.NODE_ENV);
+        if (process.env.REACT_APP_NODE_ENV === 'production') {
+            getDeviceInfoUsingCapacitor().then(async function (info) {
+                if (info.platform === "web") {
+                    if ("serviceWorker" in navigator) {
+                        navigator.serviceWorker.register("./firebase-messaging-sw.js").then(
+                            function (registration) {
+                                console.log(
+                                    "ServiceWorker registration successful with scope: ",
+                                    registration.scope
+                                );
+                            },
+                            function (err) {
+                                console.error("ServiceWorker registration failed: ", err);
+                            }
+                        );
+                    }
+                    await requestForNotificationAccessIfNotGranted()
+                } else {
+                    await setScreenOrientation("portrait");
                 }
-                requestForNotificationAccessIfNotGranted()
-            } else {
-                setScreenOrientation("portrait");
-            }
-        });
-        getDeviceID().then(function (id){
-            console.log(id);
-        })
+            });
+        }
 
         return () => {
             socket?.emit(SocketEmitters._DISCONNECT);

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './index.css';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import {AiFillCloseCircle} from 'react-icons/ai';
 import {motion} from "framer-motion";
 
 interface SnackbarProps {
@@ -8,7 +8,7 @@ interface SnackbarProps {
     onClose: () => void;
 }
 
-const Snackbar: React.FC<SnackbarProps> = ({ message, onClose }) => {
+const Snackbar: React.FC<SnackbarProps> = ({message, onClose}) => {
     const [show, setShow] = useState<boolean>(false);
 
     useEffect(() => {
@@ -22,11 +22,11 @@ const Snackbar: React.FC<SnackbarProps> = ({ message, onClose }) => {
         }
     }, [message, onClose]);
 
-    return show ? (
-        <motion.div initial={{y:'10px'}} animate={{y:'0px'}} className="snackbar">
-            <div style={{ flex: 2 }}>{message}</div>
-            <div style={{ display: 'flex', marginLeft: '10px' }} onClick={onClose}>
-                <AiFillCloseCircle />
+    return show && message.split('').length > 0 ? (
+        <motion.div initial={{y: '10px'}} animate={{y: '0px'}} className="snackbar">
+            <div style={{flex: 2}}>{message}</div>
+            <div style={{display: 'flex', marginLeft: '10px'}} onClick={onClose}>
+                <AiFillCloseCircle/>
             </div>
         </motion.div>
     ) : null;

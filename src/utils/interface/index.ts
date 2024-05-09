@@ -8,7 +8,7 @@ export interface UserProps {
     Type?: "Pending" | "Seeker" | "Helper";
     about?: string;
     mobile?: number;
-    verifiedEmail ?: boolean
+    verifiedEmail?: boolean
 }
 
 export enum SocketEmitters {
@@ -46,7 +46,7 @@ export interface MessageInterface {
         name: string; email: string; profileImage: string; id: number;
     };
     ReadByAll?: boolean;
-    ReadReceipt:ReadReceipt[]
+    ReadReceipt: ReadReceipt[]
 }
 
 export interface ReadReceipt {
@@ -60,7 +60,7 @@ export interface MessageContent {
     id: number;
     caption: null | string;
     content: string;
-    TYPE:'TEXT'| 'IMAGE'
+    TYPE: 'TEXT' | 'IMAGE'
 }
 
 export interface IReminder {
@@ -74,13 +74,14 @@ export interface IReminder {
     recurring: boolean,
     when: string,
     recurringDays: string[],
-    createdById ?:number,
-    par ?:UserProps[],
-    participants?:IReminderMembers
-    createdBy ?:UserProps
+    createdById?: number,
+    par?: UserProps[],
+    participants?: IReminderMembers
+    createdBy?: UserProps
 }
-export interface IReminderMembers{
-    id:number,
-    users:UserProps[]
-    reminderId:number
+
+export interface IReminderMembers {
+    id: number,
+    users: UserProps[]
+    reminderId: number
 }
