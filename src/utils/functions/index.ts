@@ -5,7 +5,7 @@ import {getToken} from "firebase/messaging";
 import {PushNotifications} from "@capacitor/push-notifications";
 import {getFCMMessaging} from "../../firebase.config";
 import {ScreenOrientation} from "@capacitor/screen-orientation";
-import {StatusBar, StyleOptions} from "@capacitor/status-bar";
+import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
 
 export function formatTime(date: string) {
@@ -81,6 +81,11 @@ export async function getDeviceInfoUsingCapacitor() {
     return info
 }
 
+export async function getDeviceID() {
+    let id = await Device.getId()
+    return id
+}
+
 export async function getFCMToken() {
     return getToken(getFCMMessaging(), {
         vapidKey: process.env.REACT_APP_FIREBASEKEY,
@@ -106,8 +111,8 @@ export async function requestForNotificationAccessIfNotGranted() {
     }
 }
 
-export async function setScreenOrientation(type:'portrait'|'landscape'){
-    await ScreenOrientation.lock({ orientation: type });
+export async function setScreenOrientation(type: 'portrait' | 'landscape') {
+    await ScreenOrientation.lock({orientation: type});
 }
 
 export const hideStatusBar = async () => {
@@ -116,20 +121,31 @@ export const hideStatusBar = async () => {
 
 
 export const showConfirm = async () => {
-    const { value } = await Dialog.confirm({
+    const {value} = await Dialog.confirm({
         title: 'Please confirm.',
         message: `Are you sure you'd like to continue?`,
-        okButtonTitle:'Yes',
-        cancelButtonTitle:'Cancel',
+        okButtonTitle: 'Yes',
+        cancelButtonTitle: 'Cancel',
 
     });
 
     return value
 };
 
-export const showAlert = async (title:string,message:string) => {
+export const showAlert = async (title: string, message: string) => {
     await Dialog.alert({
         title: title,
         message: message,
     });
 };
+
+export function validateAskText(message: string): { isValid: boolean, message: string } {
+    let isValid = true;
+    let errorMessage: string = '';
+    if (message.split('').length < 2) {
+        isValid = false;
+        errorMessage = "Please write some valid message.";
+    }
+
+    return {isValid, message: errorMessage};
+}

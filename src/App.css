@@ -3,6 +3,7 @@
     src: local('defaultfont'), url(./YsabeauInfant-VariableFont_wght.ttf) format('truetype');
 }
 
+
 * {
     font-family: defaultfont, serif;
     font-weight: bold;
@@ -210,6 +211,12 @@ div {
 
 .w25 {
     width: 25%;
+}
+.w10{
+    width: 10%;
+}
+.w15{
+    width: 15%;
 }
 
 #tooltip {

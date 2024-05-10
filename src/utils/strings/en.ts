@@ -22,7 +22,7 @@ export const en: any = {
     20: 'MY SUBMISSIONS',
     21: 'SUBMISSION VIEWED',
     22: 'Logout',
-    23:`Welcome to <i style="color:#2b534d;font-size:22px">Aidchat</i>.<br> We're dedicated to providing mental health services while ensuring transparency and respecting your rights. Your consent is vital for us to collect and process your information.<br><br> By using our services, you agree to the following:
+    23: `Welcome to <i style="color:#2b534d;font-size:22px">Aidchat</i>.<br> We're dedicated to providing mental health services while ensuring transparency and respecting your rights. Your consent is vital for us to collect and process your information.<br><br> By using our services, you agree to the following:
 
 <br>
 Data Collection:
@@ -61,7 +61,8 @@ Consent:
 <br>
 <div style="font-size:18px">
 If you have questions or requests regarding your data, contact us at <i> contact@aidchat.com</i>.
-</div>`
+</div>`,
+    24: 'Moksha.ai'
 }
 
 export enum enString {
@@ -88,5 +89,6 @@ export enum enString {
     mysubmission,
     submissionviewed,
     logout,
-    consent
+    consent,
+    botname
 }

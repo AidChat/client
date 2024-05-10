@@ -42,3 +42,16 @@ export const useCheckUserVerification = () => {
 
   return data?.isUserVerified;
 };
+
+export const useNetworkConnectivity = () => {
+  let isOnline: boolean = false;
+
+  window.addEventListener("offline", () => {
+    isOnline = window.navigator.onLine;
+  });
+  window.addEventListener("online", () => {
+    isOnline = window.navigator.onLine;
+  });
+  console.log(isOnline);
+  return {isOnline};
+};
