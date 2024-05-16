@@ -75,9 +75,6 @@ export const Confession = (props: Props) => {
     useEffect(() => {
         scrollToBottom(scrollableDivRef);
     }, [conversation]);
-    useEffect(() => {
-        startLogger('TestId')
-    }, []);
 
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {
         if (ref.current) {
