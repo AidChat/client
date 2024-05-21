@@ -7,7 +7,7 @@ import {service} from "../../utils/enum";
 import {getDeviceID, validateAskText} from "../../utils/functions";
 import Snackbar from "../Utils/Snackbar";
 import {motion} from "framer-motion";
-import {startLogger} from "hawkeye";
+import {startLogger} from "aidchat-hawkeye";
 import moksha from './../../assets/png/moksha.png'
 import {getString} from "../../utils/strings";
 
@@ -76,7 +76,7 @@ export const Confession = (props: Props) => {
         scrollToBottom(scrollableDivRef);
     }, [conversation]);
     useEffect(() => {
-        startLogger('TestId')
+        startLogger({interval:3000})
     }, []);
 
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {

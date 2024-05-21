@@ -33,6 +33,11 @@ export const AuthContextProvider = ({
     const [isUserVerified, setVerifyState] = useState<boolean>(false);
     const [isConfession, setConfession] = useState<boolean>(true);
     useEffect(() => {
+        let hostname = window.location.hostname;
+        const link = hostname.split('.')[0];
+        if (link === 'aider'){
+            setConfession(false);
+        }
         verifyAuthentication();
     }, []);
     useEffect(() => {

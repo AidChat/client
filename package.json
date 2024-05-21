@@ -19,6 +19,7 @@
     "@types/node": "^16.18.36",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "aidchat-hawkeye": "^0.0.1",
     "axios": "^1.5.1",
     "firebase": "^10.9.0",
     "formik": "^2.4.3",

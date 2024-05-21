@@ -18,6 +18,7 @@ import {
   service,
   serviceRoute,
 } from "../../../../utils/enum";
+import LogoCanvas from "../../../Utils/Logo/logo-canvas";
 
 export function GroupListPanel() {
   const [loading, _loading] = useState<boolean>(false);
@@ -85,10 +86,11 @@ export function GroupListPanel() {
   }, [refetch]);
 
   return (
-    <div className={"w100"}>
+    <div className={"w100 h100"}>
       <div className={"item-container"}>
         <div className={" item searchItem"}>
-          <Logo />
+          {/*<Logo />*/}
+          <LogoCanvas />
           <SearchContact
             onChange={(e: string) => {
               _search(e);

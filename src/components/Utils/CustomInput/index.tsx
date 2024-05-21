@@ -64,7 +64,7 @@ export function Input(props: ICustomInput) {
     };
 
     let _styles = styles;
-    _styles['inputEle'].color = props.textColor ? props.textColor : "white";
+    _styles['inputEle'].color = props.textColor ? props.textColor : "black";
     _styles['container'].borderRadius = props.borderRadius ? props.borderRadius : '0px';
     _styles['container'].border = props.textColor ? '1px solid ' + props.textColor : "lightgray";
     _styles['container'].height = props.height ? props.height : '2em'
