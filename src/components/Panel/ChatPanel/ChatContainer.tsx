@@ -1,10 +1,10 @@
 import {
-  MessageContent,
-  MessageInterface,
-  Role,
-  SocketEmitters,
-  SocketListeners,
-  UserProps,
+    MessageContent,
+    MessageInterface,
+    Role,
+    SocketEmitters,
+    SocketListeners,
+    UserProps,
 } from "../../../utils/interface";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {ShellContext} from "../../../services/context/shell.context";
@@ -23,7 +23,7 @@ import {ChatSwitchMenu} from "../GroupsPanel/GroupOptions";
 import {RecipientReadStatus} from "./RecipientReadStatus";
 import {MultiImageUpload} from "../../Utils/MulltiImageUpload";
 import PredefinedMessages from "../../PredefinedMessages";
-import {startLogger} from "hawkeye";
+import {startLogger} from "aidchat-hawkeye";
 
 export function ChatContainer({
                                   messages,
@@ -142,7 +142,7 @@ export function ChatContainer({
             }, 3000);
         });
         _props._user().get().then(function (data: UserProps) {
-            data.id && startLogger({interval:1000})
+            data.id && startLogger({interval:10000})
         })
         return () => {
             _setScrolling(false);

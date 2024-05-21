@@ -35,7 +35,7 @@ export const AuthContextProvider = ({
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
-        if (link === 'aiders'){
+        if (link === 'aider'){
             setConfession(false);
         }
         verifyAuthentication();
