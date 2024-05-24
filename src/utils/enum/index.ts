@@ -144,6 +144,10 @@ export enum service {
     bot = 'http://localhost:9650',
 }
 
+export enum IDBStore{
+    blog='BLOG'
+}
+
 export enum EwindowSizes {
     Xl = "Xl",
     M = "M",

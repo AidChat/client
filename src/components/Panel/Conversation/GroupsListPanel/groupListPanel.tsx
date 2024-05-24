@@ -72,7 +72,7 @@ export function GroupListPanel() {
       .query(serviceRoute.search, {search}, reqType.post, undefined)
       .then(result => {
         _loading(false);
-        setItem(result.data);
+        setItem(result?.data);
       });
   }
 
@@ -81,7 +81,7 @@ export function GroupListPanel() {
       ._db(service.group)
       .query(serviceRoute.group, undefined, reqType.get)
       .then(response => {
-        setItem(response.data);
+        setItem(response?.data);
       });
   }, [refetch]);
 
@@ -89,8 +89,8 @@ export function GroupListPanel() {
     <div className={"w100 h100"}>
       <div className={"item-container"}>
         <div className={" item searchItem"}>
-          {/*<Logo />*/}
-          <LogoCanvas />
+          <Logo />
+          {/*<LogoCanvas />*/}
           <SearchContact
             onChange={(e: string) => {
               _search(e);

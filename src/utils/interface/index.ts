@@ -1,3 +1,5 @@
+import {IDBStore} from "../enum";
+
 export interface UserProps {
     id?: number;
     name?: string;
@@ -85,3 +87,5 @@ export interface IReminderMembers {
     users: UserProps[]
     reminderId: number
 }
+
+export type IDBStoreName  = 'BLOG';

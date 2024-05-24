@@ -1,5 +1,5 @@
 import {useWindowSize} from "../../services/hooks/appHooks";
-import {EwindowSizes} from "../enum";
+import {EwindowSizes, IDBStore} from "../enum";
 import {Device, DeviceInfo} from "@capacitor/device";
 import {getToken} from "firebase/messaging";
 import {PushNotifications} from "@capacitor/push-notifications";
@@ -7,6 +7,7 @@ import {getFCMMessaging} from "../../firebase.config";
 import {ScreenOrientation} from "@capacitor/screen-orientation";
 import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
+import {IDBStoreName} from "../interface";
 
 export function formatTime(date: string) {
     return new Date(date).toTimeString().slice(0, 8);
@@ -149,3 +150,81 @@ export function validateAskText(message: string): { isValid: boolean, message: s
 
     return {isValid, message: errorMessage};
 }
+
+export const storeCurrentContent = (store: IDBStoreName, content: string) => {
+    const current = new Date();
+    const data = {
+        createdAt: current,
+        content: content,
+        store: store
+    }
+    return storeObjects(data)
+}
+
+function openDatabase(store: IDBStoreName) {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(store.toString(), 1);
+
+        request.onupgradeneeded = (event: any) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(store)) {
+                db.createObjectStore(store, {keyPath: 'id', autoIncrement: true});
+            }
+        };
+
+        request.onsuccess = (event: any) => {
+            resolve(event.target.result);
+        };
+
+        request.onerror = (event: any) => {
+            reject(event.target.error);
+        };
+    });
+}
+
+function storeObjects(object: { createdAt: Date, content: string, store: IDBStoreName ,id?:number}) {
+    return new Promise((resolve, reject) => {
+        openDatabase(object.store).then((db: any) => {
+            const transaction = db.transaction([object.store.toString()], 'readwrite');
+            const objectStore = transaction.objectStore(object.store);
+            object.id = 1;
+            const request = objectStore.put(object);
+            request.onsuccess = () => {
+                resolve(true);
+            };
+            request.onerror = (event: any) => {
+                reject(event.target.error);
+            };
+            transaction.oncomplete = () => {
+                db.close();
+            };
+        }).catch((error) => {
+            console.error('Error opening database:', error);
+            reject(error);
+        });
+    })
+}
+
+export function queryStoreObjects(storeName: IDBStoreName) {
+    return new Promise((resolve, reject) => {
+        openDatabase(storeName).then((db: any) => {
+            const transaction = db.transaction([storeName.toString()], 'readonly');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.getAll();
+            request.onsuccess = (event: any) => {
+                resolve(event.target.result);
+            };
+            request.onerror = (event: any) => {
+                reject(event.target.error);
+            };
+            transaction.oncomplete = () => {
+                db.close();
+            };
+        }).catch((error) => {
+            console.error('Error opening database:', error);
+            reject(error);
+        });
+    })
+}
+
+

@@ -52,6 +52,5 @@ export const useNetworkConnectivity = () => {
   window.addEventListener("online", () => {
     isOnline = window.navigator.onLine;
   });
-  console.log(isOnline);
   return {isOnline};
 };

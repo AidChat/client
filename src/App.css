@@ -460,11 +460,11 @@ dialog::backdrop {
     border:none;
 }
 .flex-start{
-    align-items: start;
-    justify-content: start;
+    align-items: start ;
+    justify-content: start !important;
 }
 .space-between{
-    justify-content: space-between;
+    justify-content: space-between !important;
 }
 .space-evenly{
     justify-content: space-evenly;

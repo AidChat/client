@@ -22,7 +22,7 @@ import {FcAddImage} from "react-icons/fc";
 import {ChatSwitchMenu} from "../GroupsPanel/GroupOptions";
 import {RecipientReadStatus} from "./RecipientReadStatus";
 import {MultiImageUpload} from "../../Utils/MulltiImageUpload";
-import PredefinedMessages from "../../PredefinedMessages";
+import PredefinedMessages from "../../Agreement";
 import {startLogger} from "aidchat-hawkeye";
 
 export function ChatContainer({

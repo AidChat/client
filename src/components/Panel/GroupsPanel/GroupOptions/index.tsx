@@ -6,7 +6,7 @@ import {BiArrowBack} from "react-icons/bi";
 import {Requests} from "../Requests";
 import {GroupMemberList} from "../Members";
 import {Settings} from "../Settings";
-import {groupOptions} from "../../../../utils/menu";
+import {groupOptions} from "../../../../utils/constants";
 import {GroupReminder} from "../GroupReminder";
 
 
