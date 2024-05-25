@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import {QuillFormats, QuillModules} from "../../../utils/constants";
 import './index.css';
 import {getString} from "../../../utils/strings";
-import {queryStoreObjects, storeCurrentContent, useResponsizeClass} from "../../../utils/functions";
+import {queryStoreObjects, showConfirm, storeCurrentContent, useResponsizeClass} from "../../../utils/functions";
 import {EwindowSizes, IDBStore} from "../../../utils/enum";
 import {IoCloudUploadOutline} from "react-icons/io5";
 import {MdOutlineArrowBackIos, MdOutlinePublish} from "react-icons/md";
@@ -20,7 +20,11 @@ export default function TypeWriter(props:ComponentProps) {
     const [message, setMessage] = useState<string>('');
     function checkAndStoreContent() {
         if (content.split('').length > 30) {
-        setMessage('Article is now under review');
+        showConfirm().then(function(value){
+            if(value){
+                setMessage('Article is under review now.')
+            }
+        })
         } else {
             window.alert('Not enough content');
         }
