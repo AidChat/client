@@ -30,15 +30,15 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
 
   useEffect(() => {
     setSocket(
-      io(service.messaging, {
-        autoConnect: true,
-        reconnectionAttempts: 1,
-        auth: {
-          session: window.localStorage.getItem("session")
-            ? window.localStorage.getItem("session")
-            : "",
-        },
-      })
+        io(service.messaging, {
+            autoConnect: true,
+            reconnectionAttempts: 1,
+            auth: {
+                session: window.localStorage.getItem("session")
+                    ? window.localStorage.getItem("session")
+                    : "",
+            },
+        })
     );
   }, []);
 

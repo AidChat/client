@@ -3,21 +3,25 @@ import {Input} from "../Utils/CustomInput";
 import './index.css';
 import {PiPaperPlaneTiltFill} from "react-icons/pi";
 import {io, Socket} from "socket.io-client";
-import {service} from "../../utils/enum";
-import {getDeviceID, validateAskText} from "../../utils/functions";
+import {IDBStore, service} from "../../utils/enum";
+import {
+    clearDatabaseByName,
+    getDeviceID,
+    queryStoreObjects,
+    storeChatsByDeviceID,
+    validateAskText
+} from "../../utils/functions";
 import Snackbar from "../Utils/Snackbar";
 import {motion} from "framer-motion";
 import {startLogger} from "aidchat-hawkeye";
 import moksha from './../../assets/png/moksha.png'
 import {getString} from "../../utils/strings";
+import {Message} from "../../utils/interface";
+import {MdDeleteOutline} from "react-icons/md";
+import Tooltip from "../Utils/Tooltip";
 
 interface Props {
     click: () => void;
-}
-
-interface Message {
-    sender: 'User' | 'Model';
-    message: string;
 }
 
 export const Confession = (props: Props) => {
@@ -26,6 +30,7 @@ export const Confession = (props: Props) => {
     const [message, setMessage] = useState("Hi Moksha!");
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
+    const [hasPastMessage, setHasPastMessage] = useState<boolean>(false);
     useEffect(() => {
         const newSocket = io(service.bot, {
             autoConnect: true,
@@ -52,6 +57,12 @@ export const Confession = (props: Props) => {
         setConversation(prevConversation => [...prevConversation, payload]);
     }
 
+    useEffect(() => {
+        if (conversation.length > 1) {
+            storeChatsByDeviceID(conversation)
+        }
+    }, [conversation]);
+
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
             let device = await getDeviceID();
@@ -76,7 +87,13 @@ export const Confession = (props: Props) => {
         scrollToBottom(scrollableDivRef);
     }, [conversation]);
     useEffect(() => {
-        startLogger({interval:3000})
+        startLogger({interval: 3000});
+        queryStoreObjects(IDBStore.chat).then(function (data: any) {
+            if (data && data[0]?.chats) {
+                setConversation(data[0]?.chats);
+                setMessage('');
+            }
+        })
     }, []);
 
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {
@@ -105,6 +122,16 @@ export const Confession = (props: Props) => {
                         ))}
                 </div>
                 <div className={'confession_container'}>
+                    <div className={'h100 flex center  justify-center clear'}>
+                        <Tooltip text={'Clear chat'}>
+                            <MdDeleteOutline color={'whitesmoke'} size={22} onClick={() => {
+                                clearDatabaseByName(IDBStore.chat).then(r => {
+                                    setConversation([]);
+                                })
+                            }}/>
+                        </Tooltip>
+                    </div>
+
                     <Input
                         height={"4em"}
                         borderRadius={'50px'}

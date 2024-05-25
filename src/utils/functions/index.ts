@@ -1,13 +1,13 @@
 import {useWindowSize} from "../../services/hooks/appHooks";
 import {EwindowSizes, IDBStore} from "../enum";
-import {Device, DeviceInfo} from "@capacitor/device";
+import {Device, DeviceId, DeviceInfo} from "@capacitor/device";
 import {getToken} from "firebase/messaging";
 import {PushNotifications} from "@capacitor/push-notifications";
 import {getFCMMessaging} from "../../firebase.config";
 import {ScreenOrientation} from "@capacitor/screen-orientation";
 import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
-import {IDBStoreName} from "../interface";
+import {IDBStoreName, Message} from "../interface";
 
 export function formatTime(date: string) {
     return new Date(date).toTimeString().slice(0, 8);
@@ -160,6 +160,21 @@ export const storeCurrentContent = (store: IDBStoreName, content: string) => {
     }
     return storeObjects(data)
 }
+export const storeChatsByDeviceID = (chats: Message[]) => {
+    let store: IDBStoreName = IDBStore.chat;
+    getDeviceID().then((deviceID:DeviceId) => {
+        if (deviceID) {
+            let data = {
+                chats: chats,
+                store: store,
+                id: deviceID.identifier,
+                createdAt: new Date(),
+            }
+            return storeObjects(data);
+        }
+    })
+
+}
 
 function openDatabase(store: IDBStoreName) {
     return new Promise((resolve, reject) => {
@@ -182,7 +197,13 @@ function openDatabase(store: IDBStoreName) {
     });
 }
 
-function storeObjects(object: { createdAt: Date, content: string, store: IDBStoreName ,id?:number}) {
+function storeObjects(object: {
+    createdAt: Date,
+    content?: string,
+    store: IDBStoreName,
+    id?: number | string,
+    chats?: any
+}) {
     return new Promise((resolve, reject) => {
         openDatabase(object.store).then((db: any) => {
             const transaction = db.transaction([object.store.toString()], 'readwrite');
@@ -226,5 +247,38 @@ export function queryStoreObjects(storeName: IDBStoreName) {
         });
     })
 }
+export function clearDatabaseByName(dbName:IDBStoreName) {
+    return new Promise((resolve, reject) => {
+    const request = indexedDB.open(dbName);
+    request.onsuccess = (event:any) => {
+        const db = event.target.result;
+        const transaction = db.transaction(db.objectStoreNames, 'readwrite');
+        transaction.oncomplete = () => {
+            console.log(`All object stores in ${dbName} have been cleared.`);
+            resolve(true);
+        };
+
+        transaction.onerror = (event:any) => {
+            reject(event.target.error);
+            console.error('Transaction error:', event.target.error);
+        };
+
+        for (const storeName of db.objectStoreNames) {
+            const objectStore = transaction.objectStore(storeName);
+            objectStore.clear().onsuccess = () => {
+                console.log(`Cleared object store: ${storeName}`);
+            };
+        }
+        resolve(true);
+        db.close();
+    };
+
+    request.onerror = (event:any) => {
+        console.error('Error opening database:', event.target.error);
+        reject(false);
+    };
+    })
+}
+
 
 

@@ -142,10 +142,12 @@ export enum service {
     group = "http://localhost:8901/v1",
     messaging = "http://localhost:8900/",
     bot = 'http://localhost:9650',
+    event='http://localhost:9651'
 }
 
 export enum IDBStore{
-    blog='BLOG'
+    blog='BLOG',
+    chat='AICHAT'
 }
 
 export enum EwindowSizes {

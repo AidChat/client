@@ -31,6 +31,10 @@
 .confession_container:first-child {
     width: 100%;
 }
+.confession_container .clear{
+    margin:0 10px;
+    cursor: pointer;
+}
 
 .btncontainer {
     text-align: center;

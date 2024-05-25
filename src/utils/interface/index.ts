@@ -27,6 +27,7 @@ export enum SocketListeners {
     READBYALL = "READBYALL",
     USERONLINE = "USERONLINE",
     USEROFFLINE = "USEROFFLINE",
+    RECORDUPDATE='RECORDUPDATE'
 }
 
 export interface Role {
@@ -88,4 +89,9 @@ export interface IReminderMembers {
     reminderId: number
 }
 
-export type IDBStoreName  = 'BLOG';
+export type IDBStoreName  = 'BLOG'| 'AICHAT';
+
+export interface Message {
+    sender: 'User' | 'Model';
+    message: string;
+}
