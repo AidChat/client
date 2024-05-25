@@ -17,7 +17,8 @@ export let AuthContext = React.createContext<
         forceReload?: boolean
     ) => void;
     isUserVerified: boolean;
-    eventSocket : Socket | null
+    eventSocket : Socket | null,
+    setConfession:(V:boolean)=>void
 }
     | undefined
 >(undefined);
@@ -138,7 +139,8 @@ export const AuthContextProvider = ({
                 verifyAuthentication,
                 removeUserSession,
                 isUserVerified,
-                eventSocket
+                eventSocket,
+                setConfession
             }}
         >
             {!loading ? (

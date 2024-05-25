@@ -78,3 +78,13 @@
 .emptycontainer .text-container {
     margin: 4px 8px;
 }
+.moksha-icon{
+    height: 70px;
+    width: 70px;
+    border: 2px solid gray;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
