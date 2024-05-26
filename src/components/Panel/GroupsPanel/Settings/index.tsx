@@ -11,7 +11,7 @@ import {ShellContext} from "../../../../services/context/shell.context";
 import {Role} from "../../../../utils/interface";
 import {reqType, service, serviceRoute} from "../../../../utils/enum";
 import {AnimatePresence, motion} from "framer-motion";
-import {showConfirm} from "../../../../utils/functions";
+import {confirm} from "../../../../utils/functions";
 
 export function Settings(props: { groupId: number }) {
     const [data, setData] = useState<GroupDetailsInt | null>(null);
@@ -291,7 +291,7 @@ function GroupSettingContainer(props: {
                         <div
                             className={"btn btn-primary btn-custom m4"}
                             onClick={() => {
-                                showConfirm().then(function(response) {
+                                confirm({message:'Do you want to continue?'}).then(function(response) {
                                     handleGroupDeleteRequest();
                                 })
                             }}
@@ -307,7 +307,7 @@ function GroupSettingContainer(props: {
                         <div
                             className={"btn btn-primary btn-update"}
                             onClick={()=>{
-                            showConfirm().then(function(response){
+                            confirm({message:"Do you want to continue?",header:'Confirmation'}).then(function(response){
                                 if(response)   handleGroupLeave()
                             })
                              }}

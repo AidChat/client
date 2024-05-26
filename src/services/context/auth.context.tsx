@@ -48,16 +48,16 @@ export const AuthContextProvider = ({
             setConfession(false);
         }
         verifyAuthentication();
-        const newSocket = io(service.bot, {
+        let newSocket = io(service.bot, {
             autoConnect: true,
-            reconnectionAttempts: 1,
+            reconnectionAttempts: 10,
+
         });
         newSocket.emit(SocketEmitters._PING);
         newSocket.on(SocketListeners.PONG,()=>{
             setIsMokshaAvailable(true)
         })
         setMokshaSocket(newSocket);
-        mokshaSocket?.connect()
     }, []);
     useEffect(() => {
         if (requestCode) {

@@ -1,5 +1,5 @@
 .confession_container {
-    padding: 0px 10px;
+    padding: 0px 4px;
     width: 100%;
     display: flex;
 
@@ -64,6 +64,7 @@
 
 .emptycontainer h4 {
     font-size: 2rem;
+    margin:0;
 }
 
 .emptycontainer span {
@@ -81,11 +82,10 @@
 
 .emptycontainer .moksha-container {
     height: 250px;
-    width: 250px;
 }
 
 .emptycontainer .text-container {
-    margin: 4px 8px;
+
 }
 .moksha-icon{
     border-radius: 50%;

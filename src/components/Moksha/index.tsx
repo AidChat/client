@@ -4,7 +4,7 @@ import './index.css';
 import {PiPaperPlaneTiltFill} from "react-icons/pi";
 import {IDBStore} from "../../utils/enum";
 import {
-    clearDatabaseByName,
+    clearDatabaseByName, confirm,
     getDeviceID,
     queryStoreObjects,
     storeChatsByDeviceID,
@@ -32,7 +32,6 @@ export const Confession = (props: Props) => {
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
     let ac = useContext(AuthContext);
-    console.log(ac)
     useEffect(() => {
         scrollToBottom(scrollableDivRef);
         return () => {
@@ -42,10 +41,14 @@ export const Confession = (props: Props) => {
     }, []);
 
     useEffect(() => {
-        if (ac?.mokshaSocket) {
+        console.log(ac?.mokshaSocket?.connected)
+        if (!ac?.mokshaSocket?.connected) {
+            ac?.mokshaSocket?.connect();
+        }
+        if (ac?.mokshaSocket?.connected) {
             ac.mokshaSocket.on(SocketListeners.REPLY, handleSocketListener);
         }
-    }, [ac?.mokshaSocket]);
+    }, [ac?.mokshaSocket?.connected]);
 
     function handleSocketMessageUpdate(m: string) {
         setMessage(m);
@@ -68,7 +71,6 @@ export const Confession = (props: Props) => {
                 deviceId: device.identifier,
                 message: message,
             };
-            console.log(ac?.mokshaSocket?.active)
             ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
             addConversationMessages({sender: 'User', message: message});
             setMessage('');
@@ -121,17 +123,12 @@ export const Confession = (props: Props) => {
                                         className={'font-secondary font-thick'}> {text.sender === 'Model' && `${getString(24)} : `}</span>
                                     {text.message}
                                     {text.sender === 'Model' &&
-                                        <div onClick={()=>{
-                                            confirmDialog({
-                                                message: 'Do you wanna report this reply from moksha?',
-                                                header: 'Confirmation',
-                                                defaultFocus: 'accept',
+                                        <div onClick={async () => {
+                                            let accepted = await confirm({
+                                                message: 'Do you wanna report this reply from Moksha?',
+                                                header: 'Confirmation'
+                                            })
 
-                                                accept:function(){
-
-                                                },
-                                                reject:function(){}
-                                            });
                                         }} className={'font-primary font-thick reportBtn'}>
                                             Report</div>}
                                 </motion.div>
@@ -142,11 +139,19 @@ export const Confession = (props: Props) => {
                 <div className={'confession_container'}>
                     <div className={'h100 flex center  justify-center clear'}>
                         <Tooltip text={'Clear chat'}>
-                            <MdDeleteOutline color={'whitesmoke'} size={22} onClick={() => {
-                                clearDatabaseByName(IDBStore.chat).then(r => {
-                                    setConversation([]);
-                                })
-                            }}/>
+
+                            <MdDeleteOutline color={'whitesmoke'} size={22} onClick={async () => {
+                                let accepted = await confirm({
+                                    message: 'Do you wanna remove the messages?',
+                                    header: 'Confirmation',
+                                });
+                                if (accepted) {
+                                     clearDatabaseByName(IDBStore.chat).then(function () {
+                                         setConversation([]);
+                                     })
+                                }
+                            }
+                            }/>
                         </Tooltip>
                     </div>
 
