@@ -499,7 +499,7 @@ dialog::backdrop {
     background-size: 6px 14px;
     z-index: -1;
     filter: blur(12px);
-    animation: glowing 20s linear infinite, glowing2 21s linear infinite;
+    animation: glowing 5s linear infinite, glowing2 5s linear infinite;
     border-radius: 50%;
 }
 .glow-border-online::before {
@@ -542,4 +542,28 @@ dialog::backdrop {
 .dotted-border{
     padding:4px;
     border-bottom:1px dotted rgba(86, 95, 104, 0.19);
+}
+
+.p-confirm-dialog{
+    background: whitesmoke;
+    padding:10px;
+    border-radius: 4px;
+}
+.p-confirm-dialog .p-dialog-header{
+    margin:10px 6px;
+}
+.p-confirm-dialog .p-dialog-content{
+    margin:8px 6px;
+}
+.p-confirm-dialog .p-dialog-footer{
+    display:flex;
+    justify-content: end;
+    padding:8px 4px;
+}
+.p-confirm-dialog .p-dialog-footer button{
+    padding:4px 16px;
+    border:1px solid lightgray;
+    border-radius:4px;
+    cursor: pointer;
+    margin:0 10px;
 }

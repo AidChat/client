@@ -57,6 +57,7 @@ export const AuthContextProvider = ({
             setIsMokshaAvailable(true)
         })
         setMokshaSocket(newSocket);
+        mokshaSocket?.connect()
     }, []);
     useEffect(() => {
         if (requestCode) {

@@ -23,7 +23,7 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
   const [sidePanel, updateSidePanelState] = useState<{
     Util: boolean;
     Group: boolean;
-  }>({Util: isSmall ? false : true, Group: true});
+  }>({Util: !isSmall, Group: true});
   useEffect(() => {
     updateSidePanelState({Util: true, Group: true});
   }, [isSmall]);

@@ -15,11 +15,12 @@ import {motion} from "framer-motion";
 import {startLogger} from "aidchat-hawkeye";
 import moksha from './../../assets/png/moksha.png'
 import {getString} from "../../utils/strings";
-import {Message, SocketListeners} from "../../utils/interface";
+import {Message, SocketEmitters, SocketListeners} from "../../utils/interface";
 import {MdDeleteOutline} from "react-icons/md";
 import Tooltip from "../Utils/Tooltip";
 import {MokshaIcon} from "./Icon";
 import {AuthContext} from "../../services/context/auth.context";
+import {confirmDialog, ConfirmDialog} from "primereact/confirmdialog";
 
 interface Props {
     click: () => void;
@@ -30,14 +31,13 @@ export const Confession = (props: Props) => {
     const [message, setMessage] = useState("Hi Moksha!");
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
-    const ac  = useContext(AuthContext);
-
+    let ac = useContext(AuthContext);
+    console.log(ac)
     useEffect(() => {
-
         scrollToBottom(scrollableDivRef);
         return () => {
-            if(ac?.mokshaSocket)
-            ac?.mokshaSocket.disconnect();
+            if (ac?.mokshaSocket)
+                ac?.mokshaSocket.disconnect();
         };
     }, []);
 
@@ -68,7 +68,8 @@ export const Confession = (props: Props) => {
                 deviceId: device.identifier,
                 message: message,
             };
-            ac?.mokshaSocket?.emit('ask', payload);
+            console.log(ac?.mokshaSocket?.active)
+            ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
             addConversationMessages({sender: 'User', message: message});
             setMessage('');
             scrollToBottom(scrollableDivRef);
@@ -102,6 +103,7 @@ export const Confession = (props: Props) => {
 
     return (
         <>
+            <ConfirmDialog/>
             <Snackbar message={error} onClose={() => setError('')}/>
             <div className="confession">
                 <MokshaIcon online={!!ac?.isMokshaAvailable} size={'small'} top={true} right={true}/>
@@ -118,6 +120,20 @@ export const Confession = (props: Props) => {
                                     <span
                                         className={'font-secondary font-thick'}> {text.sender === 'Model' && `${getString(24)} : `}</span>
                                     {text.message}
+                                    {text.sender === 'Model' &&
+                                        <div onClick={()=>{
+                                            confirmDialog({
+                                                message: 'Do you wanna report this reply from moksha?',
+                                                header: 'Confirmation',
+                                                defaultFocus: 'accept',
+
+                                                accept:function(){
+
+                                                },
+                                                reject:function(){}
+                                            });
+                                        }} className={'font-primary font-thick reportBtn'}>
+                                            Report</div>}
                                 </motion.div>
                                 <div className={'dotted-border'}></div>
                             </>
