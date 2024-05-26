@@ -7,9 +7,9 @@ import {UserDetailsForm} from "../../components/Concent";
 import {reqType, service, serviceRoute} from "../../utils/enum";
 import {Confession} from "../../components/Moksha";
 import {io, Socket} from "socket.io-client";
+import {SocketEmitters, SocketListeners} from "../../utils/interface";
 
-export let AuthContext = React.createContext<
-    | {
+export let AuthContext = React.createContext<{
     isAuthenticated?: boolean;
     removeUserSession: () => void;
     verifyAuthentication: (
@@ -18,7 +18,9 @@ export let AuthContext = React.createContext<
     ) => void;
     isUserVerified: boolean;
     eventSocket : Socket | null,
-    setConfession:(V:boolean)=>void
+    setConfession:(V:boolean)=>void,
+    mokshaSocket:Socket | null,
+    isMokshaAvailable : boolean
 }
     | undefined
 >(undefined);
@@ -36,6 +38,9 @@ export const AuthContextProvider = ({
     const [isUserVerified, setVerifyState] = useState<boolean>(false);
     const [isConfession, setConfession] = useState<boolean>(true);
     const [eventSocket, setEventSocket] = useState<Socket | null>(null);
+    const [mokshaSocket, setMokshaSocket] = useState<Socket | null >(null);
+    const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
+
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
@@ -43,6 +48,15 @@ export const AuthContextProvider = ({
             setConfession(false);
         }
         verifyAuthentication();
+        const newSocket = io(service.bot, {
+            autoConnect: true,
+            reconnectionAttempts: 1,
+        });
+        newSocket.emit(SocketEmitters._PING);
+        newSocket.on(SocketListeners.PONG,()=>{
+            setIsMokshaAvailable(true)
+        })
+        setMokshaSocket(newSocket);
     }, []);
     useEffect(() => {
         if (requestCode) {
@@ -140,7 +154,9 @@ export const AuthContextProvider = ({
                 removeUserSession,
                 isUserVerified,
                 eventSocket,
-                setConfession
+                setConfession,
+                mokshaSocket,
+                isMokshaAvailable
             }}
         >
             {!loading ? (

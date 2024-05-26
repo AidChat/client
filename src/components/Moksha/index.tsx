@@ -1,9 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Input} from "../Utils/CustomInput";
 import './index.css';
 import {PiPaperPlaneTiltFill} from "react-icons/pi";
-import {io, Socket} from "socket.io-client";
-import {IDBStore, service} from "../../utils/enum";
+import {IDBStore} from "../../utils/enum";
 import {
     clearDatabaseByName,
     getDeviceID,
@@ -16,38 +15,37 @@ import {motion} from "framer-motion";
 import {startLogger} from "aidchat-hawkeye";
 import moksha from './../../assets/png/moksha.png'
 import {getString} from "../../utils/strings";
-import {Message} from "../../utils/interface";
+import {Message, SocketListeners} from "../../utils/interface";
 import {MdDeleteOutline} from "react-icons/md";
 import Tooltip from "../Utils/Tooltip";
+import {MokshaIcon} from "./Icon";
+import {AuthContext} from "../../services/context/auth.context";
 
 interface Props {
     click: () => void;
 }
 
 export const Confession = (props: Props) => {
-    const [socket, setSocket] = useState<Socket | null>(null);
     const [error, setError] = useState<string>('');
     const [message, setMessage] = useState("Hi Moksha!");
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
-    const [hasPastMessage, setHasPastMessage] = useState<boolean>(false);
+    const ac  = useContext(AuthContext);
+
     useEffect(() => {
-        const newSocket = io(service.bot, {
-            autoConnect: true,
-            reconnectionAttempts: 1,
-        });
-        setSocket(newSocket);
+
         scrollToBottom(scrollableDivRef);
         return () => {
-            newSocket.disconnect();
+            if(ac?.mokshaSocket)
+            ac?.mokshaSocket.disconnect();
         };
     }, []);
 
     useEffect(() => {
-        if (socket) {
-            socket.on('listen', handleSocketListener);
+        if (ac?.mokshaSocket) {
+            ac.mokshaSocket.on(SocketListeners.REPLY, handleSocketListener);
         }
-    }, [socket]);
+    }, [ac?.mokshaSocket]);
 
     function handleSocketMessageUpdate(m: string) {
         setMessage(m);
@@ -70,7 +68,7 @@ export const Confession = (props: Props) => {
                 deviceId: device.identifier,
                 message: message,
             };
-            socket?.emit('ask', payload);
+            ac?.mokshaSocket?.emit('ask', payload);
             addConversationMessages({sender: 'User', message: message});
             setMessage('');
             scrollToBottom(scrollableDivRef);
@@ -106,19 +104,23 @@ export const Confession = (props: Props) => {
         <>
             <Snackbar message={error} onClose={() => setError('')}/>
             <div className="confession">
+                <MokshaIcon online={!!ac?.isMokshaAvailable} size={'small'} top={true} right={true}/>
                 <div className={'chat-history-container'} ref={scrollableDivRef}>
                     {!conversation.length ? renderEmptyMessageConversation() :
                         conversation.map((text, index) => (
-                            <motion.div initial={{y: 10}}
-                                        animate={{y: 0}}
-                                        transition={{speed: 2}}
-                                        key={index} className={'font-primary m4 chat-wrapper'}>
-                              <span style={{color: 'lightyellow'}}>  {text.sender === 'User' && ' Jamie Jackson : '}
+                            <>
+                                <motion.div initial={{y: 10}}
+                                            animate={{y: 0}}
+                                            transition={{speed: 2}}
+                                            key={index} className={'font-primary m4 chat-wrapper'}>
+                              <span style={{color: 'lightyellow'}}>  {text.sender === 'User' && ' Timon  : '}
                               </span>
-                                <span
-                                    className={'font-secondary font-thick'}> {text.sender === 'Model' && 'Moksha.ai : '}</span>
-                                {text.message}
-                            </motion.div>
+                                    <span
+                                        className={'font-secondary font-thick'}> {text.sender === 'Model' && `${getString(24)} : `}</span>
+                                    {text.message}
+                                </motion.div>
+                                <div className={'dotted-border'}></div>
+                            </>
                         ))}
                 </div>
                 <div className={'confession_container'}>

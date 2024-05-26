@@ -472,3 +472,74 @@ dialog::backdrop {
 .flex-wrap{
     flex-wrap: wrap;
 }
+
+/* Base styles for the element */
+.glow-border {
+    padding: 4px;
+    margin: 6px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    position: relative;
+}
+
+/* Glowing effect */
+.glow-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background-size: 6px 14px;
+    z-index: -1;
+    filter: blur(12px);
+    animation: glowing 20s linear infinite, glowing2 21s linear infinite;
+    border-radius: 50%;
+}
+.glow-border-online::before {
+    background: linear-gradient(45deg, #398378, #00ffff, #398378, #00ffff);
+    border: 2px solid #398378;
+
+}
+.glow-border-offline::before{
+    background: linear-gradient(45deg, #666, #aaa, #666, #aaa);
+    border: 2px solid gray;
+
+
+}
+
+/* Keyframes for the glowing animation */
+@keyframes glowing {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes glowing2 {
+    0% {
+        background-position: 50% 0%;
+    }
+    50% {
+        background-position: 50% 100%;
+    }
+    100% {
+        background-position: 50% 0%;
+    }
+}
+
+.dotted-border{
+    padding:4px;
+    border-bottom:1px dotted rgba(86, 95, 104, 0.19);
+}

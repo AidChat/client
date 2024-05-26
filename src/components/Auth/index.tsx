@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./index.css";
 import {Index} from "./LoginForm";
 import gif from "./../../assets/gifs/slogan.gif";
@@ -9,8 +9,8 @@ import {useResponsizeClass} from "../../utils/functions";
 import {motion} from 'framer-motion'
 import {EwindowSizes} from "../../utils/enum";
 import {OTPForm} from "./Code";
-import {TypeWriter} from "../../Features/Blogs";
 import {MokshaIcon} from "../Moksha/Icon";
+import {AuthContext} from "../../services/context/auth.context";
 
 export function AuthenticationContainer() {
     const {requestCode} = useParams();
@@ -21,6 +21,7 @@ export function AuthenticationContainer() {
         invite: !!requestCode,
         code: false,
     });
+    let ac = useContext(AuthContext);
 
     useEffect(() => {
         setState({
@@ -118,7 +119,7 @@ export function AuthenticationContainer() {
                     )}
                 </div>
             </motion.div>
-            <MokshaIcon/>
+            <MokshaIcon online={!!ac?.isMokshaAvailable} bottom={true} right={true} size={'medium'}/>
         </div>
     );
 }

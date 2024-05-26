@@ -1,10 +1,11 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {io} from "socket.io-client";
+import {io, Socket} from "socket.io-client";
 import {EwindowSizes, service} from "../../utils/enum";
 import {useWindowSize} from "../hooks/appHooks";
 import {log} from "console";
 import {getDeviceInfoUsingCapacitor} from "../../utils/functions";
 import {PushNotifications} from "@capacitor/push-notifications";
+import {SocketEmitters, SocketListeners} from "../../utils/interface";
 
 export const ShellContext = React.createContext<any>({});
 
@@ -17,19 +18,18 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
   const [userId, _setUserId] = useState<string | null>(null);
   const [socketId, _socketId] = useState(null);
   const [requestId, _requestId] = useState<string | null>(null);
-  const [socket, setSocket] = useState<any>(null);
+  const [messageSocket, setMessageSocket] = useState<any>(null);
   const {size: isSmall} = useWindowSize(EwindowSizes.S);
   const [sidePanel, updateSidePanelState] = useState<{
     Util: boolean;
     Group: boolean;
   }>({Util: isSmall ? false : true, Group: true});
-
   useEffect(() => {
     updateSidePanelState({Util: true, Group: true});
   }, [isSmall]);
 
   useEffect(() => {
-    setSocket(
+    setMessageSocket(
         io(service.messaging, {
             autoConnect: true,
             reconnectionAttempts: 1,
@@ -40,6 +40,7 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
             },
         })
     );
+
   }, []);
 
   return (
@@ -49,7 +50,7 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
         groupId,
         _setUserId,
         userId,
-        socket,
+        socket: messageSocket,
         _socketId,
         socketId,
         _requestId,

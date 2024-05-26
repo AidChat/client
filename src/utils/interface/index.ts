@@ -19,6 +19,8 @@ export enum SocketEmitters {
     _TYPING = "_TYPING",
     _JOIN = "_JOIN",
     _READMESSAGE = "_READMESSAGE",
+    _PING='PING',
+    _ASK='ASK'
 }
 
 export enum SocketListeners {
@@ -27,7 +29,9 @@ export enum SocketListeners {
     READBYALL = "READBYALL",
     USERONLINE = "USERONLINE",
     USEROFFLINE = "USEROFFLINE",
-    RECORDUPDATE='RECORDUPDATE'
+    RECORDUPDATE='RECORDUPDATE',
+    REPLY='REPLY',
+    PONG='PONG'
 }
 
 export interface Role {
