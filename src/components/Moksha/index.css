@@ -31,6 +31,10 @@
 .confession_container:first-child {
     width: 100%;
 }
+.confession_container .clear{
+    margin:0 10px;
+    cursor: pointer;
+}
 
 .btncontainer {
     text-align: center;
@@ -73,4 +77,11 @@
 
 .emptycontainer .text-container {
     margin: 4px 8px;
+}
+.moksha-icon{
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }

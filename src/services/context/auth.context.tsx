@@ -5,10 +5,11 @@ import {_props} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
 import {UserDetailsForm} from "../../components/Concent";
 import {reqType, service, serviceRoute} from "../../utils/enum";
-import {Confession} from "../../components/Confession";
+import {Confession} from "../../components/Moksha";
+import {io, Socket} from "socket.io-client";
+import {SocketEmitters, SocketListeners} from "../../utils/interface";
 
-export let AuthContext = React.createContext<
-    | {
+export let AuthContext = React.createContext<{
     isAuthenticated?: boolean;
     removeUserSession: () => void;
     verifyAuthentication: (
@@ -16,6 +17,10 @@ export let AuthContext = React.createContext<
         forceReload?: boolean
     ) => void;
     isUserVerified: boolean;
+    eventSocket : Socket | null,
+    setConfession:(V:boolean)=>void,
+    mokshaSocket:Socket | null,
+    isMokshaAvailable : boolean
 }
     | undefined
 >(undefined);
@@ -32,13 +37,26 @@ export const AuthContextProvider = ({
     const [showUserForm, setFormVisibility] = useState<boolean>(true);
     const [isUserVerified, setVerifyState] = useState<boolean>(false);
     const [isConfession, setConfession] = useState<boolean>(true);
+    const [eventSocket, setEventSocket] = useState<Socket | null>(null);
+    const [mokshaSocket, setMokshaSocket] = useState<Socket | null >(null);
+    const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
+
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
-        if (link === 'aider'){
+        if (link === 'aider') {
             setConfession(false);
         }
         verifyAuthentication();
+        const newSocket = io(service.bot, {
+            autoConnect: true,
+            reconnectionAttempts: 1,
+        });
+        newSocket.emit(SocketEmitters._PING);
+        newSocket.on(SocketListeners.PONG,()=>{
+            setIsMokshaAvailable(true)
+        })
+        setMokshaSocket(newSocket);
     }, []);
     useEffect(() => {
         if (requestCode) {
@@ -70,6 +88,7 @@ export const AuthContextProvider = ({
                     .then((user: any) => {
                         if (user) {
                             setVerifyState(user.verifiedEmail);
+                            initGeneralEventConnection();
                             if (user.Type === "Pending") {
                                 setFormVisibility(true);
                             } else {
@@ -97,6 +116,23 @@ export const AuthContextProvider = ({
             });
     }
 
+    function initGeneralEventConnection() {
+        try {
+            setEventSocket(io(service.event, {
+                    autoConnect: true,
+                    reconnectionAttempts: 1,
+                    auth: {
+                        session: window.localStorage.getItem("session")
+                            ? window.localStorage.getItem("session")
+                            : "",
+                    },
+                })
+            );
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     function removeUserSession() {
         setLoad(true);
         _props
@@ -117,6 +153,10 @@ export const AuthContextProvider = ({
                 verifyAuthentication,
                 removeUserSession,
                 isUserVerified,
+                eventSocket,
+                setConfession,
+                mokshaSocket,
+                isMokshaAvailable
             }}
         >
             {!loading ? (

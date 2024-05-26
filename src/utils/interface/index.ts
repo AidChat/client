@@ -1,3 +1,5 @@
+import {IDBStore} from "../enum";
+
 export interface UserProps {
     id?: number;
     name?: string;
@@ -17,6 +19,8 @@ export enum SocketEmitters {
     _TYPING = "_TYPING",
     _JOIN = "_JOIN",
     _READMESSAGE = "_READMESSAGE",
+    _PING='PING',
+    _ASK='ASK'
 }
 
 export enum SocketListeners {
@@ -25,6 +29,9 @@ export enum SocketListeners {
     READBYALL = "READBYALL",
     USERONLINE = "USERONLINE",
     USEROFFLINE = "USEROFFLINE",
+    RECORDUPDATE='RECORDUPDATE',
+    REPLY='REPLY',
+    PONG='PONG'
 }
 
 export interface Role {
@@ -84,4 +91,11 @@ export interface IReminderMembers {
     id: number,
     users: UserProps[]
     reminderId: number
+}
+
+export type IDBStoreName  = 'BLOG'| 'AICHAT';
+
+export interface Message {
+    sender: 'User' | 'Model';
+    message: string;
 }

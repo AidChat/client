@@ -1,48 +1,51 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Input} from "../Utils/CustomInput";
 import './index.css';
 import {PiPaperPlaneTiltFill} from "react-icons/pi";
-import {io, Socket} from "socket.io-client";
-import {service} from "../../utils/enum";
-import {getDeviceID, validateAskText} from "../../utils/functions";
+import {IDBStore} from "../../utils/enum";
+import {
+    clearDatabaseByName,
+    getDeviceID,
+    queryStoreObjects,
+    storeChatsByDeviceID,
+    validateAskText
+} from "../../utils/functions";
 import Snackbar from "../Utils/Snackbar";
 import {motion} from "framer-motion";
 import {startLogger} from "aidchat-hawkeye";
 import moksha from './../../assets/png/moksha.png'
 import {getString} from "../../utils/strings";
+import {Message, SocketListeners} from "../../utils/interface";
+import {MdDeleteOutline} from "react-icons/md";
+import Tooltip from "../Utils/Tooltip";
+import {MokshaIcon} from "./Icon";
+import {AuthContext} from "../../services/context/auth.context";
 
 interface Props {
     click: () => void;
 }
 
-interface Message {
-    sender: 'User' | 'Model';
-    message: string;
-}
-
 export const Confession = (props: Props) => {
-    const [socket, setSocket] = useState<Socket | null>(null);
     const [error, setError] = useState<string>('');
     const [message, setMessage] = useState("Hi Moksha!");
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
+    const ac  = useContext(AuthContext);
+
     useEffect(() => {
-        const newSocket = io(service.bot, {
-            autoConnect: true,
-            reconnectionAttempts: 1,
-        });
-        setSocket(newSocket);
+
         scrollToBottom(scrollableDivRef);
         return () => {
-            newSocket.disconnect();
+            if(ac?.mokshaSocket)
+            ac?.mokshaSocket.disconnect();
         };
     }, []);
 
     useEffect(() => {
-        if (socket) {
-            socket.on('listen', handleSocketListener);
+        if (ac?.mokshaSocket) {
+            ac.mokshaSocket.on(SocketListeners.REPLY, handleSocketListener);
         }
-    }, [socket]);
+    }, [ac?.mokshaSocket]);
 
     function handleSocketMessageUpdate(m: string) {
         setMessage(m);
@@ -52,6 +55,12 @@ export const Confession = (props: Props) => {
         setConversation(prevConversation => [...prevConversation, payload]);
     }
 
+    useEffect(() => {
+        if (conversation.length > 1) {
+            storeChatsByDeviceID(conversation)
+        }
+    }, [conversation]);
+
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
             let device = await getDeviceID();
@@ -59,7 +68,7 @@ export const Confession = (props: Props) => {
                 deviceId: device.identifier,
                 message: message,
             };
-            socket?.emit('ask', payload);
+            ac?.mokshaSocket?.emit('ask', payload);
             addConversationMessages({sender: 'User', message: message});
             setMessage('');
             scrollToBottom(scrollableDivRef);
@@ -76,7 +85,13 @@ export const Confession = (props: Props) => {
         scrollToBottom(scrollableDivRef);
     }, [conversation]);
     useEffect(() => {
-        startLogger({interval:3000})
+        startLogger({interval: 3000});
+        queryStoreObjects(IDBStore.chat).then(function (data: any) {
+            if (data && data[0]?.chats) {
+                setConversation(data[0]?.chats);
+                setMessage('');
+            }
+        })
     }, []);
 
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {
@@ -89,22 +104,36 @@ export const Confession = (props: Props) => {
         <>
             <Snackbar message={error} onClose={() => setError('')}/>
             <div className="confession">
+                <MokshaIcon online={!!ac?.isMokshaAvailable} size={'small'} top={true} right={true}/>
                 <div className={'chat-history-container'} ref={scrollableDivRef}>
                     {!conversation.length ? renderEmptyMessageConversation() :
                         conversation.map((text, index) => (
-                            <motion.div initial={{y: 10}}
-                                        animate={{y: 0}}
-                                        transition={{speed: 2}}
-                                        key={index} className={'font-primary m4 chat-wrapper'}>
-                              <span style={{color: 'lightyellow'}}>  {text.sender === 'User' && ' Jamie Jackson : '}
+                            <>
+                                <motion.div initial={{y: 10}}
+                                            animate={{y: 0}}
+                                            transition={{speed: 2}}
+                                            key={index} className={'font-primary m4 chat-wrapper'}>
+                              <span style={{color: 'lightyellow'}}>  {text.sender === 'User' && ' Timon  : '}
                               </span>
-                                <span
-                                    className={'font-secondary font-thick'}> {text.sender === 'Model' && 'Moksha.ai : '}</span>
-                                {text.message}
-                            </motion.div>
+                                    <span
+                                        className={'font-secondary font-thick'}> {text.sender === 'Model' && `${getString(24)} : `}</span>
+                                    {text.message}
+                                </motion.div>
+                                <div className={'dotted-border'}></div>
+                            </>
                         ))}
                 </div>
                 <div className={'confession_container'}>
+                    <div className={'h100 flex center  justify-center clear'}>
+                        <Tooltip text={'Clear chat'}>
+                            <MdDeleteOutline color={'whitesmoke'} size={22} onClick={() => {
+                                clearDatabaseByName(IDBStore.chat).then(r => {
+                                    setConversation([]);
+                                })
+                            }}/>
+                        </Tooltip>
+                    </div>
+
                     <Input
                         height={"4em"}
                         borderRadius={'50px'}
