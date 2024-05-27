@@ -51,7 +51,6 @@ export const AuthContextProvider = ({
         let newSocket = io(service.bot, {
             autoConnect: true,
             reconnectionAttempts: 10,
-
         });
         newSocket.emit(SocketEmitters._PING);
         newSocket.on(SocketListeners.PONG,()=>{
