@@ -42,11 +42,12 @@ export function Input(props: ICustomInput) {
             borderRadius: "20px",
         },
         iconContainer: {
-            width: "20%",
+            width: 'auto',
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             cursor: "pointer",
+            padding:"2px 4px",
         },
         inputContainer: {
             width: "90%",
