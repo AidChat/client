@@ -12,7 +12,6 @@ getDeviceInfoUsingCapacitor().then(usingCapacitor => {
     }
 })
 
-
 const root = createRoot(
     document.getElementById('root') as HTMLElement
 );

@@ -142,7 +142,7 @@ export function ChatContainer({
             }, 3000);
         });
         _props._user().get().then(function (data: UserProps) {
-            data.id && startLogger({interval:10000})
+            data.id && startLogger({interval: 10000})
         })
         return () => {
             _setScrolling(false);
