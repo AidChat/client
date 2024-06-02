@@ -10,6 +10,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import {getDeviceInfoUsingCapacitor, getFCMToken} from "../../utils/functions";
 import {_props} from "../../services/network/network";
 import {PushNotifications} from "@capacitor/push-notifications";
+import {MokshaIcon} from "../Moksha/Icon";
 
 export const Panel = () => {
     let {size: smallScreen} = useWindowSize(EwindowSizes.S);
@@ -74,6 +75,7 @@ export const Panel = () => {
                 >
                     <UtilityPanel/>
                 </motion.div>)}
+                <MokshaIcon size={'small'} bottom={true} left={true} online={true} />
             </div>
         </div>
     </AnimatePresence>);

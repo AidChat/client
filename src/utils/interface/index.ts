@@ -50,7 +50,7 @@ export interface MessageInterface {
     senderId: number;
     status: string;
     User: {
-        name: string; email: string; profileImage: string; id: number;
+        name: string; email: string; profileImage: string; id: number,Username:string;
     };
     ReadByAll?: boolean;
     ReadReceipt: ReadReceipt[]

@@ -204,8 +204,6 @@ export function ChatContainer({
                 );
         });
     }
-
-
     return (
         <div className={"convoPanel"}>
             {!options ? (
@@ -269,7 +267,7 @@ export function ChatContainer({
                                                             item?.ActivityStatus?.status === "ONLINE") &&
                                                         recentOffline.filter(_k => _k === item.id)
                                                             .length === 0
-                                                            ? {border: "1px solid green"}
+                                                            ? {border: "1px solid darkgreen"}
                                                             : {border: "1px solid white"}
                                                     }
                                                 >
@@ -393,7 +391,7 @@ export function ChatContainer({
                                             {item?.senderId !== userId &&
                                                 item.senderId !==
                                                 state.messages[index ? index - 1 : index].senderId &&
-                                                item?.User.name.toUpperCase()}
+                                                item?.User.Username.toUpperCase()}
                                         </div>
                                         <div className={"contentWrapper"}>
                                             <div
