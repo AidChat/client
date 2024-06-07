@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import "./index.css";
-import {Index} from "./LoginForm";
+import {LoginForm} from "./LoginForm/loginForm";
 import gif from "./../../assets/gifs/slogan.gif";
 import {RegisterForm} from "./RegisterForm";
 import {useParams} from "react-router-dom";
@@ -79,7 +79,7 @@ export function AuthenticationContainer() {
                     ) : (
                         <>
                             {state.login && (
-                                <Index
+                                <LoginForm
                                     toggleState={s => {
                                         switchAuthState(s);
                                     }}

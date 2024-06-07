@@ -34,16 +34,18 @@ export function RegisterForm({
     password?: string;
     requestId?: undefined | string;
     mobile: number | null;
+    username?:string
   }>({
     name: undefined,
     email: invite ? email : undefined,
     password: undefined,
     requestId: requestCode,
     mobile: null,
+    username:'timon'
   });
 
   const isValidState = () => {
-    const {name, email, password, mobile} = state;
+    const {name, email, password, mobile,username} = state;
     const isNameValid = name && name.trim().length > 0;
     const isEmailValid = email && email.includes("@");
     const isPasswordValid = password && password.length >= 6;
@@ -103,96 +105,110 @@ export function RegisterForm({
       <Snackbar message={message} onClose={() => _message("")} />
       <form style={{width: "80%"}} onSubmit={handleRegistration}>
         <motion.div
-          initial={{y: 10}}
-          animate={{y: 0}}
-          className={"color-green authErrorContainer"}
-          style={{textAlign: "center"}}
+            initial={{y: 10}}
+            animate={{y: 0}}
+            className={"color-green authErrorContainer"}
+            style={{textAlign: "center"}}
         >
           {error}
         </motion.div>
         <div className={"logincontainer"}>
+          <label style={{marginLeft: "4px"}}>Username</label>
+          <div className={"inputWrapper-icon"}>
+            <Input
+                onChange={handleUpdate}
+                type={"text"}
+                allowToggle={false}
+                inputName={"username"}
+                value={state.username}
+                icon={<></>}
+            />
+          </div>
+
+        </div>
+        <div className={"logincontainer"}>
           <label style={{marginLeft: "4px"}}>Name</label>
           <div className={"inputWrapper-icon"}>
             <Input
-              onChange={handleUpdate}
-              type={"text"}
-              allowToggle={false}
-              inputName={"name"}
-              value={state.name}
-              icon={<FaRegUser size={20} />}
+                onChange={handleUpdate}
+                type={"text"}
+                allowToggle={false}
+                inputName={"name"}
+                value={state.name}
+                icon={<FaRegUser size={20}/>}
             />
           </div>
         </div>
-        <div className={"logincontainer"}>
-          <label style={{marginLeft: "4px"}}>Mobile</label>
-          <div className={"inputWrapper-icon"}>
-            <Input
-              onChange={handleUpdate}
-              type={"tel"}
-              allowToggle={false}
-              inputName={"mobile"}
-              value={state.mobile?.toString()}
-              icon={<FiPhone size={22} />}
-            />
+          <div className={"logincontainer"}>
+            <label style={{marginLeft: "4px"}}>Mobile</label>
+            <div className={"inputWrapper-icon"}>
+              <Input
+                  onChange={handleUpdate}
+                  type={"tel"}
+                  allowToggle={false}
+                  inputName={"mobile"}
+                  value={state.mobile?.toString()}
+                  icon={<FiPhone size={22}/>}
+              />
+            </div>
           </div>
-        </div>
-        <div className={"logincontainer"}>
-          <label style={{marginLeft: "4px"}}>Email</label>
-          <div className={"inputWrapper-icon"}>
-            <Input
-              disabled={!!(email && invite)}
-              onChange={handleUpdate}
-              type={"email"}
-              allowToggle={false}
-              inputName={"email"}
-              value={state.email}
-              icon={<MdOutlineAlternateEmail size={22} />}
-            />
+          <div className={"logincontainer"}>
+            <label style={{marginLeft: "4px"}}>Email</label>
+            <div className={"inputWrapper-icon"}>
+              <Input
+                  disabled={!!(email && invite)}
+                  onChange={handleUpdate}
+                  type={"email"}
+                  allowToggle={false}
+                  inputName={"email"}
+                  value={state.email}
+                  icon={<MdOutlineAlternateEmail size={22}/>}
+              />
+            </div>
           </div>
-        </div>
-        <div className={"logincontainer"}>
-          <label>Password</label>
-          <div className={"inputWrapper-icon"}>
-            <Input
-              disabled={!state.email}
-              onChange={handleUpdate}
-              type={"password"}
-              allowToggle={true}
-              inputName={"password"}
-              value={state.password}
-              icon={<FaRegEye size={22} />}
-            />
+          <div className={"logincontainer"}>
+            <label>Password</label>
+            <div className={"inputWrapper-icon"}>
+              <Input
+                  disabled={!state.email}
+                  onChange={handleUpdate}
+                  type={"password"}
+                  allowToggle={true}
+                  inputName={"password"}
+                  value={state.password}
+                  icon={<FaRegEye size={22}/>}
+              />
+            </div>
           </div>
-        </div>
-        <div className={"logincontainer flex-center"}>
-          <button
-            disabled={loading}
-            onClick={handleRegistration}
-            className={"btn btn-primary w50"}
-          >
-            {loading ? <Spinner /> : "Register"}
-          </button>
-        </div>
-        <div
-          className={"logincontainer flex-right"}
-          style={{marginTop: "24px"}}
-        >
+          <div className={"logincontainer flex-center"}>
+            <button
+                disabled={loading}
+                onClick={handleRegistration}
+                className={"btn btn-primary w50"}
+            >
+              {loading ? <Spinner/> : "Register"}
+            </button>
+          </div>
           <div
-            className={"font-primary"}
-            onClick={() => {
-              toggleState("LOGIN");
-            }}
+              className={"logincontainer flex-right"}
+              style={{marginTop: "24px"}}
           >
-            <p>
-              Already part of our community?{" "}
-              <span className={"color-green"} style={{cursor: "pointer"}}>
+            <div
+                className={"font-primary"}
+
+            >
+              <p>
+                Already part of our community?{" "}
+                <span   onClick={() => {
+                  toggleState("LOGIN");
+                }} className={"color-green"} style={{cursor: "pointer"}}>
                 {" "}
-                Login{" "}
+                  Login{" "}
               </span>
-            </p>
+              </p>
+            </div>
           </div>
-        </div>
       </form>
     </motion.div>
-  );
+);
 }

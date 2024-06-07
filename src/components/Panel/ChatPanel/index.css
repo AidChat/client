@@ -187,22 +187,11 @@
 .usernamewrapper {
     display: flex;
     flex-direction: row;
-    border: 1px solid rgba(133, 133, 133, 0.56);
     border-radius: 50%;
     position: relative;
-    margin: 0px 4px;
-    position: relative;
+    margin: 0px 2px;
     overflow: hidden;
-    margin:0px 8px;
 }
-
-
-
-
-
-
-
-
 
 .usernameImage {
     height: 35px;

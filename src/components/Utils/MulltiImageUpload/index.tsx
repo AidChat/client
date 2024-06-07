@@ -18,7 +18,7 @@ const ComponentStyles = {
         alignItems: 'center',
         justifyContent: 'center',
         margin:'8px',
-        border:'1px dotted grey',
+        border:'1px solid lightgray',
         borderRadius: '8px',
         padding:'0 4px'
     }

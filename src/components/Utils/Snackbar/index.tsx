@@ -24,7 +24,7 @@ const Snackbar: React.FC<SnackbarProps> = ({message, onClose}) => {
 
     return show && message.split('').length > 0 ? (
         <motion.div initial={{y: '10px'}} animate={{y: '0px'}} className="snackbar">
-            <div style={{flex: 2}}>{message}</div>
+            <div style={{flex: 2,fontStyle:'italic'}}>{message}</div>
             <div style={{display: 'flex', marginLeft: '10px'}} onClick={onClose}>
                 <AiFillCloseCircle/>
             </div>

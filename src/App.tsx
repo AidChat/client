@@ -44,13 +44,13 @@ function App(): React.ReactElement {
         };
     }, []);
     return (
-        <GoogleOAuthProvider
-            clientId={
-                process.env.REACT_APP_GG_APP_ID ? process.env.REACT_APP_GG_APP_ID : ""
-            }
-        >
+        // <GoogleOAuthProvider
+        //     clientId={
+        //         process.env.REACT_APP_GG_APP_ID ? process.env.REACT_APP_GG_APP_ID : ""
+        //     }
+        // >
             <RouterProvider router={router}></RouterProvider>
-        </GoogleOAuthProvider>
+        // </GoogleOAuthProvider>
     );
 }
 

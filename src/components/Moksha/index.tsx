@@ -4,7 +4,7 @@ import './index.css';
 import {PiPaperPlaneTiltFill} from "react-icons/pi";
 import {IDBStore} from "../../utils/enum";
 import {
-    clearDatabaseByName,
+    clearDatabaseByName, confirm,
     getDeviceID,
     queryStoreObjects,
     storeChatsByDeviceID,
@@ -15,37 +15,40 @@ import {motion} from "framer-motion";
 import {startLogger} from "aidchat-hawkeye";
 import moksha from './../../assets/png/moksha.png'
 import {getString} from "../../utils/strings";
-import {Message, SocketListeners} from "../../utils/interface";
+import {Message, SocketEmitters, SocketListeners} from "../../utils/interface";
 import {MdDeleteOutline} from "react-icons/md";
 import Tooltip from "../Utils/Tooltip";
 import {MokshaIcon} from "./Icon";
 import {AuthContext} from "../../services/context/auth.context";
+import {ConfirmDialog} from "primereact/confirmdialog";
 
 interface Props {
     click: () => void;
 }
 
-export const Confession = (props: Props) => {
+export const ClientChatWindow = (props: Props) => {
     const [error, setError] = useState<string>('');
     const [message, setMessage] = useState("Hi Moksha!");
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
-    const ac  = useContext(AuthContext);
-
+    let ac = useContext(AuthContext);
     useEffect(() => {
-
         scrollToBottom(scrollableDivRef);
         return () => {
-            if(ac?.mokshaSocket)
-            ac?.mokshaSocket.disconnect();
+            if (ac?.mokshaSocket)
+                ac?.mokshaSocket.disconnect();
         };
     }, []);
 
     useEffect(() => {
-        if (ac?.mokshaSocket) {
+        console.log(ac?.mokshaSocket?.connected)
+        if (!ac?.mokshaSocket?.connected) {
+            ac?.mokshaSocket?.connect();
+        }
+        if (ac?.mokshaSocket?.connected) {
             ac.mokshaSocket.on(SocketListeners.REPLY, handleSocketListener);
         }
-    }, [ac?.mokshaSocket]);
+    }, [ac?.mokshaSocket?.connected]);
 
     function handleSocketMessageUpdate(m: string) {
         setMessage(m);
@@ -68,7 +71,7 @@ export const Confession = (props: Props) => {
                 deviceId: device.identifier,
                 message: message,
             };
-            ac?.mokshaSocket?.emit('ask', payload);
+            ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
             addConversationMessages({sender: 'User', message: message});
             setMessage('');
             scrollToBottom(scrollableDivRef);
@@ -100,8 +103,10 @@ export const Confession = (props: Props) => {
         }
     }
 
+
     return (
         <>
+            <ConfirmDialog/>
             <Snackbar message={error} onClose={() => setError('')}/>
             <div className="confession">
                 <MokshaIcon online={!!ac?.isMokshaAvailable} size={'small'} top={true} right={true}/>
@@ -113,11 +118,22 @@ export const Confession = (props: Props) => {
                                             animate={{y: 0}}
                                             transition={{speed: 2}}
                                             key={index} className={'font-primary m4 chat-wrapper'}>
+                                    <>
                               <span style={{color: 'lightyellow'}}>  {text.sender === 'User' && ' Timon  : '}
                               </span>
                                     <span
                                         className={'font-secondary font-thick'}> {text.sender === 'Model' && `${getString(24)} : `}</span>
                                     {text.message}
+                                    {text.sender === 'Model' &&
+                                        <div onClick={async () => {
+                                            let accepted = await confirm({
+                                                message: 'Do you wanna report this reply from Moksha?',
+                                                header: 'Confirmation'
+                                            })
+
+                                            }} className={'font-primary font-thick reportBtn'}>
+                                                Report</div>}
+                                    </>
                                 </motion.div>
                                 <div className={'dotted-border'}></div>
                             </>
@@ -126,11 +142,19 @@ export const Confession = (props: Props) => {
                 <div className={'confession_container'}>
                     <div className={'h100 flex center  justify-center clear'}>
                         <Tooltip text={'Clear chat'}>
-                            <MdDeleteOutline color={'whitesmoke'} size={22} onClick={() => {
-                                clearDatabaseByName(IDBStore.chat).then(r => {
-                                    setConversation([]);
-                                })
-                            }}/>
+
+                            <MdDeleteOutline color={'whitesmoke'} size={22} onClick={async () => {
+                                let accepted = await confirm({
+                                    message: 'Do you wanna remove the messages?',
+                                    header: 'Confirmation',
+                                });
+                                if (accepted) {
+                                    clearDatabaseByName(IDBStore.chat).then(function () {
+                                        setConversation([]);
+                                    })
+                                }
+                            }
+                            }/>
                         </Tooltip>
                     </div>
 

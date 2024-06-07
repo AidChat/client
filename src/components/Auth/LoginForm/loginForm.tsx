@@ -26,7 +26,7 @@ interface LoginFromProps {
   email?: string;
 }
 
-export function Index({toggleState, email}: LoginFromProps) {
+export function LoginForm({toggleState, email}: LoginFromProps) {
   let context = useContext(AuthContext);
   const {requestCode} = useParams();
   const [userdata, setUserData] = useState<{
@@ -166,14 +166,14 @@ export function Index({toggleState, email}: LoginFromProps) {
         >
           <div
             className={"font-primary"}
-            onClick={() => {
-              toggleState("REGISTER");
-            }}
+
           >
             {
               <p>
                 New here?{" "}
-                <span className={"color-green"} style={{cursor: "pointer"}}>
+                <span className={"color-green"}  onClick={() => {
+                  toggleState("REGISTER");
+                }} style={{cursor: "pointer"}}>
                   {" "}
                   Register{" "}
                 </span>

@@ -8,6 +8,7 @@ import {ScreenOrientation} from "@capacitor/screen-orientation";
 import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
 import {IDBStoreName, Message} from "../interface";
+import {confirmDialog} from "primereact/confirmdialog";
 
 export function formatTime(date: string) {
     return new Date(date).toTimeString().slice(0, 8);
@@ -121,16 +122,33 @@ export const hideStatusBar = async () => {
 };
 
 
-export const showConfirm = async () => {
-    const {value} = await Dialog.confirm({
-        title: 'Please confirm.',
-        message: `Are you sure you'd like to continue?`,
-        okButtonTitle: 'Yes',
-        cancelButtonTitle: 'Cancel',
+export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }) => {
+    return new Promise((resolve, reject) => {
+        getDeviceInfoUsingCapacitor().then(async (capacitor) => {
+            if (capacitor.platform === 'web') {
+                confirmDialog({
+                    message,
+                    header,
+                    accept: function () {
+                        resolve(true);
+                    },
+                    reject: function () {
+                        resolve(false);
+                    }
+                });
+            } else {
+                const {value} = await Dialog.confirm({
+                    title: header,
+                    message: message,
+                    okButtonTitle: 'Yes',
+                    cancelButtonTitle: 'Cancel',
+                });
+                if (value) resolve(true);
+                else resolve(false);
+            }
+        })
+    })
 
-    });
-
-    return value
 };
 
 export const showAlert = async (title: string, message: string) => {
@@ -162,7 +180,7 @@ export const storeCurrentContent = (store: IDBStoreName, content: string) => {
 }
 export const storeChatsByDeviceID = (chats: Message[]) => {
     let store: IDBStoreName = IDBStore.chat;
-    getDeviceID().then((deviceID:DeviceId) => {
+    getDeviceID().then((deviceID: DeviceId) => {
         if (deviceID) {
             let data = {
                 chats: chats,
@@ -247,38 +265,40 @@ export function queryStoreObjects(storeName: IDBStoreName) {
         });
     })
 }
-export function clearDatabaseByName(dbName:IDBStoreName) {
+
+export function clearDatabaseByName(dbName: IDBStoreName) {
     return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName);
-    request.onsuccess = (event:any) => {
-        const db = event.target.result;
-        const transaction = db.transaction(db.objectStoreNames, 'readwrite');
-        transaction.oncomplete = () => {
-            console.log(`All object stores in ${dbName} have been cleared.`);
-            resolve(true);
-        };
-
-        transaction.onerror = (event:any) => {
-            reject(event.target.error);
-            console.error('Transaction error:', event.target.error);
-        };
-
-        for (const storeName of db.objectStoreNames) {
-            const objectStore = transaction.objectStore(storeName);
-            objectStore.clear().onsuccess = () => {
-                console.log(`Cleared object store: ${storeName}`);
+        const request = indexedDB.open(dbName);
+        request.onsuccess = (event: any) => {
+            const db = event.target.result;
+            const transaction = db.transaction(db.objectStoreNames, 'readwrite');
+            transaction.oncomplete = () => {
+                console.log(`All object stores in ${dbName} have been cleared.`);
+                resolve(true);
             };
-        }
-        resolve(true);
-        db.close();
-    };
 
-    request.onerror = (event:any) => {
-        console.error('Error opening database:', event.target.error);
-        reject(false);
-    };
+            transaction.onerror = (event: any) => {
+                reject(event.target.error);
+                console.error('Transaction error:', event.target.error);
+            };
+
+            for (const storeName of db.objectStoreNames) {
+                const objectStore = transaction.objectStore(storeName);
+                objectStore.clear().onsuccess = () => {
+                    console.log(`Cleared object store: ${storeName}`);
+                };
+            }
+            resolve(true);
+            db.close();
+        };
+
+        request.onerror = (event: any) => {
+            console.error('Error opening database:', event.target.error);
+            reject(false);
+        };
     })
 }
+
 
 
 
