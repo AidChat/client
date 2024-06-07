@@ -20,13 +20,13 @@ import {MdDeleteOutline} from "react-icons/md";
 import Tooltip from "../Utils/Tooltip";
 import {MokshaIcon} from "./Icon";
 import {AuthContext} from "../../services/context/auth.context";
-import {confirmDialog, ConfirmDialog} from "primereact/confirmdialog";
+import {ConfirmDialog} from "primereact/confirmdialog";
 
 interface Props {
     click: () => void;
 }
 
-export const Confession = (props: Props) => {
+export const ClientChatWindow = (props: Props) => {
     const [error, setError] = useState<string>('');
     const [message, setMessage] = useState("Hi Moksha!");
     const [conversation, setConversation] = useState<Message[]>([]);
@@ -103,6 +103,7 @@ export const Confession = (props: Props) => {
         }
     }
 
+
     return (
         <>
             <ConfirmDialog/>
@@ -117,6 +118,7 @@ export const Confession = (props: Props) => {
                                             animate={{y: 0}}
                                             transition={{speed: 2}}
                                             key={index} className={'font-primary m4 chat-wrapper'}>
+                                    <>
                               <span style={{color: 'lightyellow'}}>  {text.sender === 'User' && ' Timon  : '}
                               </span>
                                     <span
@@ -129,8 +131,9 @@ export const Confession = (props: Props) => {
                                                 header: 'Confirmation'
                                             })
 
-                                        }} className={'font-primary font-thick reportBtn'}>
-                                            Report</div>}
+                                            }} className={'font-primary font-thick reportBtn'}>
+                                                Report</div>}
+                                    </>
                                 </motion.div>
                                 <div className={'dotted-border'}></div>
                             </>
@@ -146,9 +149,9 @@ export const Confession = (props: Props) => {
                                     header: 'Confirmation',
                                 });
                                 if (accepted) {
-                                     clearDatabaseByName(IDBStore.chat).then(function () {
-                                         setConversation([]);
-                                     })
+                                    clearDatabaseByName(IDBStore.chat).then(function () {
+                                        setConversation([]);
+                                    })
                                 }
                             }
                             }/>

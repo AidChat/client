@@ -5,23 +5,24 @@ import {_props} from "../network/network";
 import {useNavigate, useParams} from "react-router-dom";
 import {UserDetailsForm} from "../../components/Concent";
 import {reqType, service, serviceRoute} from "../../utils/enum";
-import {Confession} from "../../components/Moksha";
+import {ClientChatWindow} from "../../components/Moksha";
 import {io, Socket} from "socket.io-client";
 import {SocketEmitters, SocketListeners} from "../../utils/interface";
+import {Editor} from "../../Features/Blogs";
 
 export let AuthContext = React.createContext<{
-    isAuthenticated?: boolean;
-    removeUserSession: () => void;
-    verifyAuthentication: (
-        session_id?: string,
-        forceReload?: boolean
-    ) => void;
-    isUserVerified: boolean;
-    eventSocket : Socket | null,
-    setConfession:(V:boolean)=>void,
-    mokshaSocket:Socket | null,
-    isMokshaAvailable : boolean
-}
+        isAuthenticated?: boolean;
+        removeUserSession: () => void;
+        verifyAuthentication: (
+            session_id?: string,
+            forceReload?: boolean
+        ) => void;
+        isUserVerified: boolean;
+        eventSocket: Socket | null,
+        setConfession: (V: boolean) => void,
+        mokshaSocket: Socket | null,
+        isMokshaAvailable: boolean
+    }
     | undefined
 >(undefined);
 export const AuthContextProvider = ({
@@ -36,9 +37,9 @@ export const AuthContextProvider = ({
     const {requestCode} = useParams();
     const [showUserForm, setFormVisibility] = useState<boolean>(true);
     const [isUserVerified, setVerifyState] = useState<boolean>(false);
-    const [isConfession, setConfession] = useState<boolean>(true);
+    const [isClient, setConfession] = useState<boolean>(true);
     const [eventSocket, setEventSocket] = useState<Socket | null>(null);
-    const [mokshaSocket, setMokshaSocket] = useState<Socket | null >(null);
+    const [mokshaSocket, setMokshaSocket] = useState<Socket | null>(null);
     const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export const AuthContextProvider = ({
             reconnectionAttempts: 10,
         });
         newSocket.emit(SocketEmitters._PING);
-        newSocket.on(SocketListeners.PONG,()=>{
+        newSocket.on(SocketListeners.PONG, () => {
             setIsMokshaAvailable(true)
         })
         setMokshaSocket(newSocket);
@@ -66,7 +67,7 @@ export const AuthContextProvider = ({
     }, [requestCode]);
 
     function changeConfession() {
-        setConfession(!isConfession);
+        setConfession(!isClient);
     }
 
     function stopload() {
@@ -167,7 +168,8 @@ export const AuthContextProvider = ({
                         children
                     )
                 ) : (
-                    isConfession ? <Confession click={() => changeConfession()}/> :
+                    isClient ?
+                        <ClientChatWindow click={() => changeConfession()}/> :
                         <AuthenticationContainer/>
                 )
             ) : (

@@ -1,4 +1,4 @@
-import TypeWriter from "./TypeWriter";
+import Editor from "./Editor";
 
 
-export { TypeWriter };
+export { Editor };
