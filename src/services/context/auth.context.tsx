@@ -21,7 +21,8 @@ export let AuthContext = React.createContext<{
         eventSocket: Socket | null,
         setConfession: (V: boolean) => void,
         mokshaSocket: Socket | null,
-        isMokshaAvailable: boolean
+        isMokshaAvailable: boolean,
+        toggleBlogComponent:()=>void
     }
     | undefined
 >(undefined);
@@ -41,7 +42,7 @@ export const AuthContextProvider = ({
     const [eventSocket, setEventSocket] = useState<Socket | null>(null);
     const [mokshaSocket, setMokshaSocket] = useState<Socket | null>(null);
     const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
-
+    const [showBlogComponent, setShowBlogComponent] = useState<boolean>(false);
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
@@ -145,6 +146,9 @@ export const AuthContextProvider = ({
                 verifyAuthentication(undefined, true);
             });
     }
+    function toggleBlogComponent() {
+        setShowBlogComponent(!showBlogComponent);
+    }
 
 
     return (
@@ -157,7 +161,8 @@ export const AuthContextProvider = ({
                 eventSocket,
                 setConfession,
                 mokshaSocket,
-                isMokshaAvailable
+                isMokshaAvailable,
+                toggleBlogComponent
             }}
         >
             {!loading ? (
@@ -165,7 +170,8 @@ export const AuthContextProvider = ({
                     showUserForm ? (
                         <UserDetailsForm/>
                     ) : (
-                        children
+                        showBlogComponent ? <Editor back={toggleBlogComponent} /> :
+                            children
                     )
                 ) : (
                     isClient ?

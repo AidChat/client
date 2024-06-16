@@ -71,8 +71,7 @@ export const Panel = () => {
                     initial={{x: -10}}
                     animate={{x: 0}}
                     exit={{x: -10}}
-                    className={"containerC"}
-                >
+                    className={"containerC"}>
                     <UtilityPanel/>
                 </motion.div>)}
                 <MokshaIcon size={'small'} bottom={true} left={true} online={true} />

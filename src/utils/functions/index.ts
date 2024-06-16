@@ -125,6 +125,7 @@ export const hideStatusBar = async () => {
 export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }) => {
     return new Promise((resolve, reject) => {
         getDeviceInfoUsingCapacitor().then(async (capacitor) => {
+        // TODO not working for web when user has logged in ( editor )
             if (capacitor.platform === 'web') {
                 confirmDialog({
                     message,

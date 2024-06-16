@@ -13,7 +13,6 @@ import {reqType, service, serviceRoute} from "../../../utils/enum";
 import {AnimatePresence, motion} from "framer-motion";
 import {AuthContext} from "../../../services/context/auth.context";
 import {useCheckUserVerification} from "../../../services/hooks/appHooks";
-import {log} from "console";
 
 interface _gfIterface {
   onSubmit?: () => void;
@@ -159,6 +158,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
               onSelect={(s: string) => {
                 handleKeywords(s);
               }}
+              classes={'custom-input'}
               dataList={groupTokensArray}
             />
 
@@ -190,7 +190,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
             onChange={handleChange}
             value={state.description}
             className={
-              "borderRadius-light custom-input-people borderRadius-heavy"
+              "borderRadius-light custom-input-people custom-input borderRadius-heavy"
             }
             placeholder={"Write some description about your group"}
           />

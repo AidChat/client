@@ -19,15 +19,16 @@
 }
 
 .custom-input {
-    height: 2.4rem;
-    border: 1px solid lightgray;
+    height: 2rem;
+    border: 1px solid gray;
     padding: 4px 10px;
+    background: transparent;
+    color: white;
 }
 
 .custom-input-people {
-    border: 1px solid lightgray;
     padding: 18px 4px;
-    height:15vh;
+    height:10vh;
 }
 
 .sendInviteWrapper {
@@ -84,17 +85,16 @@
 
 .tokens {
     width: fit-content;
-    padding: 2px 4px;
+    padding:5px 4px;
     height: fit-content;
-    margin: 2px;
+    margin:0px 4px;
     overflow-y: auto;
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: green;
+    background: #1c302b;
     color:white
-
 }
 
 .tokens .close {

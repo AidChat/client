@@ -19,15 +19,15 @@ const LogoCanvas: React.FC = () => {
 
         const resizeCanvas = () => {
             if (canvas.parentElement) {
-                canvas.width = canvas.parentElement.clientWidth;
-                canvas.height = canvas.parentElement.clientHeight;
+                canvas.width = 50;
+                canvas.height =50;
             }
         };
 
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas(); // Initial size adjustment
+        resizeCanvas();
 
-        const scale = (size: number) => size / 8; // Scale down by a factor of 8 to fit in 50px
+        const scale = (size: number) => size / 8;
 
         const vertices: Vertex[] = [
             {x: scale(200), y: scale(50), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
@@ -51,17 +51,17 @@ const LogoCanvas: React.FC = () => {
             if (ctx && canvas) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Update vertices positions
+
                 vertices.forEach(vertex => {
                     vertex.x += vertex.dx * 0.3;
                     vertex.y += vertex.dy * 0.3;
 
-                    // Boundary check
+
                     if (vertex.x <= 0 || vertex.x >= canvas.width) vertex.dx *= -1;
                     if (vertex.y <= 0 || vertex.y >= canvas.height) vertex.dy *= -1;
                 });
 
-                // Draw lines
+
                 ctx.strokeStyle = '#008080';
                 ctx.lineWidth = 0.5; // Thinner lines for a smaller canvas
                 lines.forEach(line => {
@@ -71,10 +71,10 @@ const LogoCanvas: React.FC = () => {
                     ctx.stroke();
                 });
 
-                // Slow down the animation
+
                 setTimeout(() => {
                     requestAnimationFrame(draw);
-                }, 50); // Increased delay to slow down animation
+                }, 50);
             }
         }
 
@@ -86,8 +86,8 @@ const LogoCanvas: React.FC = () => {
     }, []);
 
     return (
-        <div style={{width: '80px', height: '50px', position: 'relative'}}>
-            <canvas ref={canvasRef} style={{display: 'block', width: '100%', height: '100%'}}></canvas>
+        <div style={{width: '40px', height: '50px', position: 'relative'}}>
+            <canvas ref={canvasRef}  style={{display: 'block', width: '100%', height: '100%'}}></canvas>
         </div>
     );
 };

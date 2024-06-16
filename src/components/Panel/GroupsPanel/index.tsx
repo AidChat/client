@@ -142,7 +142,9 @@ export function UserIcon() {
 
     const menuItems: { name: string; id: number }[] = [
         {name: "Profile", id: 1},
-        {name: "Logout", id: 2},
+        {name: "Blog", id: 3},
+        {name: "Logout", id: 2}
+
     ];
 
     function handleClick(id: number) {
@@ -152,6 +154,9 @@ export function UserIcon() {
                 break;
             case 1:
                 setShowUserForm(true);
+                break;
+            case 3:
+                auth?.toggleBlogComponent();
                 break;
             default:
                 break;

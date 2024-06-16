@@ -544,16 +544,19 @@ dialog::backdrop {
     border-bottom:1px dotted rgba(86, 95, 104, 0.19);
 }
 
+/*Dialog customizations*/
 .p-confirm-dialog{
     background: whitesmoke;
     padding:10px;
     border-radius: 4px;
+    z-index:99999999999999 !important;
 }
 .p-confirm-dialog .p-dialog-header{
     margin:10px 6px;
 }
 .p-confirm-dialog .p-dialog-content{
     margin:8px 6px;
+    color:whitesmoke;
 }
 .p-confirm-dialog .p-dialog-footer{
     display:flex;
@@ -569,14 +572,25 @@ dialog::backdrop {
 }
 .p-dialog-header{
     padding:14px;
-    background: rgb(31, 41, 31);
+    background: rgba(31, 41, 31, 0.68);
     border-radius: 10px;
+
 }
 .p-dialog{
     background: rgba( 33, 62, 24, 0.05 );
     box-shadow: 0 8px 32px 0 rgb(31, 41, 31);
     backdrop-filter: blur( 5.5px );
     -webkit-backdrop-filter: blur( 5.5px );
+    background:#1C1C1C;
     border-radius: 10px;
     padding:16px;
+}
+.p-dialog-title{
+    color:whitesmoke;
+}
+.p-dialog-header-icon{
+    color:white;
+}
+.p-dialog-mask{
+
 }
