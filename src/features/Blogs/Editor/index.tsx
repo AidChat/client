@@ -5,7 +5,7 @@ import {QuillFormats, QuillModules} from "../../../utils/constants";
 import './index.css';
 import {getString} from "../../../utils/strings";
 import {confirm, queryStoreObjects, storeCurrentContent, useResponsizeClass} from "../../../utils/functions";
-import {EwindowSizes, IDBStore, reqType, service, serviceRoute} from "../../../utils/enum";
+import {Article, EwindowSizes, IDBStore, reqType, service, serviceRoute} from "../../../utils/enum";
 import {IoCloudUploadOutline} from "react-icons/io5";
 import {MdOutlineArrowBackIos, MdOutlinePublish} from "react-icons/md";
 import Snackbar from "../../../components/Utils/Snackbar";
@@ -13,26 +13,25 @@ import {_props} from "../../../services/network/network";
 
 interface ComponentProps {
     back?: () => void
-    Article?:Article
-}
-interface Article{
-    content:string,
-    created_at:Date,
-    status:string,
-    id?:number
+    Article?: Article
 }
 
-export default function Editor(props: ComponentProps) {
-    const [article, setArticle] = useState<Article>({content: "", created_at: new Date(), id: !props.Article ?  990: props.Article.id, status: ""});
+
+
+export default function BlogEditor(props: ComponentProps) {
+    const [article, setArticle] = useState<Article>({
+        content: "",
+        created_at: new Date(),
+        id: !props.Article ? 990 : props.Article.id,
+        status: ""
+    });
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState<string>('');
 
     async function checkAndStoreContent() {
-        debugger
         if (article && article.content.split('').length > 30) {
-            // let response = await confirm({message: "Are you sure you want to send this article for a review?"});
-            storeArticle();
-            // if (response) storeArticle();
+            let response = await confirm({message: "Are you sure you want to send this article for a review?"});
+            if (response) storeArticle();
         } else {
             setMessage("Not enough content.");
         }
@@ -41,28 +40,24 @@ export default function Editor(props: ComponentProps) {
 
     async function storeArticle() {
         let response = await _props._db(service.group).query(serviceRoute.article, {article}, reqType.post, 1)
-        console.log(response);
         if (response) setMessage(response.message);
     }
-    async function getArticleById(id: number=9)  {
+
+    async function getArticleById(id: number = 9) {
         const article = await _props._db(service.group).query(serviceRoute.article, {}, reqType.get, id)
-        console.log(article)
-        setArticle({...article,content:article});
+        setArticle({...article, content: article});
     }
 
     useEffect(() => {
-        getArticleById()
         queryStoreObjects(IDBStore.blog).then(function (data: any) {
             let currentContent = data.length && data[data.length - 1].content;
-            setArticle(currentContent);
+            setArticle({...article, content: currentContent});
         });
         let timeOutVar = window.setInterval(function () {
             if (article && article.content.split('').length > 30) {
                 setSaving(true);
                 storeCurrentContent(IDBStore.blog, article.content).then(function () {
-                    window.setTimeout(function () {
                         setSaving(false);
-                    }, 10000)
                 })
             }
         }, 5000)
@@ -71,7 +66,6 @@ export default function Editor(props: ComponentProps) {
         }
     }, []);
 
-    console.log(article)
     return (
         <div className="typeWriter">
             <Snackbar message={message} onClose={() => setMessage('')}/>
@@ -106,7 +100,7 @@ export default function Editor(props: ComponentProps) {
                 }}/>
             </div>
             <div className={'font-primary note-container' + useResponsizeClass(EwindowSizes.S, [' height10'])}>
-                Blogs are inspected by &nbsp; <u>{getString(24)}</u> &nbsp; before getting published any content that
+                Blogs are inspected by &nbsp; <><>{getString(24)}</></> &nbsp; before getting published any content that
                 seems
                 inappropriate would be flagged and proper action would be taken.
             </div>

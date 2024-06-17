@@ -8,7 +8,8 @@ import {reqType, service, serviceRoute} from "../../utils/enum";
 import {ClientChatWindow} from "../../components/Moksha";
 import {io, Socket} from "socket.io-client";
 import {SocketEmitters, SocketListeners} from "../../utils/interface";
-import {Editor} from "../../Features/Blogs";
+import {BlogEditor} from "../../features/Blogs";
+import {BlogList} from "../../features/Blogs/Blogs";
 
 export let AuthContext = React.createContext<{
         isAuthenticated?: boolean;
@@ -170,12 +171,13 @@ export const AuthContextProvider = ({
                     showUserForm ? (
                         <UserDetailsForm/>
                     ) : (
-                        showBlogComponent ? <Editor back={toggleBlogComponent} /> :
+                        showBlogComponent ? <BlogEditor back={toggleBlogComponent} /> :
                             children
                     )
                 ) : (
                     isClient ?
-                        <ClientChatWindow click={() => changeConfession()}/> :
+                        // <ClientChatWindow click={() => changeConfession()}/> :
+                        <BlogList  /> :
                         <AuthenticationContainer/>
                 )
             ) : (

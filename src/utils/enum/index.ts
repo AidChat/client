@@ -144,12 +144,12 @@ export enum service {
     group = "http://localhost:8901/v1",
     messaging = "http://localhost:8900/",
     bot = 'http://localhost:9650',
-    event='http://localhost:9651'
+    event = 'http://localhost:9651'
 }
 
-export enum IDBStore{
-    blog='BLOG',
-    chat='AICHAT'
+export enum IDBStore {
+    blog = 'BLOG',
+    chat = 'AICHAT'
 }
 
 export enum EwindowSizes {
@@ -171,4 +171,17 @@ export enum ClientRole {
     OWNER = "OWNER",
     ADMIN = "AIDER",
     MEMBER = "MEMBER",
+}
+
+export enum EArticleStatus {
+    draft = "DRAFT",
+    pending = "PENDING",
+    reviewed = "REVIEWED",
+    published = "PUBLISHED"
+}
+export interface Article {
+    content: string,
+    created_at: Date,
+    status: string,
+    id?: number
 }

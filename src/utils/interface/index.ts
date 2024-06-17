@@ -1,4 +1,4 @@
-import {IDBStore} from "../enum";
+import {EArticleStatus, IDBStore} from "../enum";
 
 export interface UserProps {
     id?: number;
@@ -98,4 +98,11 @@ export type IDBStoreName  = 'BLOG'| 'AICHAT';
 export interface Message {
     sender: 'User' | 'Model';
     message: string;
+}
+
+export interface IBlogShortContent {
+    id: number;
+    content: string,
+    created_at: Date,
+    status:EArticleStatus
 }
