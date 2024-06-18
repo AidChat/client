@@ -175,8 +175,7 @@ export const AuthContextProvider = ({
                     )
                 ) : (
                     isClient ?
-                        // <ClientChatWindow click={() => changeConfession()}/> :
-                        <BlogList  /> :
+                        <ClientChatWindow click={() => changeConfession()}/> :
                         <AuthenticationContainer/>
                 )
             ) : (
