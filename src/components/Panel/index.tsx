@@ -11,6 +11,7 @@ import {getDeviceInfoUsingCapacitor, getFCMToken} from "../../utils/functions";
 import {_props} from "../../services/network/network";
 import {PushNotifications} from "@capacitor/push-notifications";
 import {MokshaIcon} from "../Moksha/Icon";
+import {ConfirmDialog} from "primereact/confirmdialog";
 
 export const Panel = () => {
     let {size: smallScreen} = useWindowSize(EwindowSizes.S);

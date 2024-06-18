@@ -182,6 +182,6 @@ export enum EArticleStatus {
 export interface Article {
     content: string,
     created_at: Date,
-    status: string,
+    status: EArticleStatus,
     id?: number
 }

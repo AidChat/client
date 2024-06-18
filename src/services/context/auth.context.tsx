@@ -171,7 +171,6 @@ export const AuthContextProvider = ({
                     showUserForm ? (
                         <UserDetailsForm/>
                     ) : (
-                        showBlogComponent ? <BlogEditor back={toggleBlogComponent} /> :
                             children
                     )
                 ) : (

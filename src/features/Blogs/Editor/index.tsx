@@ -13,18 +13,11 @@ import {_props} from "../../../services/network/network";
 
 interface ComponentProps {
     back?: () => void
-    Article?: Article
+    Article: Article
 }
 
-
-
 export default function BlogEditor(props: ComponentProps) {
-    const [article, setArticle] = useState<Article>({
-        content: "",
-        created_at: new Date(),
-        id: !props.Article ? 990 : props.Article.id,
-        status: ""
-    });
+    const [article, setArticle] = useState<Article>(props.Article);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState<string>('');
 
@@ -43,24 +36,28 @@ export default function BlogEditor(props: ComponentProps) {
         if (response) setMessage(response.message);
     }
 
-    async function getArticleById(id: number = 9) {
+    async function getArticleById(id: number)  {
         const article = await _props._db(service.group).query(serviceRoute.article, {}, reqType.get, id)
-        setArticle({...article, content: article});
+        setArticle(article);
     }
 
     useEffect(() => {
-        queryStoreObjects(IDBStore.blog).then(function (data: any) {
-            let currentContent = data.length && data[data.length - 1].content;
-            setArticle({...article, content: currentContent});
-        });
-        let timeOutVar = window.setInterval(function () {
-            if (article && article.content.split('').length > 30) {
-                setSaving(true);
-                storeCurrentContent(IDBStore.blog, article.content).then(function () {
+        if (article.id) {
+          getArticleById(article.id)
+        } else {
+            queryStoreObjects(IDBStore.blog).then(function (data: any) {
+                let currentContent = data.length && data[data.length - 1].content;
+                setArticle({...article, content: currentContent});
+            });
+            var timeOutVar = window.setInterval(function () {
+                if (article && article.content.split('').length > 30) {
+                    setSaving(true);
+                    storeCurrentContent(IDBStore.blog, article.content).then(function () {
                         setSaving(false);
-                })
-            }
-        }, 5000)
+                    })
+                }
+            }, 5000)
+        }
         return () => {
             window.clearInterval(timeOutVar)
         }
@@ -99,8 +96,10 @@ export default function BlogEditor(props: ComponentProps) {
                     setArticle({...article, content: e});
                 }}/>
             </div>
-            <div className={'font-primary note-container' + useResponsizeClass(EwindowSizes.S, [' height10'])}>
-                Blogs are inspected by &nbsp; <><>{getString(24)}</></> &nbsp; before getting published any content that
+            <div className={'font-primary note-container  ' + useResponsizeClass(EwindowSizes.S, [' height10'])}>
+                Blogs are inspected by &nbsp; <><>{getString(24)}</>
+            </>
+                &nbsp; before getting published any content that
                 seems
                 inappropriate would be flagged and proper action would be taken.
             </div>
