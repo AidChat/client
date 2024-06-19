@@ -29,7 +29,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top:1px dotted gray
+    border-top:1px dotted gray;
+    text-align: center;
 }
 .header-container{
     height: 10%;

@@ -28,7 +28,6 @@ export function MokshaIcon({top, bottom, left, right,size,online}: {
         if (bottom) {
             style = {...style,bottom: 0}
         }
-
         if (right) {
             style = {...style,right: 0}
         }

@@ -9,7 +9,6 @@
 .item-wrapper {
     height: 40px;
     width: 40px;
-    border: 1px solid rgb(128, 128, 128);
     border-radius: 50%;
     cursor: pointer;
 }
@@ -76,7 +75,7 @@
 
 .menu-item {
     padding: 4px 20px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .menu-item:hover {
@@ -86,7 +85,7 @@
 
 
 .customMenu-wrapper {
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .menu {

@@ -36,7 +36,7 @@ export function DialogPanel(props: DialogPanelProps) {
               onClick={() => {
                 props.onClose(false);
               }}
-              color={"green"}
+              color={"white"}
               size={20}
             />
           </div>

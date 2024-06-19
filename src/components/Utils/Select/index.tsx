@@ -3,7 +3,8 @@ import './index.css'
 
 interface SearchInterface {
     onSelect: (s: string) => void
-    dataList: any[]
+    dataList: any[],
+    classes?:string
 }
 
 export function Search(props: SearchInterface) {
@@ -27,7 +28,7 @@ export function Search(props: SearchInterface) {
     return (
         <div className={'searchComponent'}>
             <div className={'input-wrapper'}>
-                <input value={input} type={'name'} onChange={e => handleFilter(e.target.value)} placeholder={'Add keywords'}/>
+                <input value={input} type={'name'} className={props.classes ? props.classes:''} onChange={e => handleFilter(e.target.value)} placeholder={'Add keywords'}/>
             </div>
             <div className={'result-list'}>
                 {item.map((item: string) => {

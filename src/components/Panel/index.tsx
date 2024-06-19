@@ -11,6 +11,7 @@ import {getDeviceInfoUsingCapacitor, getFCMToken} from "../../utils/functions";
 import {_props} from "../../services/network/network";
 import {PushNotifications} from "@capacitor/push-notifications";
 import {MokshaIcon} from "../Moksha/Icon";
+import {ConfirmDialog} from "primereact/confirmdialog";
 
 export const Panel = () => {
     let {size: smallScreen} = useWindowSize(EwindowSizes.S);
@@ -71,8 +72,7 @@ export const Panel = () => {
                     initial={{x: -10}}
                     animate={{x: 0}}
                     exit={{x: -10}}
-                    className={"containerC"}
-                >
+                    className={"containerC"}>
                     <UtilityPanel/>
                 </motion.div>)}
                 <MokshaIcon size={'small'} bottom={true} left={true} online={true} />

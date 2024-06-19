@@ -115,26 +115,28 @@ export enum serviceRoute {
     login = "/auth/login",
     register = "/auth/register",
     session = "/auth/session",
-    groupById = "/group",
-    group = "/group",
+    groupById = "/CJ130",
+    group = "/CJ130",
     user = "/user",
-    _groupMessages = "/group/messages",
-    groupUsers = "/group/users",
-    groupInvite = "/group/invite",
-    request = "/group/request",
-    groupRole = "/group/role",
-    removeUserFromGroup = "/group/remove",
-    userRequest = "/group/requests",
-    search = "/group/search",
+    _groupMessages = "/CJ130/messages",
+    groupUsers = "/CJ130/users",
+    groupInvite = "/CJ130/invite",
+    request = "/CJ130/request",
+    groupRole = "/CJ130/role",
+    removeUserFromGroup = "/CJ130/remove",
+    userRequest = "/CJ130/requests",
+    search = "/CJ130/search",
     socialLogin = "/auth/social-login",
     consent = "/user/consent",
-    updateInvite = "/group/invite",
-    groupReminders = "/group/reminders",
-    reminder = "/group/reminder",
-    removeReminder = "/group/restrictReminder",
+    updateInvite = "/CJ130/invite",
+    groupReminders = "/CJ130/reminders",
+    reminder = "/CJ130/reminder",
+    removeReminder = "/CJ130/restrictReminder",
     generateCode = "/auth/code",
     verifyCode = "/auth/code",
     deviceInfo = "/auth/deviceinfo",
+    article = "/CJ130/article",
+    allArtcles = "/CJ130/articles",
 }
 
 export enum service {
@@ -142,12 +144,12 @@ export enum service {
     group = "http://localhost:8901/v1",
     messaging = "http://localhost:8900/",
     bot = 'http://localhost:9650',
-    event='http://localhost:9651'
+    event = 'http://localhost:9651'
 }
 
-export enum IDBStore{
-    blog='BLOG',
-    chat='AICHAT'
+export enum IDBStore {
+    blog = 'BLOG',
+    chat = 'AICHAT'
 }
 
 export enum EwindowSizes {
@@ -169,4 +171,17 @@ export enum ClientRole {
     OWNER = "OWNER",
     ADMIN = "AIDER",
     MEMBER = "MEMBER",
+}
+
+export enum EArticleStatus {
+    draft = "DRAFT",
+    pending = "PENDING",
+    reviewed = "REVIEWED",
+    published = "PUBLISHED"
+}
+export interface Article {
+    content: string,
+    created_at: Date,
+    status: EArticleStatus,
+    id?: number
 }

@@ -78,8 +78,7 @@ export function useResponsizeClass(size: EwindowSizes, classArr: string[]): stri
 }
 
 export async function getDeviceInfoUsingCapacitor() {
-    const info = await Device.getInfo();
-    console.log("Device Info ", info)
+    const info:DeviceInfo = await Device.getInfo();
     return info
 }
 
@@ -122,7 +121,7 @@ export const hideStatusBar = async () => {
 };
 
 
-export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }) => {
+export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }):Promise<boolean> => {
     return new Promise((resolve, reject) => {
         getDeviceInfoUsingCapacitor().then(async (capacitor) => {
             if (capacitor.platform === 'web') {
