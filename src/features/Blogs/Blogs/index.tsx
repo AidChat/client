@@ -1,33 +1,61 @@
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement, useContext, useEffect, useState} from "react";
 import './style.css'
-import {confirm, formatDateToDDMMYYYY} from "../../../utils/functions";
-import {EArticleStatus} from "../../../utils/enum";
-import {article} from "../../../assets/data";
-import {Article} from "../../../utils/enum";
+import {clearDatabaseByName, confirm, formatDateToDDMMYYYY} from "../../../utils/functions";
+import {Article, EArticleStatus, IDBStore, reqType, service, serviceRoute} from "../../../utils/enum";
 import {BlogEditor} from "../index";
 import {MdDelete} from "react-icons/md";
 import {AiFillEdit} from "react-icons/ai";
 import {ConfirmDialog} from "primereact/confirmdialog";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
+import {IoChevronBack} from "react-icons/io5";
+import {AuthContext} from "../../../services/context/auth.context";
+import {_props} from "../../../services/network/network";
+import Snackbar from "../../../components/Utils/Snackbar";
 
 export function BlogList() {
     const [selectedBlog, setSelectedBlogs] = useState<Article | null>(null);
+    const ac = useContext(AuthContext);
+    const [items, setItems] = useState<Article[]>([]);
+    const [message, setMessage] = useState<string>('');
+    useEffect(() => {
+        setMessage("Looking for blogs.....");
+        handleFetchArticles();
+    }, []);
 
-    const items: Article[] = [
-        {content: article, created_at: new Date(), status: EArticleStatus.published},
-        {content: article, created_at: new Date(), status: EArticleStatus.draft},
-        {content: article, created_at: new Date(), status: EArticleStatus.reviewed},
-        {content: article, created_at: new Date(), status: EArticleStatus.pending},
-        {content: article, created_at: new Date(), status: EArticleStatus.pending},
-        {content: article, created_at: new Date(), status: EArticleStatus.pending},
-    ];
+    function handleFetchArticles(){
+        _props._db(service.group).query(serviceRoute.articles, {}, reqType.get, undefined).then(({data}) => {
+            setItems(data);
+            setMessage('');
+        })
+    }
+
+    function handleArticleDelete(id: number | undefined) {
+        if (!id) {
+            clearDatabaseByName(IDBStore.blog).then(function (data: any) {
+                setMessage("Article has been moved to trash");
+                handleFetchArticles();
+            })
+        } else {
+            _props._db(service.group).query(serviceRoute.article, {}, reqType.delete, id).then(function (data) {
+                setMessage(data.message);
+                handleFetchArticles();
+            })
+
+        }
+    }
+
     return (
         <div className={'h100 blog-component-container'}>
+            <Snackbar message={message} onClose={() => setMessage('')}/>
             <ConfirmDialog/>
-            {!selectedBlog && <div className={'font-primary w100 blog-label'}> Your Blogs</div>}
+            {!selectedBlog &&
+                <div className={'font-primary w100 blog-label'}><IoChevronBack onClick={() => ac?.toggleBlogComponent()}
+                                                                               className={'pointer'}/> &nbsp;
+                    Blogs</div>}
             {!selectedBlog && <div className="blog-list">
-                {items.map((item: Article, index:number) => {
-                    return <BlogCard key={index} onClick={() => setSelectedBlogs(item)} article={item}/>
+                {items.map((item: Article, index: number) => {
+                    return <BlogCard onDelete={(id) => handleArticleDelete(id)} key={index}
+                                     onClick={() => setSelectedBlogs(item)} article={item}/>
                 })}
             </div>
             }
@@ -42,7 +70,12 @@ export function BlogList() {
  * @constructor
  */
 
-function BlogCard(props: { article: Article, onClick: (item: Article) => void,key:number }) {
+function BlogCard(props: {
+    article: Article,
+    onClick: (item: Article) => void,
+    key: number,
+    onDelete: (id: number | undefined) => void
+}) {
     const [state, _] = useState<Article>(props.article);
 
     function renderStatusString(string: EArticleStatus): ReactElement | undefined {
@@ -66,8 +99,9 @@ function BlogCard(props: { article: Article, onClick: (item: Article) => void,ke
         }
 
     }
+
     return <>
-        <motion.div initial={{x:-10}}  animate={{x:0}}className={'blog-card-container'}>
+        <motion.div initial={{x: -10}} animate={{x: 0}} className={'blog-card-container'}>
             <div className={'blog-status'}>
                 <div className={'dflex'}>
                     <div> {state.status !== EArticleStatus.published &&
@@ -77,7 +111,7 @@ function BlogCard(props: { article: Article, onClick: (item: Article) => void,ke
                                           message: 'Do you wanna delete this blog permanently?',
                                           header: 'Confirmation'
                                       }).then(function () {
-
+                                          props.onDelete(state?.id)
                                       })
                                   }}/>
                     }

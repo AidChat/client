@@ -1,3 +1,5 @@
+import QuillResizeImage from 'quill-resize-image';
+
 export const customMenuItems = [{
     id: 1, title: "View"
 }, {
@@ -51,4 +53,8 @@ export const QuillModules = {
         [{align: ''}, {align: 'center'}, {align: 'right'}, {align: 'justify'}],
         ['link', 'image'],
     ],
+    resize: {
+        locale: {},
+    },
+
 };

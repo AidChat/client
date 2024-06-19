@@ -136,7 +136,7 @@ export enum serviceRoute {
     verifyCode = "/auth/code",
     deviceInfo = "/auth/deviceinfo",
     article = "/CJ130/article",
-    allArtcles = "/CJ130/articles",
+    articles = "/CJ130/articles",
 }
 
 export enum service {

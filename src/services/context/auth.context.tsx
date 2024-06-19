@@ -8,7 +8,6 @@ import {reqType, service, serviceRoute} from "../../utils/enum";
 import {ClientChatWindow} from "../../components/Moksha";
 import {io, Socket} from "socket.io-client";
 import {SocketEmitters, SocketListeners} from "../../utils/interface";
-import {BlogEditor} from "../../features/Blogs";
 import {BlogList} from "../../features/Blogs/Blogs";
 
 export let AuthContext = React.createContext<{
@@ -23,7 +22,7 @@ export let AuthContext = React.createContext<{
         setConfession: (V: boolean) => void,
         mokshaSocket: Socket | null,
         isMokshaAvailable: boolean,
-        toggleBlogComponent:()=>void
+        toggleBlogComponent: () => void
     }
     | undefined
 >(undefined);
@@ -147,6 +146,7 @@ export const AuthContextProvider = ({
                 verifyAuthentication(undefined, true);
             });
     }
+
     function toggleBlogComponent() {
         setShowBlogComponent(!showBlogComponent);
     }
@@ -171,7 +171,7 @@ export const AuthContextProvider = ({
                     showUserForm ? (
                         <UserDetailsForm/>
                     ) : (
-                            children
+                        showBlogComponent ? <BlogList/> : children
                     )
                 ) : (
                     isClient ?

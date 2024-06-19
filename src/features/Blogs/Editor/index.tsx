@@ -32,18 +32,18 @@ export default function BlogEditor(props: ComponentProps) {
 
 
     async function storeArticle() {
-        let response = await _props._db(service.group).query(serviceRoute.article, {article}, reqType.post, 1)
+        let response = await _props._db(service.group).query(serviceRoute.article, {article}, article.id ? reqType.put : reqType.post, 1)
         if (response) setMessage(response.message);
     }
 
-    async function getArticleById(id: number)  {
+    async function getArticleById(id: number) {
         const article = await _props._db(service.group).query(serviceRoute.article, {}, reqType.get, id)
-        setArticle(article);
+        setArticle(article.data);
     }
 
     useEffect(() => {
         if (article.id) {
-          getArticleById(article.id)
+            getArticleById(article.id)
         } else {
             queryStoreObjects(IDBStore.blog).then(function (data: any) {
                 let currentContent = data.length && data[data.length - 1].content;
@@ -62,7 +62,6 @@ export default function BlogEditor(props: ComponentProps) {
             window.clearInterval(timeOutVar)
         }
     }, []);
-
     return (
         <div className="typeWriter">
             <Snackbar message={message} onClose={() => setMessage('')}/>
