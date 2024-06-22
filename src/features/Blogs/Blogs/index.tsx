@@ -11,6 +11,7 @@ import {IoChevronBack} from "react-icons/io5";
 import {AuthContext} from "../../../services/context/auth.context";
 import {_props} from "../../../services/network/network";
 import Snackbar from "../../../components/Utils/Snackbar";
+import {FaPenFancy} from "react-icons/fa";
 
 export function BlogList() {
     const [selectedBlog, setSelectedBlogs] = useState<Article | null>(null);
@@ -22,7 +23,7 @@ export function BlogList() {
         handleFetchArticles();
     }, []);
 
-    function handleFetchArticles(){
+    function handleFetchArticles() {
         _props._db(service.group).query(serviceRoute.articles, {}, reqType.get, undefined).then(({data}) => {
             setItems(data);
             setMessage('');
@@ -49,9 +50,19 @@ export function BlogList() {
             <Snackbar message={message} onClose={() => setMessage('')}/>
             <ConfirmDialog/>
             {!selectedBlog &&
-                <div className={'font-primary w100 blog-label'}><IoChevronBack onClick={() => ac?.toggleBlogComponent()}
-                                                                               className={'pointer'}/> &nbsp;
-                    Blogs</div>}
+                <div className="flex ">
+                <div className={'font-primary w100 blog-label'}>
+                    <IoChevronBack onClick={() => ac?.toggleBlogComponent()} className={'pointer'}/> &nbsp;
+                    Blogs</div>
+                    <div className={'btn btn-primary w15 m8 '} onClick={function (){
+                        setSelectedBlogs({content:'<p>Write something here.</p>',status:EArticleStatus.draft,created_at:new Date()})
+                    }} >
+                        <FaPenFancy style={{margin:'0 10px'}} />
+                        Write
+                    </div>
+                </div>
+
+            }
             {!selectedBlog && <div className="blog-list">
                 {items.map((item: Article, index: number) => {
                     return <BlogCard onDelete={(id) => handleArticleDelete(id)} key={index}

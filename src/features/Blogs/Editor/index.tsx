@@ -62,6 +62,7 @@ export default function BlogEditor(props: ComponentProps) {
             window.clearInterval(timeOutVar)
         }
     }, []);
+    console.log(props.Article);
     return (
         <div className="typeWriter">
             <Snackbar message={message} onClose={() => setMessage('')}/>
