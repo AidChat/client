@@ -51,7 +51,9 @@ export default function BlogEditor(props: ComponentProps) {
             });
             var timeOutVar = window.setInterval(function () {
                 if (article && article.content.split('').length > 30) {
+                    console.log("Saving article");
                     setSaving(true);
+                    console.log(article);
                     storeCurrentContent(IDBStore.blog, article.content).then(function () {
                         setSaving(false);
                     })
@@ -62,7 +64,6 @@ export default function BlogEditor(props: ComponentProps) {
             window.clearInterval(timeOutVar)
         }
     }, []);
-    console.log(props.Article);
     return (
         <div className="typeWriter">
             <Snackbar message={message} onClose={() => setMessage('')}/>

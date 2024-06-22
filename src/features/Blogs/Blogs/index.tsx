@@ -20,7 +20,7 @@ export function BlogList() {
     const [message, setMessage] = useState<string>('');
     useEffect(() => {
         setMessage("Looking for blogs.....");
-        handleFetchArticles();
+        // handleFetchArticles();
     }, []);
 
     function handleFetchArticles() {

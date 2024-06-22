@@ -226,6 +226,7 @@ function storeObjects(object: {
             const transaction = db.transaction([object.store.toString()], 'readwrite');
             const objectStore = transaction.objectStore(object.store);
             object.id = 1;
+            console.log("This is a store log",object)
             const request = objectStore.put(object);
             request.onsuccess = () => {
                 resolve(true);
