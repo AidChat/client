@@ -1,3 +1,5 @@
+import QuillResizeImage from 'quill-resize-image';
+
 export const customMenuItems = [{
     id: 1, title: "View"
 }, {
@@ -45,10 +47,15 @@ export const QuillFormats = [
 
 export const QuillModules = {
     toolbar: [
-        [{header: [1, 2, false]}],
+        [{header: [1, 2,3,4,5, false]}],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [{list: 'ordered'}, {list: 'bullet'}],
         [{align: ''}, {align: 'center'}, {align: 'right'}, {align: 'justify'}],
-        ['link', 'image'],
+        ['link', 'image','formula'],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        [{ 'color': [] }, { 'background': [] }]
     ],
+    resize: {
+        locale: {},
+    },
 };

@@ -136,7 +136,7 @@ export enum serviceRoute {
     verifyCode = "/auth/code",
     deviceInfo = "/auth/deviceinfo",
     article = "/CJ130/article",
-    allArtcles = "/CJ130/articles",
+    articles = "/CJ130/articles",
 }
 
 export enum service {
@@ -144,7 +144,7 @@ export enum service {
     group = "http://localhost:8901/v1",
     messaging = "http://localhost:8900/",
     bot = 'http://localhost:9650',
-    event = 'http://localhost:9651'
+    event = 'http://localhost:8089'
 }
 
 export enum IDBStore {

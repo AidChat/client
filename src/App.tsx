@@ -11,7 +11,9 @@ import {
     requestForNotificationAccessIfNotGranted,
     setScreenOrientation,
 } from "./utils/functions";
-
+import {Quill} from "react-quill";
+import QuillResizeImage from "quill-resize-image";
+Quill.register("modules/resize", QuillResizeImage);
 function App(): React.ReactElement {
     const {socket} = useContext(ShellContext);
     useEffect(() => {
