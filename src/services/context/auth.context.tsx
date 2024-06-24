@@ -64,6 +64,7 @@ export const AuthContextProvider = ({
         if (requestCode) {
             setAuth(false);
             _invitation(true);
+            setConfession(false);
         }
     }, [requestCode]);
 
@@ -90,7 +91,6 @@ export const AuthContextProvider = ({
                     .then((user: any) => {
                         if (user) {
                             setVerifyState(user.verifiedEmail);
-                            initGeneralEventConnection();
                             if (user.Type === "Pending") {
                                 setFormVisibility(true);
                             } else {
@@ -118,22 +118,7 @@ export const AuthContextProvider = ({
             });
     }
 
-    function initGeneralEventConnection() {
-        try {
-            setEventSocket(io(service.event, {
-                    autoConnect: true,
-                    reconnectionAttempts: 1,
-                    auth: {
-                        session: window.localStorage.getItem("session")
-                            ? window.localStorage.getItem("session")
-                            : "",
-                    },
-                })
-            );
-        } catch (e) {
-            console.error(e);
-        }
-    }
+
 
     function removeUserSession() {
         setLoad(true);

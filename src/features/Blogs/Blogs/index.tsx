@@ -50,7 +50,7 @@ export function BlogList() {
             <Snackbar message={message} onClose={() => setMessage('')}/>
             <ConfirmDialog/>
             {!selectedBlog &&
-                <div className="flex ">
+                <div className="flex blog-listheader">
                 <div className={'font-primary w100 blog-label'}>
                     <IoChevronBack onClick={() => ac?.toggleBlogComponent()} className={'pointer'}/> &nbsp;
                     Blogs</div>
