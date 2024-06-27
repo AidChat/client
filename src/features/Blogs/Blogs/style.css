@@ -16,7 +16,7 @@
     color: whitesmoke;
     margin:4px;
     transition: all 0.5s;
-
+    max-height: fit-content;
 }
 
 

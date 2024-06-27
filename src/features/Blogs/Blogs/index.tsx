@@ -12,6 +12,7 @@ import {AuthContext} from "../../../services/context/auth.context";
 import {_props} from "../../../services/network/network";
 import Snackbar from "../../../components/Utils/Snackbar";
 import {FaPenFancy} from "react-icons/fa";
+import Tooltip from "../../../components/Utils/Tooltip";
 
 export function BlogList() {
     const [selectedBlog, setSelectedBlogs] = useState<Article | null>(null);
@@ -20,7 +21,7 @@ export function BlogList() {
     const [message, setMessage] = useState<string>('');
     useEffect(() => {
         setMessage("Looking for blogs.....");
-        // handleFetchArticles();
+        handleFetchArticles();
     }, []);
 
     function handleFetchArticles() {
@@ -129,15 +130,17 @@ function BlogCard(props: {
                     </div>
                     <div>
                         {state.status !== EArticleStatus.published &&
-                            <AiFillEdit className={'blog-card-icon'} onClick={() => {
+                          <Tooltip text={'Edit'}>  <AiFillEdit className={'blog-card-icon'} onClick={() => {
                                 props.onClick(state)
                             }} color={'whitesmoke'} size={18}/>
-                        }
+                          </Tooltip>
+                          }
                     </div>
                 </div>
                 <div>   {renderStatusString(state.status)}</div>
             </div>
-            <div className={'blog-content'}>{state.content}
+            <div className={'blog-content'}>
+                <div dangerouslySetInnerHTML={{__html: state.content}}></div>
                 <div className={'blur-blog-content'}></div>
             </div>
             <div className={'blog-date'}>Written on {formatDateToDDMMYYYY(state.created_at)}</div>

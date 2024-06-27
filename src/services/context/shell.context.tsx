@@ -59,6 +59,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
 
     useEffect(function (){
         globalSocket?.on('clientInfoUpdate',function (data){
+            console.log(data)
             new Notification("You have a new client who is seeking for help.",{});
         })
     },[globalSocket]);
