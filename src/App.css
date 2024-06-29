@@ -6,8 +6,8 @@
 
 * {
     font-family: defaultfont, serif;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: large;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
