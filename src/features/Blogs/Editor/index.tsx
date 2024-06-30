@@ -10,6 +10,8 @@ import {IoCloudUploadOutline} from "react-icons/io5";
 import {MdOutlineArrowBackIos, MdOutlinePublish} from "react-icons/md";
 import Snackbar from "../../../components/Utils/Snackbar";
 import {_props} from "../../../services/network/network";
+import {FaRegPaste} from "react-icons/fa6";
+import Markdown from 'react-markdown';
 
 interface ComponentProps {
     back?: () => void
@@ -32,7 +34,7 @@ export default function BlogEditor(props: ComponentProps) {
 
 
     async function storeArticle() {
-        let response = await _props._db(service.group).query(serviceRoute.article, {article}, article.id ? reqType.put : reqType.post, 1)
+        let response = await _props._db(service.group).query(serviceRoute.article, {article}, article.id ? reqType.put : reqType.post, article.id)
         if (response) setMessage(response.message);
     }
 
@@ -51,9 +53,7 @@ export default function BlogEditor(props: ComponentProps) {
             });
             var timeOutVar = window.setInterval(function () {
                 if (article && article.content.split('').length > 30) {
-                    console.log("Saving article");
                     setSaving(true);
-                    console.log(article);
                     storeCurrentContent(IDBStore.blog, article.content).then(function () {
                         setSaving(false);
                     })
@@ -64,6 +64,16 @@ export default function BlogEditor(props: ComponentProps) {
             window.clearInterval(timeOutVar)
         }
     }, []);
+
+    const handlePasteClick = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            setArticle({...article, content: text});
+        } catch (error) {
+            console.error('Failed to read clipboard contents: ', error);
+        }
+    };
+
     return (
         <div className="typeWriter">
             <Snackbar message={message} onClose={() => setMessage('')}/>
@@ -88,9 +98,12 @@ export default function BlogEditor(props: ComponentProps) {
                     <div className={'btn btn-round-secondary'} onClick={() => checkAndStoreContent()}>
                         <MdOutlinePublish/>
                     </div>
+                    <div className={'btn btn-round-secondary '} style={{margin:'0 4px'}} onClick={() => handlePasteClick()}>
+                        <FaRegPaste size={22} />
+                    </div>
                 </div>
             </div>
-            <div className={'editor-container'}>
+            <div className={'editor-container font-primary '}>
                 <ReactQuill theme="snow" className={"editor"}
                             modules={QuillModules} formats={QuillFormats}
                             value={article.content} onChange={(e: any) => {

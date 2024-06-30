@@ -60,7 +60,7 @@ export function Input(props: ICustomInput) {
             border: "none",
             height: "100%",
             paddingLeft: "20px", color: 'white', borderRadius: '20px',
-
+            fontSize: 'medium',
         },
     };
 

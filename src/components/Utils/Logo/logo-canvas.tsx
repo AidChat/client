@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface Vertex {
     x: number;
@@ -19,8 +19,8 @@ const LogoCanvas: React.FC = () => {
 
         const resizeCanvas = () => {
             if (canvas.parentElement) {
-                canvas.width = 50;
-                canvas.height =50;
+                canvas.width = 120;
+                canvas.height = 120;
             }
         };
 
@@ -30,14 +30,14 @@ const LogoCanvas: React.FC = () => {
         const scale = (size: number) => size / 8;
 
         const vertices: Vertex[] = [
-            {x: scale(200), y: scale(50), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(300), y: scale(100), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(350), y: scale(200), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(300), y: scale(300), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(200), y: scale(350), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(100), y: scale(300), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(50), y: scale(200), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
-            {x: scale(100), y: scale(100), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1},
+            { x: scale(200), y: scale(50), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 },  // Top vertex
+            { x: scale(300), y: scale(100), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 }, // Top-right vertex
+            { x: scale(350), y: scale(200), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 }, // Bottom-right vertex
+            { x: scale(300), y: scale(300), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 }, // Bottom vertex
+            { x: scale(200), y: scale(350), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 }, // Bottom-left vertex
+            { x: scale(100), y: scale(300), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 }, // Top-left vertex
+            { x: scale(50), y: scale(200), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 },  // Left vertex
+            { x: scale(100), y: scale(100), dx: Math.random() * 2 - 1, dy: Math.random() * 2 - 1 }  // Top-left vertex
         ];
 
         const lines: [number, number][] = [
@@ -47,36 +47,33 @@ const LogoCanvas: React.FC = () => {
             [5, 7], [6, 2]
         ];
 
-        function draw() {
-            if (ctx && canvas) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const draw = () => {
+            if (!ctx || !canvas) return;
 
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                vertices.forEach(vertex => {
-                    vertex.x += vertex.dx * 0.3;
-                    vertex.y += vertex.dy * 0.3;
+            vertices.forEach(vertex => {
+                vertex.x += vertex.dx * 0.3;
+                vertex.y += vertex.dy * 0.3;
 
+                if (vertex.x <= 0 || vertex.x >= canvas.width) vertex.dx *= -1;
+                if (vertex.y <= 0 || vertex.y >= canvas.height) vertex.dy *= -1;
+            });
 
-                    if (vertex.x <= 0 || vertex.x >= canvas.width) vertex.dx *= -1;
-                    if (vertex.y <= 0 || vertex.y >= canvas.height) vertex.dy *= -1;
-                });
+            ctx.strokeStyle = '#008080';
+            ctx.lineWidth = 0.5;
 
+            lines.forEach(([start, end]) => {
+                ctx.beginPath();
+                ctx.moveTo(vertices[start].x, vertices[start].y);
+                ctx.lineTo(vertices[end].x, vertices[end].y);
+                ctx.stroke();
+            });
 
-                ctx.strokeStyle = '#008080';
-                ctx.lineWidth = 0.5; // Thinner lines for a smaller canvas
-                lines.forEach(line => {
-                    ctx.beginPath();
-                    ctx.moveTo(vertices[line[0]].x, vertices[line[0]].y);
-                    ctx.lineTo(vertices[line[1]].x, vertices[line[1]].y);
-                    ctx.stroke();
-                });
-
-
-                setTimeout(() => {
-                    requestAnimationFrame(draw);
-                }, 50);
-            }
-        }
+            setTimeout(() => {
+                requestAnimationFrame(draw);
+            }, 50);
+        };
 
         draw();
 
@@ -86,8 +83,8 @@ const LogoCanvas: React.FC = () => {
     }, []);
 
     return (
-        <div style={{width: '40px', height: '50px', position: 'relative'}}>
-            <canvas ref={canvasRef}  style={{display: 'block', width: '100%', height: '100%'}}></canvas>
+        <div style={{ width: '80px', height: '80px', position: 'relative' }}>
+            <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }}></canvas>
         </div>
     );
 };

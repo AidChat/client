@@ -9,6 +9,7 @@ import {ClientChatWindow} from "../../components/Moksha";
 import {io, Socket} from "socket.io-client";
 import {SocketEmitters, SocketListeners} from "../../utils/interface";
 import {BlogList} from "../../features/Blogs/Blogs";
+import {Blog} from "../../features/Blogs/Blog";
 
 export let AuthContext = React.createContext<{
         isAuthenticated?: boolean;
@@ -43,11 +44,15 @@ export const AuthContextProvider = ({
     const [mokshaSocket, setMokshaSocket] = useState<Socket | null>(null);
     const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
     const [showBlogComponent, setShowBlogComponent] = useState<boolean>(false);
+    const [showBlogs, setShowBlogs] = useState(false);
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
         if (link === 'aider') {
             setConfession(false);
+        }
+        if (link === 'blog') {
+            setShowBlogs(true);
         }
         verifyAuthentication();
         let newSocket = io(service.bot, {
@@ -119,7 +124,6 @@ export const AuthContextProvider = ({
     }
 
 
-
     function removeUserSession() {
         setLoad(true);
         _props
@@ -160,7 +164,7 @@ export const AuthContextProvider = ({
                     )
                 ) : (
                     isClient ?
-                        <ClientChatWindow click={() => changeConfession()}/> :
+                        !showBlogs ? <ClientChatWindow click={() => changeConfession()}/> : <Blog blog_id={1}/> :
                         <AuthenticationContainer/>
                 )
             ) : (

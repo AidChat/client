@@ -22,6 +22,7 @@ import Tooltip from "../Utils/Tooltip";
 import {MokshaIcon} from "./Icon";
 import {AuthContext} from "../../services/context/auth.context";
 import {ConfirmDialog} from "primereact/confirmdialog";
+import Markdown from "react-markdown";
 
 interface Props {
   click: () => void;
@@ -87,7 +88,7 @@ export const ClientChatWindow = (props: Props) => {
     scrollToBottom(scrollableDivRef);
   }, [conversation]);
   useEffect(() => {
-    startLogger({interval: 3000});
+    startLogger({interval: 30000});
     queryStoreObjects(IDBStore.chat).then(function (data: any) {
       if (data && data[0]?.chats) {
         setConversation(data[0]?.chats);
@@ -101,6 +102,7 @@ export const ClientChatWindow = (props: Props) => {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
   }
+
 
   return (
     <>
@@ -134,7 +136,7 @@ export const ClientChatWindow = (props: Props) => {
                         {" "}
                         {text.sender === "Model" && `${getString(24)} : `}
                       </span>
-                      {text.message}
+                      <Markdown>{text.message}</Markdown>
                       {text.sender === "Model" && (
                         <div
                           onClick={async () => {
@@ -179,7 +181,7 @@ export const ClientChatWindow = (props: Props) => {
           <Input
             height={"4em"}
             borderRadius={"50px"}
-            textColor={"#706c6c"}
+            textColor={"whitesmoke"}
             placeholder={
               "Describe what you are feeling, no one knows you here."
             }
