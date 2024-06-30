@@ -15,7 +15,6 @@ export function formatTime(date: string) {
 }
 
 export function validateEmail(email: string) {
-    // Regular expression for a basic email validation
     return String(email)
         .toLowerCase()
         .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -133,7 +132,9 @@ export const confirm = async ({message, header = 'Confirmation'}: { message: str
                     },
                     reject: function () {
                         resolve(false);
-                    }
+                    },
+                    resizable:false,
+                    draggable:false,
                 });
             } else {
                 const {value} = await Dialog.confirm({

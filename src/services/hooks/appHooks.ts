@@ -3,6 +3,7 @@ import {_debounce} from "../../utils/functions";
 import {EwindowSizes, windowSize} from "../../utils/enum";
 import {AuthContext} from "../context/auth.context";
 import {log} from "console";
+import {useLocation} from "react-router-dom";
 
 export const useWindowSize = (size?: windowSize) => {
   const [current, setCurrent] = useState<windowSize>(EwindowSizes.Xl);
@@ -54,3 +55,7 @@ export const useNetworkConnectivity = () => {
   });
   return {isOnline};
 };
+
+export function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}

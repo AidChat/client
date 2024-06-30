@@ -6,8 +6,7 @@
 
 * {
     font-family: defaultfont, serif;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 500;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
@@ -133,7 +132,7 @@ div {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: pointer !important;
     border: none;
     padding: 2px 8px;
     transition: all 0.5s;
