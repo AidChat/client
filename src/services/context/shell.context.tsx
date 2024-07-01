@@ -1,10 +1,9 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {io} from "socket.io-client";
+import {io, Socket} from "socket.io-client";
 import {EwindowSizes, service} from "../../utils/enum";
 import {useWindowSize} from "../hooks/appHooks";
-import {log} from "console";
-import {getDeviceInfoUsingCapacitor} from "../../utils/functions";
-import {PushNotifications} from "@capacitor/push-notifications";
+import {_props} from "../network/network";
+import {UserProps} from "../../utils/interface";
 
 export const ShellContext = React.createContext<any>({});
 
@@ -17,19 +16,19 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
   const [userId, _setUserId] = useState<string | null>(null);
   const [socketId, _socketId] = useState(null);
   const [requestId, _requestId] = useState<string | null>(null);
-  const [socket, setSocket] = useState<any>(null);
+  const [messageSocket, setMessageSocket] = useState<any>(null);
   const {size: isSmall} = useWindowSize(EwindowSizes.S);
   const [sidePanel, updateSidePanelState] = useState<{
     Util: boolean;
     Group: boolean;
-  }>({Util: isSmall ? false : true, Group: true});
-
+  }>({Util: !isSmall, Group: true});
+  const [globalSocket, setGlobalSocket] = useState<Socket | null>(null);
   useEffect(() => {
     updateSidePanelState({Util: true, Group: true});
   }, [isSmall]);
 
   useEffect(() => {
-    setSocket(
+    setMessageSocket(
       io(service.messaging, {
         autoConnect: true,
         reconnectionAttempts: 1,
@@ -40,7 +39,34 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
         },
       })
     );
+    _props
+      ._user()
+      .get()
+      .then(function (data: UserProps) {
+        setGlobalSocket(
+          io(service.event, {
+            autoConnect: true,
+            reconnectionAttempts: 1,
+            auth: {
+              session: window.localStorage.getItem("session")
+                ? window.localStorage.getItem("session")
+                : "",
+              socketID: data.globalSocketID,
+            },
+          })
+        );
+      });
   }, []);
+
+  useEffect(
+    function () {
+      globalSocket?.on("clientInfoUpdate", function (data) {
+        console.log(data);
+        new Notification("You have a new client who is seeking for help.", {});
+      });
+    },
+    [globalSocket]
+  );
 
   return (
     <ShellContext.Provider
@@ -49,7 +75,7 @@ export function ShellContextProvider({children}: {children: ReactElement}) {
         groupId,
         _setUserId,
         userId,
-        socket,
+        socket: messageSocket,
         _socketId,
         socketId,
         _requestId,

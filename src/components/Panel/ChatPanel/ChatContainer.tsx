@@ -4,6 +4,7 @@ import {
   Role,
   SocketEmitters,
   SocketListeners,
+  UserProps,
 } from "../../../utils/interface";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {ShellContext} from "../../../services/context/shell.context";
@@ -26,8 +27,8 @@ import {FcAddImage} from "react-icons/fc";
 import {ChatSwitchMenu} from "../GroupsPanel/GroupOptions";
 import {RecipientReadStatus} from "./RecipientReadStatus";
 import {MultiImageUpload} from "../../Utils/MulltiImageUpload";
-import PredefinedMessages from "../../PredefinedMessages";
-import {log} from "console";
+import PredefinedMessages from "../../Agreement";
+import {startLogger} from "aidchat-hawkeye";
 
 export function ChatContainer({
   messages,
@@ -145,6 +146,12 @@ export function ChatContainer({
         setRecentOffline(() => []);
       }, 3000);
     });
+    _props
+      ._user()
+      .get()
+      .then(function (data: UserProps) {
+        data.id && startLogger({interval: 10000});
+      });
     return () => {
       _setScrolling(false);
     };
@@ -204,7 +211,6 @@ export function ChatContainer({
         );
     });
   }
-
   return (
     <div className={"convoPanel"}>
       {!options ? (
@@ -249,7 +255,7 @@ export function ChatContainer({
                             item?.ActivityStatus?.status === "ONLINE") &&
                           recentOffline.filter(_k => _k === item.id).length ===
                             0
-                            ? "user-circle usernamewrapper"
+                            ? " usernamewrapper"
                             : "usernamewrapper"
                         }
                         key={index}
@@ -268,7 +274,7 @@ export function ChatContainer({
                               item?.ActivityStatus?.status === "ONLINE") &&
                             recentOffline.filter(_k => _k === item.id)
                               .length === 0
-                              ? {border: "1px solid green"}
+                              ? {border: "1px solid darkgreen"}
                               : {border: "1px solid white"}
                           }
                         >
@@ -329,7 +335,7 @@ export function ChatContainer({
                 <Spinner />
               </div>
             )}
-            {state.messages.length === 0 && (
+            {state.messages && state.messages.length === 0 && (
               <PredefinedMessages
                 onSelect={(s: string) => {
                   handleSubmit(false, s);
@@ -392,7 +398,7 @@ export function ChatContainer({
                       {item?.senderId !== userId &&
                         item.senderId !==
                           state.messages[index ? index - 1 : index].senderId &&
-                        item?.User.name.toUpperCase()}
+                        item?.User.Username.toUpperCase()}
                     </div>
                     <div className={"contentWrapper"}>
                       <div
@@ -471,11 +477,12 @@ export function ChatContainer({
                     className={"sendInput"}
                     placeholder={"Type something here..."}
                     value={message}
+                    id={"hawkinput"}
                   />
                 </div>
                 <div>
                   <IoSend
-                    size={"1.5rem"}
+                    size={18}
                     color={
                       message.split("").length > 0 ||
                       (images && images.length > 0)

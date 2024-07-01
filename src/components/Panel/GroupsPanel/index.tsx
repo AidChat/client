@@ -5,11 +5,13 @@ import "./index.css";
 import {_props} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
 import {AuthContext} from "../../../services/context/auth.context";
-import {DialogPanel} from "../../Dialog";
 import ImageUploader from "react-images-upload";
 import Snackbar from "../../Utils/Snackbar";
 import {Spinner} from "../../Utils/Spinner/spinner";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {
+  useNetworkConnectivity,
+  useWindowSize,
+} from "../../../services/hooks/appHooks";
 import {IoIosArrowForward} from "react-icons/io";
 import {
   EwindowSizes,
@@ -19,8 +21,8 @@ import {
 } from "../../../utils/enum";
 import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
-import {showConfirm, useResponsizeClass} from "../../../utils/functions";
-import {OTPForm} from "../../Auth/Code";
+import {useResponsizeClass} from "../../../utils/functions";
+import {Dialog} from "primereact/dialog";
 
 export function UtilityPanel() {
   const {
@@ -148,6 +150,7 @@ export function UserIcon() {
 
   const menuItems: {name: string; id: number}[] = [
     {name: "Profile", id: 1},
+    {name: "Blog", id: 3},
     {name: "Logout", id: 2},
   ];
 
@@ -159,75 +162,101 @@ export function UserIcon() {
       case 1:
         setShowUserForm(true);
         break;
+      case 3:
+        auth?.toggleBlogComponent();
+        break;
       default:
         break;
     }
   }
 
+  const {isOnline} = useNetworkConnectivity();
+
   return (
     <>
-      <DialogPanel
-        open={showUserForm}
+      <Dialog
+        breakpoints={{"960px": "75vw", "641px": "100vw"}}
+        visible={showUserForm}
         header={"Profile"}
-        BodyEle={
-          <>
-            <ProfileForm
-              onUpdate={() => {
-                fetchProfile();
-              }}
-            />
-          </>
-        }
-        onClose={() => {
+        style={{width: "30vw"}}
+        onHide={() => {
+          if (!showUserForm) return;
           setShowUserForm(false);
         }}
-        load={false}
-      />
-      {user ? (
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            margin: "10px 0",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          className={!small ? "userIcon" : " h100"}
-        >
-          <div
-            onClick={() => {
-              small && handleClick(1);
+      >
+        <>
+          <ProfileForm
+            onUpdate={() => {
+              fetchProfile();
             }}
-            style={{textAlign: "center", width: "100%"}}
-            className={"usernameWrapper"}
+          />
+        </>
+      </Dialog>
+      {user ? (
+        <>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              margin: "10px 0",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            className={!small ? "userIcon" : " "}
           >
             <div
-              style={{textAlign: "center", height: 50, width: 50}}
-              className={"item-wrapper"}
+              onClick={() => {
+                small && handleClick(1);
+              }}
+              style={{
+                textAlign: "center",
+                width: "100%",
+                borderColor: isOnline ? "green" : "whitesmoke",
+              }}
+              className={"usernameWrapper"}
             >
-              <img
-                src={user.profileImage ? user.profileImage : userImage}
-                alt={"profile icon"}
+              <div
+                style={{textAlign: "center", height: 60, width: 60}}
+                className={"item-wrapper"}
+              >
+                <img
+                  src={user.profileImage ? user.profileImage : userImage}
+                  alt={"profile icon"}
+                />
+              </div>
+              <div className={"w100"}>
+                <h1
+                  className={"font-primary username ellipsis"}
+                  style={{width: "100%"}}
+                >
+                  {user?.name.toUpperCase()}
+                </h1>
+              </div>
+            </div>
+
+            <div className={"customInput menu"}>
+              <Menu
+                items={menuItems}
+                onClick={(id: number) => {
+                  handleClick(id);
+                }}
               />
             </div>
-            <div className={"w100"}>
-              <h1 className={"font-primary username ellipsis"} style={{width:'100%'}}>
-                {user?.name.toUpperCase()}
-              </h1>
-            </div>
-          </div>
-
-          <div className={"customInput menu"}>
-            <Menu
-              items={menuItems}
-              onClick={(id: number) => {
-                handleClick(id);
-              }}
-            />
           </div>
           {small && (
             <div
-              className={"btn btn-primary w100 lgt-btn"}
+              style={{marginBottom: "10px"}}
+              className={"btn btn-primary w100 "}
+              onClick={() => {
+                handleClick(3);
+              }}
+            >
+              Blogs
+            </div>
+          )}
+          {small && (
+            <div
+              className={"btn btn-primary w100"}
               onClick={() => {
                 handleClick(2);
               }}
@@ -235,7 +264,7 @@ export function UserIcon() {
               Logout
             </div>
           )}
-        </div>
+        </>
       ) : (
         <></>
       )}
@@ -252,6 +281,7 @@ function ProfileForm({onUpdate}: {onUpdate: () => void}) {
     about: string;
     mobile?: string;
     verifiedEmail: boolean;
+    Username: string;
   }>({
     name: "",
     email: "",
@@ -260,6 +290,7 @@ function ProfileForm({onUpdate}: {onUpdate: () => void}) {
     about: "",
     mobile: undefined,
     verifiedEmail: false,
+    Username: "",
   });
   const [loading, _loading] = useState<boolean>(false);
   const [message, _message] = useState<string | null>(null);
@@ -408,6 +439,11 @@ function ProfileForm({onUpdate}: {onUpdate: () => void}) {
           "row row-space " + useResponsizeClass(EwindowSizes.S, ["m0"])
         }
       >
+        <label>Username</label>
+        <input
+          className={"custom-input borderRadius-light"}
+          value={user.Username}
+        />
         <label>Name</label>
         <input
           className={"custom-input borderRadius-light"}
@@ -498,9 +534,13 @@ function ProfileForm({onUpdate}: {onUpdate: () => void}) {
       >
         <div
           onClick={() => {
+            handleUpdate();
+            handleUpdate();
 
-             handleUpdate();
+            handleUpdate();
+            handleUpdate();
 
+            handleUpdate();
           }}
           className={"btn btn-round-secondary btn-custom-profile"}
         >

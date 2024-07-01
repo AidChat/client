@@ -9,7 +9,6 @@
 .item-wrapper {
     height: 40px;
     width: 40px;
-    border: 1px solid rgb(128, 128, 128);
     border-radius: 50%;
     cursor: pointer;
 }
@@ -76,7 +75,7 @@
 
 .menu-item {
     padding: 4px 20px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .menu-item:hover {
@@ -86,7 +85,7 @@
 
 
 .customMenu-wrapper {
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .menu {
@@ -122,16 +121,15 @@
 }
 
 .dialogCoverImageContainer {
-    height: 30vh;
+    height: 200px;
     width: 100%;
     top: 0;
     left: 0;
     z-index: -1;
-    border-radius: 4px;
+    text-align: center;
 }
 
 .dialogCoverImageContainer img {
-    border-radius: 4px;
     object-fit: contain;
 }
 
@@ -187,8 +185,7 @@
 
 .profileCoverImage {
     height: 100%;
-    width: 100%;
-    border-radius: 4px;
+    border-radius: 50%;
     object-fit: contain;
 }
 

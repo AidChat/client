@@ -1,3 +1,5 @@
+import {EArticleStatus, IDBStore} from "../enum";
+
 export interface UserProps {
     id?: number;
     name?: string;
@@ -8,7 +10,8 @@ export interface UserProps {
     Type?: "Pending" | "Seeker" | "Helper";
     about?: string;
     mobile?: number;
-    verifiedEmail ?: boolean
+    verifiedEmail?: boolean,
+    globalSocketID?:string
 }
 
 export enum SocketEmitters {
@@ -17,6 +20,8 @@ export enum SocketEmitters {
     _TYPING = "_TYPING",
     _JOIN = "_JOIN",
     _READMESSAGE = "_READMESSAGE",
+    _PING='PING',
+    _ASK='ASK'
 }
 
 export enum SocketListeners {
@@ -25,6 +30,9 @@ export enum SocketListeners {
     READBYALL = "READBYALL",
     USERONLINE = "USERONLINE",
     USEROFFLINE = "USEROFFLINE",
+    RECORDUPDATE='RECORDUPDATE',
+    REPLY='REPLY',
+    PONG='PONG'
 }
 
 export interface Role {
@@ -43,10 +51,10 @@ export interface MessageInterface {
     senderId: number;
     status: string;
     User: {
-        name: string; email: string; profileImage: string; id: number;
+        name: string; email: string; profileImage: string; id: number,Username:string;
     };
     ReadByAll?: boolean;
-    ReadReceipt:ReadReceipt[]
+    ReadReceipt: ReadReceipt[]
 }
 
 export interface ReadReceipt {
@@ -60,7 +68,7 @@ export interface MessageContent {
     id: number;
     caption: null | string;
     content: string;
-    TYPE:'TEXT'| 'IMAGE'
+    TYPE: 'TEXT' | 'IMAGE'
 }
 
 export interface IReminder {
@@ -74,13 +82,28 @@ export interface IReminder {
     recurring: boolean,
     when: string,
     recurringDays: string[],
-    createdById ?:number,
-    par ?:UserProps[],
-    participants?:IReminderMembers
-    createdBy ?:UserProps
+    createdById?: number,
+    par?: UserProps[],
+    participants?: IReminderMembers
+    createdBy?: UserProps
 }
-export interface IReminderMembers{
-    id:number,
-    users:UserProps[]
-    reminderId:number
+
+export interface IReminderMembers {
+    id: number,
+    users: UserProps[]
+    reminderId: number
+}
+
+export type IDBStoreName  = 'BLOG'| 'AICHAT';
+
+export interface Message {
+    sender: 'User' | 'Model';
+    message: string;
+}
+
+export interface IBlogShortContent {
+    id: number;
+    content: string,
+    created_at: Date,
+    status:EArticleStatus
 }

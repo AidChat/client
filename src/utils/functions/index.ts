@@ -1,19 +1,20 @@
 import {useWindowSize} from "../../services/hooks/appHooks";
-import {EwindowSizes} from "../enum";
-import {Device, DeviceInfo} from "@capacitor/device";
+import {EwindowSizes, IDBStore} from "../enum";
+import {Device, DeviceId, DeviceInfo} from "@capacitor/device";
 import {getToken} from "firebase/messaging";
 import {PushNotifications} from "@capacitor/push-notifications";
 import {getFCMMessaging} from "../../firebase.config";
 import {ScreenOrientation} from "@capacitor/screen-orientation";
-import {StatusBar, StyleOptions} from "@capacitor/status-bar";
+import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
+import {IDBStoreName, Message} from "../interface";
+import {confirmDialog} from "primereact/confirmdialog";
 
 export function formatTime(date: string) {
     return new Date(date).toTimeString().slice(0, 8);
 }
 
 export function validateEmail(email: string) {
-    // Regular expression for a basic email validation
     return String(email)
         .toLowerCase()
         .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -76,9 +77,13 @@ export function useResponsizeClass(size: EwindowSizes, classArr: string[]): stri
 }
 
 export async function getDeviceInfoUsingCapacitor() {
-    const info = await Device.getInfo();
-    console.log("Device Info ", info)
+    const info:DeviceInfo = await Device.getInfo();
     return info
+}
+
+export async function getDeviceID() {
+    let id = await Device.getId()
+    return id
 }
 
 export async function getFCMToken() {
@@ -106,8 +111,8 @@ export async function requestForNotificationAccessIfNotGranted() {
     }
 }
 
-export async function setScreenOrientation(type:'portrait'|'landscape'){
-    await ScreenOrientation.lock({ orientation: type });
+export async function setScreenOrientation(type: 'portrait' | 'landscape') {
+    await ScreenOrientation.lock({orientation: type});
 }
 
 export const hideStatusBar = async () => {
@@ -115,21 +120,186 @@ export const hideStatusBar = async () => {
 };
 
 
-export const showConfirm = async () => {
-    const { value } = await Dialog.confirm({
-        title: 'Please confirm.',
-        message: `Are you sure you'd like to continue?`,
-        okButtonTitle:'Yes',
-        cancelButtonTitle:'Cancel',
+export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }):Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+        getDeviceInfoUsingCapacitor().then(async (capacitor) => {
+            if (capacitor.platform === 'web') {
+                confirmDialog({
+                    message,
+                    header,
+                    accept: function () {
+                        resolve(true);
+                    },
+                    reject: function () {
+                        resolve(false);
+                    },
+                    resizable:false,
+                    draggable:false,
+                });
+            } else {
+                const {value} = await Dialog.confirm({
+                    title: header,
+                    message: message,
+                    okButtonTitle: 'Yes',
+                    cancelButtonTitle: 'Cancel',
+                });
+                if (value) resolve(true);
+                else resolve(false);
+            }
+        })
+    })
 
-    });
-
-    return value
 };
 
-export const showAlert = async (title:string,message:string) => {
+export const showAlert = async (title: string, message: string) => {
     await Dialog.alert({
         title: title,
         message: message,
     });
 };
+
+export function validateAskText(message: string): { isValid: boolean, message: string } {
+    let isValid = true;
+    let errorMessage: string = '';
+    if (message.split('').length < 2) {
+        isValid = false;
+        errorMessage = "Please write some valid message.";
+    }
+
+    return {isValid, message: errorMessage};
+}
+
+export const storeCurrentContent = (store: IDBStoreName, content: string) => {
+    const current = new Date();
+    const data = {
+        createdAt: current,
+        content: content,
+        store: store
+    }
+    return storeObjects(data)
+}
+export const storeChatsByDeviceID = (chats: Message[]) => {
+    let store: IDBStoreName = IDBStore.chat;
+    getDeviceID().then((deviceID: DeviceId) => {
+        if (deviceID) {
+            let data = {
+                chats: chats,
+                store: store,
+                id: deviceID.identifier,
+                createdAt: new Date(),
+            }
+            return storeObjects(data);
+        }
+    })
+
+}
+
+function openDatabase(store: IDBStoreName) {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(store.toString(), 1);
+
+        request.onupgradeneeded = (event: any) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains(store)) {
+                db.createObjectStore(store, {keyPath: 'id', autoIncrement: true});
+            }
+        };
+
+        request.onsuccess = (event: any) => {
+            resolve(event.target.result);
+        };
+
+        request.onerror = (event: any) => {
+            reject(event.target.error);
+        };
+    });
+}
+
+function storeObjects(object: {
+    createdAt: Date,
+    content?: string,
+    store: IDBStoreName,
+    id?: number | string,
+    chats?: any
+}) {
+    return new Promise((resolve, reject) => {
+        openDatabase(object.store).then((db: any) => {
+            const transaction = db.transaction([object.store.toString()], 'readwrite');
+            const objectStore = transaction.objectStore(object.store);
+            object.id = 1;
+            console.log("This is a store log",object)
+            const request = objectStore.put(object);
+            request.onsuccess = () => {
+                resolve(true);
+            };
+            request.onerror = (event: any) => {
+                reject(event.target.error);
+            };
+            transaction.oncomplete = () => {
+                db.close();
+            };
+        }).catch((error) => {
+            console.error('Error opening database:', error);
+            reject(error);
+        });
+    })
+}
+
+export function queryStoreObjects(storeName: IDBStoreName) {
+    return new Promise((resolve, reject) => {
+        openDatabase(storeName).then((db: any) => {
+            const transaction = db.transaction([storeName.toString()], 'readonly');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.getAll();
+            request.onsuccess = (event: any) => {
+                resolve(event.target.result);
+            };
+            request.onerror = (event: any) => {
+                reject(event.target.error);
+            };
+            transaction.oncomplete = () => {
+                db.close();
+            };
+        }).catch((error) => {
+            console.error('Error opening database:', error);
+            reject(error);
+        });
+    })
+}
+
+export function clearDatabaseByName(dbName: IDBStoreName) {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(dbName);
+        request.onsuccess = (event: any) => {
+            const db = event.target.result;
+            const transaction = db.transaction(db.objectStoreNames, 'readwrite');
+            transaction.oncomplete = () => {
+                console.log(`All object stores in ${dbName} have been cleared.`);
+                resolve(true);
+            };
+
+            transaction.onerror = (event: any) => {
+                reject(event.target.error);
+                console.error('Transaction error:', event.target.error);
+            };
+
+            for (const storeName of db.objectStoreNames) {
+                const objectStore = transaction.objectStore(storeName);
+                objectStore.clear().onsuccess = () => {
+                    console.log(`Cleared object store: ${storeName}`);
+                };
+            }
+            resolve(true);
+            db.close();
+        };
+
+        request.onerror = (event: any) => {
+            console.error('Error opening database:', event.target.error);
+            reject(false);
+        };
+    })
+}
+
+
+
+

@@ -3,6 +3,7 @@ import {_debounce} from "../../utils/functions";
 import {EwindowSizes, windowSize} from "../../utils/enum";
 import {AuthContext} from "../context/auth.context";
 import {log} from "console";
+import {useLocation} from "react-router-dom";
 
 export const useWindowSize = (size?: windowSize) => {
   const [current, setCurrent] = useState<windowSize>(EwindowSizes.Xl);
@@ -42,3 +43,19 @@ export const useCheckUserVerification = () => {
 
   return data?.isUserVerified;
 };
+
+export const useNetworkConnectivity = () => {
+  let isOnline: boolean = false;
+
+  window.addEventListener("offline", () => {
+    isOnline = window.navigator.onLine;
+  });
+  window.addEventListener("online", () => {
+    isOnline = window.navigator.onLine;
+  });
+  return {isOnline};
+};
+
+export function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
