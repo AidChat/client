@@ -6,7 +6,7 @@
   "type": "custom",
   "plugins": {
     "Keyboard": {
-      "resize": "ionic",
+      "resize": "body",
       "style": "default",
       "resizeOnFullScreen": true
     },

@@ -13,6 +13,7 @@
     align-items: center;
     flex-direction: column;
     padding: 4px 0px;
+    position: relative;
 }
 .confession .reportBtn{
     text-align: right;

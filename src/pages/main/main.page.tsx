@@ -14,7 +14,7 @@ export const Main = () => {
         isSmall ? "main-container-wrapper fullCover" : "main-container-wrapper"
       }
     >
-      <div className={"main-container"}>
+      <div id={'block-wrapper'} className={"main-container"}>
         <AuthContextProvider>
           <ShellContextProvider>
             <Panel />
