@@ -4,7 +4,6 @@ import {RouterProvider} from "react-router-dom";
 import {router} from "./utils/routes";
 import {ShellContext} from "./services/context/shell.context";
 import {SocketEmitters} from "./utils/interface";
-import {GoogleOAuthProvider} from "@react-oauth/google";
 
 import {
     getDeviceInfoUsingCapacitor,
@@ -13,33 +12,40 @@ import {
 } from "./utils/functions";
 import {Quill} from "react-quill";
 import QuillResizeImage from "quill-resize-image";
+
 Quill.register("modules/resize", QuillResizeImage);
+
 function App(): React.ReactElement {
     const {socket} = useContext(ShellContext);
     useEffect(() => {
-        console.log(process.env.NODE_ENV);
-        if (process.env.REACT_APP_NODE_ENV === 'production') {
-            getDeviceInfoUsingCapacitor().then(async function (info) {
-                if (info.platform === "web") {
-                    if ("serviceWorker" in navigator) {
-                        navigator.serviceWorker.register("./firebase-messaging-sw.js").then(
-                            function (registration) {
-                                console.log(
-                                    "ServiceWorker registration successful with scope: ",
-                                    registration.scope
-                                );
-                            },
-                            function (err) {
-                                console.error("ServiceWorker registration failed: ", err);
-                            }
-                        );
-                    }
-                    await requestForNotificationAccessIfNotGranted()
-                } else {
-                    await setScreenOrientation("portrait");
+        const element = document.getElementById("block-wrapper");
+        getDeviceInfoUsingCapacitor().then(async function (info) {
+            console.log("Current platform", info.platform);
+            if (info.platform !== 'web') {
+                // styling is given to support devices with notch/curved edges.
+                if (element) element.style.padding = "14px";
+            }
+            if (info.platform === "web") {
+                if ("serviceWorker" in navigator) {
+                    navigator.serviceWorker.register("./firebase-messaging-sw.js").then(
+                        function (registration) {
+                            console.log(
+                                "ServiceWorker registration successful with scope: ",
+                                registration.scope
+                            );
+                        },
+                        function (err) {
+                            console.error("ServiceWorker registration failed: ", err);
+                        }
+                    );
                 }
-            });
-        }
+            } else {
+                await setScreenOrientation("portrait");
+                await requestForNotificationAccessIfNotGranted()
+
+            }
+        });
+
 
         return () => {
             socket?.emit(SocketEmitters._DISCONNECT);
@@ -51,7 +57,7 @@ function App(): React.ReactElement {
         //         process.env.REACT_APP_GG_APP_ID ? process.env.REACT_APP_GG_APP_ID : ""
         //     }
         // >
-            <RouterProvider router={router}></RouterProvider>
+        <RouterProvider router={router}></RouterProvider>
         // </GoogleOAuthProvider>
     );
 }
