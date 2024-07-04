@@ -59,3 +59,9 @@ export const QuillModules = {
         locale: {},
     },
 };
+
+export const menuItems: { name: string; id: number }[] = [
+    {name: "Profile", id: 1},
+    {name: "Blog", id: 3},
+    {name: "Logout", id: 2},
+];

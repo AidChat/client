@@ -11,7 +11,7 @@ import {reqType, service, serviceRoute} from "../../utils/enum";
 
 export function UserDetailsForm() {
   const handleClick = () => {
-    _props
+      _props
       ._db(service.authentication)
       .query(serviceRoute.consent, {type: "Helper"}, reqType.put, undefined)
       .then(() => {

@@ -18,6 +18,7 @@
 .trending-blog-container {
     width: 30%;
     padding:12px;
+
 }
 
 .logo-container {
@@ -39,9 +40,8 @@
 }
 
 .trending-blog-container {
-
     margin-top: auto;
-    height: 100%;
+    height: fit-content;
     overflow-y: scroll;
 }
 

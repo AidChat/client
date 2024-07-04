@@ -96,6 +96,11 @@ export const AuthContextProvider = ({
                     .then((user: any) => {
                         if (user) {
                             setVerifyState(user.verifiedEmail);
+                            if (user.Type === 'Seeker') {
+                                setConfession(true);
+                                stopload();
+                                return
+                            }
                             if (user.Type === "Pending") {
                                 setFormVisibility(true);
                             } else {
@@ -125,7 +130,6 @@ export const AuthContextProvider = ({
 
 
     function removeUserSession() {
-        setLoad(true);
         _props
             ._db(service.authentication)
             .query(serviceRoute.session, {}, reqType.delete)
@@ -133,6 +137,7 @@ export const AuthContextProvider = ({
                 localStorage.removeItem("session");
                 localStorage.removeItem("_user");
                 verifyAuthentication(undefined, true);
+                window.location.reload();
             });
     }
 
