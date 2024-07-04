@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {ChangeEvent, ReactElement, useState} from "react";
 
 interface ICustomInput {
@@ -15,6 +16,7 @@ interface ICustomInput {
     onSubmit?: (s: string) => void
     listenSubmit?: boolean
     send?: () => void
+    width?:string
 }
 
 
@@ -68,9 +70,10 @@ export function Input(props: ICustomInput) {
     _styles['inputEle'].color = props.textColor ? props.textColor : "black";
     _styles['container'].borderRadius = props.borderRadius ? props.borderRadius : '0px';
     _styles['container'].border = props.textColor ? '1px solid ' + props.textColor : "lightgray";
-    _styles['container'].height = props.height ? props.height : '2em'
+    _styles['container'].height = props.height ? props.height : '2em';
+    _styles['container'].width = props.width ? props.width : '90%';
     return (
-        <div style={_styles.container}>
+        <div className={'position-relative'} style={_styles.container}>
             <div style={_styles.inputContainer}>
                 <input
                     id={'hawkinput'}
@@ -91,9 +94,11 @@ export function Input(props: ICustomInput) {
                     }}
                 />
             </div>
-            <div style={_styles.iconContainer} onClick={toggleState}>
+            <motion.div  initial={{ opacity: 0, y:4 }}
+                         animate={{ opacity: 1, y: 0 }}
+                         transition={{ duration: 0.5, delay: 0.2 }} style={_styles.iconContainer} onClick={toggleState}>
                 {props.icon}
-            </div>
+            </motion.div>
         </div>
     );
 }

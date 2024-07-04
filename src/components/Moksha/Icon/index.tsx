@@ -4,13 +4,14 @@ import {useContext} from "react";
 import {AuthContext} from "../../../services/context/auth.context";
 import {getString} from "../../../utils/strings";
 
-export function MokshaIcon({top, bottom, left, right,size,online}: {
+export function MokshaIcon({top, bottom, left, right,size,online,customstyle}: {
     top?: boolean,
     bottom?: boolean,
     right?: boolean,
     left?: boolean,
     size:'small' | 'medium' | 'large',
-    online:boolean
+    online:boolean,
+    customstyle?:{}
 }) {
     const authContent = useContext(AuthContext)
 
@@ -21,7 +22,7 @@ export function MokshaIcon({top, bottom, left, right,size,online}: {
     }
 
     function renderStyle() {
-        let style = {}
+        let style = {...customstyle}
         if (top) {
             style = {...style,top: 0}
         }
@@ -50,9 +51,7 @@ export function MokshaIcon({top, bottom, left, right,size,online}: {
 
     return (
         <div className={`moksha-icon glow-border ${online ?'glow-border-online':'glow-border-offline'}`} style={renderStyle()}>
-            <Tooltip text={ online ? `${getString(24)} online` : `${getString(24)} offline`}>
                 <img onClick={() => handleClick()} height={'100%'} width={'100%'} src={moksha} alt={'Moksha.ai'}/>
-            </Tooltip>
         </div>
     )
 }

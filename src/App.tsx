@@ -19,32 +19,37 @@ function App(): React.ReactElement {
     const {socket} = useContext(ShellContext);
     useEffect(() => {
         const element = document.getElementById("block-wrapper");
-        getDeviceInfoUsingCapacitor().then(async function (info) {
-            console.log("Current platform", info.platform);
-            if (info.platform !== 'web') {
-                // styling is given to support devices with notch/curved edges.
-                if (element) element.style.padding = "14px";
-            }
-            if (info.platform === "web") {
-                if ("serviceWorker" in navigator) {
-                    navigator.serviceWorker.register("./firebase-messaging-sw.js").then(
-                        function (registration) {
-                            console.log(
-                                "ServiceWorker registration successful with scope: ",
-                                registration.scope
-                            );
-                        },
-                        function (err) {
-                            console.error("ServiceWorker registration failed: ", err);
-                        }
-                    );
-                }
-            } else {
-                await setScreenOrientation("portrait");
-                await requestForNotificationAccessIfNotGranted()
+        if (process.env.NODE_ENV === 'production') {
 
-            }
-        });
+            getDeviceInfoUsingCapacitor().then(async function (info) {
+                console.log("Current platform", info.platform);
+                if (info.platform !== 'web') {
+                    // styling is given to support devices with notch/curved edges.
+                    if (element) element.style.padding = "14px 0px";
+                }
+                if (info.platform === "web") {
+                    if ("serviceWorker" in navigator) {
+                        navigator.serviceWorker.register("./firebase-messaging-sw.js").then(
+                            function (registration) {
+                                console.log(
+                                    "ServiceWorker registration successful with scope: ",
+                                    registration.scope
+                                );
+                            },
+                            function (err) {
+                                console.error("ServiceWorker registration failed: ", err);
+                            }
+                        );
+                    }
+                } else {
+                    await setScreenOrientation("portrait");
+                    await requestForNotificationAccessIfNotGranted()
+
+                }
+
+            });
+
+        }
 
 
         return () => {
