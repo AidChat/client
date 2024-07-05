@@ -75,7 +75,6 @@ export const Panel = () => {
                     className={"containerC"}>
                     <UtilityPanel/>
                 </motion.div>)}
-                <MokshaIcon size={'small'} bottom={true} left={true} online={true} />
             </div>
         </div>
     </AnimatePresence>);

@@ -23,7 +23,7 @@ function App(): React.ReactElement {
 
             getDeviceInfoUsingCapacitor().then(async function (info) {
                 console.log("Current platform", info.platform);
-                if (info.platform !== 'web') {
+                if (info.platform === 'ios') {
                     // styling is given to support devices with notch/curved edges.
                     if (element) element.style.padding = "14px 0px";
                 }

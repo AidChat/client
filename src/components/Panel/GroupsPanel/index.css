@@ -44,7 +44,7 @@
 }
 
 .usernameWrapper {
-    padding: 4px;
+    padding: 4px 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -167,6 +167,11 @@
 
 .row:last-of-type {
     margin-top: 20px;
+    flex-direction: row;
+}
+.row:last-of-type .btn{
+    margin:0 12px;
+    padding:0 12px;
 }
 
 .update-btn {

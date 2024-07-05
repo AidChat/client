@@ -123,12 +123,6 @@ export const ClientChatWindow = (props: Props) => {
             <ConfirmDialog/>
             <Snackbar message={error} onClose={() => setError("")}/>
             <div className="confession">
-                {!showLoginComponent && <MokshaIcon
-                    online={!!ac?.isMokshaAvailable}
-                    size={"small"}
-                    top={true}
-                    right={true}
-                />}
                 {showLoginComponent && <UserIcon full={isSmall}/>}
                 <div className={"chat-history-container"} ref={scrollableDivRef}>
                     {!conversation.length
@@ -191,7 +185,7 @@ export const ClientChatWindow = (props: Props) => {
                         borderRadius={"50px"}
                         textColor={"gray"}
                         placeholder={
-                            "Describe what you are feeling, no one knows you here."
+                            "How are you feeling."
                         }
                         allowToggle={false}
                         disabled={false}

@@ -17,13 +17,16 @@
     align-self: end;
     justify-self: flex-end;
 }
-
+.row label{
+    color:lightgray;
+}
 .custom-input {
     height: 2rem;
     border: 1px solid gray;
     padding: 4px 10px;
     background: transparent;
     color: white;
+    font-size:16px;
 }
 
 .custom-input-people {

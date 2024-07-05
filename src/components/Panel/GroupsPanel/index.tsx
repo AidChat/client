@@ -13,7 +13,7 @@ import {IoIosArrowForward} from "react-icons/io";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../utils/enum";
 import {Menu} from "../../Utils/Menu";
 import {MdVerified} from "react-icons/md";
-import {useResponsizeClass} from "../../../utils/functions";
+import {confirm, useResponsizeClass} from "../../../utils/functions";
 import {Dialog} from "primereact/dialog";
 import {menuItems} from "../../../utils/constants";
 
@@ -108,13 +108,13 @@ export function GroupIcon({url}: { url?: string }) {
     );
 }
 
-export function UserIcon(props:{full:boolean}) {
+export function UserIcon(props: { full: boolean }) {
     const [user, setUser] = useState<{
         id: string;
         email: string;
         name: string;
         profileImage: string;
-        Username:string
+        Username: string
     } | null>(null);
     const [isClient, setClient] = useState<boolean>(false);
     const sc = useContext(ShellContext);
@@ -135,7 +135,7 @@ export function UserIcon(props:{full:boolean}) {
                     email: string;
                     name: string;
                     profileImage: string;
-                    Username:string
+                    Username: string
                 } = result;
                 setUser(data);
                 window.localStorage.setItem("_user", JSON.stringify(data));
@@ -145,7 +145,6 @@ export function UserIcon(props:{full:boolean}) {
                 }
             });
     }
-
 
 
     function handleClick(id: number) {
@@ -166,14 +165,14 @@ export function UserIcon(props:{full:boolean}) {
 
     const {isOnline} = useNetworkConnectivity();
 
-    function renderStyle() : {}{
-        if (isClient){
+    function renderStyle(): {} {
+        if (isClient) {
             return {
                 position: 'absolute',
-                top:0,
-                right:0,
+                top: 0,
+                right: 0,
             }
-        }else{
+        } else {
             return {
                 position: "relative",
                 width: "100%",
@@ -183,6 +182,7 @@ export function UserIcon(props:{full:boolean}) {
             }
         }
     }
+
     debugger
     return (
         <>
@@ -203,82 +203,80 @@ export function UserIcon(props:{full:boolean}) {
             >
                 <>
                     <ProfileForm
+
                         onUpdate={() => {
                             fetchProfile();
                         }}
                     />
                 </>
             </Dialog>
-            {user ? (
-                <>
+            {user && <>
+                <div
+                    style={renderStyle()}
+                    className={!small ? "userIcon" : " "}
+                >
                     <div
-                        style={renderStyle()}
-                        className={!small ? "userIcon" : " "}
+                        onClick={() => {
+                            small && handleClick(1);
+                        }}
+                        style={{
+                            textAlign: "center",
+                            width: "100%",
+                            borderColor: isOnline ? "green" : "whitesmoke",
+                        }}
+                        className={"usernameWrapper"}
                     >
                         <div
-                            onClick={() => {
-                                small && handleClick(1);
-                            }}
-                            style={{
-                                textAlign: "center",
-                                width: "100%",
-                                borderColor: isOnline ? "green" : "whitesmoke",
-                            }}
-                            className={"usernameWrapper"}
+                            style={{textAlign: "center", height: 60, width: 60}}
+                            className={"item-wrapper"}
                         >
-                            <div
-                                style={{textAlign: "center", height: 60, width: 60}}
-                                className={"item-wrapper"}
-                            >
-                                <img
-                                    src={user.profileImage ? user.profileImage : userImage}
-                                    alt={"profile icon"}
-                                />
-                            </div>
-                            <div className={"w100"}>
-                                <h1
-                                    className={"font-primary username ellipsis"}
-                                    style={{width: "100%"}}
-                                >
-                                    {user?.Username.toUpperCase()}
-                                </h1>
-                            </div>
-                        </div>
-
-                        <div className={"customInput menu"}>
-                            <Menu
-                                items={menuItems.filter((i)=> isClient ? i.name !== 'Blog':true)}
-                                onClick={(id: number) => {
-                                    handleClick(id);
-                                }}
+                            <img
+                                src={user.profileImage ? user.profileImage : userImage}
+                                alt={"profile icon"}
                             />
                         </div>
+                        <div className={"w100"}>
+                            <h1
+                                className={"font-primary username ellipsis"}
+                                style={{width: "100%"}}
+                            >
+                                {!props.full && user?.Username.toUpperCase()}
+                            </h1>
+                        </div>
                     </div>
-                    {small && !isClient && (
-                        <div
-                            style={{marginBottom: "10px"}}
-                            className={"btn btn-primary w100 "}
-                            onClick={() => {
-                                handleClick(3);
+
+                    <div className={"customInput menu"}>
+                        <Menu
+                            items={menuItems.filter((i) => isClient ? i.name !== 'Blog' : true)}
+                            onClick={(id: number) => {
+                                handleClick(id);
                             }}
-                        >
-                            Blogs
-                        </div>
-                    )}
-                    {small && !isClient && (
-                        <div
-                            className={"btn btn-primary w100"}
-                            onClick={() => {
-                                handleClick(2);
-                            }}
-                        >
-                            Logout
-                        </div>
-                    )}
-                </>
-            ) : (
-                <></>
-            )}
+                        />
+                    </div>
+                </div>
+                {small && !isClient && (
+                    <div
+                        style={{marginBottom: "10px"}}
+                        className={"btn btn-primary w100 "}
+                        onClick={() => {
+                            handleClick(3);
+                        }}
+                    >
+                        Blogs
+                    </div>
+                )}
+                {small && !isClient && (
+                    <div
+                        className={"btn btn-primary w100"}
+                        onClick={() => {
+                            handleClick(2);
+                        }}
+                    >
+                        Logout
+                    </div>
+                )}
+            </>
+            }
         </>
     );
 }
@@ -310,6 +308,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         profileImage: false,
     });
     const [showOtpContainer, setOtpContainerState] = useState(false);
+    const ac = useContext(AuthContext);
     useEffect(() => {
         fetchUser();
     }, []);
@@ -406,7 +405,10 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
             _message("Please try agian after some time.");
         }
     }
-
+    async function handleLogOut(){
+         const response = await   confirm({message:"Are you sure you want to logout?"});
+         if (response) ac?.removeUserSession()
+    }
     return (
         <div className={"profile-Wrapper"}>
             {message && (
@@ -539,19 +541,29 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
 
             <div
                 className={
-                    "row row-space flex flex-center update-btn " +
-                    useResponsizeClass(EwindowSizes.S, [""])
+                    "row row-space flex flex-center update-btn  " +
+                    useResponsizeClass(EwindowSizes.S, [" dflex row "])
                 }
             >
                 <div
                     onClick={() => {
-                        handleUpdate();
+                       handleLogOut();
                     }}
-                    className={"btn btn-round-secondary btn-custom-profile"}
+                    className={"btn btn-round-secondary"}
                 >
                     {" "}
-                    {loading ? <Spinner/> : "UPDATE"}
+                    {loading ? <Spinner/> : "Logout"}
                 </div>
+                <div
+                    onClick={() => {
+                        handleUpdate();
+                    }}
+                    className={" btn btn-round-primary"}
+                >
+                    {" "}
+                    {loading ? <Spinner/> : "Update"}
+                </div>
+
             </div>
         </div>
     );

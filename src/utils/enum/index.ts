@@ -141,11 +141,11 @@ export enum serviceRoute {
 }
 
 export enum service {
-    authentication = "http://localhost:8999/v1",
-    group = "http://localhost:8901/v1",
-    messaging = "http://localhost:8900/",
-    bot = 'http://localhost:9650',
-    event = 'http://localhost:8089'
+    authentication = "https://nathan-civil-details-senegal.trycloudflare.com/v1",
+    group = "https://britannica-scholarship-bidder-brisbane.trycloudflare.com/v1",
+    messaging = "https://dem-worker-branches-information.trycloudflare.com ",
+    bot = 'https://present-v-cnn-sorry.trycloudflare.com',
+    event = 'https://processors-actions-harder-returns.trycloudflare.com '
 }
 
 export enum IDBStore {
