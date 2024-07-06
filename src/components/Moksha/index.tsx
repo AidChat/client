@@ -86,8 +86,6 @@ export const ClientChatWindow = (props: Props) => {
             addConversationMessages({sender: "User", message: message});
             setMessage("");
             scrollToBottom(scrollableDivRef);
-        } else {
-            setError(validateAskText(message).message);
         }
     }
 

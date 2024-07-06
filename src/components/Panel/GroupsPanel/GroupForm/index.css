@@ -24,7 +24,7 @@
     color:lightgray;
 }
 .custom-input {
-    height: 2rem;
+    height: 40px;
     border: 1px solid gray;
     padding: 4px 10px;
     background: transparent;

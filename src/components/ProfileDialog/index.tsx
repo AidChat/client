@@ -468,10 +468,8 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     }}
                     className={" btn btn-round-primary"}
                 >
-                    {" "}
-                    {loading ? <Spinner/> : "Update"}
+                      Update
                 </div>
-
             </div>
         </div>
     );

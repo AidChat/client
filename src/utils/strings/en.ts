@@ -62,7 +62,7 @@ Consent:
 <div style="font-size:18px">
 If you have questions or requests regarding your data, contact us at <i> contact@aidchat.com</i>.
 </div>`,
-    24: 'Moksha.ai',
+    24: 'Moksha',
     25: `Aidchat is your go-to app for navigating and overcoming mental health challenges. Designed
                             to provide immediate support and long-term solutions, Aidchat combines the latest in AI
                             technology with evidence-based therapeutic techniques to create a personalized and
