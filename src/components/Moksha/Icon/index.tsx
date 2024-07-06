@@ -3,25 +3,16 @@ import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../../services/context/auth.context";
 import {motion} from 'framer-motion';
 
-export function MokshaIcon({top, bottom, left, right, size, online, customstyle}: {
+export function MokshaIcon({top, bottom, left, right, size, online, customstyle, showInfo}: {
     top?: boolean,
     bottom?: boolean,
     right?: boolean,
     left?: boolean,
     size: 'small' | 'medium' | 'large',
     online: boolean,
-    customstyle?: {}
+    customstyle?: {}, showInfo?: boolean
 }) {
     const authContent = useContext(AuthContext)
-    const [visible, setVisible] = useState<boolean>(true)
-    useEffect(() => {
-        if (online) {
-            window.setTimeout(function () {
-                setVisible(false);
-            }, 3000)
-        }
-    }, []);
-
     function handleClick() {
         if (authContent) {
             authContent.setConfession(true)
@@ -59,12 +50,12 @@ export function MokshaIcon({top, bottom, left, right, size, online, customstyle}
     return (
         <div className={`moksha-icon glow-border ${online ? 'glow-border-online' : 'glow-border-offline'}`}
              style={renderStyle()}>
-            {visible  &&
+            {showInfo &&
                 <motion.div
                     className="info-container"
                     initial={{opacity: 1}}
                     animate={{opacity: 0}}
-                    transition={{duration: 2,delay: 2}}
+                    transition={{duration: 2, delay: 2}}
                 >
                     Moksha is {online ? 'online' : 'offline'}
                 </motion.div>}

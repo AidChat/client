@@ -1,18 +1,18 @@
 import React, {useContext, useEffect, useState} from "react";
 import "./index.css";
-import {groupTokensArray} from "../../../assets/data";
-import {Search} from "../../Utils/Select";
+import {groupTokensArray} from "../../../../assets/data";
+import {Search} from "../../../Utils/Select";
 import {AiOutlineCloseCircle} from "react-icons/ai";
-import {_props} from "../../../services/network/network";
-import {ShellContext} from "../../../services/context/shell.context";
-import Snackbar from "../../Utils/Snackbar";
-import {Spinner} from "../../Utils/Spinner/spinner";
+import {_props} from "../../../../services/network/network";
+import {ShellContext} from "../../../../services/context/shell.context";
+import Snackbar from "../../../Utils/Snackbar";
+import {Spinner} from "../../../Utils/Spinner/spinner";
 import ImageUploader from "react-images-upload";
-import group from "./../../../assets/svg/groups.svg";
-import {reqType, service, serviceRoute} from "../../../utils/enum";
+import group from "../../../../assets/svg/groups.svg";
+import {reqType, service, serviceRoute} from "../../../../utils/enum";
 import {AnimatePresence, motion} from "framer-motion";
-import {AuthContext} from "../../../services/context/auth.context";
-import {useCheckUserVerification} from "../../../services/hooks/appHooks";
+import {AuthContext} from "../../../../services/context/auth.context";
+import {useCheckUserVerification} from "../../../../services/hooks/appHooks";
 
 interface _gfIterface {
   onSubmit?: () => void;
@@ -142,6 +142,7 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
           </div>
         </div>
         <div className={"formEleWrapper"}>
+          <label>Group Name</label>
           <input
             name={"name"}
             onChange={handleChange}
@@ -152,7 +153,8 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
             placeholder={"Choose a name that explains the purpose"}
           />
         </div>
-        <div className={"formEleWrapper token-section  borderRadius-light"}>
+        <div className={"formEleWrapper column token-section  borderRadius-light"}>
+
           <div className={"  group-token-container"}>
             <Search
               onSelect={(s: string) => {
@@ -183,7 +185,9 @@ export function GroupForm({onSubmit, onError}: _gfIterface) {
             })}
           </div>
         </div>
+
         <div className={"formEleWrapper"}>
+          <label>Group description</label>
           <textarea
             required={true}
             name={"description"}

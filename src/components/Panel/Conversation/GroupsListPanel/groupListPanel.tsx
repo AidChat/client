@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import "./index.css";
 import {RiSearchLine} from "react-icons/ri";
 import {GroupList, GroupListInterface} from "../GroupList";
-import {GroupForm} from "../../GroupForm";
+import {GroupForm} from "../../GroupsPanel/GroupForm";
 import {Logo} from "../../../Utils/Logo";
 import {Spinner} from "../../../Utils/Spinner/spinner";
 import {_props} from "../../../../services/network/network";

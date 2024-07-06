@@ -1,7 +1,7 @@
 .searchComponent{
     width:150px;
     position: relative;
-    height:2.5rem;
+    margin-right:10px;
 }
 .result-list{
     max-height:100px;
