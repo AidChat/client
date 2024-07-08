@@ -10,6 +10,9 @@ const config: CapacitorConfig = {
     allowNavigation: [],
   },
   plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
     Keyboard: {
       resize: KeyboardResize.Body,
       style: KeyboardStyle.Default,

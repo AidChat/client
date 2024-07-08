@@ -144,7 +144,7 @@ export enum service {
     authentication = "http://localhost:8999/v1",
     group = "http://localhost:8901/v1",
     messaging = "http://localhost:8900/",
-    bot = 'http://localhost:9650',
+    bot = 'http://15.206.51.101:9650',
     event = 'http://localhost:8089'
 }
 

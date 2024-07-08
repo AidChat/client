@@ -5,6 +5,9 @@
   },
   "type": "custom",
   "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    },
     "Keyboard": {
       "resize": "body",
       "style": "default",
