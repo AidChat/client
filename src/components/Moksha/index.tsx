@@ -143,7 +143,9 @@ export const ClientChatWindow = (props: Props) => {
                                     {text.sender === "User" && <span style={{color: "lightyellow"}}>Pumba</span>}
                                     {text.sender === "Model" &&
                                         <span className={"font-secondary font-thick"}>{`${getString(24)} :`}</span>}
-                                    <Markdown className={'m0'}>{text.message}</Markdown>
+                                    <Markdown className={'m0'}>
+                                        {text.message}
+                                    </Markdown>
                                     {text.sender === "Model" && (
                                         <div
 
@@ -185,7 +187,7 @@ export const ClientChatWindow = (props: Props) => {
 
                     <Input
                         width={showLoginComponent ? "100%" : undefined}
-                        height={"3em"}
+                        height={"2.2rem"}
                         borderRadius={"50px"}
                         textColor={"gray"}
                         placeholder={
