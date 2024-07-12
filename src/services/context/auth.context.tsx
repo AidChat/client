@@ -10,6 +10,8 @@ import {io, Socket} from "socket.io-client";
 import {SocketEmitters, SocketListeners} from "../../utils/interface";
 import {BlogList} from "../../features/Blogs/Blogs";
 import {Blog} from "../../features/Blogs/Blog";
+import {getDeviceID, getDeviceInfoUsingCapacitor} from "../../utils/functions";
+import {DeviceInfo} from "@capacitor/device";
 
 export let AuthContext = React.createContext<{
         isAuthenticated?: boolean;
@@ -58,6 +60,9 @@ export const AuthContextProvider = ({
         let newSocket = io(service.bot, {
             autoConnect: true,
             reconnectionAttempts: 10,
+            auth:{
+                session: window.localStorage.getItem("session")
+            }
         });
         newSocket.emit(SocketEmitters._PING);
         newSocket.on(SocketListeners.PONG, () => {
@@ -99,6 +104,7 @@ export const AuthContextProvider = ({
                             if (user.Type === 'Seeker') {
                                 setConfession(true);
                                 stopload();
+                                updateDeviceInfo();
                                 return
                             }
                             if (user.Type === "Pending") {
@@ -126,6 +132,17 @@ export const AuthContextProvider = ({
                     stopload();
                 }
             });
+    }
+    function updateDeviceInfo(){
+        getDeviceID().then((deviceInfo) => {
+            getDeviceInfoUsingCapacitor().then(function (info){
+                _props
+                    ._db(service.authentication)
+                    .query(serviceRoute.deviceInfo, {token:deviceInfo.identifier ,type:info.platform}, reqType.post, undefined);
+            })
+        })
+
+
     }
 
 

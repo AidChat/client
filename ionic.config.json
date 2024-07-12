@@ -5,13 +5,16 @@
   },
   "type": "custom",
   "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    },
     "Keyboard": {
       "resize": "body",
       "style": "default",
       "resizeOnFullScreen": true
     },
     "PushNotifications": {
-      "presentationOptions": []
+      "presentationOptions": ["badge", "sound", "alert"]
     },
     "Device": {
       "orientation": "portrait-primary",

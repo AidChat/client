@@ -10,13 +10,16 @@ const config: CapacitorConfig = {
     allowNavigation: [],
   },
   plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
     Keyboard: {
       resize: KeyboardResize.Body,
       style: KeyboardStyle.Default,
       resizeOnFullScreen: true,
     },
     PushNotifications: {
-      presentationOptions: []
+      presentationOptions: ["badge", "sound", "alert"]
     }
   },
 };

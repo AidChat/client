@@ -40,6 +40,7 @@ export const Panel = () => {
                     if (register.receive === 'granted') {
                         PushNotifications.register().then(r => {
                             PushNotifications.addListener('registration', function (token) {
+                                console.log(token,  "TOKEN")
                                 let data = {
                                     token:token.value, type: info.platform,
                                 };
@@ -75,7 +76,6 @@ export const Panel = () => {
                     className={"containerC"}>
                     <UtilityPanel/>
                 </motion.div>)}
-                <MokshaIcon size={'small'} bottom={true} left={true} online={true} />
             </div>
         </div>
     </AnimatePresence>);

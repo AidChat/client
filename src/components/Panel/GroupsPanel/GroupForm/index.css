@@ -9,6 +9,9 @@
     margin: 10px 0;
 
 }
+.formEleWrapper label{
+    color:whitesmoke;
+}
 .iconSection{
     justify-content: center;
     align-items: center;
@@ -17,13 +20,16 @@
     align-self: end;
     justify-self: flex-end;
 }
-
+.row label{
+    color:lightgray;
+}
 .custom-input {
-    height: 2rem;
+    height: 40px;
     border: 1px solid gray;
     padding: 4px 10px;
     background: transparent;
     color: white;
+    font-size:16px;
 }
 
 .custom-input-people {
@@ -70,7 +76,7 @@
 .token-section {
     display: flex;
     flex-direction: row;
-    height:15vh;
+    height:100px;
     overflow-y:scroll;
 }
 

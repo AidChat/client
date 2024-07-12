@@ -15,7 +15,10 @@ dialog[open]::backdrop {
     opacity: 0.75;
 }
 :root {
-    --app-color: #398378
+    --app-color: #398378;
+    --font-small : 12px;
+    --font-medium: 16px;
+    --font-large: 18px;
 }
 .wrap{
     flex-wrap: wrap;
@@ -58,6 +61,15 @@ body {
     align-items: center;
     display: flex;
     height: 17px;
+}
+.font-medium{
+    font-size: var(--font-medium) !important;
+}
+.font-large{
+    font-size: var(--font-large) !important;
+}
+.font-small{
+    font-size: var(--font-small) !important;
 }
 
 .typing .dot {
@@ -175,22 +187,20 @@ div {
 
 .btn-round-secondary {
     background: white;
-    color: green;
+    color: var(--app-color);
+    cursor:pointer;
 }
 
 .btn-round-primary:hover {
-    background: darkgreen !important;
+    background:var(--app-color) !important;
 }
 
 .btn-round-primary {
-    background: green !important;
+    cursor:pointer;
+    background: var(--app-color) !important;
     color: white !important;
 }
 
-.btn-round-secondary:hover {
-    background: #398378;
-    color: white
-}
 
 .flex-center {
     justify-content: center;
@@ -497,14 +507,14 @@ dialog::backdrop {
 .glow-border::before {
     content: '';
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background-size: 6px 14px;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background-size: 2px 4px;
     z-index: -1;
-    filter: blur(12px);
-    animation: glowing 5s linear infinite, glowing2 5s linear infinite;
+    filter: blur(8px);
+    animation: glowing 1s linear infinite, glowing2 5s linear infinite;
     border-radius: 50%;
 }
 .glow-border-online::before {

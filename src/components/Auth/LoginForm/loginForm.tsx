@@ -9,6 +9,8 @@ import {motion} from "framer-motion";
 import {Input} from "../../Utils/CustomInput";
 import {FaEye} from "react-icons/fa6";
 import {MdOutlineAlternateEmail} from "react-icons/md";
+import {getDeviceInfoUsingCapacitor} from "../../../utils/functions";
+import {DeviceInfo} from "@capacitor/device";
 
 interface LoginFromProps {
     toggleState: (state: "LOGIN" | "REGISTER" | "CODE" | "INVITE") => void;
@@ -63,20 +65,23 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
             return
         }
         _loading(true);
-        _props
-            ._db(service.authentication)
-            .query(serviceRoute.login, body, reqType.post)
-            .then(response => {
-                context?.verifyAuthentication(
-                    response.data.session.session_id,
-                    requestCode ? true : false
-                );
-                _loading(false);
-            })
-            .catch(reason => {
-                setError(reason.data.message);
-                _loading(false);
-            });
+        getDeviceInfoUsingCapacitor().then((deviceInfo: DeviceInfo) => {
+            _props
+                ._db(service.authentication)
+                .query(serviceRoute.login, {...body, isMobile:deviceInfo.platform !== 'web'}, reqType.post)
+                .then(response => {
+                    context?.verifyAuthentication(
+                        response.data.session.session_id,
+                        requestCode ? true : false
+                    );
+                    _loading(false);
+                })
+                .catch(reason => {
+                    setError(reason.data.message);
+                    _loading(false);
+                });
+        })
+
     }
 
     return (

@@ -9,7 +9,7 @@ import {
     getDeviceID,
     queryStoreObjects,
     storeChatsByDeviceID,
-    validateAskText,
+    validateAskText, vibrateDevice,
 } from "../../utils/functions";
 import Snackbar from "../Utils/Snackbar";
 import {motion} from "framer-motion";
@@ -23,8 +23,8 @@ import {AuthContext} from "../../services/context/auth.context";
 import {ConfirmDialog} from "primereact/confirmdialog";
 import Markdown from "react-markdown";
 import {_props} from "../../services/network/network";
-import {UserIcon} from "../Panel/GroupsPanel";
 import {useWindowSize} from "../../services/hooks/appHooks";
+import {ProfileIconComponent} from "../ProfileDialog";
 
 interface Props {
     click: () => void;
@@ -36,6 +36,13 @@ export const ClientChatWindow = (props: Props) => {
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
     const [showLoginComponent, toggleLoginComponent] = useState(false);
+    const [showInfo,setShowInfo] = useState(true);
+
+    useEffect(() => {
+        window.setTimeout(function (){
+            setShowInfo(false);
+        },3000)
+    }, []);
 
     let ac = useContext(AuthContext);
     useEffect(() => {
@@ -79,13 +86,13 @@ export const ClientChatWindow = (props: Props) => {
             addConversationMessages({sender: "User", message: message});
             setMessage("");
             scrollToBottom(scrollableDivRef);
-        } else {
-            setError(validateAskText(message).message);
         }
     }
 
     function handleSocketListener(e: any) {
-        addConversationMessages({sender: "Model", message: e.message});
+        vibrateDevice().then(function (){
+            addConversationMessages({sender: "Model", message: e.message});
+        })
     }
 
     useEffect(() => {
@@ -123,13 +130,7 @@ export const ClientChatWindow = (props: Props) => {
             <ConfirmDialog/>
             <Snackbar message={error} onClose={() => setError("")}/>
             <div className="confession">
-                {!showLoginComponent && <MokshaIcon
-                    online={!!ac?.isMokshaAvailable}
-                    size={"small"}
-                    top={true}
-                    right={true}
-                />}
-                {showLoginComponent && <UserIcon full={isSmall}/>}
+                {showLoginComponent && <ProfileIconComponent full={isSmall}/>}
                 <div className={"chat-history-container"} ref={scrollableDivRef}>
                     {!conversation.length
                         ? renderEmptyMessageConversation()
@@ -140,12 +141,13 @@ export const ClientChatWindow = (props: Props) => {
                                     animate={{y: 0}}
                                     transition={{speed: 2}}
                                     key={index}
-                                    className={"font-primary m4 chat-wrapper"}
-                                >
+                                    className={"font-primary m4 chat-wrapper"}>
                                     {text.sender === "User" && <span style={{color: "lightyellow"}}>Pumba</span>}
                                     {text.sender === "Model" &&
                                         <span className={"font-secondary font-thick"}>{`${getString(24)} :`}</span>}
-                                    <Markdown className={'m0'}>{text.message}</Markdown>
+                                    <Markdown className={'m0 font-large'}>
+                                        {text.message}
+                                    </Markdown>
                                     {text.sender === "Model" && (
                                         <div
 
@@ -187,11 +189,11 @@ export const ClientChatWindow = (props: Props) => {
 
                     <Input
                         width={showLoginComponent ? "100%" : undefined}
-                        height={"3em"}
+                        height={"3rem"}
                         borderRadius={"50px"}
                         textColor={"gray"}
                         placeholder={
-                            "Describe what you are feeling, no one knows you here."
+                            "How are you feeling."
                         }
                         allowToggle={false}
                         disabled={false}
@@ -201,6 +203,7 @@ export const ClientChatWindow = (props: Props) => {
                                 size={"small"}
                                 bottom={true}
                                 right={true}
+                                showInfo={showInfo}
                             />}
                         type={"text"}
                         onChange={e => handleSocketMessageUpdate(e.target.value)}
