@@ -9,6 +9,7 @@ import {StatusBar} from "@capacitor/status-bar";
 import {Dialog} from "@capacitor/dialog";
 import {IDBStoreName, Message} from "../interface";
 import {confirmDialog} from "primereact/confirmdialog";
+import {Haptics, ImpactStyle} from "@capacitor/haptics";
 
 export function formatTime(date: string) {
     return new Date(date).toTimeString().slice(0, 8);
@@ -299,6 +300,12 @@ export function clearDatabaseByName(dbName: IDBStoreName) {
     })
 }
 
-
+export function vibrateDevice(){
+    return getDeviceInfoUsingCapacitor().then(async function (info){
+        if (info.platform !== 'web'){
+          await  Haptics.impact({ style: ImpactStyle.Light });
+        }
+    })
+}
 
 

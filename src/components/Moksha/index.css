@@ -70,7 +70,7 @@
 }
 
 .emptycontainer p {
-    font-size: 4rem;
+    font-size: 2rem;
     margin: 0 !important;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .emptycontainer .moksha-container {
-    height: 250px;
+    height: 150px;
 }
 
 .emptycontainer .text-container {

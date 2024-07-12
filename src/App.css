@@ -15,7 +15,10 @@ dialog[open]::backdrop {
     opacity: 0.75;
 }
 :root {
-    --app-color: #398378
+    --app-color: #398378;
+    --font-small : 12px;
+    --font-medium: 16px;
+    --font-large: 18px;
 }
 .wrap{
     flex-wrap: wrap;
@@ -58,6 +61,15 @@ body {
     align-items: center;
     display: flex;
     height: 17px;
+}
+.font-medium{
+    font-size: var(--font-medium) !important;
+}
+.font-large{
+    font-size: var(--font-large) !important;
+}
+.font-small{
+    font-size: var(--font-small) !important;
 }
 
 .typing .dot {

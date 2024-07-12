@@ -9,7 +9,7 @@ import {
     getDeviceID,
     queryStoreObjects,
     storeChatsByDeviceID,
-    validateAskText,
+    validateAskText, vibrateDevice,
 } from "../../utils/functions";
 import Snackbar from "../Utils/Snackbar";
 import {motion} from "framer-motion";
@@ -90,7 +90,9 @@ export const ClientChatWindow = (props: Props) => {
     }
 
     function handleSocketListener(e: any) {
-        addConversationMessages({sender: "Model", message: e.message});
+        vibrateDevice().then(function (){
+            addConversationMessages({sender: "Model", message: e.message});
+        })
     }
 
     useEffect(() => {
@@ -143,7 +145,7 @@ export const ClientChatWindow = (props: Props) => {
                                     {text.sender === "User" && <span style={{color: "lightyellow"}}>Pumba</span>}
                                     {text.sender === "Model" &&
                                         <span className={"font-secondary font-thick"}>{`${getString(24)} :`}</span>}
-                                    <Markdown className={'m0'}>
+                                    <Markdown className={'m0 font-large'}>
                                         {text.message}
                                     </Markdown>
                                     {text.sender === "Model" && (
@@ -187,7 +189,7 @@ export const ClientChatWindow = (props: Props) => {
 
                     <Input
                         width={showLoginComponent ? "100%" : undefined}
-                        height={"2.2rem"}
+                        height={"3rem"}
                         borderRadius={"50px"}
                         textColor={"gray"}
                         placeholder={
