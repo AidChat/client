@@ -40,6 +40,7 @@ export const Panel = () => {
                     if (register.receive === 'granted') {
                         PushNotifications.register().then(r => {
                             PushNotifications.addListener('registration', function (token) {
+                                console.log(token,  "TOKEN")
                                 let data = {
                                     token:token.value, type: info.platform,
                                 };

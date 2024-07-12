@@ -14,7 +14,7 @@
       "resizeOnFullScreen": true
     },
     "PushNotifications": {
-      "presentationOptions": []
+      "presentationOptions": ["badge", "sound", "alert"]
     },
     "Device": {
       "orientation": "portrait-primary",

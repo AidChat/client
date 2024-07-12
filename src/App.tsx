@@ -6,12 +6,13 @@ import {ShellContext} from "./services/context/shell.context";
 import {SocketEmitters} from "./utils/interface";
 
 import {
-    getDeviceInfoUsingCapacitor,
+    getDeviceInfoUsingCapacitor, getFCMToken,
     requestForNotificationAccessIfNotGranted,
     setScreenOrientation,
 } from "./utils/functions";
 import {Quill} from "react-quill";
 import QuillResizeImage from "quill-resize-image";
+
 
 Quill.register("modules/resize", QuillResizeImage);
 
@@ -20,7 +21,6 @@ function App(): React.ReactElement {
     useEffect(() => {
         const element = document.getElementById("block-wrapper");
         if (process.env.NODE_ENV === 'production') {
-
             getDeviceInfoUsingCapacitor().then(async function (info) {
                 console.log("Current platform", info.platform);
                 if (info.platform === 'ios') {
