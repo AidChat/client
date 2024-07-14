@@ -76,6 +76,7 @@ export function Chat() {
 
 
   function handleCurrentGroup() {
+    debugger
     switch (selectedGroupType) {
       case "CHAT":
         handleChatGroup();
@@ -169,6 +170,7 @@ export function Chat() {
   }
 
   function handleInviteGroup() {
+
     _rId(requestId);
   }
 

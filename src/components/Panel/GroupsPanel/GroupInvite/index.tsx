@@ -14,6 +14,7 @@ import {
 import {useWindowSize} from "../../../../services/hooks/appHooks";
 import {FaRegThumbsDown, FaThumbsUp} from "react-icons/fa6";
 import {MdBlock} from "react-icons/md";
+import {UserAnalysis} from "../../../UserAnalysis";
 
 export function InviteContainer(props: {
   requestId?: string;
@@ -24,7 +25,9 @@ export function InviteContainer(props: {
   const [data, _data] = useState<any>(null);
   const {_setGroupType, _setRefetch, refetch} = useContext(ShellContext);
   const [message, _message] = useState<null | string>(null);
+  const [userAnalysis,setUserAnalysis] = useState<{at:Date,sentiments:string, evaluation:string,username:string}[] | []>([]);
   useEffect(() => {
+
     if (props.type === "INVITE") {
       _loading(true);
       if (props.requestId) {
@@ -46,12 +49,29 @@ export function InviteContainer(props: {
     _props
       ._db(service.group)
       .query(serviceRoute.groupById, {}, reqType.get, props.groupId)
-      .then(result => {
+      .then(({data}) => {
+        console.log(data)
         _data({
-          group: result.data,
-          user: result.data.User,
-          request: result.data.Request,
+          group: data,
+          user: data.User,
+          request:data.Request,
         });
+        const users = data.User;
+        const analysisReport : {
+          at:Date,
+          sentiments:string,
+          username:string,
+          evaluation:string,
+        }[] = [];
+        users?.forEach((user:any) => {
+          if (user.Analysis.length){
+            user.Analysis.forEach((item:any) => {
+              const analysis = JSON.parse(item.analysis);
+              analysisReport.push({at:item.created_at,username:user.Username,sentiments:analysis.sentiment,evaluation:analysis.evaluation});
+            })
+          }
+        })
+        setUserAnalysis(analysisReport);
         _loading(false);
       });
   }
@@ -167,8 +187,8 @@ export function InviteContainer(props: {
         <Spinner />
       ) : (
         <>
-          <div className={"inviteWrapper"}>
-            <div className={"invContainer"}>
+          <div className={"inviteWrapper h100 _scrollable-container"}>
+            <div className={"invContainer "}>
               <h4 className={"font-primary inviteHeading"}>
                 GROUP {props.type === "INVITE" ? "INVITATION" : "JOIN"}
               </h4>
@@ -189,35 +209,40 @@ export function InviteContainer(props: {
                   />
                 </div>
               </div>
-              <div className={"label font-primary"}>NAME</div>
-              <div className={"font-secondary invite-labels"}>
+              <div className={"label font-secondary item-label"}>NAME</div>
+              <div className={" font-primary invite-labels font-large"}>
                 {" "}
                 {data.group.name}{" "}
               </div>
-              <div className={"font-primary "}>DESCRIPTION</div>
-              <div className={"font-secondary invite-labels"}>
+              <div className={" font-secondary item-label"}>DESCRIPTION</div>
+              <div className={" font-primary invite-labels font-medium"}>
                 {data.group.GroupDetail.description}
               </div>
-              <div className={"font-primary"}>TAGS</div>
+              <div className={"font-secondary item-label"}>TAGS</div>
               <div className={"tag-container "}>
                 {data.group.GroupDetail.tags.map((item: string) => {
-                  return <div className={"tag"}>{item}</div>;
+                  return <div className={"tag font-small"}>{item}</div>;
                 })}
+              </div>
+              <div className={"_scrollable-container analysis-container "}>
+                <UserAnalysis data={userAnalysis} />
               </div>
               {data.user.name ? (
                 <>
-                  <div className={"font-primary label"}>REQUESTER</div>
-                  <div className={"font-secondary invite-labels"}>
+                  <div className={"font-secondary label item-label"}>REQUESTER</div>
+                  <div className={"font-primary invite-labels"}>
                     {data.user.name}
                   </div>
                 </>
               ) : (
-                <>
-                  <div className={"font-primary label"}>CURRENT USERS</div>
-                  <div className={"font-secondary invite-labels"}>
+                <>{ props.type !== 'JOIN' &&
+                  <><div className={"font-secondary label item-label"}>CURRENT USERS</div>
+                  <div className={" font-primary invite-labels"}>
                     {data.user.length} Active{" "}
                     {data.user.length > 1 ? "users" : "user"}
                   </div>
+                    </>
+              }
                 </>
               )}
               {props.type === "INVITE" ? (

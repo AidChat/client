@@ -107,3 +107,9 @@ export interface IBlogShortContent {
     created_at: Date,
     status:EArticleStatus
 }
+
+export interface IAnalysis{
+    id:number,
+    analysis:string,
+    created_at:Date,
+}

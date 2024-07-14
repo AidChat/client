@@ -609,3 +609,11 @@ dialog::backdrop {
 .p-dialog-mask{
 
 }
+._scrollable-container{
+    height:100%;
+    overflow-y:scroll;
+}
+._fixed-top{
+    position:sticky;
+    top:0;
+}

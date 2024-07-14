@@ -3,7 +3,7 @@ import GroupImage from "./../../../assets/png/defaultgroup.png";
 import "./index.css";
 import {_props} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
-import {useNetworkConnectivity, useWindowSize,} from "../../../services/hooks/appHooks";
+import {useWindowSize,} from "../../../services/hooks/appHooks";
 import {IoIosArrowForward} from "react-icons/io";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../utils/enum";
 import {ProfileIconComponent} from "../../ProfileDialog";
@@ -23,14 +23,23 @@ export function UtilityPanel() {
             ._db(service.group)
             .query(serviceRoute.userRequest, {}, reqType.get, undefined)
             .then(result => {
+                console.log(result)
                 _requests(result.data);
             });
     }, [refetch]);
 
-    function handleGroupId(id: string, requestID: string) {
-        _setGroupId(id);
-        _requestId(requestID);
-        _setGroupType("INVITE");
+    function handleGroupId(id: string, requestID: string, userId: number) {
+
+        _props._user().get().then((result) => {
+            if (result.id?.toString() === userId.toString()) {
+                _setGroupType("JOIN");
+            } else {
+                _setGroupType("INVITE");
+            }
+            _setGroupId(id);
+            _requestId(requestID);
+        })
+
     }
 
     const {size: isSmall} = useWindowSize(EwindowSizes.S);
@@ -57,17 +66,17 @@ export function UtilityPanel() {
             {requests.length > 0 && (
                 <>
                     <div
-                        className={"font-primary mygroup-label w100"}
+                        className={"font-primary mygroup-label flex flex-center w100"}
                         style={{fontWeight: "bolder", textAlign: "center"}}
                     >
-                        INVITES
+                        REQUESTS
                     </div>
                     {requests.map((_item: any, idx: React.Key | null | undefined) => (
                         <div
                             className={"groupIcon-container-wrapper"}
                             key={idx}
                             onClick={() => {
-                                handleGroupId(_item.groupId, _item.id);
+                                handleGroupId(_item.groupId, _item.id, _item.userId);
                             }}
                         >
                             <GroupIcon

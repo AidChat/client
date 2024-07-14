@@ -209,3 +209,6 @@
 .lgt-btn {
     margin-top: auto;
 }
+.analysis-container{
+    max-height: 250px;
+}
