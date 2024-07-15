@@ -96,7 +96,7 @@ export function GroupMemberList(props: {
                 className={"w25 font-primary font-thick"}
                 style={{textAlign: "left"}}
               >
-                {ClientRole[user?.Role[0]?.type].toUpperCase()}
+                {ClientRole[user?.Role[0]?.type]?.toUpperCase()}
               </div>
             </div>
           ))}

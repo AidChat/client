@@ -15,7 +15,8 @@ dialog[open]::backdrop {
     opacity: 0.75;
 }
 :root {
-    --app-color: #398378;
+    --green: #398378;
+    --white: #eaeaea;
     --font-small : 12px;
     --font-medium: 16px;
     --font-large: 18px;
@@ -187,17 +188,17 @@ div {
 
 .btn-round-secondary {
     background: white;
-    color: var(--app-color);
+    color: var(--green);
     cursor:pointer;
 }
 
 .btn-round-primary:hover {
-    background:var(--app-color) !important;
+    background:var(--green) !important;
 }
 
 .btn-round-primary {
     cursor:pointer;
-    background: var(--app-color) !important;
+    background: var(--green) !important;
     color: white !important;
 }
 

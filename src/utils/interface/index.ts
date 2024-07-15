@@ -11,7 +11,8 @@ export interface UserProps {
     about?: string;
     mobile?: number;
     verifiedEmail?: boolean,
-    globalSocketID?:string
+    globalSocketID?:string,
+    Username:string
 }
 
 export enum SocketEmitters {
@@ -32,7 +33,9 @@ export enum SocketListeners {
     USEROFFLINE = "USEROFFLINE",
     RECORDUPDATE='RECORDUPDATE',
     REPLY='REPLY',
-    PONG='PONG'
+    PONG='PONG',
+    NEWGROUP="activeGroup",
+    JOINREQUEST="joiningRequest"
 }
 
 export interface Role {

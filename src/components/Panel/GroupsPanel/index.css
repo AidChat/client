@@ -130,7 +130,7 @@
 }
 
 .dialogCoverImageContainer img {
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .row1 {
@@ -208,7 +208,4 @@
 
 .lgt-btn {
     margin-top: auto;
-}
-.analysis-container{
-    max-height: 250px;
 }

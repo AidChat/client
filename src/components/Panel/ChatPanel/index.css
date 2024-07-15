@@ -354,7 +354,7 @@
     width: 100%;
 }
 .groupIcon_wrapper img{
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .groupIcon_wrapper_container {

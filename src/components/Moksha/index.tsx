@@ -2,21 +2,21 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import {Input} from "../Utils/CustomInput";
 import "./index.css";
 import {PiPaperPlaneTiltFill} from "react-icons/pi";
-import {EwindowSizes, IDBStore} from "../../utils/enum";
+import {EwindowSizes, IDBStore, reqType, service, serviceRoute} from "../../utils/enum";
 import {
     clearDatabaseByName,
     confirm,
     getDeviceID,
     queryStoreObjects,
     storeChatsByDeviceID,
-    validateAskText, vibrateDevice,
+    validateAskText,
+    vibrateDevice,
 } from "../../utils/functions";
 import Snackbar from "../Utils/Snackbar";
 import {motion} from "framer-motion";
-import {startLogger} from "aidchat-hawkeye";
 import moksha from "./../../assets/png/moksha.png";
 import {getString} from "../../utils/strings";
-import {Message, SocketEmitters, SocketListeners} from "../../utils/interface";
+import {Message, SocketEmitters, SocketListeners, UserProps} from "../../utils/interface";
 import {MdDeleteOutline} from "react-icons/md";
 import {MokshaIcon} from "./Icon";
 import {AuthContext} from "../../services/context/auth.context";
@@ -25,6 +25,8 @@ import Markdown from "react-markdown";
 import {_props} from "../../services/network/network";
 import {useWindowSize} from "../../services/hooks/appHooks";
 import {ProfileIconComponent} from "../ProfileDialog";
+import {Seeker} from "./Seeker";
+import {ShellContext} from "../../services/context/shell.context";
 
 interface Props {
     click: () => void;
@@ -36,17 +38,25 @@ export const ClientChatWindow = (props: Props) => {
     const [conversation, setConversation] = useState<Message[]>([]);
     const scrollableDivRef = useRef<HTMLDivElement>(null);
     const [showLoginComponent, toggleLoginComponent] = useState(false);
-    const [showInfo,setShowInfo] = useState(true);
-
+    const [showInfo, setShowInfo] = useState(true);
+    const [showInfoBox, setShowInfoBox] = useState(false);
+    const [currentUserGroup, setCurrentUserGroup] = useState(null)
+    const [currentUser,setCurrentUser] = useState<UserProps | null>(null)
+    const ac = useContext(AuthContext);
+    const sc = useContext(ShellContext);
     useEffect(() => {
-        window.setTimeout(function (){
+        window.setTimeout(function () {
             setShowInfo(false);
-        },3000)
+        }, 3000)
     }, []);
 
-    let ac = useContext(AuthContext);
+
     useEffect(() => {
         scrollToBottom(scrollableDivRef);
+        setShowInfoBox(true);
+        window.setTimeout(() => {
+            // setShowInfoBox(false);
+        }, 5000)
         return () => {
             if (ac?.mokshaSocket) ac?.mokshaSocket.disconnect();
         };
@@ -90,7 +100,7 @@ export const ClientChatWindow = (props: Props) => {
     }
 
     function handleSocketListener(e: any) {
-        vibrateDevice().then(function (){
+        vibrateDevice().then(function () {
             addConversationMessages({sender: "Model", message: e.message});
         })
     }
@@ -99,7 +109,7 @@ export const ClientChatWindow = (props: Props) => {
         scrollToBottom(scrollableDivRef);
     }, [conversation]);
     useEffect(() => {
-        startLogger({interval: 30000});
+        // startLogger({interval: 30000});
         queryStoreObjects(IDBStore.chat).then(function (data: any) {
             if (data && data[0]?.chats) {
                 setConversation(data[0]?.chats);
@@ -107,27 +117,41 @@ export const ClientChatWindow = (props: Props) => {
             }
         });
         _props._user().validateSession().then(function (data) {
-            _props._user().get().then(function () {
+            _props._user().get().then(function (data:UserProps) {
+                setCurrentUser(data)
                 toggleLoginComponent(true);
+                fetchOldRequests();
+                sc?.globalSocket?.on(SocketListeners.JOINREQUEST, function (data: any) {
+                    console.log(data)
+                })
             })
         })
             .catch(error => {
                 console.error(error)
                 toggleLoginComponent(false);
             })
-
     }, []);
+
+    function fetchOldRequests() {
+        _props._db(service.group).query(serviceRoute.group, undefined, reqType.get, undefined)
+            .then(function ({data}) {
+                if (data[0]?.Request?.length > 0){setCurrentUserGroup(data);}else{setCurrentUserGroup(null)}
+            })
+
+    }
 
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {
         if (ref.current) {
             ref.current.scrollTop = ref.current.scrollHeight;
         }
     }
-    let {size:isSmall} = useWindowSize(EwindowSizes.S);
+
+    let {size: isSmall} = useWindowSize(EwindowSizes.S);
 
     return (
         <>
             <ConfirmDialog/>
+            {showInfoBox && currentUserGroup && <Seeker group={currentUserGroup} refetch={() => fetchOldRequests()}/>}
             <Snackbar message={error} onClose={() => setError("")}/>
             <div className="confession">
                 {showLoginComponent && <ProfileIconComponent full={isSmall}/>}
@@ -142,7 +166,7 @@ export const ClientChatWindow = (props: Props) => {
                                     transition={{speed: 2}}
                                     key={index}
                                     className={"font-primary m4 chat-wrapper"}>
-                                    {text.sender === "User" && <span style={{color: "lightyellow"}}>Pumba</span>}
+                                    {text.sender === "User" && <span style={{color: "lightyellow"}}>{currentUser?.Username || 'Pumba'}</span>}
                                     {text.sender === "Model" &&
                                         <span className={"font-secondary font-thick"}>{`${getString(24)} :`}</span>}
                                     <Markdown className={'m0 font-large'}>
@@ -170,21 +194,21 @@ export const ClientChatWindow = (props: Props) => {
                 </div>
                 <div className={"confession_container"}>
                     <div className={"h100 flex center  justify-center clear"}>
-                            <MdDeleteOutline
-                                color={"whitesmoke"}
-                                size={22}
-                                onClick={async () => {
-                                    let accepted = await confirm({
-                                        message: "Do you wanna remove the messages?",
-                                        header: "Confirmation",
+                        <MdDeleteOutline
+                            color={"whitesmoke"}
+                            size={22}
+                            onClick={async () => {
+                                let accepted = await confirm({
+                                    message: "Do you wanna remove the messages?",
+                                    header: "Confirmation",
+                                });
+                                if (accepted) {
+                                    clearDatabaseByName(IDBStore.chat).then(function () {
+                                        setConversation([]);
                                     });
-                                    if (accepted) {
-                                        clearDatabaseByName(IDBStore.chat).then(function () {
-                                            setConversation([]);
-                                        });
-                                    }
-                                }}
-                            />
+                                }
+                            }}
+                        />
                     </div>
 
                     <Input

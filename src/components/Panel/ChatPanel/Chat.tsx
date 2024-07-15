@@ -76,7 +76,6 @@ export function Chat() {
 
 
   function handleCurrentGroup() {
-    debugger
     switch (selectedGroupType) {
       case "CHAT":
         handleChatGroup();
