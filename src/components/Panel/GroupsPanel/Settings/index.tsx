@@ -66,7 +66,7 @@ function GroupSettingContainer(props: {
             ._db(service.group)
             .query(serviceRoute.groupRole, {}, reqType.get, props.groupDetails.id)
             .then((result: { data: Role }) => {
-                _updateOwnership(result.data.type);
+                _updateOwnership(result?.data?.type);
             });
     }, [props]);
 

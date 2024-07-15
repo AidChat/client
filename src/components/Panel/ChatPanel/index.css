@@ -296,22 +296,24 @@
 .tag-container {
     display: flex;
     flex-wrap: wrap;
-    height: 10vh;
+    height: fit-content;
     overflow-y:scroll;
+    margin:10px 0;
 }
 
 .tag-container .tag {
-    margin: 2px 4px;
+    margin: 0px 2px;
     background: lightgrey;
     width: fit-content;
-    padding: 2px 8px;
-    border-radius: 40px;
+    padding: 2px 4px;
+    border-radius: 4px;
     height:20px;
 }
 
 .inviteHeading {
     text-align: center;
     font-size: 30px;
+    margin:0px;
 }
 
 .btn-Wrapper {
@@ -352,7 +354,7 @@
     width: 100%;
 }
 .groupIcon_wrapper img{
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .groupIcon_wrapper_container {
@@ -420,4 +422,8 @@
 }
 .midPanelWrapper .shadow-box{
     height:100%;
+}
+
+.item-label{
+    margin-top:6px;
 }

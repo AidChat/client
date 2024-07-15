@@ -13,6 +13,7 @@ import {IoIosArrowBack} from "react-icons/io";
 import {useWindowSize} from "../../../../services/hooks/appHooks";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../../utils/enum";
 import {Dialog} from "primereact/dialog";
+import {ActiveSeeker} from "../ActiveSeekers";
 
 export function GroupListPanel() {
     const [loading, _loading] = useState<boolean>(false);
@@ -95,7 +96,7 @@ export function GroupListPanel() {
                 {loading ? (
                     <Spinner/>
                 ) : (
-                    <>
+                    <div className={"w100 _scrollable-container"}>
                         {isSmall && (
                             <div className={"backBtnGroupList"}>
                                 <IoIosArrowBack
@@ -106,9 +107,25 @@ export function GroupListPanel() {
                                 />
                             </div>
                         )}
-                        <>
+                        <div>
+                            <div className={'w100'}>
+                                <div className={"font-primary mygroup-label _fixed-top "}
+                                     style={{
+                                         fontWeight: "bolder",
+                                         display: "flex",
+                                         alignSelf: "start",
+                                         padding: "4px 6px",
+                                         marginTop: "8px",
+                                     }}>
+                                    ACTIVE SEEKERS
+                                </div>
+                                <div>
+                                    <ActiveSeeker/>
+                                </div>
+                            </div>
+
                             <div
-                                className={"font-primary mygroup-label "}
+                                className={"font-primary mygroup-label _fixed-top "}
                                 style={{
                                     fontWeight: "bolder",
                                     display: "flex",
@@ -122,8 +139,8 @@ export function GroupListPanel() {
                             <div className={"item contactsItem"}>
                                 <GroupList listType={!search ? "CHAT" : "JOIN"} items={items}/>
                             </div>
-                        </>
-                    </>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
@@ -194,7 +211,7 @@ function CreateGroup() {
                         }}
                     />
                 </>
-                </Dialog>
+            </Dialog>
         </div>
-);
+    );
 }

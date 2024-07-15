@@ -130,7 +130,7 @@
 }
 
 .dialogCoverImageContainer img {
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .row1 {
