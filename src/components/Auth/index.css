@@ -79,6 +79,9 @@ color:#398378;
     margin:0 10px;
     width: 40px;
 }
+.code-input-element input{
+    width:100%;
+}
 .MauthContainer{
     position: relative;
 }

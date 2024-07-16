@@ -112,6 +112,9 @@ export function ProfileIconComponent(props: { full: boolean }) {
                         onUpdate={() => {
                             fetchProfile();
                         }}
+                        closeDialog={()=>{
+                            setShowUserForm(false)
+                        }}
                     />
                 </>
             </Dialog>
@@ -186,7 +189,7 @@ export function ProfileIconComponent(props: { full: boolean }) {
     );
 }
 
-function ProfileForm({onUpdate}: { onUpdate: () => void }) {
+function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog:()=>void}) {
     const [user, setUser] = useState<{
         name: string;
         email: string;
@@ -196,6 +199,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         mobile?: string;
         verifiedEmail: boolean;
         Username: string;
+        Type: "Seeker" | "Helper" | "Pending"
     }>({
         name: "",
         email: "",
@@ -205,6 +209,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         mobile: undefined,
         verifiedEmail: false,
         Username: "",
+        Type: "Pending",
     });
     const [loading, _loading] = useState<boolean>(false);
     const [message, _message] = useState<string | null>(null);
@@ -317,6 +322,10 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }
 
     const {size: small} = useWindowSize(EwindowSizes.S);
+    function handleSubscriptionPanel(){
+        closeDialog();
+        ac?.setShowSubscriptionDialog(true)
+    }
     return (
         <div className={"profile-Wrapper"}>
             {message && (
@@ -453,6 +462,14 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     useResponsizeClass(EwindowSizes.S, [" dflex row "])
                 }
             >
+                {user.Type == 'Seeker' && <>
+                    <div
+                        onClick={handleSubscriptionPanel}
+                        className={" btn btn-secondary font-secondary pointer"}
+                    >
+                       Buy
+                    </div>
+                </>}
                 {small && <div
                     onClick={() => {
                         handleLogOut();

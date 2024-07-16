@@ -34,7 +34,6 @@ export function Seeker(props: { group: any,refetch:()=>void }) {
         }
     }
 
-    console.log(groupInfo)
     function handleRequestReject() {
         _props._db(service.group).query(serviceRoute.updateInvite, {status: "REJECTED"}, reqType.put, groupInfo.Request[0].id).then(response=>{
             setMessage(response.message)

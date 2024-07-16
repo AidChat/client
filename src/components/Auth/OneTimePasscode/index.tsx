@@ -135,8 +135,8 @@ export function OTPForm(props: ICode) {
                 </div>)}
             </div>
             <h2 className={'font-primary'}>Enter the opt sent to you email</h2>
-            <h2 style={{alignSelf: 'end'}} className={'font-secondary pointer'} onClick={generateCode}>Resend</h2>
-            <h2 style={{alignSelf: 'end'}} className={'font-secondary pointer'} onClick={()=>{props.toggleState("LOGIN")}}>Login</h2>
+            <h2 style={{alignSelf: 'end'}} className={'font-secondary font-medium pointer'} onClick={generateCode}>Resend</h2>
+            <h2 style={{alignSelf: 'end'}} className={'font-secondary font-medium pointer'} onClick={()=>{props.toggleState("LOGIN")}}>Login</h2>
         </div>
 
     </div>)

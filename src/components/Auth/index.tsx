@@ -8,7 +8,7 @@ import {InviteForm} from "./InviteForm";
 import {useResponsizeClass} from "../../utils/functions";
 import {motion} from 'framer-motion'
 import {EwindowSizes} from "../../utils/enum";
-import {OTPForm} from "./Code";
+import {OTPForm} from "./OneTimePasscode";
 import {MokshaIcon} from "../Moksha/Icon";
 import {AuthContext} from "../../services/context/auth.context";
 

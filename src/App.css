@@ -20,6 +20,7 @@ dialog[open]::backdrop {
     --font-small : 12px;
     --font-medium: 16px;
     --font-large: 18px;
+    --font-heading:32px;
 }
 .wrap{
     flex-wrap: wrap;

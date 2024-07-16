@@ -12,6 +12,7 @@ import {BlogList} from "../../features/Blogs/Blogs";
 import {Blog} from "../../features/Blogs/Blog";
 import {getDeviceID, getDeviceInfoUsingCapacitor} from "../../utils/functions";
 import {DeviceInfo} from "@capacitor/device";
+import {SubscriptionDialog} from "../../components/Subscription/SubscriptionDialog";
 
 export let AuthContext = React.createContext<{
         isAuthenticated?: boolean;
@@ -25,7 +26,8 @@ export let AuthContext = React.createContext<{
         setConfession: (V: boolean) => void,
         mokshaSocket: Socket | null,
         isMokshaAvailable: boolean,
-        toggleBlogComponent: () => void
+        toggleBlogComponent: () => void,
+        setShowSubscriptionDialog:(T: boolean) => void,
     }
     | undefined
 >(undefined);
@@ -47,6 +49,7 @@ export const AuthContextProvider = ({
     const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
     const [showBlogComponent, setShowBlogComponent] = useState<boolean>(false);
     const [showBlogs, setShowBlogs] = useState(false);
+    const [showSubscriptionDialog, setShowSubscriptionDialog] = useState<boolean>(true);
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
@@ -60,9 +63,6 @@ export const AuthContextProvider = ({
         let newSocket = io(service.bot, {
             autoConnect: true,
             reconnectionAttempts: 10,
-            auth:{
-                session: window.localStorage.getItem("session")
-            }
         });
         newSocket.emit(SocketEmitters._PING);
         newSocket.on(SocketListeners.PONG, () => {
@@ -90,6 +90,7 @@ export const AuthContextProvider = ({
         sessionId?: string,
         forceReload?: boolean
     ): void {
+        setLoad(true);
         if (sessionId) window.localStorage.setItem("session", sessionId);
         _props
             ._user()
@@ -133,12 +134,16 @@ export const AuthContextProvider = ({
                 }
             });
     }
-    function updateDeviceInfo(){
+
+    function updateDeviceInfo() {
         getDeviceID().then((deviceInfo) => {
-            getDeviceInfoUsingCapacitor().then(function (info){
+            getDeviceInfoUsingCapacitor().then(function (info) {
                 _props
                     ._db(service.authentication)
-                    .query(serviceRoute.deviceInfo, {token:deviceInfo.identifier ,type:info.platform}, reqType.post, undefined);
+                    .query(serviceRoute.deviceInfo, {
+                        token: deviceInfo.identifier,
+                        type: info.platform
+                    }, reqType.post, undefined);
             })
         })
 
@@ -162,6 +167,13 @@ export const AuthContextProvider = ({
         setShowBlogComponent(!showBlogComponent);
     }
 
+    function checkAndShowSubscriptionDialog() {
+        // TODO check if user is logged in
+        // TODO check if user is client
+        // TODO make network call to check for subscription
+        // TODO check for last subscription reminder
+
+    }
 
     return (
         <AuthContext.Provider
@@ -174,7 +186,8 @@ export const AuthContextProvider = ({
                 setConfession,
                 mokshaSocket,
                 isMokshaAvailable,
-                toggleBlogComponent
+                toggleBlogComponent,
+                setShowSubscriptionDialog
             }}
         >
             {!loading ? (
@@ -186,7 +199,11 @@ export const AuthContextProvider = ({
                     )
                 ) : (
                     isClient ?
-                        !showBlogs ? <ClientChatWindow click={() => changeConfession()}/> : <Blog blog_id={1}/> :
+                        !showBlogs ? <><ClientChatWindow click={() => changeConfession()}/>
+                            <SubscriptionDialog show={showSubscriptionDialog} onClose={() => {
+                                setShowSubscriptionDialog(false)
+                            }}/>
+                        </> : <Blog blog_id={1}/> :
                         <AuthenticationContainer/>
                 )
             ) : (

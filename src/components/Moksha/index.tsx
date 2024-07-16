@@ -137,6 +137,9 @@ export const ClientChatWindow = (props: Props) => {
             .then(function ({data}) {
                 if (data[0]?.Request?.length > 0){setCurrentUserGroup(data);}else{setCurrentUserGroup(null)}
             })
+            .catch(e=>{
+                console.error(e)
+            })
 
     }
 
@@ -213,7 +216,7 @@ export const ClientChatWindow = (props: Props) => {
 
                     <Input
                         width={showLoginComponent ? "100%" : undefined}
-                        height={"3rem"}
+                        height={"50px"}
                         borderRadius={"50px"}
                         textColor={"gray"}
                         placeholder={
