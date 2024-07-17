@@ -1,5 +1,8 @@
 .sub-container {
-    width: 400px;
+    width: 500px;
+}
+.sub-container-small{
+    width: 320px;
 }
 
 .sub-price-text {
@@ -20,4 +23,8 @@
     width: 300px;
     border-radius: 20px;
     margin: 14px 0;
+}
+.sub-lm{
+    text-decoration: underline;
+    cursor: pointer;
 }

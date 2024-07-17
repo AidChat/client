@@ -67,7 +67,8 @@ If you have questions or requests regarding your data, contact us at <i> contact
                             to provide immediate support and long-term solutions, Aidchat combines the latest in AI
                             technology with evidence-based therapeutic techniques to create a personalized and
                             interactive experience. Whether you're dealing with stress, anxiety, depression, or just
-                            need someone to talk to, Aidchat offers a safe, confidential.`
+                            need someone to talk to, Aidchat offers a safe, confidential.`,
+26:'₹100'
 }
 
 export enum enString {
@@ -96,5 +97,6 @@ export enum enString {
     logout,
     consent,
     botname,
-    advText
+    advText,
+    pricing
 }

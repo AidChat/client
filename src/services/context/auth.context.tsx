@@ -49,7 +49,7 @@ export const AuthContextProvider = ({
     const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
     const [showBlogComponent, setShowBlogComponent] = useState<boolean>(false);
     const [showBlogs, setShowBlogs] = useState(false);
-    const [showSubscriptionDialog, setShowSubscriptionDialog] = useState<boolean>(true);
+    const [showSubscriptionDialog, setShowSubscriptionDialog] = useState<boolean>(false);
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
@@ -101,6 +101,7 @@ export const AuthContextProvider = ({
                     .get()
                     .then((user: any) => {
                         if (user) {
+                            checkAndShowSubscriptionDialog()
                             setVerifyState(user.verifiedEmail);
                             if (user.Type === 'Seeker') {
                                 setConfession(true);
@@ -172,7 +173,7 @@ export const AuthContextProvider = ({
         // TODO check if user is client
         // TODO make network call to check for subscription
         // TODO check for last subscription reminder
-
+        setShowSubscriptionDialog(true)
     }
 
     return (

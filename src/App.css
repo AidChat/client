@@ -619,3 +619,6 @@ dialog::backdrop {
     position:sticky;
     top:0;
 }
+.btn-disabled{
+    background: gray !important;
+}

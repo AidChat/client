@@ -81,6 +81,14 @@ color:#398378;
 }
 .code-input-element input{
     width:100%;
+    padding: 2px 10px;
+    border-radius: 2px;
+    width: 100%;
+    margin: 0 2px;
+    border: none;
+    height: 30px;
+    font-size: 16px;
+    font-weight: 900;
 }
 .MauthContainer{
     position: relative;

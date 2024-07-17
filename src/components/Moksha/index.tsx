@@ -265,6 +265,7 @@ function renderEmptyMessageConversation() {
                         height={"100%"}
                         width={"100%"}
                         style={{objectFit: "contain"}}
+                        loading={'eager'}
                     />
                 </div>
                 <div className={"text-container"}>
