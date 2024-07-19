@@ -7,6 +7,8 @@ import {getString} from "../../../utils/strings";
 import {enString} from "../../../utils/strings/en";
 import {useResponsizeClass} from "../../../utils/functions";
 import {EwindowSizes} from "../../../utils/enum";
+import {_props} from "../../../services/network/network";
+import {Spinner} from "../../Utils/Spinner/spinner";
 
 
 interface SubscriptionDialogProps {
@@ -18,15 +20,26 @@ interface SubscriptionDialogProps {
 export function SubscriptionDialog(props: SubscriptionDialogProps) {
     const [show, setShow] = useState(false);
     const [clientSecret, setClientSecret] = useState<string | null>(process.env.REACT_APP_STRIPE_SECRET || null);
-
+    const [loading,setLoading] = useState(false);
     function handleClose() {
         props.onClose();
+    }
+    const URL = process.env.REACT_APP_STRIPE_URL;
+    function handleRedirect(){
+       if (!loading)
+        _props._user().get().then((response) => {
+            window?.open(URL + '?prefilled_email='+response.email, '_blank')?.focus();
+            setLoading(true);
+        })
     }
 
     useEffect(() => {
         window.setTimeout(() => {
             setShow(props.show);
         }, 2000)
+        return ()=>{
+            setLoading(false);
+        }
     }, [props.show]);
     return (
         <Dialog
@@ -51,8 +64,8 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
 
                 <div className={''}>
 
-                    <button
-                        className={`btn btn-primary font-secondary font-large m4 btn-custom ${!clientSecret && ' btn-disabled'}`}>Submit
+                    <button onClick={handleRedirect}
+                        className={`btn btn-primary font-secondary font-large m4 btn-custom`}> {loading ? <Spinner />:'Subscribe'}
                     </button>
 
                 </div>

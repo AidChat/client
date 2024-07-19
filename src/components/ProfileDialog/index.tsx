@@ -13,7 +13,7 @@ import Snackbar from "../Utils/Snackbar";
 import GroupImage from "../../assets/png/defaultgroup.png";
 import ImageUploader from "react-images-upload";
 import {MdVerified} from "react-icons/md";
-import {Spinner} from "../Utils/Spinner/spinner";
+import {FcPaid} from "react-icons/fc";
 
 export function ProfileIconComponent(props: { full: boolean }) {
     const [user, setUser] = useState<{
@@ -112,7 +112,7 @@ export function ProfileIconComponent(props: { full: boolean }) {
                         onUpdate={() => {
                             fetchProfile();
                         }}
-                        closeDialog={()=>{
+                        closeDialog={() => {
                             setShowUserForm(false)
                         }}
                     />
@@ -189,7 +189,7 @@ export function ProfileIconComponent(props: { full: boolean }) {
     );
 }
 
-function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog:()=>void}) {
+function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialog: () => void }) {
     const [user, setUser] = useState<{
         name: string;
         email: string;
@@ -217,6 +217,7 @@ function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog
         name: false,
         profileImage: false,
     });
+    const [paid, setPaid] = useState(undefined);
     const [showOtpContainer, setOtpContainerState] = useState(false);
     const ac = useContext(AuthContext);
     useEffect(() => {
@@ -322,10 +323,21 @@ function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog
     }
 
     const {size: small} = useWindowSize(EwindowSizes.S);
-    function handleSubscriptionPanel(){
+
+    function handleSubscriptionPanel() {
         closeDialog();
         ac?.setShowSubscriptionDialog(true)
     }
+
+    useEffect(() => {
+        _props._db(service.subscription).query(serviceRoute.subscriptionInfo, undefined, reqType.get, undefined)
+            .then(function ({data}) {
+                if (data) {
+                    setPaid(data.paid);
+                }
+            })
+    }, []);
+
     return (
         <div className={"profile-Wrapper"}>
             {message && (
@@ -463,12 +475,19 @@ function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog
                 }
             >
                 {user.Type == 'Seeker' && <>
-                    <div
-                        onClick={handleSubscriptionPanel}
-                        className={" btn btn-secondary font-secondary pointer"}
-                    >
-                       Buy
-                    </div>
+                    {!paid ?
+                        <div
+                            onClick={handleSubscriptionPanel}
+                            className={" btn btn-primary font-secondary pointer"}
+                        >
+                            Subscribe
+                        </div>
+                        : <>
+                            <div className={" dflex flex-center font-large font-secondary"}>
+                                <FcPaid size={22} style={{margin:'0 4px'}}/>  Subscribed. <span className={'font-primary font-small pointer'} style={{margin:'0 4px'}}>Cancel subscription?</span>
+                            </div>
+
+                        </>}
                 </>}
                 {small && <div
                     onClick={() => {
@@ -476,7 +495,7 @@ function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog
                     }}
                     className={"btn btn-round-secondary"}
                 >
-                    {"Logout"}
+                {"Logout"}
                 </div>
                 }
                 <div
@@ -485,7 +504,7 @@ function ProfileForm({onUpdate,closeDialog}: { onUpdate: () => void ,closeDialog
                     }}
                     className={" btn btn-round-primary"}
                 >
-                      Update
+                    Update
                 </div>
             </div>
         </div>

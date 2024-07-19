@@ -11,7 +11,6 @@ import {SocketEmitters, SocketListeners} from "../../utils/interface";
 import {BlogList} from "../../features/Blogs/Blogs";
 import {Blog} from "../../features/Blogs/Blog";
 import {getDeviceID, getDeviceInfoUsingCapacitor} from "../../utils/functions";
-import {DeviceInfo} from "@capacitor/device";
 import {SubscriptionDialog} from "../../components/Subscription/SubscriptionDialog";
 
 export let AuthContext = React.createContext<{
@@ -69,7 +68,7 @@ export const AuthContextProvider = ({
             setIsMokshaAvailable(true)
         })
         setMokshaSocket(newSocket);
-    }, []);
+         }, []);
     useEffect(() => {
         if (requestCode) {
             setAuth(false);
@@ -101,12 +100,13 @@ export const AuthContextProvider = ({
                     .get()
                     .then((user: any) => {
                         if (user) {
-                            checkAndShowSubscriptionDialog()
+
                             setVerifyState(user.verifiedEmail);
                             if (user.Type === 'Seeker') {
                                 setConfession(true);
                                 stopload();
                                 updateDeviceInfo();
+                                checkAndShowSubscriptionDialog();
                                 return
                             }
                             if (user.Type === "Pending") {
@@ -169,11 +169,22 @@ export const AuthContextProvider = ({
     }
 
     function checkAndShowSubscriptionDialog() {
-        // TODO check if user is logged in
-        // TODO check if user is client
-        // TODO make network call to check for subscription
-        // TODO check for last subscription reminder
-        setShowSubscriptionDialog(true)
+      debugger
+        _props._user().get().then(function (data){
+           _props._db(service.subscription).query(serviceRoute.paymentReminder, undefined, reqType.get,undefined)
+               .then(function ({data}){
+                   if (data.show){
+                       setShowSubscriptionDialog(true);
+                   }else{
+                       setShowSubscriptionDialog(false);
+                   }
+               })
+               .catch(e=>{
+                   console.log(e)
+               })
+       }).catch(e=>{
+           console.log(e);
+       })
     }
 
     return (
@@ -188,7 +199,7 @@ export const AuthContextProvider = ({
                 mokshaSocket,
                 isMokshaAvailable,
                 toggleBlogComponent,
-                setShowSubscriptionDialog
+                setShowSubscriptionDialog,
             }}
         >
             {!loading ? (

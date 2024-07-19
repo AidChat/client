@@ -139,7 +139,8 @@ export enum serviceRoute {
     articles = "/CJ130/articles",
     blogArticles = '/CJ130/blog/articles',
     seekers='/CJ130/seekers',
-    subscription = "/subscription"
+    paymentReminder = "/payment/reminder",
+    subscriptionInfo = "/payment/getSubscriptionInfo"
 }
 
 export enum service {
@@ -148,7 +149,7 @@ export enum service {
     messaging = "http://localhost:8900/",
     bot = 'http://localhost:9650',
     event = 'http://localhost:8089',
-    subscription = 'http://localhost:9659/v1'
+    subscription = 'http://localhost:9659'
 }
 
 export enum IDBStore {
