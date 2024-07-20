@@ -2,13 +2,17 @@ import {Dialog} from "primereact/dialog";
 import {Logo} from "../../Utils/Logo";
 import '../index.css'
 import {features} from "../../../assets/data";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getString} from "../../../utils/strings";
 import {enString} from "../../../utils/strings/en";
 import {useResponsizeClass} from "../../../utils/functions";
 import {EwindowSizes} from "../../../utils/enum";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
+import {AuthContext} from "../../../services/context/auth.context";
+import {SocketListeners} from "../../../utils/interface";
+import Snackbar from "../../Utils/Snackbar";
+import {ShellContext} from "../../../services/context/shell.context";
 
 
 interface SubscriptionDialogProps {
@@ -19,39 +23,57 @@ interface SubscriptionDialogProps {
 
 export function SubscriptionDialog(props: SubscriptionDialogProps) {
     const [show, setShow] = useState(false);
-    const [clientSecret, setClientSecret] = useState<string | null>(process.env.REACT_APP_STRIPE_SECRET || null);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+
+
     function handleClose() {
         props.onClose();
     }
+
+    const ac = useContext(AuthContext);
     const URL = process.env.REACT_APP_STRIPE_URL;
-    function handleRedirect(){
-       if (!loading)
-        _props._user().get().then((response) => {
-            window?.open(URL + '?prefilled_email='+response.email, '_blank')?.focus();
-            setLoading(true);
-        })
+
+    function handleRedirect() {
+        if (!loading)
+            _props._user().get().then((response) => {
+                window?.open(URL + '?prefilled_email=' + response.email, '_blank')?.focus();
+                setLoading(true);
+            })
     }
 
     useEffect(() => {
         window.setTimeout(() => {
             setShow(props.show);
         }, 2000)
-        return ()=>{
+        return () => {
             setLoading(false);
         }
     }, [props.show]);
+
+    useEffect(() => {
+        console.log(ac?.globalSocket);
+        ac?.globalSocket?.on(SocketListeners.PAYMENTDONE, function (data: any) {
+            console.log(data)
+            setMessage("Payment successful");
+            setLoading(false);
+            handleClose();
+        })
+    }, []);
+
     return (
         <Dialog
             onHide={() => {
             }} showHeader={false} visible={show} maximized={false}>
+            <Snackbar message={message} onClose={() => setMessage}/>
             <div
                 className={'sub-container font-primary dflex flex-center flex-column' + useResponsizeClass(EwindowSizes.S, [' sub-container-small'])}>
                 <div className={'dflex flex-row p8 flex-center'}><Logo/>
                 </div>
                 <h2 className={"sub-heading m4"}>Pricing</h2>
                 <h1 className={'m4'}><span className={'font-secondary'}> <span
-                    className={'sub-price-text'}>{getString(enString.pricing)}</span><span className={'font-large'}>/week</span></span></h1>
+                    className={'sub-price-text'}>{getString(enString.pricing)}</span><span
+                    className={'font-large'}>/week</span></span></h1>
                 <div className={'sub-bullets'}>
                     <h4 className={'font-large '}>Can get you access to:</h4>
                     {
@@ -65,7 +87,8 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
                 <div className={''}>
 
                     <button onClick={handleRedirect}
-                        className={`btn btn-primary font-secondary font-large m4 btn-custom`}> {loading ? <Spinner />:'Subscribe'}
+                            className={`btn btn-primary font-secondary font-large m4 btn-custom`}> {loading ?
+                        <Spinner/> : 'Subscribe'}
                     </button>
 
                 </div>

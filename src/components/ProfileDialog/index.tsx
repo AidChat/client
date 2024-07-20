@@ -16,6 +16,7 @@ import {MdVerified} from "react-icons/md";
 import {FcPaid} from "react-icons/fc";
 
 export function ProfileIconComponent(props: { full: boolean }) {
+
     const [user, setUser] = useState<{
         id: string;
         email: string;
@@ -313,7 +314,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
             setOtpContainerState(true);
             _message("Verification code sent");
         } catch (error) {
-            _message("Please try agian after some time.");
+            _message("Please try again after some time.");
         }
     }
 
@@ -335,7 +336,10 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                 if (data) {
                     setPaid(data.paid);
                 }
-            })
+            }).catch(e => {
+            console.error(e)
+        })
+
     }, []);
 
     return (
@@ -358,6 +362,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                                 : GroupImage
                         }
                         alt={"Profile image"}
+                        loading={'eager'}
                     />
                 </div>
                 <div>
@@ -375,7 +380,6 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                     />
                 </div>
             </div>
-
             <div
                 className={
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
@@ -476,15 +480,13 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
             >
                 {user.Type == 'Seeker' && <>
                     {!paid ?
-                        <div
-                            onClick={handleSubscriptionPanel}
-                            className={" btn btn-primary font-secondary pointer"}
-                        >
+                        <div onClick={handleSubscriptionPanel}  className={" btn btn-primary font-secondary pointer"} >
                             Subscribe
                         </div>
                         : <>
                             <div className={" dflex flex-center font-large font-secondary"}>
-                                <FcPaid size={22} style={{margin:'0 4px'}}/>  Subscribed. <span className={'font-primary font-small pointer'} style={{margin:'0 4px'}}>Cancel subscription?</span>
+                                <FcPaid size={22} style={{margin: '0 4px'}}/> Subscribed. <span
+                                className={'font-primary font-small pointer'} style={{margin: '0 4px'}}>Cancel subscription?</span>
                             </div>
 
                         </>}
@@ -495,7 +497,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                     }}
                     className={"btn btn-round-secondary"}
                 >
-                {"Logout"}
+                    {"Logout"}
                 </div>
                 }
                 <div

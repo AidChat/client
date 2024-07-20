@@ -7,7 +7,7 @@ import {UserDetailsForm} from "../../components/Concent";
 import {reqType, service, serviceRoute} from "../../utils/enum";
 import {ClientChatWindow} from "../../components/Moksha";
 import {io, Socket} from "socket.io-client";
-import {SocketEmitters, SocketListeners} from "../../utils/interface";
+import {SocketEmitters, SocketListeners, UserProps} from "../../utils/interface";
 import {BlogList} from "../../features/Blogs/Blogs";
 import {Blog} from "../../features/Blogs/Blog";
 import {getDeviceID, getDeviceInfoUsingCapacitor} from "../../utils/functions";
@@ -21,12 +21,12 @@ export let AuthContext = React.createContext<{
             forceReload?: boolean
         ) => void;
         isUserVerified: boolean;
-        eventSocket: Socket | null,
         setConfession: (V: boolean) => void,
         mokshaSocket: Socket | null,
         isMokshaAvailable: boolean,
         toggleBlogComponent: () => void,
         setShowSubscriptionDialog:(T: boolean) => void,
+        globalSocket:Socket| null
     }
     | undefined
 >(undefined);
@@ -43,11 +43,11 @@ export const AuthContextProvider = ({
     const [showUserForm, setFormVisibility] = useState<boolean>(true);
     const [isUserVerified, setVerifyState] = useState<boolean>(false);
     const [isClient, setConfession] = useState<boolean>(true);
-    const [eventSocket, setEventSocket] = useState<Socket | null>(null);
     const [mokshaSocket, setMokshaSocket] = useState<Socket | null>(null);
     const [isMokshaAvailable, setIsMokshaAvailable] = useState<boolean>(false);
     const [showBlogComponent, setShowBlogComponent] = useState<boolean>(false);
     const [showBlogs, setShowBlogs] = useState(false);
+    const [globalSocket, setGlobalSocket] = useState<Socket | null>(null);
     const [showSubscriptionDialog, setShowSubscriptionDialog] = useState<boolean>(false);
     useEffect(() => {
         let hostname = window.location.hostname;
@@ -100,13 +100,13 @@ export const AuthContextProvider = ({
                     .get()
                     .then((user: any) => {
                         if (user) {
-
+                            connectToGlobalSocket();
                             setVerifyState(user.verifiedEmail);
                             if (user.Type === 'Seeker') {
                                 setConfession(true);
                                 stopload();
                                 updateDeviceInfo();
-                                checkAndShowSubscriptionDialog();
+                                checkSubscriptionStatus(true);
                                 return
                             }
                             if (user.Type === "Pending") {
@@ -151,6 +151,28 @@ export const AuthContextProvider = ({
 
     }
 
+    function connectToGlobalSocket(){
+        _props
+            ._user()
+            .get()
+            .then(function (data: UserProps) {
+                setGlobalSocket(
+                    io(service.event, {
+                        autoConnect: true,
+                        reconnectionAttempts: 1,
+                        auth: {
+                            session: window.localStorage.getItem("session")
+                                ? window.localStorage.getItem("session")
+                                : "",
+                            socketID: data.globalSocketID,
+                        },
+                    })
+                );
+            }).catch(e=>{
+            console.log(e)
+        })
+    }
+
 
     function removeUserSession() {
         _props
@@ -168,15 +190,12 @@ export const AuthContextProvider = ({
         setShowBlogComponent(!showBlogComponent);
     }
 
-    function checkAndShowSubscriptionDialog() {
-      debugger
-        _props._user().get().then(function (data){
+    function checkSubscriptionStatus(showDialog:boolean) {
+        _props._user().get().then(function (user){
            _props._db(service.subscription).query(serviceRoute.paymentReminder, undefined, reqType.get,undefined)
                .then(function ({data}){
-                   if (data.show){
+                   if (data.show && showDialog){
                        setShowSubscriptionDialog(true);
-                   }else{
-                       setShowSubscriptionDialog(false);
                    }
                })
                .catch(e=>{
@@ -194,11 +213,11 @@ export const AuthContextProvider = ({
                 verifyAuthentication,
                 removeUserSession,
                 isUserVerified,
-                eventSocket,
                 setConfession,
                 mokshaSocket,
                 isMokshaAvailable,
                 toggleBlogComponent,
+                globalSocket,
                 setShowSubscriptionDialog,
             }}
         >

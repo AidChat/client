@@ -39,23 +39,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
                 },
             })
         );
-        _props
-            ._user()
-            .get()
-            .then(function (data: UserProps) {
-                setGlobalSocket(
-                    io(service.event, {
-                        autoConnect: true,
-                        reconnectionAttempts: 1,
-                        auth: {
-                            session: window.localStorage.getItem("session")
-                                ? window.localStorage.getItem("session")
-                                : "",
-                            socketID: data.globalSocketID,
-                        },
-                    })
-                );
-            });
+
     }, []);
 
     useEffect(

@@ -35,7 +35,8 @@ export enum SocketListeners {
     REPLY='REPLY',
     PONG='PONG',
     NEWGROUP="activeGroup",
-    JOINREQUEST="joiningRequest"
+    JOINREQUEST="joiningRequest",
+    PAYMENTDONE='paymentDone'
 }
 
 export interface Role {

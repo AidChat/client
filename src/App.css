@@ -34,9 +34,7 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: url("./assets/png/bg.png");
-    background-position: center;
-    background-repeat: repeat;
+    background: url("./assets/png/bg.png") repeat center;
     height: 100vh;
     min-height: max-content;
 }
