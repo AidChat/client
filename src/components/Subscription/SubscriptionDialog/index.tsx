@@ -5,7 +5,7 @@ import {features} from "../../../assets/data";
 import {useContext, useEffect, useState} from "react";
 import {getString} from "../../../utils/strings";
 import {enString} from "../../../utils/strings/en";
-import {useResponsizeClass} from "../../../utils/functions";
+import {getDeviceInfoUsingCapacitor, useResponsizeClass} from "../../../utils/functions";
 import {EwindowSizes} from "../../../utils/enum";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
@@ -13,6 +13,7 @@ import {AuthContext} from "../../../services/context/auth.context";
 import {SocketListeners} from "../../../utils/interface";
 import Snackbar from "../../Utils/Snackbar";
 import {ShellContext} from "../../../services/context/shell.context";
+import {Browser} from "@capacitor/browser";
 
 
 interface SubscriptionDialogProps {
@@ -37,8 +38,15 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
     function handleRedirect() {
         if (!loading)
             _props._user().get().then((response) => {
-                window?.open(URL + '?prefilled_email=' + response.email, '_blank')?.focus();
-                setLoading(true);
+                getDeviceInfoUsingCapacitor().then(function (info) {
+                    const url = URL + '?prefilled_email=' + response.email
+                    setLoading(true);
+                    if (info.platform === 'web') {
+                        window?.open(url, '_blank')?.focus();
+                    } else {
+                        Browser.open({url})
+                    }
+                })
             })
     }
 
