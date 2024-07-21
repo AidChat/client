@@ -21,6 +21,7 @@ dialog[open]::backdrop {
     --font-medium: 16px;
     --font-large: 18px;
     --font-heading:32px;
+    --lightgray:#272727;
 }
 .wrap{
     flex-wrap: wrap;
@@ -35,7 +36,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     background: url("./assets/png/bg.png") repeat center;
-    height: 100vh;
+    height: 100dvh;
     min-height: max-content;
 }
 
@@ -592,11 +593,9 @@ dialog::backdrop {
 
 }
 .p-dialog{
-    background: rgba( 33, 62, 24, 0.05 );
     box-shadow: 0 8px 32px 0 rgb(31, 41, 31);
-    backdrop-filter: blur( 5.5px );
-    -webkit-backdrop-filter: blur( 5.5px );
-    background:#1C1C1C;
+    backdrop-filter: blur(5.5px );
+    background:var(--lightgray);
     border-radius: 10px;
     padding:16px;
 }

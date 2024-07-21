@@ -18,7 +18,7 @@
     margin:auto 0;
 }
 .simage img{
-    border-radius:50px;
+    border-radius:50%;
 }
 .s-btn-container{
     display:flex;

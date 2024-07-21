@@ -5,14 +5,13 @@ import {features} from "../../../assets/data";
 import {useContext, useEffect, useState} from "react";
 import {getString} from "../../../utils/strings";
 import {enString} from "../../../utils/strings/en";
-import {getDeviceInfoUsingCapacitor, useResponsizeClass} from "../../../utils/functions";
+import {getDeviceInfoUsingCapacitor, notify, useResponsizeClass} from "../../../utils/functions";
 import {EwindowSizes} from "../../../utils/enum";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
 import {AuthContext} from "../../../services/context/auth.context";
 import {SocketListeners} from "../../../utils/interface";
 import Snackbar from "../../Utils/Snackbar";
-import {ShellContext} from "../../../services/context/shell.context";
 import {Browser} from "@capacitor/browser";
 
 
@@ -42,10 +41,14 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
                     const url = URL + '?prefilled_email=' + response.email
                     setLoading(true);
                     if (info.platform === 'web') {
-                        window?.open(url, '_blank')?.focus();
-                    } else {
-                        Browser.open({url})
+                        Browser.open({url}).then(r => {
+                            Browser.addListener('browserFinished', function () {
+                                setMessage('Please waite while we confirm the payment.');
+                            })
+                            setLoading(true);
+                        })
                     }
+
                 })
             })
     }
@@ -60,14 +63,17 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
     }, [props.show]);
 
     useEffect(() => {
-        console.log(ac?.globalSocket);
-        ac?.globalSocket?.on(SocketListeners.PAYMENTDONE, function (data: any) {
-            console.log(data)
-            setMessage("Payment successful");
-            setLoading(false);
-            handleClose();
-        })
-    }, []);
+        if (!ac?.globalSocket?.connected) {
+            ac?.connectToGlobalSocket();
+        } else {
+            ac?.globalSocket?.on(SocketListeners.PAYMENTDONE, function (data: any) {
+                notify("Payment successful!");
+                setMessage("Payment successful");
+                setLoading(false);
+                handleClose();
+            })
+        }
+    }, [ac?.globalSocket?.connected]);
 
     return (
         <Dialog

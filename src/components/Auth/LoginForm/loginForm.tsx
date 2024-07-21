@@ -96,7 +96,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                 <motion.div
                     initial={{y: 10}}
                     animate={{y: 0}}
-                    className={"color-green authErrorContainer"}
+                    className={"font-primary font-medium authErrorContainer"}
                     style={{textAlign: "center"}}
                 >
                     {error}

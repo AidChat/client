@@ -22,7 +22,6 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
         Util: boolean;
         Group: boolean;
     }>({Util: !isSmall, Group: true});
-    const [globalSocket, setGlobalSocket] = useState<Socket | null>(null);
     useEffect(() => {
         updateSidePanelState({Util: true, Group: true});
     }, [isSmall]);
@@ -42,14 +41,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
 
     }, []);
 
-    useEffect(
-        function () {
-            globalSocket?.on("clientInfoUpdate", function (data) {
-                new Notification("You have a new client who is seeking for help.", {});
-            });
-        },
-        [globalSocket]
-    );
+
 
     return (
         <ShellContext.Provider
@@ -69,7 +61,6 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
                 _setRefetch,
                 sidePanel,
                 updateSidePanelState: isSmall ? updateSidePanelState : null,
-                globalSocket
             }}
         >
             {children}

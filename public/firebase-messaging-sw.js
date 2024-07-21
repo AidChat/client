@@ -19,7 +19,7 @@ const firebaseConfig = {
 const fb = firebase.initializeApp(firebaseConfig);
 
 const messaging = fb.messaging();
-
+const CACHE_NAME = "aidchat-cache-v1";
 // commented because of a bug due to which the notification is triggering twice
 messaging.onBackgroundMessage(payload => {
   const notificationTitle = "Aidchat";
@@ -28,7 +28,7 @@ messaging.onBackgroundMessage(payload => {
   };
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
-const CACHE_NAME = "aidchat-cache-v1";
+
 
 self.addEventListener("install", event => {
   event.waitUntil(

@@ -6,7 +6,7 @@ import {EwindowSizes, IDBStore, reqType, service, serviceRoute} from "../../util
 import {
     clearDatabaseByName,
     confirm,
-    getDeviceID,
+    getDeviceID, notify,
     queryStoreObjects,
     storeChatsByDeviceID,
     validateAskText,
@@ -41,7 +41,7 @@ export const ClientChatWindow = (props: Props) => {
     const [showInfo, setShowInfo] = useState(true);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [currentUserGroup, setCurrentUserGroup] = useState(null)
-    const [currentUser,setCurrentUser] = useState<UserProps | null>(null)
+    const [currentUser, setCurrentUser] = useState<UserProps | null>(null)
     const ac = useContext(AuthContext);
     const sc = useContext(ShellContext);
     useEffect(() => {
@@ -116,28 +116,38 @@ export const ClientChatWindow = (props: Props) => {
                 setMessage("");
             }
         });
-        _props._user().validateSession().then(function (data) {
-            _props._user().get().then(function (data:UserProps) {
-                setCurrentUser(data)
-                toggleLoginComponent(true);
-                fetchOldRequests();
-                sc?.globalSocket?.on(SocketListeners.JOINREQUEST, function (data: any) {
-                    console.log(data)
-                })
+
+    }, []);
+
+    useEffect(() => {
+        _props._user().get().then(function (data: UserProps) {
+            setCurrentUser(data)
+            toggleLoginComponent(true);
+            fetchOldRequests();
+
+            ac?.globalSocket?.on(SocketListeners.JOINREQUEST, function (data: any) {
+                notify("Someone is looking to help you")
+                setCurrentUserGroup(data);
             })
         })
             .catch(error => {
                 console.error(error)
                 toggleLoginComponent(false);
             })
-    }, []);
+    }, [ac?.globalSocket]);
 
     function fetchOldRequests() {
-        _props._db(service.group).query(serviceRoute.group, undefined, reqType.get, undefined)
+        console.log("Looing for old requests");
+        _props._db(service.group).query(serviceRoute.groupRequests, undefined, reqType.get, undefined)
             .then(function ({data}) {
-                if (data[0]?.Request?.length > 0){setCurrentUserGroup(data);}else{setCurrentUserGroup(null)}
+                console.log("[old]",data)
+                if (data.Request?.length > 0) {
+                    setCurrentUserGroup(data);
+                } else {
+                    setCurrentUserGroup(null)
+                }
             })
-            .catch(e=>{
+            .catch(e => {
                 console.error(e)
             })
 
@@ -169,7 +179,8 @@ export const ClientChatWindow = (props: Props) => {
                                     transition={{speed: 2}}
                                     key={index}
                                     className={"font-primary m4 chat-wrapper"}>
-                                    {text.sender === "User" && <span style={{color: "lightyellow"}}>{currentUser?.Username || 'Pumba'}</span>}
+                                    {text.sender === "User" &&
+                                        <span style={{color: "lightyellow"}}>{currentUser?.Username || 'Pumba'}</span>}
                                     {text.sender === "Model" &&
                                         <span className={"font-secondary font-thick"}>{`${getString(24)} :`}</span>}
                                     <Markdown className={'m0 font-large'}>

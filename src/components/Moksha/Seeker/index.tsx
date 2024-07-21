@@ -7,7 +7,7 @@ import {_props} from "../../../services/network/network";
 import Snackbar from "../../Utils/Snackbar";
 
 export function Seeker(props: { group: any,refetch:()=>void }) {
-    const [groupInfo, setGroupInfo] = useState(props.group[0])
+    const [groupInfo, setGroupInfo] = useState(props.group)
     const [message,setMessage] = useState("");
     function handleGroupUpdate(type: "ACCEPT" | "REJECT") {
         if (type === "REJECT") {
@@ -24,7 +24,7 @@ export function Seeker(props: { group: any,refetch:()=>void }) {
         if (type === "ACCEPT") {
             confirm({
                 header:"Confirmation",
-                message:"We will connect you with" + groupInfo.Request[0].user.Username + ". Once that is done you can continue your chat with them.",
+                message:"We will connect you with" + groupInfo.Request[0].User.Username + ". Once that is done you can continue your chat with them.",
             })
                 .then(function (result){
                     if (result) {
@@ -57,13 +57,13 @@ export function Seeker(props: { group: any,refetch:()=>void }) {
                 <div className={'w80 h100'}>
                     <div className={'dflex flex-row'}>
                         <div className={'simage h100'}>
-                            <img className={'h100 w100'} src={groupInfo.Request[0].user.profileImage}/>
+                            <img className={'h100 w100'} src={groupInfo.Request[0]?.User?.profileImage}/>
                         </div>
                         <div className={'p8'}>Hey, I am <span
-                            className={'font-secondary font-large'}>{groupInfo.Request[0].user.Username}</span>
+                            className={'font-secondary font-large'}>{groupInfo.Request[0].User.Username}</span>
                             <div>I saw you are looking for some help, I can surely make you feel better at the moment.
                             </div>
-                            <div>{groupInfo.Request[0].user.about}</div>
+                            <div>{groupInfo.Request[0].User.about}</div>
                         </div>
                     </div>
                 </div>

@@ -140,7 +140,8 @@ export enum serviceRoute {
     blogArticles = '/CJ130/blog/articles',
     seekers='/CJ130/seekers',
     paymentReminder = "/payment/reminder",
-    subscriptionInfo = "/payment/getSubscriptionInfo"
+    subscriptionInfo = "/payment/getSubscriptionInfo",
+    groupRequests = '/CJ130/groupRequests',
 }
 
 export enum service {

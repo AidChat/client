@@ -25,8 +25,9 @@ export let AuthContext = React.createContext<{
         mokshaSocket: Socket | null,
         isMokshaAvailable: boolean,
         toggleBlogComponent: () => void,
-        setShowSubscriptionDialog:(T: boolean) => void,
-        globalSocket:Socket| null
+        setShowSubscriptionDialog: (T: boolean) => void,
+        globalSocket: Socket | null,
+        connectToGlobalSocket: () => void
     }
     | undefined
 >(undefined);
@@ -68,7 +69,7 @@ export const AuthContextProvider = ({
             setIsMokshaAvailable(true)
         })
         setMokshaSocket(newSocket);
-         }, []);
+    }, []);
     useEffect(() => {
         if (requestCode) {
             setAuth(false);
@@ -79,6 +80,17 @@ export const AuthContextProvider = ({
 
     function changeConfession() {
         setConfession(!isClient);
+    }
+
+    function authenticateBotSocket() {
+        let newSocket = io(service.bot, {
+            autoConnect: true,
+            reconnectionAttempts: 10,
+            auth: {
+                session: window.localStorage.getItem("session")
+            }
+        });
+        setMokshaSocket(newSocket);
     }
 
     function stopload() {
@@ -102,11 +114,13 @@ export const AuthContextProvider = ({
                         if (user) {
                             connectToGlobalSocket();
                             setVerifyState(user.verifiedEmail);
+                            authenticateBotSocket();
                             if (user.Type === 'Seeker') {
                                 setConfession(true);
                                 stopload();
                                 updateDeviceInfo();
                                 checkSubscriptionStatus(true);
+
                                 return
                             }
                             if (user.Type === "Pending") {
@@ -151,7 +165,7 @@ export const AuthContextProvider = ({
 
     }
 
-    function connectToGlobalSocket(){
+    function connectToGlobalSocket() {
         _props
             ._user()
             .get()
@@ -159,7 +173,7 @@ export const AuthContextProvider = ({
                 setGlobalSocket(
                     io(service.event, {
                         autoConnect: true,
-                        reconnectionAttempts: 1,
+                        reconnectionAttempts: 10,
                         auth: {
                             session: window.localStorage.getItem("session")
                                 ? window.localStorage.getItem("session")
@@ -168,10 +182,19 @@ export const AuthContextProvider = ({
                         },
                     })
                 );
-            }).catch(e=>{
+            }).catch(e => {
             console.log(e)
         })
     }
+
+    useEffect(
+        function () {
+            globalSocket?.on("clientInfoUpdate", function (data) {
+                new Notification("You have a new client who is seeking for help.", {});
+            });
+        },
+        [globalSocket]
+    );
 
 
     function removeUserSession() {
@@ -190,20 +213,20 @@ export const AuthContextProvider = ({
         setShowBlogComponent(!showBlogComponent);
     }
 
-    function checkSubscriptionStatus(showDialog:boolean) {
-        _props._user().get().then(function (user){
-           _props._db(service.subscription).query(serviceRoute.paymentReminder, undefined, reqType.get,undefined)
-               .then(function ({data}){
-                   if (data.show && showDialog){
-                       setShowSubscriptionDialog(true);
-                   }
-               })
-               .catch(e=>{
-                   console.log(e)
-               })
-       }).catch(e=>{
-           console.log(e);
-       })
+    function checkSubscriptionStatus(showDialog: boolean) {
+        _props._user().get().then(function (user) {
+            _props._db(service.subscription).query(serviceRoute.paymentReminder, undefined, reqType.get, undefined)
+                .then(function ({data}) {
+                    if (data.show && showDialog) {
+                        setShowSubscriptionDialog(true);
+                    }
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        }).catch(e => {
+            console.log(e);
+        })
     }
 
     return (
@@ -219,6 +242,7 @@ export const AuthContextProvider = ({
                 toggleBlogComponent,
                 globalSocket,
                 setShowSubscriptionDialog,
+                connectToGlobalSocket
             }}
         >
             {!loading ? (

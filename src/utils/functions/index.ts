@@ -78,7 +78,7 @@ export function useResponsizeClass(size: EwindowSizes, classArr: string[]): stri
 }
 
 export async function getDeviceInfoUsingCapacitor() {
-    const info:DeviceInfo = await Device.getInfo();
+    const info: DeviceInfo = await Device.getInfo();
     return info
 }
 
@@ -121,7 +121,10 @@ export const hideStatusBar = async () => {
 };
 
 
-export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }):Promise<boolean> => {
+export const confirm = async ({message, header = 'Confirmation'}: {
+    message: string,
+    header?: string
+}): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         getDeviceInfoUsingCapacitor().then(async (capacitor) => {
             if (capacitor.platform === 'web') {
@@ -134,8 +137,8 @@ export const confirm = async ({message, header = 'Confirmation'}: { message: str
                     reject: function () {
                         resolve(false);
                     },
-                    resizable:false,
-                    draggable:false,
+                    resizable: false,
+                    draggable: false,
                 });
             } else {
                 const {value} = await Dialog.confirm({
@@ -300,12 +303,11 @@ export function clearDatabaseByName(dbName: IDBStoreName) {
     })
 }
 
-export function vibrateDevice(){
-    return getDeviceInfoUsingCapacitor().then(async function (info){
-        if (info.platform !== 'web'){
-          await  Haptics.impact({ style: ImpactStyle.Light });
-        }
-    })
+export async function vibrateDevice() {
+    const info = await getDeviceInfoUsingCapacitor();
+    if (info.platform !== 'web') {
+        await Haptics.impact({style: ImpactStyle.Light});
+    }
 }
 
 export function timeAgo(date: string | number | Date): string {
@@ -330,4 +332,13 @@ export function timeAgo(date: string | number | Date): string {
     }
 
     return 'just now';
+}
+
+export async function notify(message: string) {
+    const info = await getDeviceInfoUsingCapacitor();
+    if (info.platform === 'web') {
+        new Notification(message);
+    } else {
+
+    }
 }
