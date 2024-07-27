@@ -6,9 +6,10 @@ import {EwindowSizes, IDBStore, reqType, service, serviceRoute} from "../../util
 import {
     clearDatabaseByName,
     confirm,
-    getDeviceID, notify,
+    getDeviceID,
+    notify,
     queryStoreObjects,
-    storeChatsByDeviceID,
+    storeChatsByDeviceID, timeAgo,
     validateAskText,
     vibrateDevice,
 } from "../../utils/functions";
@@ -19,14 +20,15 @@ import {getString} from "../../utils/strings";
 import {Message, SocketEmitters, SocketListeners, UserProps} from "../../utils/interface";
 import {MdDeleteOutline} from "react-icons/md";
 import {MokshaIcon} from "./Icon";
-import {AuthContext} from "../../services/context/auth.context";
+import {AppContext} from "../../services/context/app.context";
 import {ConfirmDialog} from "primereact/confirmdialog";
 import Markdown from "react-markdown";
 import {_props} from "../../services/network/network";
 import {useWindowSize} from "../../services/hooks/appHooks";
 import {ProfileIconComponent} from "../ProfileDialog";
 import {Seeker} from "./Seeker";
-import {ShellContext} from "../../services/context/shell.context";
+import {Socket} from "socket.io-client";
+
 
 interface Props {
     click: () => void;
@@ -40,10 +42,14 @@ export const ClientChatWindow = (props: Props) => {
     const [showLoginComponent, toggleLoginComponent] = useState(false);
     const [showInfo, setShowInfo] = useState(true);
     const [showInfoBox, setShowInfoBox] = useState(false);
-    const [currentUserGroup, setCurrentUserGroup] = useState(null)
-    const [currentUser, setCurrentUser] = useState<UserProps | null>(null)
-    const ac = useContext(AuthContext);
-    const sc = useContext(ShellContext);
+    const [currentUserGroup, setCurrentUserGroup] = useState(null);
+    const [currentUser, setCurrentUser] = useState<UserProps | null>(null);
+    const ac = useContext(AppContext);
+    const [aiderAssigned, setAiderAssigned] = useState<boolean>(false);
+    const [socket, setSocket] = useState<Socket | null | undefined>(ac?.mokshaSocket);
+    const [groupId, setGroupId] = useState<string>("");
+    const [aider, setAider] = useState<any>(null);
+    const [listenerAvailable, setListenerAvailable] = useState<boolean>(false);
     useEffect(() => {
         window.setTimeout(function () {
             setShowInfo(false);
@@ -75,6 +81,13 @@ export const ClientChatWindow = (props: Props) => {
         setMessage(m);
     }
 
+    function renderChatOrder(data: any) {
+        console.log(data);
+        setConversation(data.chats);
+
+    }
+
+
     function addConversationMessages(payload: Message) {
         setConversation(prevConversation => [...prevConversation, payload]);
     }
@@ -87,21 +100,27 @@ export const ClientChatWindow = (props: Props) => {
 
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
-            let device = await getDeviceID();
-            let payload = {
-                deviceId: device.identifier,
-                message: message,
-            };
-            ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
-            addConversationMessages({sender: "User", message: message});
-            setMessage("");
-            scrollToBottom(scrollableDivRef);
+            if (aiderAssigned) {
+                socket?.emit(SocketEmitters._MESSAGE, {text: message, groupId, images: []});
+                setMessage('')
+            } else {
+                let device = await getDeviceID();
+                let payload = {
+                    deviceId: device.identifier,
+                    message: message,
+                };
+                ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
+                addConversationMessages({sender: "User", message: message,created_at: new Date()});
+                setMessage("");
+                scrollToBottom(scrollableDivRef);
+            }
+
         }
     }
 
     function handleSocketListener(e: any) {
         vibrateDevice().then(function () {
-            addConversationMessages({sender: "Model", message: e.message});
+            addConversationMessages({sender: "Model", message: e.message,created_at:new Date()});
         })
     }
 
@@ -112,7 +131,7 @@ export const ClientChatWindow = (props: Props) => {
         // startLogger({interval: 30000});
         queryStoreObjects(IDBStore.chat).then(function (data: any) {
             if (data && data[0]?.chats) {
-                setConversation(data[0]?.chats);
+                renderChatOrder(data[0]);
                 setMessage("");
             }
         });
@@ -137,14 +156,21 @@ export const ClientChatWindow = (props: Props) => {
     }, [ac?.globalSocket]);
 
     function fetchOldRequests() {
-        console.log("Looing for old requests");
         _props._db(service.group).query(serviceRoute.groupRequests, undefined, reqType.get, undefined)
             .then(function ({data}) {
-                console.log("[old]",data)
-                if (data.Request?.length > 0) {
-                    setCurrentUserGroup(data);
+                if (isAiderAssigned(data)) {
+                    console.log("Aider has been assigned");
+                    console.log('%c-------- Connecting to aider now----------', 'color: green;')
+                    setGroupId(data.id);
+                    setAiderAssigned(true);
+                    setSocket(prevState => ac?.chatSocket);
+
                 } else {
-                    setCurrentUserGroup(null)
+                    if (data.Request?.length > 0) {
+                        setCurrentUserGroup(data);
+                    } else {
+                        setCurrentUserGroup(null)
+                    }
                 }
             })
             .catch(e => {
@@ -153,11 +179,47 @@ export const ClientChatWindow = (props: Props) => {
 
     }
 
+    useEffect(() => {
+        socket?.connect();
+        if (aiderAssigned && groupId) {
+            socket?.emit(SocketEmitters._JOIN, {groupId});
+        }
+        socket?.on(SocketListeners.USERONLINE, (data: { user: number }) => {
+            console.log('%c-------- Aider is online----------', 'color: green;');
+            setListenerAvailable(true);
+        });
+        ac?.chatSocket?.on(
+            SocketListeners.MESSAGE,
+            async (data: { senderId: any; id: any }) => {
+                console.log(data)
+            });
+
+        ac?.chatSocket?.on(
+            SocketListeners.MESSAGE,
+            async (data: {senderId: any; id: any}) => {
+                console.log('new message',data)
+            })
+
+    }, [socket, groupId]);
+
+    function isAiderAssigned(data: any): boolean {
+        let assigned = false;
+        data?.User?.forEach((user: UserProps) => {
+            if (user.Type === 'Helper') {
+                setAider(user);
+                assigned = true
+            }
+
+        })
+        return assigned;
+    }
+
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {
         if (ref.current) {
             ref.current.scrollTop = ref.current.scrollHeight;
         }
     }
+
 
     let {size: isSmall} = useWindowSize(EwindowSizes.S);
 
@@ -180,9 +242,9 @@ export const ClientChatWindow = (props: Props) => {
                                     key={index}
                                     className={"font-primary m4 chat-wrapper"}>
                                     {text.sender === "User" &&
-                                        <span style={{color: "lightyellow"}}>{currentUser?.Username || 'Pumba'}</span>}
+                                        <span style={{color: "lightyellow"}}>{}</span>}
                                     {text.sender === "Model" &&
-                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`}</span>}
+                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`} <span className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span></span>}
                                     <Markdown className={'m0 font-large'}>
                                         {text.message}
                                     </Markdown>
@@ -198,8 +260,11 @@ export const ClientChatWindow = (props: Props) => {
                                                    header: "Confirmation",
                                                });
                                            }}> Report</span>
+
                                         </div>
+
                                     )}
+
 
                                 </motion.div>
                                 <div className={"dotted-border"}></div>
@@ -237,11 +302,13 @@ export const ClientChatWindow = (props: Props) => {
                         disabled={false}
                         icon={message.split('').length > 0 ? <PiPaperPlaneTiltFill size={22} color={"#398378"}/> :
                             <MokshaIcon
-                                online={!!ac?.isMokshaAvailable}
+                                online={!!ac?.isMokshaAvailable || listenerAvailable}
                                 size={"small"}
                                 bottom={true}
                                 right={true}
                                 showInfo={showInfo}
+                                image={aider ? aider.profileImage : undefined}
+                                aider={aider ? aider.Username : undefined}
                             />}
                         type={"text"}
                         onChange={e => handleSocketMessageUpdate(e.target.value)}

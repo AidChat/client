@@ -26,6 +26,7 @@ import {
 } from "../../../utils/enum";
 import {ChatContainer} from "./ChatContainer";
 import {FaLayerGroup} from "react-icons/fa6";
+import {AppContext} from "../../../services/context/app.context";
 
 export function Chat() {
   const [messages, _messages] = useState<any[]>([]);
@@ -40,8 +41,9 @@ export function Chat() {
       ActivityStatus: {id: number; status: string; date: Date};
     }[];
   } | null>(null);
-  const {groupId, socket, _socketId, socketId, requestId, selectedGroupType} =
+  const {groupId, requestId, selectedGroupType} =
     useContext(ShellContext);
+  const ac = useContext(AppContext);
   const [loading, _loading] = useState<boolean>(false);
   const [activity, _activity] = useState<string>("");
   const [params, _params] = useState<{start: Date; limit: number}>({
@@ -64,14 +66,14 @@ export function Chat() {
       handleCurrentGroup();
     }
     return () => {
-      socket?.off(SocketListeners.MESSAGE);
-      socket?.off(SocketListeners.TYPING);
+      ac?.chatSocket?.off(SocketListeners.MESSAGE);
+      ac?.chatSocket?.off(SocketListeners.TYPING);
       _messages([]);
     };
   }, [groupId]);
 
   function handleSubmit(text: string,images?:string[] | null) {
-    socket?.emit(SocketEmitters._MESSAGE, {text: text, groupId,images});
+    ac?.chatSocket?.emit(SocketEmitters._MESSAGE, {text: text, groupId,images});
   }
 
 
@@ -110,7 +112,7 @@ export function Chat() {
           document.title = result.data.name;
           _loading(false);
           _group(result.data);
-          socket?.emit(SocketEmitters._JOIN, {groupId});
+          ac?.chatSocket?.emit(SocketEmitters._JOIN, {groupId});
         }
       });
 
@@ -127,12 +129,12 @@ export function Chat() {
         }
       });
 
-    socket.on(SocketListeners.USERONLINE, (data: {user: number}) => {
+    ac?.chatSocket?.on(SocketListeners.USERONLINE, (data: {user: number}) => {
       const users = onliners.filter(item => item !== data.user);
       setOnliners([...users, data.user]);
     });
 
-    socket.on(
+    ac?.chatSocket?.on(
       SocketListeners.MESSAGE,
       async (data: {senderId: any; id: any}) => {
         console.log(data)
@@ -146,7 +148,7 @@ export function Chat() {
           prevMessage === null ? [data] : [...prevMessage, data]
         );
         setTimeout(() => {
-          socket.emit(SocketEmitters._READMESSAGE, {
+          ac?.chatSocket?.emit(SocketEmitters._READMESSAGE, {
             messageId: data.id,
             userId: user.id,
           });
@@ -154,7 +156,7 @@ export function Chat() {
       }
     );
 
-    socket?.on(SocketListeners.TYPING, async ({name}: {name: string}) => {
+    ac?.chatSocket?.on(SocketListeners.TYPING, async ({name}: {name: string}) => {
       const user: UserProps = await _props._user().get();
       if (user && group) {
         const username = group.User.filter(item => item.email === name)

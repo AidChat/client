@@ -310,9 +310,9 @@ export async function vibrateDevice() {
     }
 }
 
-export function timeAgo(date: string | number | Date): string {
+export function timeAgo(date: Date | undefined): string {
     const now = new Date();
-    const seconds = Math.floor((now.getTime() - new Date(date).getTime()) / 1000);
+    const seconds = Math.floor((now.getTime() - new Date(date || new Date()).getTime()) / 1000);
 
     const intervals: { [key: string]: number } = {
         year: 31536000,

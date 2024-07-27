@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {_debounce} from "../../utils/functions";
 import {EwindowSizes, windowSize} from "../../utils/enum";
-import {AuthContext} from "../context/auth.context";
+import {AppContext} from "../context/app.context";
 import {log} from "console";
 import {useLocation} from "react-router-dom";
 
@@ -39,7 +39,7 @@ export const useWindowSize = (size?: windowSize) => {
 };
 
 export const useCheckUserVerification = () => {
-  const data = useContext(AuthContext);
+  const data = useContext(AppContext);
 
   return data?.isUserVerified;
 };

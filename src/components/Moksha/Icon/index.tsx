@@ -1,18 +1,23 @@
 import moksha from './../../../assets/png/moksha.png'
-import {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../../services/context/auth.context";
+import {useContext, useEffect, useRef, useState} from "react";
+import {AppContext} from "../../../services/context/app.context";
 import {motion} from 'framer-motion';
+import {confirmPopup} from "primereact/confirmpopup";
 
-export function MokshaIcon({top, bottom, left, right, size, online, customstyle, showInfo}: {
+
+export function MokshaIcon({top, bottom, left, right, size, online,image, customstyle, showInfo,aider}: {
     top?: boolean,
     bottom?: boolean,
     right?: boolean,
     left?: boolean,
     size: 'small' | 'medium' | 'large',
     online: boolean,
-    customstyle?: {}, showInfo?: boolean
+    image?:string,
+    customstyle?: {}, showInfo?: boolean,
+    aider?:string
 }) {
-    const authContent = useContext(AuthContext)
+    const authContent = useContext(AppContext);
+    const ref = useRef<HTMLDivElement>(null);
     function handleClick() {
         if (authContent) {
             authContent.setConfession(true)
@@ -47,9 +52,26 @@ export function MokshaIcon({top, bottom, left, right, size, online, customstyle,
         return style
     }
 
+    const handleOptions =(element:any)=>{
+        confirmPopup({
+            target:element.currentTarget,
+            message: "Do you wish to switch your helper?",
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel:'Switch Helper',
+            rejectLabel:'Switch to Moksha',
+            accept: function (){
+
+            },
+            reject: function (){
+
+            }
+        });
+    }
+
+
     return (
         <div className={`moksha-icon glow-border ${online ? 'glow-border-online' : 'glow-border-offline'}`}
-             style={renderStyle()}>
+             style={renderStyle()}  ref={ref}>
             {showInfo &&
                 <motion.div
                     className="info-container"
@@ -57,9 +79,9 @@ export function MokshaIcon({top, bottom, left, right, size, online, customstyle,
                     animate={{opacity: 0}}
                     transition={{duration: 2, delay: 2}}
                 >
-                    Moksha is {online ? 'online' : 'offline'}
+                    {aider? aider : 'Moksha'} is {online ? 'online' : 'offline'}
                 </motion.div>}
-            <img onClick={() => handleClick()} height={'100%'} width={'100%'} src={moksha} alt={'Moksha.ai'}/>
+            <img onClick={handleOptions}  height={'100%'} width={'100%'} style={{borderRadius:'50%'}} src={image? image :moksha} alt={'Moksha.ai'}/>
 
         </div>
     )

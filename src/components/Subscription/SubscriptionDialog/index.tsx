@@ -9,7 +9,7 @@ import {getDeviceInfoUsingCapacitor, notify, useResponsizeClass} from "../../../
 import {EwindowSizes} from "../../../utils/enum";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
-import {AuthContext} from "../../../services/context/auth.context";
+import {AppContext} from "../../../services/context/app.context";
 import {SocketListeners} from "../../../utils/interface";
 import Snackbar from "../../Utils/Snackbar";
 import {Browser} from "@capacitor/browser";
@@ -31,7 +31,7 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
         props.onClose();
     }
 
-    const ac = useContext(AuthContext);
+    const ac = useContext(AppContext);
     const URL = process.env.REACT_APP_STRIPE_URL;
 
     function handleRedirect() {

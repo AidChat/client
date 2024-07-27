@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {ShellContext} from "../../services/context/shell.context";
-import {AuthContext} from "../../services/context/auth.context";
+import {AppContext} from "../../services/context/app.context";
 import {useNetworkConnectivity, useWindowSize} from "../../services/hooks/appHooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../utils/enum";
 import {_props} from "../../services/network/network";
@@ -26,7 +26,7 @@ export function ProfileIconComponent(props: { full: boolean }) {
     } | null>(null);
     const [isClient, setClient] = useState<boolean>(false);
     const sc = useContext(ShellContext);
-    const auth = useContext(AuthContext);
+    const auth = useContext(AppContext);
     const [showUserForm, setShowUserForm] = useState<boolean>(false);
     const {size: small} = useWindowSize(EwindowSizes.S);
     useEffect(() => {
@@ -220,7 +220,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
     });
     const [paid, setPaid] = useState(undefined);
     const [showOtpContainer, setOtpContainerState] = useState(false);
-    const ac = useContext(AuthContext);
+    const ac = useContext(AppContext);
     useEffect(() => {
         fetchUser();
     }, []);

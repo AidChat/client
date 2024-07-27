@@ -10,7 +10,7 @@ import {motion} from 'framer-motion'
 import {EwindowSizes} from "../../utils/enum";
 import {OTPForm} from "./OneTimePasscode";
 import {MokshaIcon} from "../Moksha/Icon";
-import {AuthContext} from "../../services/context/auth.context";
+import {AppContext} from "../../services/context/app.context";
 
 export function AuthenticationContainer() {
     const {requestCode} = useParams();
@@ -21,7 +21,7 @@ export function AuthenticationContainer() {
         invite: !!requestCode,
         code: false,
     });
-    let ac = useContext(AuthContext);
+    let ac = useContext(AppContext);
 
     useEffect(() => {
         setState({

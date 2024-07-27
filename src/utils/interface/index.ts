@@ -104,6 +104,7 @@ export type IDBStoreName  = 'BLOG'| 'AICHAT';
 export interface Message {
     sender: 'User' | 'Model';
     message: string;
+    created_at?: Date;
 }
 
 export interface IBlogShortContent {

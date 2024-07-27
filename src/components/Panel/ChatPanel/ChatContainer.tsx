@@ -29,6 +29,7 @@ import {RecipientReadStatus} from "./RecipientReadStatus";
 import {MultiImageUpload} from "../../Utils/MulltiImageUpload";
 import PredefinedMessages from "../../Agreement";
 import {startLogger} from "aidchat-hawkeye";
+import {AppContext} from "../../../services/context/app.context";
 
 export function ChatContainer({
   messages,
@@ -55,7 +56,7 @@ export function ChatContainer({
   }>({
     messages: [],
   });
-  const {socket} = useContext(ShellContext);
+  const ac = useContext(AppContext);
   const [message, _message] = useState("");
   const [typing, _typing] = useState<boolean>(false);
   const [options, showOptions] = useState<boolean>(false);
@@ -89,7 +90,7 @@ export function ChatContainer({
     _message(e.target.value);
     if (!typing) {
       _typing(true);
-      socket.emit(SocketEmitters._TYPING);
+      ac?.chatSocket?.emit(SocketEmitters._TYPING);
     }
   }
 
@@ -139,7 +140,7 @@ export function ChatContainer({
     if (containerRef.current && !isScrolling) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-    socket.on(SocketListeners.USEROFFLINE, (data: {user: number}) => {
+    ac?.chatSocket?.on(SocketListeners.USEROFFLINE, (data: {user: number}) => {
       setRecentOffline(prevState => [...prevState, data.user]);
       setOnliners(data.user);
       window.setTimeout(() => {
@@ -194,7 +195,6 @@ export function ChatContainer({
     images = images.slice(7);
     images = images.split(",").map((item: any) => item.trim());
     return images.map((image: string | undefined, index: number) => {
-      // eslint-disable-next-line jsx-a11y/img-redundant-alt
       if (image !== "")
         return (
           <img

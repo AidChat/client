@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FormEvent, useContext, useEffect, useState,} from "react";
-import {AuthContext} from "../../../services/context/auth.context";
+import {AppContext} from "../../../services/context/app.context";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
 import {useParams} from "react-router-dom";
@@ -18,7 +18,7 @@ interface LoginFromProps {
 }
 
 export function LoginForm({toggleState, email}: LoginFromProps) {
-    let context = useContext(AuthContext);
+    let context = useContext(AppContext);
     const {requestCode} = useParams();
     const [userdata, setUserData] = useState<{
         email: any;

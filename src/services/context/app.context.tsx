@@ -12,8 +12,9 @@ import {BlogList} from "../../features/Blogs/Blogs";
 import {Blog} from "../../features/Blogs/Blog";
 import {getDeviceID, getDeviceInfoUsingCapacitor} from "../../utils/functions";
 import {SubscriptionDialog} from "../../components/Subscription/SubscriptionDialog";
+import {ConfirmPopup} from "primereact/confirmpopup";
 
-export let AuthContext = React.createContext<{
+export let AppContext = React.createContext<{
         isAuthenticated?: boolean;
         removeUserSession: () => void;
         verifyAuthentication: (
@@ -27,7 +28,8 @@ export let AuthContext = React.createContext<{
         toggleBlogComponent: () => void,
         setShowSubscriptionDialog: (T: boolean) => void,
         globalSocket: Socket | null,
-        connectToGlobalSocket: () => void
+        connectToGlobalSocket: () => void,
+        chatSocket: Socket | null,
     }
     | undefined
 >(undefined);
@@ -50,6 +52,7 @@ export const AuthContextProvider = ({
     const [showBlogs, setShowBlogs] = useState(false);
     const [globalSocket, setGlobalSocket] = useState<Socket | null>(null);
     const [showSubscriptionDialog, setShowSubscriptionDialog] = useState<boolean>(false);
+    const [chatSocket, setChatSocket] = useState<Socket | null>(null);
     useEffect(() => {
         let hostname = window.location.hostname;
         const link = hostname.split('.')[0];
@@ -69,6 +72,7 @@ export const AuthContextProvider = ({
             setIsMokshaAvailable(true)
         })
         setMokshaSocket(newSocket);
+        connectToChatSocket();
     }, []);
     useEffect(() => {
         if (requestCode) {
@@ -93,6 +97,20 @@ export const AuthContextProvider = ({
         setMokshaSocket(newSocket);
     }
 
+    function connectToChatSocket() {
+        setChatSocket(
+            io(service.messaging, {
+                autoConnect: true,
+                reconnectionAttempts: 1,
+                auth: {
+                    session: window.localStorage.getItem("session")
+                        ? window.localStorage.getItem("session")
+                        : "",
+                },
+            })
+        );
+    }
+
     function stopload() {
         setLoad(false);
     }
@@ -112,6 +130,7 @@ export const AuthContextProvider = ({
                     .get()
                     .then((user: any) => {
                         if (user) {
+                            connectToChatSocket()
                             connectToGlobalSocket();
                             setVerifyState(user.verifiedEmail);
                             authenticateBotSocket();
@@ -230,7 +249,7 @@ export const AuthContextProvider = ({
     }
 
     return (
-        <AuthContext.Provider
+        <AppContext.Provider
             value={{
                 isAuthenticated,
                 verifyAuthentication,
@@ -242,7 +261,8 @@ export const AuthContextProvider = ({
                 toggleBlogComponent,
                 globalSocket,
                 setShowSubscriptionDialog,
-                connectToGlobalSocket
+                connectToGlobalSocket,
+                chatSocket
             }}
         >
             {!loading ? (
@@ -255,6 +275,7 @@ export const AuthContextProvider = ({
                 ) : (
                     isClient ?
                         !showBlogs ? <><ClientChatWindow click={() => changeConfession()}/>
+                            <ConfirmPopup />
                             <SubscriptionDialog show={showSubscriptionDialog} onClose={() => {
                                 setShowSubscriptionDialog(false)
                             }}/>
@@ -264,6 +285,6 @@ export const AuthContextProvider = ({
             ) : (
                 <Spinner/>
             )}
-        </AuthContext.Provider>
+        </AppContext.Provider>
     );
 };

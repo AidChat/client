@@ -26,20 +26,7 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
         updateSidePanelState({Util: true, Group: true});
     }, [isSmall]);
 
-    useEffect(() => {
-        setMessageSocket(
-            io(service.messaging, {
-                autoConnect: true,
-                reconnectionAttempts: 1,
-                auth: {
-                    session: window.localStorage.getItem("session")
-                        ? window.localStorage.getItem("session")
-                        : "",
-                },
-            })
-        );
 
-    }, []);
 
 
 
