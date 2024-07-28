@@ -53,20 +53,24 @@ export function MokshaIcon({top, bottom, left, right, size, online,image, custom
     }
 
     const handleOptions =(element:any)=>{
-        confirmPopup({
-            target:element.currentTarget,
-            message: "Do you wish to switch your helper?",
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel:'Switch Helper',
-            rejectLabel:'Switch to Moksha',
-            accept: function (){
+        if(aider) {
+            confirmPopup({
+                target: element.currentTarget,
+                message: "Do you wish to switch your helper?",
+                icon: 'pi pi-exclamation-triangle',
+                acceptLabel: 'Switch Helper',
+                rejectLabel: 'Switch to Moksha',
+                accept: function () {
 
-            },
-            reject: function (){
+                },
+                reject: function () {
 
-            }
-        });
-    }
+                }
+            });
+        }else{
+            handleClick();
+        }
+        }
 
 
     return (

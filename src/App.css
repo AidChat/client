@@ -146,7 +146,7 @@ div {
 }
 
 .btn {
-    height: 2rem;
+    height: 2em;
     width: fit-content;
     border-radius: 4px;
     display: flex;
@@ -156,6 +156,7 @@ div {
     border: none;
     padding: 2px 8px;
     transition: all 0.5s;
+    font-size: var(--font-medium);
 }
 
 .btn-primary {
@@ -565,7 +566,6 @@ dialog::backdrop {
 .p-confirm-dialog{
     background: whitesmoke;
     padding:10px;
-    border-radius: 4px;
     z-index:99999999999999 !important;
 }
 .p-confirm-dialog .p-dialog-header{
@@ -590,7 +590,7 @@ dialog::backdrop {
 .p-dialog-header{
     padding:14px;
     background: var(--lightdark);
-    border-radius: 10px;
+    border-radius: 2px;
 
 }
 .p-dialog{

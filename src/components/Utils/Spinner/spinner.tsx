@@ -1,7 +1,10 @@
 import React from 'react';
 import './index.css'
-export function Spinner(){
+
+export function Spinner() {
     return (
-        <span className={'loader'}></span>
+        <div className="loader-wrapper">
+            <span className={'loader'}></span>
+        </div>
     )
 }

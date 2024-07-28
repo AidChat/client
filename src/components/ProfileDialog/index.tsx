@@ -385,12 +385,12 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label>Username</label>
+                <label className={'font-medium'} >Username</label>
                 <input
                     className={"custom-input borderRadius-light"}
                     value={user.Username}
                 />
-                <label>Name</label>
+                <label className={'font-medium'}>Name</label>
                 <input
                     className={"custom-input borderRadius-light"}
                     value={user.name}
@@ -406,7 +406,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label className={"dflex"} style={{alignItems: "center"}}>
+                <label className={"dflex font-medium"} style={{alignItems: "center"}}>
                     Email{" "}
                     {user.verifiedEmail ? (
                         <MdVerified style={{margin: "0 5px"}} color={"lightblue"}/>
@@ -443,7 +443,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label>
+                <label className={'font-medium'}>
                     Mobile <MdVerified style={{margin: "0 5px"}}/>
                 </label>
                 <input
@@ -461,7 +461,7 @@ function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialo
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label>About me</label>
+                <label className={'font-medium'}>Something about me.</label>
                 <textarea
                     className={"custom-input borderRadius-light h100"}
                     onChange={e => {
