@@ -105,6 +105,7 @@ export interface Message {
     sender: 'User' | 'Model';
     message: string;
     created_at?: Date;
+    id?:string | number;
 }
 
 export interface IBlogShortContent {

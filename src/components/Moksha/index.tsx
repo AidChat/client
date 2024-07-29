@@ -82,9 +82,7 @@ export const ClientChatWindow = (props: Props) => {
     }
 
     function renderChatOrder(data: any) {
-        console.log(data);
         setConversation(data.chats);
-
     }
 
 
@@ -93,11 +91,8 @@ export const ClientChatWindow = (props: Props) => {
     }
 
     useEffect(() => {
-        if (conversation.length > 1) {
-            storeChatsByDeviceID(conversation);
-        }
+        storeChatsByDeviceID(conversation);
     }, [conversation]);
-
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
             if (aiderAssigned) {
@@ -245,7 +240,7 @@ export const ClientChatWindow = (props: Props) => {
                                         <span style={{color: "lightyellow"}}>{}</span>}
                                     {text.sender === "Model" &&
                                         <span className={"font-secondary font-thick"}>{`${getString(24)} :`} <span className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span></span>}
-                                    <Markdown className={'m0 font-large'}>
+                                    <Markdown className={`m0 font-large ${text.sender === 'User' && ' text-right font-secondary '}`} >
                                         {text.message}
                                     </Markdown>
                                     {text.sender === "Model" && (

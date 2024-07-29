@@ -184,15 +184,18 @@ export const storeCurrentContent = (store: IDBStoreName, content: string) => {
 }
 export const storeChatsByDeviceID = (chats: Message[]) => {
     let store: IDBStoreName = IDBStore.chat;
-    getDeviceID().then((deviceID: DeviceId) => {
-        if (deviceID) {
+    getDeviceID().then((device: {identifier:string}) => {
+        if (device) {
+            chats.forEach(chat => {
+                chat.id = device.identifier
+            })
             let data = {
                 chats: chats,
                 store: store,
-                id: deviceID.identifier,
+                id: device.identifier,
                 createdAt: new Date(),
             }
-            return storeObjects(data);
+            storeObjects(data);
         }
     })
 
@@ -230,7 +233,7 @@ function storeObjects(object: {
         openDatabase(object.store).then((db: any) => {
             const transaction = db.transaction([object.store.toString()], 'readwrite');
             const objectStore = transaction.objectStore(object.store);
-            object.id = 1;
+            object.id = object.id || 1;
             const request = objectStore.put(object);
             request.onsuccess = () => {
                 resolve(true);
