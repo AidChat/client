@@ -5,8 +5,8 @@ import {ShellContext} from "../../../../services/context/shell.context";
 import {formatDateToDDMMYYYY} from "../../../../utils/functions";
 import {PiHandHeartFill} from "react-icons/pi";
 import {motion} from "framer-motion";
-import {useWindowSize} from "../../../../services/hooks/appHooks";
-import {EwindowSizes} from "../../../../utils/enum";
+import {useRecordUpdateListener, useWindowSize} from "../../../../services/hooks";
+import {EwindowSizes, RecordUpdateModels} from "../../../../utils/enum";
 
 export interface GroupListInterface {
   GroupDetail: {

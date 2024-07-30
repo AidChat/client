@@ -1,5 +1,5 @@
 import {Panel} from "../../components/Panel";
-import {useWindowSize} from "../../services/hooks/appHooks";
+import {useWindowSize} from "../../services/hooks";
 import "./main.page.css";
 import {EwindowSizes} from "../../utils/enum";
 import {ShellContextProvider} from "../../services/context/shell.context";

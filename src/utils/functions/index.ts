@@ -1,4 +1,4 @@
-import {useWindowSize} from "../../services/hooks/appHooks";
+import {useWindowSize} from "../../services/hooks";
 import {EwindowSizes, IDBStore} from "../enum";
 import {Device, DeviceId, DeviceInfo} from "@capacitor/device";
 import {getToken} from "firebase/messaging";

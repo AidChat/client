@@ -191,3 +191,7 @@ export interface Article {
     status: EArticleStatus,
     id?: number
 }
+
+export enum RecordUpdateModels{
+    group = 'Group',
+}

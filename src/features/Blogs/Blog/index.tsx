@@ -3,7 +3,7 @@ import {EwindowSizes, reqType, service, serviceRoute} from "../../../utils/enum"
 import {_props} from "../../../services/network/network";
 import './index.css'
 import {getDeviceID, useResponsizeClass} from "../../../utils/functions";
-import {useQuery} from "../../../services/hooks/appHooks";
+import {useQuery} from "../../../services/hooks";
 import {GiLifeSupport} from "react-icons/gi";
 import LogoCanvas from "../../../components/Utils/Logo/logo-canvas";
 import {getString} from "../../../utils/strings";

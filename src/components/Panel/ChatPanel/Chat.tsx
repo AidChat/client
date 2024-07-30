@@ -15,7 +15,7 @@ import {
 import sound from "./../../../assets/sound/notifications-sound.mp3";
 import useSound from "use-sound";
 import {InviteContainer} from "../GroupsPanel/GroupInvite";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks";
 import {
   EsidePanel,
   EwindowSizes,

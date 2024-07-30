@@ -8,7 +8,7 @@ import {
 } from "../../../utils/interface";
 import {ChangeEvent, useContext, useEffect, useRef, useState} from "react";
 import {ShellContext} from "../../../services/context/shell.context";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks";
 import {
   EwindowSizes,
   reqType,

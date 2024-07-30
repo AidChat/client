@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {ShellContext} from "../../services/context/shell.context";
 import {AppContext} from "../../services/context/app.context";
-import {useNetworkConnectivity, useWindowSize} from "../../services/hooks/appHooks";
+import {useNetworkConnectivity, useWindowSize} from "../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../utils/enum";
 import {_props} from "../../services/network/network";
 import {Dialog} from "primereact/dialog";

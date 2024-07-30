@@ -3,7 +3,7 @@ import {AppContext} from "../../../services/context/app.context";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
 import {useParams} from "react-router-dom";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../utils/enum";
 import {motion} from "framer-motion";
 import {Input} from "../../Utils/CustomInput";
@@ -110,6 +110,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                             type={"email"}
                             allowToggle={false}
                             icon={<MdOutlineAlternateEmail size={22}/>}
+                            placeholder={'emillie@email.com'}
                         />
                     </div>
                 </div>
@@ -122,6 +123,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                             type={"password"}
                             allowToggle={true}
                             icon={<FaEye size={22}/>}
+                            placeholder={'*************'}
                         />
                     </div>
                 </div>
@@ -171,7 +173,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                     style={{marginTop: "24px"}}
                 >
                     <div
-                        className={"font-primary"}
+                        className={"font-primary font-medium font-thick"}
 
                     >
                         {

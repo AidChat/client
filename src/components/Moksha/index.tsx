@@ -24,7 +24,7 @@ import {AppContext} from "../../services/context/app.context";
 import {ConfirmDialog} from "primereact/confirmdialog";
 import Markdown from "react-markdown";
 import {_props} from "../../services/network/network";
-import {useWindowSize} from "../../services/hooks/appHooks";
+import {useWindowSize} from "../../services/hooks";
 import {ProfileIconComponent} from "../ProfileDialog";
 import {Seeker} from "./Seeker";
 import {Socket} from "socket.io-client";

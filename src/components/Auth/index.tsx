@@ -119,7 +119,7 @@ export function AuthenticationContainer() {
                     )}
                 </div>
             </motion.div>
-            <MokshaIcon customstyle={{margin:"15px 0"}} online={!!ac?.isMokshaAvailable} bottom={true} right={true} size={'small'}/>
+            <MokshaIcon customstyle={{margin:"15px 30px"}} online={!!ac?.isMokshaAvailable} bottom={true} right={true} size={'medium'}/>
         </div>
     );
 }

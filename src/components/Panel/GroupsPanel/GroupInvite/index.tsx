@@ -6,7 +6,7 @@ import groupsImg from "../../../../assets/svg/groups.svg";
 import Tooltip from "../../../Utils/Tooltip";
 import Snackbar from "../../../Utils/Snackbar";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../../utils/enum";
-import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../../services/hooks";
 import {FaRegThumbsDown, FaThumbsUp} from "react-icons/fa6";
 import {MdBlock} from "react-icons/md";
 import {UserAnalysis} from "../../../UserAnalysis";

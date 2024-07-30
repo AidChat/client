@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {io, Socket} from "socket.io-client";
 import {EwindowSizes, service} from "../../utils/enum";
-import {useWindowSize} from "../hooks/appHooks";
+import {useWindowSize} from "../hooks";
 import {_props} from "../network/network";
 import {UserProps} from "../../utils/interface";
 
