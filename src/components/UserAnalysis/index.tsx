@@ -10,7 +10,7 @@ interface UserAnalysis {
 }
 
 export function UserAnalysis(props: { data:UserAnalysis[] }) {
-    console.log(props)
+    
     return (
         <>{props?.data?.length > 0 ?
         <div className={"_scrollable-container"}>

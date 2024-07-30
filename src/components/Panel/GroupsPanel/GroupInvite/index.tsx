@@ -65,9 +65,10 @@ export function InviteContainer(props: {
                     evaluation: string,
                 }[] = [];
                 users?.forEach((user: any) => {
-                    if (user.Analysis.length) {
+                    if (user.Analysis.length > 0) {
                         user.Analysis.forEach((item: any) => {
-                            const analysis = JSON.parse(item.analysis);
+                            let analysis = JSON.parse(item.analysis);
+                            console.log(analysis)
                             analysisReport.push({
                                 at: item.created_at,
                                 username: user.Username,

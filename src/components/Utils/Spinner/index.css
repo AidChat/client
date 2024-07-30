@@ -11,9 +11,9 @@
     transform: rotateZ(45deg);
     perspective: 1000px;
     border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    color: #fff;
+    width: 28px;
+    height: 28px;
+    color: var(--lightgray);
 }
 .loader:before,
 .loader:after {

@@ -6,6 +6,7 @@
 
 * {
     font-family: defaultfont, serif;
+    font-weight: 600;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
@@ -643,13 +644,6 @@ dialog::backdrop {
 .text-right{
     text-align: right;
 }
-.wrap{
-    flex-wrap: wrap;
-}
 .position-relative{
     position: relative;
-}
-label{
-    font-size:var(--font-medium) !important;
-    font-weight:600;
 }

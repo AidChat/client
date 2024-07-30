@@ -142,6 +142,8 @@ export enum serviceRoute {
     paymentReminder = "/payment/reminder",
     subscriptionInfo = "/payment/getSubscriptionInfo",
     groupRequests = '/CJ130/groupRequests',
+    postfeedback = "/CJ130/feedback",
+    switchAider = '/CJ130/requestSwitchAider',
 }
 
 export enum service {

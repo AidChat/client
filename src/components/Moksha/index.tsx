@@ -9,7 +9,8 @@ import {
     getDeviceID,
     notify,
     queryStoreObjects,
-    storeChatsByDeviceID, timeAgo,
+    storeChatsByDeviceID,
+    timeAgo,
     validateAskText,
     vibrateDevice,
 } from "../../utils/functions";
@@ -49,6 +50,7 @@ export const ClientChatWindow = (props: Props) => {
     const [socket, setSocket] = useState<Socket | null | undefined>(ac?.mokshaSocket);
     const [groupId, setGroupId] = useState<string>("");
     const [aider, setAider] = useState<any>(null);
+    const [switchToMoksha, setSwitchToMoksha] = useState<boolean>(false);
     const [listenerAvailable, setListenerAvailable] = useState<boolean>(false);
     useEffect(() => {
         window.setTimeout(function () {
@@ -93,21 +95,37 @@ export const ClientChatWindow = (props: Props) => {
     useEffect(() => {
         storeChatsByDeviceID(conversation);
     }, [conversation]);
+
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
-            if (aiderAssigned) {
+            if (aiderAssigned && !switchToMoksha) {
                 socket?.emit(SocketEmitters._MESSAGE, {text: message, groupId, images: []});
                 setMessage('')
             } else {
                 let device = await getDeviceID();
-                let payload = {
-                    deviceId: device.identifier,
-                    message: message,
-                };
-                ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
-                addConversationMessages({sender: "User", message: message,created_at: new Date()});
-                setMessage("");
-                scrollToBottom(scrollableDivRef);
+                _props._user().get().then(function (user) {
+                    let payload = {
+                        deviceId: device.identifier,
+                        message: message,
+                        userId: user.id,
+                    };
+                    ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
+                    addConversationMessages({sender: "User", message: message, created_at: new Date()});
+                    setMessage("");
+                    scrollToBottom(scrollableDivRef);
+                }).catch(e => {
+                    // unauthenticated case
+                    let payload = {
+                        deviceId: device.identifier,
+                        message: message,
+                    };
+                    ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
+                    addConversationMessages({sender: "User", message: message, created_at: new Date()});
+                    setMessage("");
+                    scrollToBottom(scrollableDivRef);
+                })
+
+
             }
 
         }
@@ -115,7 +133,7 @@ export const ClientChatWindow = (props: Props) => {
 
     function handleSocketListener(e: any) {
         vibrateDevice().then(function () {
-            addConversationMessages({sender: "Model", message: e.message,created_at:new Date()});
+            addConversationMessages({sender: "Model", message: e.message, created_at: new Date()});
         })
     }
 
@@ -163,8 +181,14 @@ export const ClientChatWindow = (props: Props) => {
                 } else {
                     if (data.Request?.length > 0) {
                         setCurrentUserGroup(data);
+                        setSocket(ac?.mokshaSocket);
+                        setAider(null);
+                        setAiderAssigned(false);
                     } else {
-                        setCurrentUserGroup(null)
+                        setCurrentUserGroup(null);
+                        setSocket(ac?.mokshaSocket);
+                        setAider(null)
+                        setAiderAssigned(false)
                     }
                 }
             })
@@ -191,8 +215,8 @@ export const ClientChatWindow = (props: Props) => {
 
         ac?.chatSocket?.on(
             SocketListeners.MESSAGE,
-            async (data: {senderId: any; id: any}) => {
-                console.log('new message',data)
+            async (data: { senderId: any; id: any }) => {
+                console.log('new message', data)
             })
 
     }, [socket, groupId]);
@@ -215,7 +239,7 @@ export const ClientChatWindow = (props: Props) => {
         }
     }
 
-
+    console.log(switchToMoksha)
     let {size: isSmall} = useWindowSize(EwindowSizes.S);
 
     return (
@@ -239,8 +263,10 @@ export const ClientChatWindow = (props: Props) => {
                                     {text.sender === "User" &&
                                         <span style={{color: "lightyellow"}}>{}</span>}
                                     {text.sender === "Model" &&
-                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`} <span className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span></span>}
-                                    <Markdown className={`m0 font-large ${text.sender === 'User' && ' text-right font-secondary '}`} >
+                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`} <span
+                                            className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span></span>}
+                                    <Markdown
+                                        className={`m0 font-large text-left font-thick ${text.sender === 'User' && ' text-right font-secondary '}`}>
                                         {text.message}
                                     </Markdown>
                                     {text.sender === "Model" && (
@@ -302,8 +328,16 @@ export const ClientChatWindow = (props: Props) => {
                                 bottom={true}
                                 right={true}
                                 showInfo={showInfo}
-                                image={aider ? aider.profileImage : undefined}
-                                aider={aider ? aider.Username : undefined}
+                                image={aider && !switchToMoksha ? aider.profileImage : undefined}
+                                aider={aider && !switchToMoksha ? aider.Username : undefined}
+                                id={aider?.id}
+                                requestedSwitch={()=>{
+                                    setSwitchToMoksha(true);
+                                    setSocket(ac?.mokshaSocket);
+                                }}
+                                removeAider={()=>{
+                                    fetchOldRequests();
+                                }}
                             />}
                         type={"text"}
                         onChange={e => handleSocketMessageUpdate(e.target.value)}

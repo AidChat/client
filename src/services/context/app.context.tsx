@@ -139,7 +139,6 @@ export const AuthContextProvider = ({
                                 stopload();
                                 updateDeviceInfo();
                                 checkSubscriptionStatus(true);
-
                                 return
                             }
                             if (user.Type === "Pending") {
