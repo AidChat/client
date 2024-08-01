@@ -259,16 +259,17 @@ export const ClientChatWindow = (props: Props) => {
                                     animate={{y: 0}}
                                     transition={{speed: 2}}
                                     key={index}
-                                    className={"font-primary m4 chat-wrapper"}>
+                                    className={`font-primary m4 chat-wrapper ${text.sender === 'User' && 'text-right'} ` }>
                                     {text.sender === "User" &&
                                         <span style={{color: "lightyellow"}}>{}</span>}
                                     {text.sender === "Model" &&
-                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`} <span
-                                            className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span></span>}
+                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`} </span>}
                                     <Markdown
                                         className={`m0 font-large text-left font-thick ${text.sender === 'User' && ' text-right font-secondary '}`}>
                                         {text.message}
                                     </Markdown>
+                                    <span
+                                        className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span>
                                     {text.sender === "Model" && (
                                         <div
 
@@ -338,6 +339,7 @@ export const ClientChatWindow = (props: Props) => {
                                 removeAider={()=>{
                                     fetchOldRequests();
                                 }}
+
                             />}
                         type={"text"}
                         onChange={e => handleSocketMessageUpdate(e.target.value)}

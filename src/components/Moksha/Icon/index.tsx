@@ -8,6 +8,7 @@ import {Feedback} from "../../Feedback";
 import {getString} from "../../../utils/strings";
 import {_props} from "../../../services/network/network";
 import {reqType, service, serviceRoute} from "../../../utils/enum";
+import {vibrateDevice} from "../../../utils/functions";
 
 
 export function MokshaIcon({
@@ -43,9 +44,13 @@ export function MokshaIcon({
     const [showFeedback, setShowFeedback] = useState<boolean>(false);
 
     function handleClick() {
-        if (authContent) {
-            authContent.setConfession(true)
-        }
+        vibrateDevice().then(function(){
+            console.log("Device vibrated");
+            if (authContent) {
+                authContent.setConfession(true)
+            }
+        })
+
     }
 
 
