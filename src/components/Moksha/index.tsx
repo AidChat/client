@@ -239,7 +239,6 @@ export const ClientChatWindow = (props: Props) => {
         }
     }
 
-    console.log(switchToMoksha)
     let {size: isSmall} = useWindowSize(EwindowSizes.S);
 
     return (

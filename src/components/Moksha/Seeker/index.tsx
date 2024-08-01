@@ -51,7 +51,7 @@ export function Seeker(props: { group: any,refetch:()=>void }) {
     return (
         <motion.div initial={{y: 50, display: "none", opacity: 0}} exit={{y: -500}}
                     animate={{y: 0, display: 'block', opacity: 1}} transition={{delay: 0.5, duration: 1}}
-                    className={'seeker-container w80 flex flex-center'}>
+                    className={'seeker-container  flex flex-center'}>
             <Snackbar message={message} onClose={()=>setMessage('')} />
             <div className={"h100 w100 flex " + useResponsizeClass(EwindowSizes.S, [ ' flex-column'])}>
                 <div className={'w80 h100'}>

@@ -139,7 +139,7 @@ div {
 .btn {
     height: 2em;
     width: fit-content;
-    border-radius: 4px;
+    border-radius: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -588,7 +588,7 @@ dialog::backdrop {
     box-shadow: 0 8px 32px 0 rgb(31, 41, 31);
     backdrop-filter: blur(5.5px );
     background:var(--lightgray);
-    border-radius: 10px;
+    border-radius: 30px;
     padding:16px;
 }
 .p-dialog-title{
@@ -646,4 +646,7 @@ dialog::backdrop {
 }
 .position-relative{
     position: relative;
+}
+.p-dialog-header-icon{
+    margin-top:4px;
 }

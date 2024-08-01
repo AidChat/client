@@ -23,7 +23,6 @@ export function UtilityPanel() {
             ._db(service.group)
             .query(serviceRoute.userRequest, {}, reqType.get, undefined)
             .then(result => {
-                console.log(result)
                 _requests(result.data);
             });
     }, [refetch]);

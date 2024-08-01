@@ -49,7 +49,7 @@ export interface Role {
 
 export interface MessageInterface {
     MessageContent: MessageContent;
-    created_at: string;
+    created_at: Date;
     groupId: number;
     id: number;
     messageContentId: number;
@@ -60,6 +60,8 @@ export interface MessageInterface {
     };
     ReadByAll?: boolean;
     ReadReceipt: ReadReceipt[]
+    isAnalysis?:boolean
+    analysis?:string
 }
 
 export interface ReadReceipt {

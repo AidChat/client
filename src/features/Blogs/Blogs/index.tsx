@@ -76,7 +76,7 @@ export function BlogList() {
             &nbsp; Blogs
           </div>
           <div
-            className={"btn btn-primary w25 m8 "}
+            className={"btn btn-primary w10 m8 "}
             onClick={function () {
               setSelectedBlogs({
                 content: "<p>Write something here.</p>",

@@ -189,7 +189,6 @@ function GroupSettingContainer(props: {
                 _message(null);
             }}
         />)}
-        {loading && <Spinner/>}
         <div className={"groupContainer"}>
             <div className={"settings-item-container profileContainer"}>
                 <div className={"groupIconWrapper"}>
@@ -284,7 +283,7 @@ function GroupSettingContainer(props: {
                             onClick={handleGroupUpdate}
                         >
                             {" "}
-                            Update
+                            {loading ? <Spinner />:'Update'}
                         </div>
                     </div>
                     <div>
