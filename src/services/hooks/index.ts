@@ -2,7 +2,6 @@ import {useContext, useEffect, useState} from "react";
 import {_debounce} from "../../utils/functions";
 import {EwindowSizes, RecordUpdateModels, windowSize} from "../../utils/enum";
 import {AppContext} from "../context/app.context";
-import {log} from "console";
 import {useLocation} from "react-router-dom";
 import {SocketListeners} from "../../utils/interface";
 

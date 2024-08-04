@@ -139,13 +139,13 @@ div {
 .btn {
     height: 2em;
     width: fit-content;
-    border-radius: 30px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer !important;
     border: none;
-    padding: 2px 8px;
+    padding: 4px 8px;
     transition: all 0.5s;
     font-size: var(--font-medium);
 }
@@ -583,14 +583,15 @@ dialog::backdrop {
     padding:14px;
     background: var(--lightdark);
     border-radius: 40px;
-
 }
 .p-dialog{
     box-shadow: 0 8px 32px 0 rgb(31, 41, 31);
     backdrop-filter: blur(5.5px );
     background:var(--lightgray);
     border-radius: 30px;
-    padding:16px;
+    margin:5px 15px;
+    padding:15px;
+    max-height:90vh !important;
 }
 .p-dialog-title{
     color:whitesmoke;
@@ -612,6 +613,7 @@ dialog::backdrop {
 .btn-disabled{
     background: gray !important;
 }
+
 
 .p-confirm-popup{
     background: var(--lightgray) ;

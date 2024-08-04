@@ -223,6 +223,14 @@ export const ClientChatWindow = (props: Props) => {
         return assigned;
     }
 
+    function handleMessageReport(content: string,question:string) {
+        getDeviceID().then(function(info){
+
+            ac?.globalSocket?.emit(SocketEmitters._REPORTED_EVENT, {content,deviceId:info.identifier,question});
+            setError("Thanks for reporting this.")
+        })
+    }
+
     function scrollToBottom(ref: React.RefObject<HTMLDivElement>): void {
         if (ref.current) {
             ref.current.scrollTop = ref.current.scrollHeight;
@@ -314,11 +322,15 @@ export const ClientChatWindow = (props: Props) => {
                                                 className={"font-primary font-thick reportBtn"}
                                             >
                                            <span onClick={async () => {
+
                                                let accepted = await confirm({
                                                    message:
                                                        "Do you wanna report this reply from Moksha?",
                                                    header: "Confirmation",
                                                });
+                                               if(accepted) {
+                                                   handleMessageReport(text.message,conversation[index-1].message);
+                                               }
                                            }}> Report</span>
 
                                             </div>

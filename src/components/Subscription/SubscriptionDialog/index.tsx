@@ -87,7 +87,7 @@ export function SubscriptionDialog(props: SubscriptionDialogProps) {
                 <h2 className={"sub-heading m4"}>Pricing</h2>
                 <h1 className={'m4'}><span className={'font-secondary'}> <span
                     className={'sub-price-text'}>{getString(enString.pricing)}</span><span
-                    className={'font-large'}>/week</span></span></h1>
+                    className={'font-large'}>/month</span></span></h1>
                 <div className={'sub-bullets'}>
                     <h4 className={'font-large '}>Can get you access to:</h4>
                     {

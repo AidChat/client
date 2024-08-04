@@ -114,7 +114,6 @@ export const AuthContextProvider = ({
     function stopload() {
         setLoad(false);
     }
-
     function verifyAuthentication(
         sessionId?: string,
         forceReload?: boolean
@@ -129,9 +128,9 @@ export const AuthContextProvider = ({
                     ._user()
                     .get()
                     .then((user: any) => {
+                        connectToEventSocket();
                         if (user) {
                             connectToChatSocket()
-                            connectToGlobalSocket();
                             setVerifyState(user.verifiedEmail);
                             authenticateBotSocket();
                             if (user.Type === 'Seeker') {
@@ -183,7 +182,7 @@ export const AuthContextProvider = ({
 
     }
 
-    function connectToGlobalSocket() {
+    function connectToEventSocket() {
         _props
             ._user()
             .get()
@@ -191,7 +190,7 @@ export const AuthContextProvider = ({
                 setGlobalSocket(
                     io(service.event, {
                         autoConnect: true,
-                        reconnectionAttempts: 10,
+                        reconnectionAttempts: 2,
                         auth: {
                             session: window.localStorage.getItem("session")
                                 ? window.localStorage.getItem("session")
@@ -205,8 +204,10 @@ export const AuthContextProvider = ({
         })
     }
 
+
     useEffect(
         function () {
+            globalSocket?.connect();
             globalSocket?.on("clientInfoUpdate", function (data) {
                 new Notification("You have a new client who is seeking for help.", {});
             });
@@ -260,7 +261,7 @@ export const AuthContextProvider = ({
                 toggleBlogComponent,
                 globalSocket,
                 setShowSubscriptionDialog,
-                connectToGlobalSocket,
+                connectToGlobalSocket: connectToEventSocket,
                 chatSocket
             }}
         >

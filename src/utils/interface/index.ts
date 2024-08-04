@@ -22,7 +22,8 @@ export enum SocketEmitters {
     _JOIN = "_JOIN",
     _READMESSAGE = "_READMESSAGE",
     _PING='PING',
-    _ASK='ASK'
+    _ASK='ASK',
+    _REPORTED_EVENT='REPORTED_EVENT'
 }
 
 export enum SocketListeners {
