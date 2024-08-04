@@ -182,7 +182,7 @@ export const storeCurrentContent = (store: IDBStoreName, content: string) => {
     }
     return storeObjects(data)
 }
-export const storeChatsByDeviceID = (chats: Message[]) => {
+export const storeChatsByDeviceID = async  (chats: Message[]) => {
     let store: IDBStoreName = IDBStore.chat;
     getDeviceID().then((device: {identifier:string}) => {
         if (device) {

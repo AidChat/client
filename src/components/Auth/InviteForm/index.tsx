@@ -73,6 +73,7 @@ export function InviteForm({requestLogin}: { requestLogin: (s:'LOGIN' | "REGISTE
     }, []);
 
     function handleRequest() {
+       debugger
         if (validSession) {
             _loading(true)
             _props._db(service.group).query(serviceRoute.request, {},reqType.put,request?.id)

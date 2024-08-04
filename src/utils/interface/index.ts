@@ -104,7 +104,7 @@ export interface IReminderMembers {
 export type IDBStoreName  = 'BLOG'| 'AICHAT';
 
 export interface Message {
-    sender: 'User' | 'Model';
+    sender: 'User' | 'Model' | 'Helper';
     message: string;
     created_at?: Date;
     id?:string | number;

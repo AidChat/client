@@ -348,6 +348,7 @@ dialog::backdrop {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width:90px;
 }
 
 .div_animateLR {

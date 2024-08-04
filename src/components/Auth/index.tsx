@@ -36,6 +36,7 @@ export function AuthenticationContainer() {
         state: "LOGIN" | "REGISTER" | "CODE" | "INVITE",
         email?: string
     ) {
+
         setState({
             login: state === "LOGIN",
             register: state === "REGISTER",
@@ -50,7 +51,7 @@ export function AuthenticationContainer() {
             setProps({email: e});
         }
         setState({
-            invite: true,
+            invite: e? false:true,
             register: true,
             login: false,
             code: false,
@@ -90,7 +91,7 @@ export function AuthenticationContainer() {
                                 <RegisterForm
                                     toggleState={(s, email) => switchAuthState(s, email)}
                                     email={props.email}
-                                    invite={state.invite}
+                                    invite={!!props.email}
                                 />
                             )}
                             {state.code && (

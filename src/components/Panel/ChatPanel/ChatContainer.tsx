@@ -229,9 +229,9 @@ export function ChatContainer({
                                     (
                                         item: {
                                             id: number;
-                                            name: string;
                                             email: string;
                                             profileImage: string;
+                                            Username: string,
                                             ActivityStatus: {
                                                 id: number;
                                                 status:
@@ -246,52 +246,47 @@ export function ChatContainer({
                                         },
                                         index: number
                                     ) => (
-                                        <Tooltip text={item.name}>
-                                            <div
-                                                className={
-                                                    (onliners.filter(_i => _i === item.id).length > 0 ||
-                                                        item?.ActivityStatus?.status === "ONLINE") &&
-                                                    recentOffline.filter(_k => _k === item.id).length ===
-                                                    0
-                                                        ? " usernamewrapper"
-                                                        : "usernamewrapper"
-                                                }
-                                                key={index}
-                                            >
+                                        <div style={index > 0 ? {marginLeft: '-20px'} : {}}>
+                                            <Tooltip text={item.Username}>
                                                 <div
-                                                    className={
-                                                        (onliners.filter(_i => _i === item.id).length > 0 ||
-                                                            item?.ActivityStatus?.status === "ONLINE") &&
-                                                        recentOffline.filter(_k => _k === item.id)
-                                                            .length === 0
-                                                            ? "usernameImage glow-border"
-                                                            : "usernameImage"
-                                                    }
-                                                    style={
-                                                        (onliners.filter(_i => _i === item.id).length > 0 ||
-                                                            item?.ActivityStatus?.status === "ONLINE") &&
-                                                        recentOffline.filter(_k => _k === item.id)
-                                                            .length === 0
-                                                            ? {border: "1px solid darkgreen"}
-                                                            : {border: "1px solid white"}
-                                                    }
+                                                    className={'usernamewrapper'}
+                                                    key={index}
                                                 >
-                                                    <img
-                                                        src={
-                                                            item?.profileImage.split("").length > 0
-                                                                ? item.profileImage
-                                                                : groupsImg
+                                                    <div
+                                                        className={
+                                                            (onliners.filter(_i => _i === item.id).length > 0 ||
+                                                                item?.ActivityStatus?.status === "ONLINE") &&
+                                                            recentOffline.filter(_k => _k === item.id)
+                                                                .length === 0
+                                                                ? "usernameImage glow-border"
+                                                                : "usernameImage"
                                                         }
-                                                        style={{
-                                                            height: "100%",
-                                                            width: "100%",
-                                                            borderRadius: "50%",
-                                                        }}
-                                                        alt={"user-image"}
-                                                    />
+                                                        style={
+                                                            (onliners.filter(_i => _i === item.id).length > 0 ||
+                                                                item?.ActivityStatus?.status === "ONLINE") &&
+                                                            recentOffline.filter(_k => _k === item.id)
+                                                                .length === 0
+                                                                ? {border: "1px solid darkgreen"}
+                                                                : {border: ""}
+                                                        }
+                                                    >
+                                                        <img
+                                                            src={
+                                                                item?.profileImage.split("").length > 0
+                                                                    ? item.profileImage
+                                                                    : groupsImg
+                                                            }
+                                                            style={{
+                                                                height: "100%",
+                                                                width: "100%",
+                                                                borderRadius: "50%",
+                                                            }}
+                                                            alt={"user-image"}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </Tooltip>
+                                            </Tooltip>
+                                        </div>
                                     )
                                 )}
                                 {role?.type === "OWNER" && (
@@ -347,114 +342,115 @@ export function ChatContainer({
                                         <div className={'font-primary evaluation-box font-medium color-medium '}>
                                             <div>{item?.analysis}</div>
                                             <div>{timeAgo(item?.created_at)}   </div>
-                                            <span className={'font-secondary font-small'}>By {getString(enString.botname)}</span>
+                                            <span
+                                                className={'font-secondary font-small'}>By {getString(enString.botname)}</span>
                                         </div> : <>
 
                                             {(formatDateToDDMMYYYY(item.created_at) !==
-                                            formatDateToDDMMYYYY(
-                                                state.messages[index ? index - 1 : index].created_at
-                                            ) ||
-                                            !index) && (
-                                            <motion.div
-                                                initial={{y: 100}}
-                                                animate={{y: 0}}
-                                                className={"w100 message-text-wrapper"}
-                                            >
-                                                <div className={"chatDate"}>
-                                                    {" "}
-                                                    {formatDateToDDMMYYYY(item.created_at)}
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                        <motion.div
-                                            initial={item.senderId === userId ? {x: 100} : {x: -100}}
-                                            animate={item.senderId === userId ? {x: 0} : {x: -0}}
-                                            transition={{speed: 1}}
-                                            exit={item.senderId === userId ? {x: 100} : {x: -100}}
-                                            key={index}
-                                            className={`messageWrapper ${
-                                                item?.senderId === userId && "selfMessage"
-                                            }`}
-                                        >
-                                            <div className={"font-primary miscContainer"}>
-                                                {item.senderId !== userId &&
-                                                    item.senderId !==
-                                                    state.messages[index ? index - 1 : index]
-                                                        .senderId && (
-                                                        <div
-                                                            className={`imageWrapper ${
-                                                                item?.senderId === userId && "selfMessageBubble"
-                                                            }`}
-                                                        >
-                                                            <img
-                                                                style={{
-                                                                    height: "100%",
-                                                                    width: "100%",
-                                                                    borderRadius: "50%",
-                                                                }}
-                                                                src={
-                                                                    item.User?.profileImage.split("").length > 0
-                                                                        ? item.User.profileImage
-                                                                        : groupsImg
-                                                                }
-                                                            />
-                                                        </div>
-                                                    )}
-                                                {item?.senderId !== userId &&
-                                                    item.senderId !==
-                                                    state.messages[index ? index - 1 : index].senderId &&
-                                                    item?.User.Username.toUpperCase()}
-                                            </div>
-                                            <div className={"contentWrapper"}>
-                                                <div
-                                                    className={`messageBubble ${
-                                                        item?.senderId === userId && "selfMessageBubble"
-                                                    }  `}
+                                                formatDateToDDMMYYYY(
+                                                    state.messages[index ? index - 1 : index].created_at
+                                                ) ||
+                                                !index) && (
+                                                <motion.div
+                                                    initial={{y: 100}}
+                                                    animate={{y: 0}}
+                                                    className={"w100 message-text-wrapper"}
                                                 >
-                                                    {(item.senderId !==
-                                                        state.messages[index ? index - 1 : index].senderId ||
-                                                        !index ||
-                                                        formatDateToDDMMYYYY(item.created_at) !==
-                                                        formatDateToDDMMYYYY(
-                                                            state.messages[index ? index - 1 : index]
-                                                                .created_at
-                                                        ) ||
-                                                        !index) && (
-                                                        <div
-                                                            className={`arrow ${
-                                                                item.senderId === userId
-                                                                    ? "arrow-right"
-                                                                    : "arrow-left"
-                                                            }`}
-                                                        ></div>
-                                                    )}
-                                                    {item.MessageContent.TYPE === "TEXT" ? (
-                                                        item?.MessageContent?.content
-                                                    ) : (
-                                                        <>
-                                                            {renderImages(item.MessageContent)}
-                                                            <div>{item.MessageContent.caption}</div>
-                                                        </>
-                                                    )}
-
+                                                    <div className={"chatDate"}>
+                                                        {" "}
+                                                        {formatDateToDDMMYYYY(item.created_at)}
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                            <motion.div
+                                                initial={item.senderId === userId ? {x: 100} : {x: -100}}
+                                                animate={item.senderId === userId ? {x: 0} : {x: -0}}
+                                                transition={{speed: 1}}
+                                                exit={item.senderId === userId ? {x: 100} : {x: -100}}
+                                                key={index}
+                                                className={`messageWrapper ${
+                                                    item?.senderId === userId && "selfMessage"
+                                                }`}
+                                            >
+                                                <div className={"font-primary miscContainer"}>
+                                                    {item.senderId !== userId &&
+                                                        item.senderId !==
+                                                        state.messages[index ? index - 1 : index]
+                                                            .senderId && (
+                                                            <div
+                                                                className={`imageWrapper ${
+                                                                    item?.senderId === userId && "selfMessageBubble"
+                                                                }`}
+                                                            >
+                                                                <img
+                                                                    style={{
+                                                                        height: "100%",
+                                                                        width: "100%",
+                                                                        borderRadius: "50%",
+                                                                    }}
+                                                                    src={
+                                                                        item.User?.profileImage.split("").length > 0
+                                                                            ? item.User.profileImage
+                                                                            : groupsImg
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    {item?.senderId !== userId &&
+                                                        item.senderId !==
+                                                        state.messages[index ? index - 1 : index].senderId &&
+                                                        item?.User.Username.toUpperCase()}
+                                                </div>
+                                                <div className={"contentWrapper"}>
                                                     <div
-                                                        className={"font-primary miscContainer "}
-                                                        style={{
-                                                            display: "flex",
-                                                            justifyContent:
-                                                                item.senderId === userId ? "end" : "start",
-                                                            color:
-                                                                item.senderId !== userId ? "black" : "whitesmoke",
-                                                            marginTop: "2px",
-                                                            alignItems: "center",
-                                                        }}
+                                                        className={`messageBubble ${
+                                                            item?.senderId === userId && "selfMessageBubble"
+                                                        }  `}
                                                     >
-                                                        <RecipientReadStatus item={state.messages[index]}/>
+                                                        {(item.senderId !==
+                                                            state.messages[index ? index - 1 : index].senderId ||
+                                                            !index ||
+                                                            formatDateToDDMMYYYY(item.created_at) !==
+                                                            formatDateToDDMMYYYY(
+                                                                state.messages[index ? index - 1 : index]
+                                                                    .created_at
+                                                            ) ||
+                                                            !index) && (
+                                                            <div
+                                                                className={`arrow ${
+                                                                    item.senderId === userId
+                                                                        ? "arrow-right"
+                                                                        : "arrow-left"
+                                                                }`}
+                                                            ></div>
+                                                        )}
+                                                        {item.MessageContent.TYPE === "TEXT" ? (
+                                                            item?.MessageContent?.content
+                                                        ) : (
+                                                            <>
+                                                                {renderImages(item.MessageContent)}
+                                                                <div>{item.MessageContent.caption}</div>
+                                                            </>
+                                                        )}
+
+                                                        <div
+                                                            className={"font-primary miscContainer "}
+                                                            style={{
+                                                                display: "flex",
+                                                                justifyContent:
+                                                                    item.senderId === userId ? "end" : "start",
+                                                                color:
+                                                                    item.senderId !== userId ? "black" : "whitesmoke",
+                                                                marginTop: "2px",
+                                                                alignItems: "center",
+                                                            }}
+                                                        >
+                                                            <RecipientReadStatus item={state.messages[index]}/>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </motion.div>
-                                    </>}
+                                            </motion.div>
+                                        </>}
                                 </div>
                             );
                         })}

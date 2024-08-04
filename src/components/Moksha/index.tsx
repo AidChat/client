@@ -29,6 +29,7 @@ import {useWindowSize} from "../../services/hooks";
 import {ProfileIconComponent} from "../ProfileDialog";
 import {Seeker} from "./Seeker";
 import {Socket} from "socket.io-client";
+import {Spinner} from "../Utils/Spinner/spinner";
 
 
 interface Props {
@@ -44,7 +45,6 @@ export const ClientChatWindow = (props: Props) => {
     const [showInfo, setShowInfo] = useState(true);
     const [showInfoBox, setShowInfoBox] = useState(false);
     const [currentUserGroup, setCurrentUserGroup] = useState(null);
-    const [currentUser, setCurrentUser] = useState<UserProps | null>(null);
     const ac = useContext(AppContext);
     const [aiderAssigned, setAiderAssigned] = useState<boolean>(false);
     const [socket, setSocket] = useState<Socket | null | undefined>(ac?.mokshaSocket);
@@ -52,6 +52,7 @@ export const ClientChatWindow = (props: Props) => {
     const [aider, setAider] = useState<any>(null);
     const [switchToMoksha, setSwitchToMoksha] = useState<boolean>(false);
     const [listenerAvailable, setListenerAvailable] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
         window.setTimeout(function () {
             setShowInfo(false);
@@ -62,9 +63,7 @@ export const ClientChatWindow = (props: Props) => {
     useEffect(() => {
         scrollToBottom(scrollableDivRef);
         setShowInfoBox(true);
-        window.setTimeout(() => {
-            // setShowInfoBox(false);
-        }, 5000)
+        fetchOldRequests();
         return () => {
             if (ac?.mokshaSocket) ac?.mokshaSocket.disconnect();
         };
@@ -84,17 +83,16 @@ export const ClientChatWindow = (props: Props) => {
     }
 
     function renderChatOrder(data: any) {
-        setConversation(data.chats);
+        console.log(data)
+        setConversation(data);
     }
 
 
-    function addConversationMessages(payload: Message) {
+    async function addConversationMessages(payload: Message) {
         setConversation(prevConversation => [...prevConversation, payload]);
+        await storeChatsByDeviceID(conversation);
     }
 
-    useEffect(() => {
-        storeChatsByDeviceID(conversation);
-    }, [conversation]);
 
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
@@ -113,6 +111,7 @@ export const ClientChatWindow = (props: Props) => {
                     addConversationMessages({sender: "User", message: message, created_at: new Date()});
                     setMessage("");
                     scrollToBottom(scrollableDivRef);
+                    storeChatsByDeviceID(conversation);
                 }).catch(e => {
                     // unauthenticated case
                     let payload = {
@@ -134,29 +133,18 @@ export const ClientChatWindow = (props: Props) => {
     function handleSocketListener(e: any) {
         vibrateDevice().then(function () {
             addConversationMessages({sender: "Model", message: e.message, created_at: new Date()});
+
         })
     }
 
     useEffect(() => {
         scrollToBottom(scrollableDivRef);
     }, [conversation]);
-    useEffect(() => {
-        // startLogger({interval: 30000});
-        queryStoreObjects(IDBStore.chat).then(function (data: any) {
-            if (data && data[0]?.chats) {
-                renderChatOrder(data[0]);
-                setMessage("");
-            }
-        });
 
-    }, []);
 
     useEffect(() => {
-        _props._user().get().then(function (data: UserProps) {
-            setCurrentUser(data)
+        _props._user().get().then(async function (data: UserProps) {
             toggleLoginComponent(true);
-            fetchOldRequests();
-
             ac?.globalSocket?.on(SocketListeners.JOINREQUEST, function (data: any) {
                 notify("Someone is looking to help you")
                 setCurrentUserGroup(data);
@@ -169,15 +157,16 @@ export const ClientChatWindow = (props: Props) => {
     }, [ac?.globalSocket]);
 
     function fetchOldRequests() {
+        console.log("fetchOldRequests")
         _props._db(service.group).query(serviceRoute.groupRequests, undefined, reqType.get, undefined)
             .then(function ({data}) {
+                handleMessagesSync(data.id);
+                setGroupId(data.id);
                 if (isAiderAssigned(data)) {
                     console.log("Aider has been assigned");
                     console.log('%c-------- Connecting to aider now----------', 'color: green;')
-                    setGroupId(data.id);
                     setAiderAssigned(true);
                     setSocket(prevState => ac?.chatSocket);
-
                 } else {
                     if (data.Request?.length > 0) {
                         setCurrentUserGroup(data);
@@ -194,6 +183,7 @@ export const ClientChatWindow = (props: Props) => {
             })
             .catch(e => {
                 console.error(e)
+                handleMessagesSync();
             })
 
     }
@@ -239,6 +229,49 @@ export const ClientChatWindow = (props: Props) => {
         }
     }
 
+    function handleMessagesSync(groupId?: number) {
+        queryStoreObjects(IDBStore.chat).then(async function (data: any) {
+            let storedChats = data[0].chats;
+            try {
+                if (groupId) {
+                    const {data} = await _props._db(service.group).query(serviceRoute._groupMessages, {
+                        limit: 20,
+                        start: new Date()
+                    }, reqType.post, groupId);
+                    const dbChats = data.filter((item: { analysis: any; })=> !item.analysis).map((chat: any) => {
+
+                        return {
+                            message: chat?.MessageContent?.content,
+                            created_at: chat.created_at,
+                            sender: chat?.User?.Username === aider.Username ? 'Helper' : 'User',
+                            id: chat.id
+                        }
+                    })
+
+                    storedChats = [...storedChats, ...dbChats].sort(function (a: { created_at: number; }, b: {
+                        created_at: number;
+                    }) {
+                        return a.created_at - b.created_at
+                    });
+                    console.log(storedChats)
+                    renderChatOrder(storedChats);
+                    setMessage("");
+                    setLoading(false);
+                } else {
+                    renderChatOrder(storedChats);
+                    setMessage("");
+                    setLoading(false);
+                }
+
+            } catch (e) {
+                renderChatOrder(storedChats);
+                setMessage("");
+                setLoading(false);
+            }
+
+        });
+    }
+
     let {size: isSmall} = useWindowSize(EwindowSizes.S);
 
     return (
@@ -247,33 +280,39 @@ export const ClientChatWindow = (props: Props) => {
             {showInfoBox && currentUserGroup && <Seeker group={currentUserGroup} refetch={() => fetchOldRequests()}/>}
             <Snackbar message={error} onClose={() => setError("")}/>
             <div className="confession">
-                {showLoginComponent && <ProfileIconComponent full={isSmall}/>}
-                <div className={"chat-history-container"} ref={scrollableDivRef}>
-                    {!conversation.length
-                        ? renderEmptyMessageConversation()
-                        : conversation.map((text, index) => (
-                            <>
-                                <motion.div
-                                    initial={{y: 10}}
-                                    animate={{y: 0}}
-                                    transition={{speed: 2}}
-                                    key={index}
-                                    className={`font-primary m4 chat-wrapper ${text.sender === 'User' && 'text-right'} ` }>
-                                    {text.sender === "User" &&
-                                        <span style={{color: "lightyellow"}}>{}</span>}
-                                    {text.sender === "Model" &&
-                                        <span className={"font-secondary font-thick"}>{`${getString(24)} :`} </span>}
-                                    <Markdown
-                                        className={`m0 font-large text-left font-thick ${text.sender === 'User' && ' text-right font-secondary '}`}>
-                                        {text.message}
-                                    </Markdown>
-                                    <span
-                                        className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span>
-                                    {text.sender === "Model" && (
-                                        <div
+                {loading ? <Spinner/> : <>
+                    {showLoginComponent && <ProfileIconComponent full={isSmall}/>}
+                    <div className={"chat-history-container"} ref={scrollableDivRef}>
+                        {!conversation.length
+                            ? renderEmptyMessageConversation()
+                            : conversation.map((text, index) => (
+                                <>
+                                    <motion.div
+                                        initial={{y: 10}}
+                                        animate={{y: 0}}
+                                        transition={{speed: 2}}
+                                        key={index}
+                                        className={`font-primary m4 chat-wrapper ${text.sender === 'User' && 'text-right'} `}>
+                                        {text.sender === "User" &&
+                                            <span style={{color: "lightyellow"}}>{}</span>}
+                                        {text.sender === "Model" &&
+                                            <span
+                                                className={"font-secondary font-thick"}>{`${getString(24)} :`} </span>}
+                                        {text.sender === "Helper" &&
+                                            <span
+                                                className={"font-secondary font-thick"}>{`${aider.Username} :`} </span>}
 
-                                            className={"font-primary font-thick reportBtn"}
-                                        >
+                                        <Markdown
+                                            className={`m0 font-large text-left font-thick ${text.sender === 'User' && ' text-right font-secondary '}`}>
+                                            {text.message}
+                                        </Markdown>
+                                        <span
+                                            className={'font-primary font-small '}>{timeAgo(text?.created_at)}</span>
+                                        {text.sender === "Model" && (
+                                            <div
+
+                                                className={"font-primary font-thick reportBtn"}
+                                            >
                                            <span onClick={async () => {
                                                let accepted = await confirm({
                                                    message:
@@ -282,81 +321,85 @@ export const ClientChatWindow = (props: Props) => {
                                                });
                                            }}> Report</span>
 
-                                        </div>
+                                            </div>
 
-                                    )}
+                                        )}
 
 
-                                </motion.div>
-                                <div className={"dotted-border"}></div>
-                            </>
-                        ))}
-                </div>
-                <div className={"confession_container"}>
-                    <div className={"h100 flex center  justify-center clear"}>
-                        <MdDeleteOutline
-                            color={"whitesmoke"}
-                            size={22}
-                            onClick={async () => {
-                                let accepted = await confirm({
-                                    message: "Do you wanna remove the messages?",
-                                    header: "Confirmation",
-                                });
-                                if (accepted) {
-                                    clearDatabaseByName(IDBStore.chat).then(function () {
-                                        setConversation([]);
-                                    });
-                                }
-                            }}
-                        />
+                                    </motion.div>
+                                    <div className={"dotted-border"}></div>
+                                </>
+                            ))}
+
                     </div>
-
-                    <Input
-                        width={showLoginComponent ? "100%" : undefined}
-                        height={"50px"}
-                        borderRadius={"50px"}
-                        textColor={"gray"}
-                        placeholder={
-                            "How are you feeling."
-                        }
-                        allowToggle={false}
-                        disabled={false}
-                        icon={message.split('').length > 0 ? <PiPaperPlaneTiltFill size={22} color={"#398378"}/> :
-                            <MokshaIcon
-                                online={!!ac?.isMokshaAvailable || listenerAvailable}
-                                size={"small"}
-                                bottom={true}
-                                right={true}
-                                showInfo={showInfo}
-                                image={aider && !switchToMoksha ? aider.profileImage : undefined}
-                                aider={aider && !switchToMoksha ? aider.Username : undefined}
-                                id={aider?.id}
-                                requestedSwitch={()=>{
-                                    setSwitchToMoksha(true);
-                                    setSocket(ac?.mokshaSocket);
+                    <div className={"confession_container"}>
+                        <div className={"h100 flex center  justify-center clear"}>
+                            <MdDeleteOutline
+                                color={"whitesmoke"}
+                                size={22}
+                                onClick={async () => {
+                                    let accepted = await confirm({
+                                        message: "Do you wanna remove the messages?",
+                                        header: "Confirmation",
+                                    });
+                                    if (accepted) {
+                                        clearDatabaseByName(IDBStore.chat).then(function () {
+                                            setConversation([]);
+                                        });
+                                    }
                                 }}
-                                removeAider={()=>{
-                                    fetchOldRequests();
-                                }}
-
-                            />}
-                        type={"text"}
-                        onChange={e => handleSocketMessageUpdate(e.target.value)}
-                        inputName={"confession"}
-                        send={handleSocketMessageSend}
-                        listenSubmit={true}
-                        value={message}
-                    />
-                    {!showLoginComponent && <div className={"btncontainer pointer"}>
-                        <div className={"font-primary"}>Or</div>
-                        <div
-                            className={"loginbtn font-primary font-thick"}
-                            onClick={props.click}
-                        >
-                            Login
+                            />
                         </div>
-                    </div>}
-                </div>
+
+                        <Input
+                            width={showLoginComponent ? "100%" : undefined}
+                            height={"50px"}
+                            borderRadius={"50px"}
+                            textColor={"gray"}
+                            placeholder={
+                                "How are you feeling."
+                            }
+                            allowToggle={false}
+                            disabled={false}
+                            icon={message.split('').length > 0 ? <PiPaperPlaneTiltFill size={22} color={"#398378"}/> :
+                                <MokshaIcon
+                                    online={!!ac?.isMokshaAvailable || listenerAvailable}
+                                    size={"small"}
+                                    bottom={true}
+                                    right={true}
+                                    showInfo={showInfo}
+                                    image={aider && !switchToMoksha ? aider.profileImage : undefined}
+                                    aider={aider && !switchToMoksha ? aider.Username : undefined}
+                                    id={aider?.id}
+                                    requestedSwitch={() => {
+                                        setSwitchToMoksha(true);
+                                        setSocket(ac?.mokshaSocket);
+                                    }}
+                                    removeAider={() => {
+                                        fetchOldRequests();
+                                    }}
+
+                                />}
+                            type={"text"}
+                            onChange={e => handleSocketMessageUpdate(e.target.value)}
+                            inputName={"confession"}
+                            send={handleSocketMessageSend}
+                            listenSubmit={true}
+                            value={message}
+                        />
+                        {!showLoginComponent && <div className={"btncontainer pointer"}>
+                            <div className={"font-primary"}>Or</div>
+                            <div
+                                className={"loginbtn font-primary font-thick"}
+                                onClick={props.click}
+                            >
+                                Login
+                            </div>
+                        </div>}
+
+                    </div>
+                </>
+                }
             </div>
         </>
     );
