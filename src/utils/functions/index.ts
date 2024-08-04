@@ -1,4 +1,4 @@
-import {useWindowSize} from "../../services/hooks/appHooks";
+import {useWindowSize} from "../../services/hooks";
 import {EwindowSizes, IDBStore} from "../enum";
 import {Device, DeviceId, DeviceInfo} from "@capacitor/device";
 import {getToken} from "firebase/messaging";
@@ -78,7 +78,7 @@ export function useResponsizeClass(size: EwindowSizes, classArr: string[]): stri
 }
 
 export async function getDeviceInfoUsingCapacitor() {
-    const info:DeviceInfo = await Device.getInfo();
+    const info: DeviceInfo = await Device.getInfo();
     return info
 }
 
@@ -121,7 +121,10 @@ export const hideStatusBar = async () => {
 };
 
 
-export const confirm = async ({message, header = 'Confirmation'}: { message: string, header?: string }):Promise<boolean> => {
+export const confirm = async ({message, header = 'Confirmation'}: {
+    message: string,
+    header?: string
+}): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         getDeviceInfoUsingCapacitor().then(async (capacitor) => {
             if (capacitor.platform === 'web') {
@@ -134,8 +137,8 @@ export const confirm = async ({message, header = 'Confirmation'}: { message: str
                     reject: function () {
                         resolve(false);
                     },
-                    resizable:false,
-                    draggable:false,
+                    resizable: false,
+                    draggable: false,
                 });
             } else {
                 const {value} = await Dialog.confirm({
@@ -179,17 +182,20 @@ export const storeCurrentContent = (store: IDBStoreName, content: string) => {
     }
     return storeObjects(data)
 }
-export const storeChatsByDeviceID = (chats: Message[]) => {
+export const storeChatsByDeviceID = async  (chats: Message[]) => {
     let store: IDBStoreName = IDBStore.chat;
-    getDeviceID().then((deviceID: DeviceId) => {
-        if (deviceID) {
+    getDeviceID().then((device: {identifier:string}) => {
+        if (device) {
+            chats.forEach(chat => {
+                chat.id = device.identifier
+            })
             let data = {
                 chats: chats,
                 store: store,
-                id: deviceID.identifier,
+                id: device.identifier,
                 createdAt: new Date(),
             }
-            return storeObjects(data);
+            storeObjects(data);
         }
     })
 
@@ -227,7 +233,7 @@ function storeObjects(object: {
         openDatabase(object.store).then((db: any) => {
             const transaction = db.transaction([object.store.toString()], 'readwrite');
             const objectStore = transaction.objectStore(object.store);
-            object.id = 1;
+            object.id = object.id || 1;
             const request = objectStore.put(object);
             request.onsuccess = () => {
                 resolve(true);
@@ -300,17 +306,16 @@ export function clearDatabaseByName(dbName: IDBStoreName) {
     })
 }
 
-export function vibrateDevice(){
-    return getDeviceInfoUsingCapacitor().then(async function (info){
-        if (info.platform !== 'web'){
-          await  Haptics.impact({ style: ImpactStyle.Light });
-        }
-    })
+export async function vibrateDevice() {
+    const info = await getDeviceInfoUsingCapacitor();
+    if (info.platform !== 'web') {
+        await Haptics.impact({style: ImpactStyle.Light});
+    }
 }
 
-export function timeAgo(date: string | number | Date): string {
+export function timeAgo(date: Date | undefined): string {
     const now = new Date();
-    const seconds = Math.floor((now.getTime() - new Date(date).getTime()) / 1000);
+    const seconds = Math.floor((now.getTime() - new Date(date || new Date()).getTime()) / 1000);
 
     const intervals: { [key: string]: number } = {
         year: 31536000,
@@ -330,4 +335,13 @@ export function timeAgo(date: string | number | Date): string {
     }
 
     return 'just now';
+}
+
+export async function notify(message: string) {
+    const info = await getDeviceInfoUsingCapacitor();
+    if (info.platform === 'web') {
+        new Notification(message);
+    } else {
+
+    }
 }

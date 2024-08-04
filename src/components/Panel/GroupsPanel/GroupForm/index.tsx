@@ -11,8 +11,8 @@ import ImageUploader from "react-images-upload";
 import group from "../../../../assets/svg/groups.svg";
 import {reqType, service, serviceRoute} from "../../../../utils/enum";
 import {AnimatePresence, motion} from "framer-motion";
-import {AuthContext} from "../../../../services/context/auth.context";
-import {useCheckUserVerification} from "../../../../services/hooks/appHooks";
+import {AppContext} from "../../../../services/context/app.context";
+import {useCheckUserVerification} from "../../../../services/hooks";
 
 interface _gfIterface {
   onSubmit?: () => void;

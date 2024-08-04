@@ -7,14 +7,15 @@ import {SocketListeners} from "../../../../utils/interface";
 
 export function ActiveSeeker() {
     const [activeSeekerGroup, setActiveSeekerGroup] = useState<any>([]);
-    const sc = useContext(ShellContext)
-    useEffect(() => {
+    const sc = useContext(ShellContext);
+    function fetchGroups(){
         _props._db(service.group).query(serviceRoute.seekers,undefined,reqType.get,undefined ).then(function ({data}){
             setActiveSeekerGroup(data);
         })
+    }
+    useEffect(() => {
+        fetchGroups();
         sc?.globalSocket?.on(SocketListeners.NEWGROUP,function (data: any){
-            console.log("[socket]",data)
-            setActiveSeekerGroup([data, ...activeSeekerGroup]);
             new Notification("Someone is looking for mental support.")
         })
     }, []);

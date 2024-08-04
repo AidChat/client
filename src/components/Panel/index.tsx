@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import "./ index.css";
 import {ShellContext} from "../../services/context/shell.context";
-import {useWindowSize} from "../../services/hooks/appHooks";
+import {useWindowSize} from "../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../utils/enum";
 import {GroupListPanel} from "./Conversation/GroupsListPanel/groupListPanel";
 import {Chat} from "./ChatPanel/Chat";

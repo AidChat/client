@@ -17,11 +17,10 @@
 }
 
 .confession .reportBtn {
-    text-align: right;
+    text-align: left;
     color: gray;
     cursor: pointer;
     font-size: 14px;
-    display: flex;
     align-items: center;
     justify-content: end;
 }
@@ -113,6 +112,7 @@
     position: absolute;
     top: 0;
     margin-top: -50px;
+
     font-size: 14px;
     background-color: var(--green);
     border-radius: 3px;

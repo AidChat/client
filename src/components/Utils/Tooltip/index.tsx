@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
 import styled from "styled-components";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks";
 import {EwindowSizes} from "../../../utils/enum";
 
 // Styled component for Tooltip

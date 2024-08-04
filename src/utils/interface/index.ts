@@ -22,7 +22,8 @@ export enum SocketEmitters {
     _JOIN = "_JOIN",
     _READMESSAGE = "_READMESSAGE",
     _PING='PING',
-    _ASK='ASK'
+    _ASK='ASK',
+    _REPORTED_EVENT='REPORTED_EVENT'
 }
 
 export enum SocketListeners {
@@ -35,7 +36,9 @@ export enum SocketListeners {
     REPLY='REPLY',
     PONG='PONG',
     NEWGROUP="activeGroup",
-    JOINREQUEST="joiningRequest"
+    JOINREQUEST="joiningRequest",
+    PAYMENTDONE='paymentDone',
+    CLIENTUPDATE='clientUpdate',
 }
 
 export interface Role {
@@ -47,7 +50,7 @@ export interface Role {
 
 export interface MessageInterface {
     MessageContent: MessageContent;
-    created_at: string;
+    created_at: Date;
     groupId: number;
     id: number;
     messageContentId: number;
@@ -58,6 +61,8 @@ export interface MessageInterface {
     };
     ReadByAll?: boolean;
     ReadReceipt: ReadReceipt[]
+    isAnalysis?:boolean
+    analysis?:string
 }
 
 export interface ReadReceipt {
@@ -100,8 +105,10 @@ export interface IReminderMembers {
 export type IDBStoreName  = 'BLOG'| 'AICHAT';
 
 export interface Message {
-    sender: 'User' | 'Model';
+    sender: 'User' | 'Model' | 'Helper';
     message: string;
+    created_at?: Date;
+    id?:string | number;
 }
 
 export interface IBlogShortContent {

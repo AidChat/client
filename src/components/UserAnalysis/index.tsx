@@ -10,10 +10,10 @@ interface UserAnalysis {
 }
 
 export function UserAnalysis(props: { data:UserAnalysis[] }) {
-    console.log(props)
+    
     return (
         <>{props?.data?.length > 0 ?
-        <div className={"_scrollable-container"}>
+        <div className={"_scrollable-container"} style={{height:'400px'}}>
             {props.data.map(function(item){
                return<div className={'font-primary label '}>
 

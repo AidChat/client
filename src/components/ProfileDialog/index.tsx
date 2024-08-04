@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {ShellContext} from "../../services/context/shell.context";
-import {AuthContext} from "../../services/context/auth.context";
-import {useNetworkConnectivity, useWindowSize} from "../../services/hooks/appHooks";
+import {AppContext} from "../../services/context/app.context";
+import {useNetworkConnectivity, useWindowSize} from "../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../utils/enum";
 import {_props} from "../../services/network/network";
 import {Dialog} from "primereact/dialog";
@@ -13,9 +13,10 @@ import Snackbar from "../Utils/Snackbar";
 import GroupImage from "../../assets/png/defaultgroup.png";
 import ImageUploader from "react-images-upload";
 import {MdVerified} from "react-icons/md";
-import {Spinner} from "../Utils/Spinner/spinner";
+import {FcPaid} from "react-icons/fc";
 
 export function ProfileIconComponent(props: { full: boolean }) {
+
     const [user, setUser] = useState<{
         id: string;
         email: string;
@@ -25,7 +26,7 @@ export function ProfileIconComponent(props: { full: boolean }) {
     } | null>(null);
     const [isClient, setClient] = useState<boolean>(false);
     const sc = useContext(ShellContext);
-    const auth = useContext(AuthContext);
+    const auth = useContext(AppContext);
     const [showUserForm, setShowUserForm] = useState<boolean>(false);
     const {size: small} = useWindowSize(EwindowSizes.S);
     useEffect(() => {
@@ -112,6 +113,9 @@ export function ProfileIconComponent(props: { full: boolean }) {
                         onUpdate={() => {
                             fetchProfile();
                         }}
+                        closeDialog={() => {
+                            setShowUserForm(false)
+                        }}
                     />
                 </>
             </Dialog>
@@ -186,7 +190,7 @@ export function ProfileIconComponent(props: { full: boolean }) {
     );
 }
 
-function ProfileForm({onUpdate}: { onUpdate: () => void }) {
+function ProfileForm({onUpdate, closeDialog}: { onUpdate: () => void, closeDialog: () => void }) {
     const [user, setUser] = useState<{
         name: string;
         email: string;
@@ -196,6 +200,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         mobile?: string;
         verifiedEmail: boolean;
         Username: string;
+        Type: "Seeker" | "Helper" | "Pending"
     }>({
         name: "",
         email: "",
@@ -205,6 +210,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         mobile: undefined,
         verifiedEmail: false,
         Username: "",
+        Type: "Pending",
     });
     const [loading, _loading] = useState<boolean>(false);
     const [message, _message] = useState<string | null>(null);
@@ -212,8 +218,9 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
         name: false,
         profileImage: false,
     });
+    const [paid, setPaid] = useState(undefined);
     const [showOtpContainer, setOtpContainerState] = useState(false);
-    const ac = useContext(AuthContext);
+    const ac = useContext(AppContext);
     useEffect(() => {
         fetchUser();
     }, []);
@@ -307,7 +314,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
             setOtpContainerState(true);
             _message("Verification code sent");
         } catch (error) {
-            _message("Please try agian after some time.");
+            _message("Please try again after some time.");
         }
     }
 
@@ -317,6 +324,24 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
     }
 
     const {size: small} = useWindowSize(EwindowSizes.S);
+
+    function handleSubscriptionPanel() {
+        closeDialog();
+        ac?.setShowSubscriptionDialog(true)
+    }
+
+    useEffect(() => {
+        _props._db(service.subscription).query(serviceRoute.subscriptionInfo, undefined, reqType.get, undefined)
+            .then(function ({data}) {
+                if (data) {
+                    setPaid(data.paid);
+                }
+            }).catch(e => {
+            console.error(e)
+        })
+
+    }, []);
+
     return (
         <div className={"profile-Wrapper"}>
             {message && (
@@ -337,6 +362,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                                 : GroupImage
                         }
                         alt={"Profile image"}
+                        loading={'eager'}
                     />
                 </div>
                 <div>
@@ -354,18 +380,17 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     />
                 </div>
             </div>
-
             <div
                 className={
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label>Username</label>
+                <label className={'font-medium'} >Username</label>
                 <input
                     className={"custom-input borderRadius-light"}
                     value={user.Username}
                 />
-                <label>Name</label>
+                <label className={'font-medium'}>Name</label>
                 <input
                     className={"custom-input borderRadius-light"}
                     value={user.name}
@@ -381,7 +406,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label className={"dflex"} style={{alignItems: "center"}}>
+                <label className={"dflex font-medium"} style={{alignItems: "center"}}>
                     Email{" "}
                     {user.verifiedEmail ? (
                         <MdVerified style={{margin: "0 5px"}} color={"lightblue"}/>
@@ -418,7 +443,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label>
+                <label className={'font-medium'}>
                     Mobile <MdVerified style={{margin: "0 5px"}}/>
                 </label>
                 <input
@@ -436,7 +461,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     "row row-space " + useResponsizeClass(EwindowSizes.S, [""])
                 }
             >
-                <label>About me</label>
+                <label className={'font-medium'}>Something about me.</label>
                 <textarea
                     className={"custom-input borderRadius-light h100"}
                     onChange={e => {
@@ -453,6 +478,19 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     useResponsizeClass(EwindowSizes.S, [" dflex row "])
                 }
             >
+                {user.Type == 'Seeker' && <>
+                    {!paid ?
+                        <div onClick={handleSubscriptionPanel}  className={" btn btn-primary font-secondary pointer"} >
+                            Subscribe
+                        </div>
+                        : <>
+                            <div className={" dflex flex-center font-large font-secondary"}>
+                                <FcPaid size={22} style={{margin: '0 4px'}}/> Subscribed. <span
+                                className={'font-primary font-small pointer'} style={{margin: '0 4px'}}>Cancel subscription?</span>
+                            </div>
+
+                        </>}
+                </>}
                 {small && <div
                     onClick={() => {
                         handleLogOut();
@@ -468,7 +506,7 @@ function ProfileForm({onUpdate}: { onUpdate: () => void }) {
                     }}
                     className={" btn btn-round-primary"}
                 >
-                      Update
+                    Update
                 </div>
             </div>
         </div>

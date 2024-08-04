@@ -9,11 +9,11 @@ const PredefinedMessages = (props: IPredefinedMessages) => {
   const [selectedMessage, setSelectedMessage] = useState("");
 
   const messages = [
-    "I am ashamed of my body",
-    "I am facing panic attacks",
-    "Someone close died recently",
-    "I am feeling hopeless?",
-    "I am not able to move on.",
+    "How are you feeling today?",
+    "How can I help you?",
+    "I am here. Tell me what happened?",
+    "How can I help you? You are not alone in this.",
+
   ];
 
   return (

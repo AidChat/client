@@ -34,14 +34,14 @@ export function RegisterForm({
     password?: string;
     requestId?: undefined | string;
     mobile: number | null;
-    username?:string
+    username?:string | undefined
   }>({
     name: undefined,
     email: invite ? email : undefined,
     password: undefined,
     requestId: requestCode,
     mobile: null,
-    username:'timon'
+    username:undefined
   });
 
   const isValidState = () => {
@@ -107,7 +107,7 @@ export function RegisterForm({
         <motion.div
             initial={{y: 10}}
             animate={{y: 0}}
-            className={"color-green authErrorContainer"}
+            className={"authErrorContainer font-medium font-primary"}
             style={{textAlign: "center"}}
         >
           {error}
@@ -122,6 +122,7 @@ export function RegisterForm({
                 inputName={"username"}
                 value={state.username}
                 icon={<></>}
+                placeholder={'Username should be unique.'}
             />
           </div>
 
@@ -136,6 +137,7 @@ export function RegisterForm({
                 inputName={"name"}
                 value={state.name}
                 icon={<FaRegUser size={20}/>}
+                placeholder={'Emillie watson'}
             />
           </div>
         </div>
@@ -149,6 +151,7 @@ export function RegisterForm({
                   inputName={"mobile"}
                   value={state.mobile?.toString()}
                   icon={<FiPhone size={22}/>}
+
               />
             </div>
           </div>
@@ -163,6 +166,7 @@ export function RegisterForm({
                   inputName={"email"}
                   value={state.email}
                   icon={<MdOutlineAlternateEmail size={22}/>}
+                  placeholder={'emillie@email.com'}
               />
             </div>
           </div>
@@ -194,7 +198,7 @@ export function RegisterForm({
               style={{marginTop: "24px"}}
           >
             <div
-                className={"font-primary"}
+                className={"font-primary font-medium font-thick"}
 
             >
               <p>

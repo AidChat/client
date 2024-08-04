@@ -1,9 +1,9 @@
 import React, {ChangeEvent, FormEvent, useContext, useEffect, useState,} from "react";
-import {AuthContext} from "../../../services/context/auth.context";
+import {AppContext} from "../../../services/context/app.context";
 import {_props} from "../../../services/network/network";
 import {Spinner} from "../../Utils/Spinner/spinner";
 import {useParams} from "react-router-dom";
-import {useWindowSize} from "../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../utils/enum";
 import {motion} from "framer-motion";
 import {Input} from "../../Utils/CustomInput";
@@ -18,7 +18,7 @@ interface LoginFromProps {
 }
 
 export function LoginForm({toggleState, email}: LoginFromProps) {
-    let context = useContext(AuthContext);
+    let context = useContext(AppContext);
     const {requestCode} = useParams();
     const [userdata, setUserData] = useState<{
         email: any;
@@ -96,7 +96,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                 <motion.div
                     initial={{y: 10}}
                     animate={{y: 0}}
-                    className={"color-green authErrorContainer"}
+                    className={"font-primary font-medium authErrorContainer"}
                     style={{textAlign: "center"}}
                 >
                     {error}
@@ -110,6 +110,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                             type={"email"}
                             allowToggle={false}
                             icon={<MdOutlineAlternateEmail size={22}/>}
+                            placeholder={'emillie@email.com'}
                         />
                     </div>
                 </div>
@@ -122,6 +123,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                             type={"password"}
                             allowToggle={true}
                             icon={<FaEye size={22}/>}
+                            placeholder={'*************'}
                         />
                     </div>
                 </div>
@@ -171,7 +173,7 @@ export function LoginForm({toggleState, email}: LoginFromProps) {
                     style={{marginTop: "24px"}}
                 >
                     <div
-                        className={"font-primary"}
+                        className={"font-primary font-medium font-thick"}
 
                     >
                         {

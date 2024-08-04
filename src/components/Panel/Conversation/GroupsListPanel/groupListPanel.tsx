@@ -10,7 +10,7 @@ import {ShellContext} from "../../../../services/context/shell.context";
 import {FaHandHoldingHeart} from "react-icons/fa6";
 import Tooltip from "../../../Utils/Tooltip";
 import {IoIosArrowBack} from "react-icons/io";
-import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../../utils/enum";
 import {Dialog} from "primereact/dialog";
 import {ActiveSeeker} from "../ActiveSeekers";

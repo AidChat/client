@@ -3,7 +3,7 @@ import GroupImage from "./../../../assets/png/defaultgroup.png";
 import "./index.css";
 import {_props} from "../../../services/network/network";
 import {ShellContext} from "../../../services/context/shell.context";
-import {useWindowSize,} from "../../../services/hooks/appHooks";
+import {useWindowSize,} from "../../../services/hooks";
 import {IoIosArrowForward} from "react-icons/io";
 import {EwindowSizes, reqType, service, serviceRoute,} from "../../../utils/enum";
 import {ProfileIconComponent} from "../../ProfileDialog";
@@ -23,7 +23,6 @@ export function UtilityPanel() {
             ._db(service.group)
             .query(serviceRoute.userRequest, {}, reqType.get, undefined)
             .then(result => {
-                console.log(result)
                 _requests(result.data);
             });
     }, [refetch]);

@@ -8,9 +8,9 @@ import {InviteForm} from "./InviteForm";
 import {useResponsizeClass} from "../../utils/functions";
 import {motion} from 'framer-motion'
 import {EwindowSizes} from "../../utils/enum";
-import {OTPForm} from "./Code";
+import {OTPForm} from "./OneTimePasscode";
 import {MokshaIcon} from "../Moksha/Icon";
-import {AuthContext} from "../../services/context/auth.context";
+import {AppContext} from "../../services/context/app.context";
 
 export function AuthenticationContainer() {
     const {requestCode} = useParams();
@@ -21,7 +21,7 @@ export function AuthenticationContainer() {
         invite: !!requestCode,
         code: false,
     });
-    let ac = useContext(AuthContext);
+    let ac = useContext(AppContext);
 
     useEffect(() => {
         setState({
@@ -36,6 +36,7 @@ export function AuthenticationContainer() {
         state: "LOGIN" | "REGISTER" | "CODE" | "INVITE",
         email?: string
     ) {
+
         setState({
             login: state === "LOGIN",
             register: state === "REGISTER",
@@ -50,7 +51,7 @@ export function AuthenticationContainer() {
             setProps({email: e});
         }
         setState({
-            invite: true,
+            invite: e? false:true,
             register: true,
             login: false,
             code: false,
@@ -90,7 +91,7 @@ export function AuthenticationContainer() {
                                 <RegisterForm
                                     toggleState={(s, email) => switchAuthState(s, email)}
                                     email={props.email}
-                                    invite={state.invite}
+                                    invite={!!props.email}
                                 />
                             )}
                             {state.code && (
@@ -119,7 +120,7 @@ export function AuthenticationContainer() {
                     )}
                 </div>
             </motion.div>
-            <MokshaIcon customstyle={{margin:"15px 0"}} online={!!ac?.isMokshaAvailable} bottom={true} right={true} size={'small'}/>
+            <MokshaIcon customstyle={{margin:"15px 30px"}} online={!!ac?.isMokshaAvailable} bottom={true} right={true} size={'medium'}/>
         </div>
     );
 }

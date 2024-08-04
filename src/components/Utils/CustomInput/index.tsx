@@ -16,7 +16,8 @@ interface ICustomInput {
     onSubmit?: (s: string) => void
     listenSubmit?: boolean
     send?: () => void
-    width?:string
+    width?:string,
+    fontSizeClass ?: 'font-medium' | 'font-large' | 'font-small'
 }
 
 
@@ -76,7 +77,7 @@ export function Input(props: ICustomInput) {
         <div className={'position-relative'} style={_styles.container}>
             <div style={_styles.inputContainer}>
                 <input
-                    id={'hawkinput'}
+                    className={props.fontSizeClass || 'font-medium' }
                     disabled={props.disabled}
                     value={props.value}
                     name={props.inputName}

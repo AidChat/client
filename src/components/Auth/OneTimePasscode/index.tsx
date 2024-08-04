@@ -123,7 +123,7 @@ export function OTPForm(props: ICode) {
     return (<div className={'dflex flex-column h100 '} style={{justifyContent: 'center', alignItems: 'center'}}>
         <Snackbar message={message} onClose={() => setMessage('')}/>
         <div className={'input-wrapper dflex flex-column'}>
-            <div style={{height: '70px'}}><h6 className={'font-secondary'}>{error}</h6></div>
+            <div style={{height: '70px'}}><h6 className={'font-secondary font-medium'}>{error}</h6></div>
             <div className={'dflex flex-row'}>
                 {state.map((element: any, index: number) => <div key={index} className={'code-input-element'}>
                     <input disabled={loading} onKeyUp={(event: any) => {
@@ -134,9 +134,9 @@ export function OTPForm(props: ICode) {
                            id={state.indexOf(element).toString()} type={"tel"}/>
                 </div>)}
             </div>
-            <h2 className={'font-primary'}>Enter the opt sent to you email</h2>
-            <h2 style={{alignSelf: 'end'}} className={'font-secondary pointer'} onClick={generateCode}>Resend</h2>
-            <h2 style={{alignSelf: 'end'}} className={'font-secondary pointer'} onClick={()=>{props.toggleState("LOGIN")}}>Login</h2>
+            <h2 className={'font-primary font-medium'}>Enter the opt sent to you email</h2>
+            <h2 style={{alignSelf: 'end'}} className={'font-secondary m0 font-medium pointer'} onClick={generateCode}>Resend</h2>
+            <h2 style={{alignSelf: 'end'}} className={'font-secondary m0 font-medium pointer'} onClick={()=>{props.toggleState("LOGIN")}}>Login</h2>
         </div>
 
     </div>)

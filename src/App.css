@@ -6,13 +6,9 @@
 
 * {
     font-family: defaultfont, serif;
-    font-weight: 500;
     box-sizing: border-box;
+    font-weight: 600;
     -webkit-tap-highlight-color: transparent;
-}
-dialog[open]::backdrop {
-    background-color:red;
-    opacity: 0.75;
 }
 :root {
     --green: #398378;
@@ -20,23 +16,19 @@ dialog[open]::backdrop {
     --font-small : 12px;
     --font-medium: 16px;
     --font-large: 18px;
+    --font-heading:32px;
+    --lightgray:#272727;
+    --lightdark:#403d39
 }
-.wrap{
-    flex-wrap: wrap;
-}
-.position-relative{
-    position: relative;
-}
+
 
 body {
     margin: 0;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: url("./assets/png/bg.png");
-    background-position: center;
-    background-repeat: repeat;
-    height: 100vh;
+    background: url("./assets/png/bg.png") repeat center;
+    height: 100dvh;
     min-height: max-content;
 }
 
@@ -145,16 +137,17 @@ div {
 }
 
 .btn {
-    height: 2rem;
+    height: 2em;
     width: fit-content;
-    border-radius: 4px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer !important;
     border: none;
-    padding: 2px 8px;
+    padding: 4px 8px;
     transition: all 0.5s;
+    font-size: var(--font-medium);
 }
 
 .btn-primary {
@@ -355,6 +348,7 @@ dialog::backdrop {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width:90px;
 }
 
 .div_animateLR {
@@ -564,7 +558,6 @@ dialog::backdrop {
 .p-confirm-dialog{
     background: whitesmoke;
     padding:10px;
-    border-radius: 4px;
     z-index:99999999999999 !important;
 }
 .p-confirm-dialog .p-dialog-header{
@@ -588,18 +581,17 @@ dialog::backdrop {
 }
 .p-dialog-header{
     padding:14px;
-    background: rgba(31, 41, 31, 0.68);
-    border-radius: 10px;
-
+    background: var(--lightdark);
+    border-radius: 40px;
 }
 .p-dialog{
-    background: rgba( 33, 62, 24, 0.05 );
     box-shadow: 0 8px 32px 0 rgb(31, 41, 31);
-    backdrop-filter: blur( 5.5px );
-    -webkit-backdrop-filter: blur( 5.5px );
-    background:#1C1C1C;
-    border-radius: 10px;
-    padding:16px;
+    backdrop-filter: blur(5.5px );
+    background:var(--lightgray);
+    border-radius: 30px;
+    margin:5px 15px;
+    padding:15px;
+    max-height:90vh !important;
 }
 .p-dialog-title{
     color:whitesmoke;
@@ -617,4 +609,47 @@ dialog::backdrop {
 ._fixed-top{
     position:sticky;
     top:0;
+}
+.btn-disabled{
+    background: gray !important;
+}
+
+
+.p-confirm-popup{
+    background: var(--lightgray) ;
+    padding:8px;
+    border-radius: 4px;
+    height: fit-content;
+    color:var(--white);
+    border: 1px solid var(--white);
+}
+.p-confirm-popup-accept{
+    background:var(--green);
+    color:var(--white);
+    border:none;
+    padding:4px 4px;
+    margin:4px 6px;
+    width:fit-content;
+    border-radius:4px;
+}
+.p-confirm-popup-reject{
+    background:var(--white);
+    color:var(--lightdark);
+    border:none;
+    padding:4px 4px;
+    margin:4px 0;
+    width:fit-content;
+    border-radius:4px;
+}
+.text-left{
+    text-align: left;
+}
+.text-right{
+    text-align: right;
+}
+.position-relative{
+    position: relative;
+}
+.p-dialog-header-icon{
+    margin-top:4px;
 }

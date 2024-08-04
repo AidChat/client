@@ -11,7 +11,7 @@ import {GoBlocked} from "react-icons/go";
 import {FaUserPlus} from "react-icons/fa";
 import Tooltip from "../../../Utils/Tooltip";
 import {validateEmail} from "../../../../utils/functions";
-import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../../services/hooks";
 import {EwindowSizes, reqType, service, serviceRoute} from "../../../../utils/enum";
 import {motion} from "framer-motion";
 

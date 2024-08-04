@@ -139,6 +139,11 @@ export enum serviceRoute {
     articles = "/CJ130/articles",
     blogArticles = '/CJ130/blog/articles',
     seekers='/CJ130/seekers',
+    paymentReminder = "/payment/reminder",
+    subscriptionInfo = "/payment/getSubscriptionInfo",
+    groupRequests = '/CJ130/groupRequests',
+    postfeedback = "/CJ130/feedback",
+    switchAider = '/CJ130/requestSwitchAider',
 }
 
 export enum service {
@@ -146,7 +151,8 @@ export enum service {
     group = "http://localhost:8901/v1",
     messaging = "http://localhost:8900/",
     bot = 'http://localhost:9650',
-    event = 'http://localhost:8089'
+    event = 'http://localhost:8089',
+    subscription = 'http://localhost:9659'
 }
 
 export enum IDBStore {
@@ -186,4 +192,8 @@ export interface Article {
     created_at: Date,
     status: EArticleStatus,
     id?: number
+}
+
+export enum RecordUpdateModels{
+    group = 'Group',
 }

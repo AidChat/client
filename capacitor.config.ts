@@ -7,7 +7,7 @@ const config: CapacitorConfig = {
   webDir: "build",
   server: {
     hostname: "app.aidchat.com",
-    allowNavigation: [],
+    allowNavigation: ["*"],
   },
   plugins: {
     CapacitorHttp: {

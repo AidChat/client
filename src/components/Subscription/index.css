@@ -1,0 +1,30 @@
+.sub-container {
+    width: 500px;
+}
+.sub-container-small{
+    width: 320px;
+}
+
+.sub-price-text {
+    font-size: var(--font-heading) !important;
+    font-weight:700 !important;
+}
+
+.sub-bullets li {
+    font-style: italic;
+    font-size: var(--font-medium);
+}
+
+.sub-bullets h4 {
+    margin-bottom: 0;
+}
+
+.sub-container .btn-custom {
+    width: 300px;
+    border-radius: 20px;
+    margin: 14px 0;
+}
+.sub-lm{
+    text-decoration: underline;
+    cursor: pointer;
+}

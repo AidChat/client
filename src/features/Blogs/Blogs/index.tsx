@@ -19,7 +19,7 @@ import {AiFillEdit} from "react-icons/ai";
 import {ConfirmDialog} from "primereact/confirmdialog";
 import {motion} from "framer-motion";
 import {IoChevronBack} from "react-icons/io5";
-import {AuthContext} from "../../../services/context/auth.context";
+import {AppContext} from "../../../services/context/app.context";
 import {_props} from "../../../services/network/network";
 import Snackbar from "../../../components/Utils/Snackbar";
 import {FaPenFancy} from "react-icons/fa";
@@ -27,7 +27,7 @@ import Tooltip from "../../../components/Utils/Tooltip";
 
 export function BlogList() {
   const [selectedBlog, setSelectedBlogs] = useState<Article | null>(null);
-  const ac = useContext(AuthContext);
+  const ac = useContext(AppContext);
   const [items, setItems] = useState<Article[]>([]);
   const [message, setMessage] = useState<string>("");
   useEffect(() => {
@@ -76,7 +76,7 @@ export function BlogList() {
             &nbsp; Blogs
           </div>
           <div
-            className={"btn btn-primary w25 m8 "}
+            className={"btn btn-primary w10 m8 "}
             onClick={function () {
               setSelectedBlogs({
                 content: "<p>Write something here.</p>",

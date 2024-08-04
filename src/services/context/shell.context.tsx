@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from "react";
 import {io, Socket} from "socket.io-client";
 import {EwindowSizes, service} from "../../utils/enum";
-import {useWindowSize} from "../hooks/appHooks";
+import {useWindowSize} from "../hooks";
 import {_props} from "../network/network";
 import {UserProps} from "../../utils/interface";
 
@@ -22,50 +22,13 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
         Util: boolean;
         Group: boolean;
     }>({Util: !isSmall, Group: true});
-    const [globalSocket, setGlobalSocket] = useState<Socket | null>(null);
     useEffect(() => {
         updateSidePanelState({Util: true, Group: true});
     }, [isSmall]);
 
-    useEffect(() => {
-        setMessageSocket(
-            io(service.messaging, {
-                autoConnect: true,
-                reconnectionAttempts: 1,
-                auth: {
-                    session: window.localStorage.getItem("session")
-                        ? window.localStorage.getItem("session")
-                        : "",
-                },
-            })
-        );
-        _props
-            ._user()
-            .get()
-            .then(function (data: UserProps) {
-                setGlobalSocket(
-                    io(service.event, {
-                        autoConnect: true,
-                        reconnectionAttempts: 1,
-                        auth: {
-                            session: window.localStorage.getItem("session")
-                                ? window.localStorage.getItem("session")
-                                : "",
-                            socketID: data.globalSocketID,
-                        },
-                    })
-                );
-            });
-    }, []);
 
-    useEffect(
-        function () {
-            globalSocket?.on("clientInfoUpdate", function (data) {
-                new Notification("You have a new client who is seeking for help.", {});
-            });
-        },
-        [globalSocket]
-    );
+
+
 
     return (
         <ShellContext.Provider
@@ -85,7 +48,6 @@ export function ShellContextProvider({children}: { children: ReactElement }) {
                 _setRefetch,
                 sidePanel,
                 updateSidePanelState: isSmall ? updateSidePanelState : null,
-                globalSocket
             }}
         >
             {children}

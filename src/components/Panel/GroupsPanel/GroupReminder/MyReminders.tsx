@@ -5,7 +5,7 @@ import {IReminder} from "../../../../utils/interface";
 import {formatTime, formatTimeToHHMM} from "../../../../utils/functions";
 import {CiUser} from "react-icons/ci";
 import {Menu} from "../../../Utils/Menu";
-import {useWindowSize} from "../../../../services/hooks/appHooks";
+import {useWindowSize} from "../../../../services/hooks";
 import {MdDelete} from "react-icons/md";
 import Snackbar from "../../../Utils/Snackbar";
 
