@@ -18,6 +18,7 @@ interface ICustomInput {
     send?: () => void
     width?:string,
     fontSizeClass ?: 'font-medium' | 'font-large' | 'font-small'
+    defaultFocus?:boolean
 }
 
 
@@ -68,9 +69,9 @@ export function Input(props: ICustomInput) {
     };
 
     let _styles = styles;
-    _styles['inputEle'].color = props.textColor ? props.textColor : "black";
+    _styles['inputEle'].color = props.textColor ? 'white' : "black";
     _styles['container'].borderRadius = props.borderRadius ? props.borderRadius : '0px';
-    _styles['container'].border = props.textColor ? '1px solid ' + props.textColor : "lightgray";
+    _styles['container'].border = props.textColor ? '1px dashed ' + props.textColor : "lightgray";
     _styles['container'].height = props.height ? props.height : '2em';
     _styles['container'].width = props.width ? props.width : '90%';
     return (
@@ -82,6 +83,7 @@ export function Input(props: ICustomInput) {
                     value={props.value}
                     name={props.inputName}
                     onChange={props.onChange}
+                    autoFocus={!!props.defaultFocus}
                     style={_styles.inputEle}
                     type={state.isHidden ? props.type : "text"}
                     placeholder={props.placeholder}

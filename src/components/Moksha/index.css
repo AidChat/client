@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 6px;
+    padding: 5px 0;
     position: relative;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .chat-history-container .chat-wrapper {
-    margin: 10px 20px;
+    margin: 4px 10px;
     font-size: 16px;
 }
 
@@ -60,6 +60,9 @@
 .btncontainer {
     text-align: center;
     width: 20%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
 }
 
 .emptycontainer {

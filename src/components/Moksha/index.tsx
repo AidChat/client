@@ -83,18 +83,11 @@ export const ClientChatWindow = (props: Props) => {
         setMessage(m);
     }
 
-    function renderChatOrder(data: any) {
-        setConversation(data);
+    function addConversationMessages(payload: Message) {
+        storeChatsByDeviceID([...conversation,payload]).then(function(){
+            setConversation(prevState => [...prevState,payload]);
+        })
     }
-
-
-    async function addConversationMessages(payload: Message) {
-        const chats: Message[] = conversation || [];
-        chats.push(payload);
-        await storeChatsByDeviceID(chats);
-        setConversation(chats);
-    }
-
 
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
@@ -124,10 +117,7 @@ export const ClientChatWindow = (props: Props) => {
                     setMessage("");
                     scrollToBottom(scrollableDivRef);
                 })
-
-
             }
-
         }
     }
 
@@ -260,14 +250,13 @@ export const ClientChatWindow = (props: Props) => {
                 }
 
             } catch (e) {
+                setConversation(storedChats);
                 setLoading(false);
             }
 
         });
     }
-
     let {size: isSmall} = useWindowSize(EwindowSizes.S);
-
     return (
         <>
             <ConfirmDialog/>
@@ -288,16 +277,16 @@ export const ClientChatWindow = (props: Props) => {
                                         key={index}
                                         className={`font-primary m4 chat-wrapper ${text.sender === 'User' && 'text-right'} `}>
                                         {text.sender === "User" &&
-                                            <span style={{color: "lightyellow"}}>{}</span>}
+                                            <span className={'font-medium'} style={{color: "lightyellow"}}>{}</span>}
                                         {text.sender === "Model" &&
                                             <span
-                                                className={"font-secondary font-thick"}>{`${getString(24)} :`} </span>}
+                                                className={"font-secondary font-medium font-thick"}>{`${getString(24)} :`} </span>}
                                         {text.sender === "Helper" &&
                                             <span
-                                                className={"font-secondary font-thick"}>{`${aider.Username} :`} </span>}
+                                                className={"font-secondary font-thick font-medium"}>{`${aider.Username} :`} </span>}
 
                                         <Markdown
-                                            className={`m0 font-large text-left font-thick ${text.sender === 'User' && ' text-right font-secondary '}`}>
+                                            className={`m0 font-medium text-left font-thick ${text.sender === 'User' && ' text-right font-secondary '}`}>
                                             {text.message}
                                         </Markdown>
                                         <span
@@ -353,10 +342,11 @@ export const ClientChatWindow = (props: Props) => {
                             width={showLoginComponent ? "100%" : undefined}
                             height={"50px"}
                             borderRadius={"50px"}
-                            textColor={"gray"}
+                            textColor={"#2e2c2c"}
                             placeholder={
                                 "How are you feeling."
                             }
+                            defaultFocus={true}
                             allowToggle={false}
                             disabled={false}
                             icon={message.split('').length > 0 ? <PiPaperPlaneTiltFill size={22} color={"#398378"}/> :

@@ -6,7 +6,7 @@ import {ShellContext} from "./services/context/shell.context";
 import {SocketEmitters} from "./utils/interface";
 
 import {
-    getDeviceInfoUsingCapacitor, getFCMToken,
+    getDeviceInfoUsingCapacitor,
     requestForNotificationAccessIfNotGranted,
     setScreenOrientation,
 } from "./utils/functions";
@@ -25,7 +25,7 @@ function App(): React.ReactElement {
                 console.log("Current platform", info.platform);
                 if (info.platform === 'ios') {
                     // styling is given to support devices with notch/curved edges.
-                    if (element) element.style.padding = "14px 0px";
+                    if (element) element.style.padding = "12px 0px";
                 }
                 if (info.platform === "web") {
                     if ("serviceWorker" in navigator) {

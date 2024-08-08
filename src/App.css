@@ -14,8 +14,8 @@
     --green: #398378;
     --white: #eaeaea;
     --font-small : 12px;
-    --font-medium: 16px;
-    --font-large: 18px;
+    --font-medium: 14px;
+    --font-large: 16px;
     --font-heading:32px;
     --lightgray:#272727;
     --lightdark:#403d39
@@ -145,7 +145,7 @@ div {
     align-items: center;
     cursor: pointer !important;
     border: none;
-    padding: 4px 8px;
+    padding: 16px 8px;
     transition: all 0.5s;
     font-size: var(--font-medium);
 }
@@ -338,6 +338,7 @@ dialog::backdrop {
 
 .pointer {
     cursor: pointer;
+    font-size:var(--font-medium);
 }
 
 .borderNone {
@@ -508,7 +509,7 @@ dialog::backdrop {
     bottom: -1px;
     background-size: 2px 4px;
     z-index: -1;
-    filter: blur(8px);
+    filter: blur(4px);
     animation: glowing 1s linear infinite, glowing2 5s linear infinite;
     border-radius: 50%;
 }
@@ -566,6 +567,8 @@ dialog::backdrop {
 .p-confirm-dialog .p-dialog-content{
     margin:8px 6px;
     color:whitesmoke;
+    font-size:var(--font-large);
+    padding:0 8px;
 }
 .p-confirm-dialog .p-dialog-footer{
     display:flex;
@@ -573,24 +576,25 @@ dialog::backdrop {
     padding:8px 4px;
 }
 .p-confirm-dialog .p-dialog-footer button{
-    padding:4px 16px;
+    padding:4px 22px;
     border:1px solid lightgray;
     border-radius:4px;
     cursor: pointer;
     margin:0 10px;
+    font-size:var(--font-medium)
 }
 .p-dialog-header{
     padding:14px;
     background: var(--lightdark);
     border-radius: 40px;
+    font-size:var(--font-large);
 }
 .p-dialog{
-    box-shadow: 0 8px 32px 0 rgb(31, 41, 31);
     backdrop-filter: blur(5.5px );
     background:var(--lightgray);
     border-radius: 30px;
     margin:5px 15px;
-    padding:15px;
+    padding:5px;
     max-height:90vh !important;
 }
 .p-dialog-title{

@@ -127,7 +127,7 @@ export const confirm = async ({message, header = 'Confirmation'}: {
 }): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         getDeviceInfoUsingCapacitor().then(async (capacitor) => {
-            if (capacitor.platform === 'web') {
+            if (capacitor.platform !== 'android') {
                 confirmDialog({
                     message,
                     header,
@@ -139,6 +139,7 @@ export const confirm = async ({message, header = 'Confirmation'}: {
                     },
                     resizable: false,
                     draggable: false,
+                    defaultFocus:'accept'
                 });
             } else {
                 const {value} = await Dialog.confirm({
