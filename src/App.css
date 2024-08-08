@@ -7,7 +7,7 @@
 * {
     font-family: defaultfont, serif;
     box-sizing: border-box;
-    font-weight: 600;
+    font-weight: 500;
     -webkit-tap-highlight-color: transparent;
 }
 :root {
@@ -513,8 +513,8 @@ dialog::backdrop {
     border-radius: 50%;
 }
 .glow-border-online::before {
-    background: linear-gradient(45deg, #398378, #00ffff, #398378, #00ffff);
-    border: 2px solid #398378;
+    background: linear-gradient(123deg, #398378, #00ffff, #398378, #00ffff);
+    border: 12px solid #398378;
 
 }
 .glow-border-offline::before{
