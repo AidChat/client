@@ -309,7 +309,7 @@ export function clearDatabaseByName(dbName: IDBStoreName) {
 export async function vibrateDevice() {
     const info = await getDeviceInfoUsingCapacitor();
     if (info.platform !== 'web') {
-        await Haptics.impact({style: ImpactStyle.Light});
+        await Haptics.impact({style: ImpactStyle.Medium});
     }
 }
 

@@ -53,6 +53,7 @@ export const ClientChatWindow = (props: Props) => {
     const [switchToMoksha, setSwitchToMoksha] = useState<boolean>(false);
     const [listenerAvailable, setListenerAvailable] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
+
     useEffect(() => {
         window.setTimeout(function () {
             setShowInfo(false);
@@ -83,14 +84,15 @@ export const ClientChatWindow = (props: Props) => {
     }
 
     function renderChatOrder(data: any) {
-        console.log(data)
         setConversation(data);
     }
 
 
     async function addConversationMessages(payload: Message) {
-        setConversation(prevConversation => [...prevConversation, payload]);
-        await storeChatsByDeviceID(conversation);
+        const chats: Message[] = conversation || [];
+        chats.push(payload);
+        await storeChatsByDeviceID(chats);
+        setConversation(chats);
     }
 
 
@@ -111,7 +113,6 @@ export const ClientChatWindow = (props: Props) => {
                     addConversationMessages({sender: "User", message: message, created_at: new Date()});
                     setMessage("");
                     scrollToBottom(scrollableDivRef);
-                    storeChatsByDeviceID(conversation);
                 }).catch(e => {
                     // unauthenticated case
                     let payload = {
@@ -119,7 +120,7 @@ export const ClientChatWindow = (props: Props) => {
                         message: message,
                     };
                     ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
-                    addConversationMessages({sender: "User", message: message, created_at: new Date()});
+                    addConversationMessages({sender: "User", message: payload.message, created_at: new Date()});
                     setMessage("");
                     scrollToBottom(scrollableDivRef);
                 })
@@ -130,10 +131,9 @@ export const ClientChatWindow = (props: Props) => {
         }
     }
 
-    function handleSocketListener(e: any) {
+    async function handleSocketListener(e: any) {
         vibrateDevice().then(function () {
             addConversationMessages({sender: "Model", message: e.message, created_at: new Date()});
-
         })
     }
 
@@ -157,14 +157,13 @@ export const ClientChatWindow = (props: Props) => {
     }, [ac?.globalSocket]);
 
     function fetchOldRequests() {
-        console.log("fetchOldRequests")
         _props._db(service.group).query(serviceRoute.groupRequests, undefined, reqType.get, undefined)
             .then(function ({data}) {
                 handleMessagesSync(data.id);
                 setGroupId(data.id);
                 if (isAiderAssigned(data)) {
                     console.log("Aider has been assigned");
-                    console.log('%c-------- Connecting to aider now----------', 'color: green;')
+                    console.log('%c_connecting to aider now_', 'color: green;')
                     setAiderAssigned(true);
                     setSocket(prevState => ac?.chatSocket);
                 } else {
@@ -194,21 +193,14 @@ export const ClientChatWindow = (props: Props) => {
             socket?.emit(SocketEmitters._JOIN, {groupId});
         }
         socket?.on(SocketListeners.USERONLINE, (data: { user: number }) => {
-            console.log('%c-------- Aider is online----------', 'color: green;');
+            console.log('%c_Aider is online_', 'color: green;');
             setListenerAvailable(true);
         });
         ac?.chatSocket?.on(
             SocketListeners.MESSAGE,
             async (data: { senderId: any; id: any }) => {
-                console.log(data)
-            });
-
-        ac?.chatSocket?.on(
-            SocketListeners.MESSAGE,
-            async (data: { senderId: any; id: any }) => {
                 console.log('new message', data)
             })
-
     }, [socket, groupId]);
 
     function isAiderAssigned(data: any): boolean {
@@ -223,11 +215,10 @@ export const ClientChatWindow = (props: Props) => {
         return assigned;
     }
 
-    function handleMessageReport(content: string,question:string) {
-        getDeviceID().then(function(info){
-
-            ac?.globalSocket?.emit(SocketEmitters._REPORTED_EVENT, {content,deviceId:info.identifier,question});
-            setError("Thanks for reporting this.")
+    function handleMessageReport(content: string, question: string) {
+        getDeviceID().then(function (info) {
+            ac?.globalSocket?.emit(SocketEmitters._REPORTED_EVENT, {content, deviceId: info.identifier, question});
+            setError("Message has been reported.")
         })
     }
 
@@ -239,14 +230,14 @@ export const ClientChatWindow = (props: Props) => {
 
     function handleMessagesSync(groupId?: number) {
         queryStoreObjects(IDBStore.chat).then(async function (data: any) {
-            let storedChats = data[0].chats;
+            let storedChats = data[0]?.chats || [];
             try {
                 if (groupId) {
                     const {data} = await _props._db(service.group).query(serviceRoute._groupMessages, {
                         limit: 20,
                         start: new Date()
                     }, reqType.post, groupId);
-                    const dbChats = data.filter((item: { analysis: any; })=> !item.analysis).map((chat: any) => {
+                    const dbChats = data.filter((item: { analysis: any; }) => !item.analysis).map((chat: any) => {
 
                         return {
                             message: chat?.MessageContent?.content,
@@ -261,19 +252,14 @@ export const ClientChatWindow = (props: Props) => {
                     }) {
                         return a.created_at - b.created_at
                     });
-                    console.log(storedChats)
-                    renderChatOrder(storedChats);
-                    setMessage("");
+                    setConversation(storedChats);
                     setLoading(false);
                 } else {
-                    renderChatOrder(storedChats);
-                    setMessage("");
+                    setConversation(storedChats);
                     setLoading(false);
                 }
 
             } catch (e) {
-                renderChatOrder(storedChats);
-                setMessage("");
                 setLoading(false);
             }
 
@@ -328,8 +314,8 @@ export const ClientChatWindow = (props: Props) => {
                                                        "Do you wanna report this reply from Moksha?",
                                                    header: "Confirmation",
                                                });
-                                               if(accepted) {
-                                                   handleMessageReport(text.message,conversation[index-1].message);
+                                               if (accepted) {
+                                                   handleMessageReport(text.message, conversation[index - 1].message);
                                                }
                                            }}> Report</span>
 
