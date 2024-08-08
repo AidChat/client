@@ -148,6 +148,7 @@ div {
     padding: 16px 8px;
     transition: all 0.5s;
     font-size: var(--font-medium);
+    color:var(--lightgray)
 }
 
 .btn-primary {
@@ -581,7 +582,8 @@ dialog::backdrop {
     border-radius:4px;
     cursor: pointer;
     margin:0 10px;
-    font-size:var(--font-medium)
+    font-size:var(--font-medium);
+    color:var(--lightgray) !important;
 }
 .p-dialog-header{
     padding:14px;

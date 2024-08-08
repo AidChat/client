@@ -187,6 +187,7 @@ export const storeChatsByDeviceID = async  (chats: Message[]) => {
     let store: IDBStoreName = IDBStore.chat;
     getDeviceID().then((device: {identifier:string}) => {
         if (device) {
+            console.log(chats)
             chats.forEach(chat => {
                 chat.id = device.identifier
             })
@@ -228,13 +229,14 @@ function storeObjects(object: {
     content?: string,
     store: IDBStoreName,
     id?: number | string,
-    chats?: any
+    chats?: Message[]
 }) {
     return new Promise((resolve, reject) => {
         openDatabase(object.store).then((db: any) => {
             const transaction = db.transaction([object.store.toString()], 'readwrite');
             const objectStore = transaction.objectStore(object.store);
             object.id = object.id || 1;
+            console.log('Last stage ', object)
             const request = objectStore.put(object);
             request.onsuccess = () => {
                 resolve(true);

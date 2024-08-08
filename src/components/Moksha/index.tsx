@@ -66,54 +66,56 @@ export const ClientChatWindow = (props: Props) => {
         setShowInfoBox(true);
         fetchOldRequests();
         return () => {
-            if (ac?.mokshaSocket) ac?.mokshaSocket.disconnect();
+            if (socket) socket?.disconnect();
         };
     }, []);
 
     useEffect(() => {
-        if (!ac?.mokshaSocket?.connected) {
-            ac?.mokshaSocket?.connect();
+        if (!socket?.connected) {
+            socket?.connect();
+            socket?.on(SocketListeners.REPLY, handleSocketListener);
         }
-        if (ac?.mokshaSocket?.connected) {
-            ac.mokshaSocket.on(SocketListeners.REPLY, handleSocketListener);
-        }
-    }, [ac?.mokshaSocket?.connected]);
+    }, [socket?.connected]);
 
     function handleSocketMessageUpdate(m: string) {
         setMessage(m);
     }
 
-    function addConversationMessages(payload: Message) {
-        storeChatsByDeviceID([...conversation,payload]).then(function(){
-            setConversation(prevState => [...prevState,payload]);
-        })
+    async function addConversationMessages(payload: Message) {
+        if (payload) {
+            let chats: any[] = [...conversation];
+            chats.push(payload);
+            console.log(chats)
+            await storeChatsByDeviceID(chats);
+            setConversation(prevState => [...chats]);
+        }
     }
 
     async function handleSocketMessageSend() {
         if (validateAskText(message).isValid) {
+            let payload : {deviceId:string |undefined| number,message:string,userId:undefined | string | number,created_at :Date, sender:"User"} = {
+                deviceId: undefined,
+                message: message,
+                userId: undefined,
+                created_at: new Date(),
+                sender: 'User'
+            };
+            let device = await getDeviceID();
+            payload.deviceId = device.identifier;
             if (aiderAssigned && !switchToMoksha) {
                 socket?.emit(SocketEmitters._MESSAGE, {text: message, groupId, images: []});
                 setMessage('')
             } else {
-                let device = await getDeviceID();
                 _props._user().get().then(function (user) {
-                    let payload = {
-                        deviceId: device.identifier,
-                        message: message,
-                        userId: user.id,
-                    };
-                    ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
-                    addConversationMessages({sender: "User", message: message, created_at: new Date()});
+                    payload.userId = user.id;
+                    socket?.emit(SocketEmitters._ASK, payload);
+                    addConversationMessages(payload);
                     setMessage("");
                     scrollToBottom(scrollableDivRef);
-                }).catch(e => {
+                }).catch(() => {
                     // unauthenticated case
-                    let payload = {
-                        deviceId: device.identifier,
-                        message: message,
-                    };
-                    ac?.mokshaSocket?.emit(SocketEmitters._ASK, payload);
-                    addConversationMessages({sender: "User", message: payload.message, created_at: new Date()});
+                    socket?.emit(SocketEmitters._ASK, payload);
+                    addConversationMessages(payload);
                     setMessage("");
                     scrollToBottom(scrollableDivRef);
                 })
@@ -123,6 +125,7 @@ export const ClientChatWindow = (props: Props) => {
 
     async function handleSocketListener(e: any) {
         vibrateDevice().then(function () {
+            console.log(e.message)
             addConversationMessages({sender: "Model", message: e.message, created_at: new Date()});
         })
     }
@@ -135,7 +138,7 @@ export const ClientChatWindow = (props: Props) => {
     useEffect(() => {
         _props._user().get().then(async function (data: UserProps) {
             toggleLoginComponent(true);
-            ac?.globalSocket?.on(SocketListeners.JOINREQUEST, function (data: any) {
+            socket?.on(SocketListeners.JOINREQUEST, function (data: any) {
                 notify("Someone is looking to help you")
                 setCurrentUserGroup(data);
             })
@@ -144,7 +147,7 @@ export const ClientChatWindow = (props: Props) => {
                 console.error(error)
                 toggleLoginComponent(false);
             })
-    }, [ac?.globalSocket]);
+    }, [socket]);
 
     function fetchOldRequests() {
         _props._db(service.group).query(serviceRoute.groupRequests, undefined, reqType.get, undefined)
@@ -171,7 +174,7 @@ export const ClientChatWindow = (props: Props) => {
                 }
             })
             .catch(e => {
-                console.error(e)
+                console.error('Error', e)
                 handleMessagesSync();
             })
 
@@ -245,17 +248,19 @@ export const ClientChatWindow = (props: Props) => {
                     setConversation(storedChats);
                     setLoading(false);
                 } else {
-                    setConversation(storedChats);
+                    setConversation([...storedChats]);
                     setLoading(false);
                 }
 
             } catch (e) {
-                setConversation(storedChats);
+                console.log('error', e)
+                setConversation([...storedChats]);
                 setLoading(false);
             }
 
         });
     }
+
     let {size: isSmall} = useWindowSize(EwindowSizes.S);
     return (
         <>
